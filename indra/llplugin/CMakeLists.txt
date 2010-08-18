@@ -71,4 +71,3 @@ set_source_files_properties(
     LL_TEST_ADDITIONAL_LIBRARIES "${CURL_LIBRARIES}"
   )
 
-LL_ADD_PROJECT_UNIT_TESTS(llplugin "${llplugin_TEST_SOURCE_FILES}")

@@ -240,6 +240,7 @@ class UnixSetup(PlatformSetup):
 
     def run(self, command, name=None):
         '''Run a program.  If the program fails, raise an exception.'''
+        sys.stdout.flush()
         ret = os.system(command)
         if ret:
             if name is None:

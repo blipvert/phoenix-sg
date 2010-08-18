@@ -79,4 +79,3 @@ if (DARWIN)
   )
 endif (DARWIN)
 
-ll_deploy_sharedlibs_command(SLPlugin)
