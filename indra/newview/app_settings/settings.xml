@@ -43,7 +43,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <integer>175.0</integer>
+      <integer>1750.0</integer>
     </map>
     <key>ZwagothSculptSAMax</key>
     <map>
@@ -54,7 +54,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <integer>500.0</integer>
+      <integer>50000.0</integer>
     </map>
     <key>EmeraldMuteGestures</key>
     <map>
