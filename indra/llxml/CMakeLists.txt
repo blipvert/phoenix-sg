@@ -38,6 +38,6 @@ add_library (llxml ${llxml_SOURCE_FILES})
 add_dependencies(llxml prepare)
 target_link_libraries(
     llxml
-    ${Boost_SIGNALS_LIBRARY}
+    ${BOOST_SIGNALS_LIBRARY}
     ${EXPAT_LIBRARIES}
     )
