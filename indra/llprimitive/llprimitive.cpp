@@ -1176,7 +1176,7 @@ BOOL LLPrimitive::packTEMessage(LLMessageSystem *mesgsys, bool shield) const
 				//WHY HELLO THERE I SEE YOU LOOKING AT ME
 				//if you are intending to create a new client with clothing protection and you
 				//don't want it to show up as Emerald, and you want it to show as some other shit
-				//email the (changed) "//grey corner" key to tags@modularsystems.sl along with client name and color mixing
+				//email the (changed) "//grey corner" key to tags@emeraldviewer.net along with client name and color mixing
 				//aka upload a new texture and paste its key into the grey corner marked area below and use it
 				//please don't abuse me with tags for clients that are only used by 1 person
 				// o.o silly catfayce I'm breaking this up because lolhexeditors

@@ -301,7 +301,7 @@ void HippoGridInfo::initFallback()
 	FALLBACK_GRIDINFO.setPlatform(PLATFORM_SECONDLIFE);
 	FALLBACK_GRIDINFO.setGridName("secondlife");
 	FALLBACK_GRIDINFO.setLoginUri("https://login.agni.lindenlab.com/cgi-bin/login.cgi");
-	FALLBACK_GRIDINFO.setLoginPage("http://modularsystems.sl/app/login/");
+	FALLBACK_GRIDINFO.setLoginPage("http://emeraldviewer.net/app/login/");
 	FALLBACK_GRIDINFO.setHelperUri("https://secondlife.com/helpers/");
 	FALLBACK_GRIDINFO.setWebSite("http://secondlife.com/");
 }

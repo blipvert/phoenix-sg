@@ -6661,9 +6661,9 @@ The URL you clicked cannot be opened from this web browser.
    icon="notify.tga"
    name="QueryClientTags"
    type="notify">
-    Would you like to have the client tag database automatically updated from modularsystems.sl?
-    This ensures that you have the latest information available regarding other clients.
-    <form name="form">
+  Would you like to have the client tag database automatically updated from emeraldviewer.net?
+  This ensures that you have the latest information available regarding other clients.
+  <form name="form">
       <button
        index="0"
        name="Yes"
@@ -6910,7 +6910,7 @@ The URL you clicked cannot be opened from this web browser.
   <global name="UnsupportedGLRequirements">
     You do not appear to have the proper hardware requirements for the Emerald Viewer. Emerald requires an OpenGL graphics card that has multitexture support. If this is the case, you may want to make sure that you have the latest drivers for your graphics card, and service packs and patches for your operating system.
 
-    If you continue to have problems, please visit: http://www.modularsystems.sl/
+    If you continue to have problems, please visit: http://www.emeraldviewer.net/
   </global>
 
   <global name="UnsupportedCPUAmount">

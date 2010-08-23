@@ -85,4 +85,4 @@ const std::string SL_KB_URL (
 	"http://secondlife.com/knowledgebase/");
 
 const std::string RELEASE_NOTES_BASE_URL (
-	"http://modularsystems.sl/app/releasenotes/");
+	"http://EmeraldViewer.net/app/releasenotes/");

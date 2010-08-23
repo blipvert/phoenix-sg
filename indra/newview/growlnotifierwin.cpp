@@ -67,7 +67,7 @@ void GrowlNotifierWin::showNotification(const std::string& notification_title, c
 	growl->Notify(notification_type.c_str(),notification_title.c_str(),notification_message.c_str()
 		//,
 		//std::string("").c_str(),//url
-		//std::string("http://modularsystems.sl/box/emeraldicon.ico").c_str()
+		//std::string("http://emeraldviewer.net/box/emeraldicon.ico").c_str()
 		);	
 }
 

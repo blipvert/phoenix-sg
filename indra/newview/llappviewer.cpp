@@ -2271,7 +2271,7 @@ void LLAppViewer::checkForCrash(void)
             std::ostringstream msg;
             msg << gSecondLife
             << " appears to have frozen or crashed on the previous run.\n"
-			<< "Would you like to send a crash report to http://modularsystems.sl/?";
+			<< "Would you like to send a crash report to http://emeraldviewer.net/?";
             std::string alert;
             alert = gSecondLife;
             alert += " Alert";

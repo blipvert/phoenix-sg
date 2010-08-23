@@ -5063,7 +5063,7 @@ BOOL LLTextEditor::findHTML(const std::string &line, S32 *begin, S32 *end, std::
 		const int jira_count = 4;
 		const char* jiras[] = { "SVC-", "VWR-", "SNOW-", "EMLD-" };
 		int jurl_types[] = { 0, 0, 0, 1 };
-		const char* jurls[] = { "https://jira.secondlife.com/browse/%s", "http://jira.modularsystems.sl/browse/%s" };
+		const char* jurls[] = { "https://jira.secondlife.com/browse/%s", "http://jira.emeraldviewer.net/browse/%s" };
 		for(int j = 0; j < jira_count; ++j)
 		{
 			std::string jira(jiras[j]);

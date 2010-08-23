@@ -360,7 +360,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	// kick off a request to grab the url manually
 	gResponsePtr = LLIamHereLogin::build( this );
 
-	std::string login_page = "http://modularsystems.sl/app/login/"; //gHippoGridManager->getConnectedGrid()->getLoginPage();
+	std::string login_page = "http://emeraldviewer.net/app/login/"; //gHippoGridManager->getConnectedGrid()->getLoginPage();
 	if (login_page.empty())
 	{
 		login_page = getString( "real_url" );
@@ -899,7 +899,7 @@ void LLPanelLogin::refreshLoginPage()
 	// kick off a request to grab the url manually
 	gResponsePtr = LLIamHereLogin::build(sInstance);
 
-	std::string login_page = "http://modularsystems.sl/app/login/"; //gHippoGridManager->getConnectedGrid()->getLoginPage();
+	std::string login_page = "http://emeraldviewer.net/app/login/"; //gHippoGridManager->getConnectedGrid()->getLoginPage();
 	if (!login_page.empty()) {
 		LLHTTPClient::head(login_page, gResponsePtr);
 	} else {
@@ -916,7 +916,7 @@ void LLPanelLogin::loadLoginPage()
 	sInstance->updateGridCombo();
 	std::ostringstream oStr;
 
-	std::string login_page = "http://modularsystems.sl/app/login/"; //gHippoGridManager->getConnectedGrid()->getLoginPage();
+	std::string login_page = "http://emeraldviewer.net/app/login/"; //gHippoGridManager->getConnectedGrid()->getLoginPage();
 	if (login_page.empty())
 	{
 		sInstance->setSiteIsAlive(false);

@@ -580,16 +580,16 @@
 		</menu_item_call>
     <menu_item_separator bottom="-102" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator2" width="166" />
     <menu_item_call bottom="-140" enabled="true" height="19" label="Emerald Viewer Blog..." left="0" mouse_opaque="true" name="Emerald Viewer Blog..." width="166">
-      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://emerald.modularsystems.sl/index.shtml" />
+      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://emeraldviewer.net/index.shtml" />
     </menu_item_call>
     <menu_item_call bottom="-140" enabled="true" height="19" label="Emerald Viewer Wiki..." left="0" mouse_opaque="true" name="Emerald Viewer Wiki..." width="166">
-      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://emerald.modularsystems.sl/wiki.shtml" />
+      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://emeraldviewer.net/wiki.shtml" />
     </menu_item_call>
     <menu_item_call bottom="-140" enabled="true" height="19" label="Emerald Viewer Support..." left="0" mouse_opaque="true" name="Emerald Viewer Support..." width="166">
-      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://emerald.modularsystems.sl/support.shtml" />
+      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://emeraldviewer.net/support.shtml" />
     </menu_item_call>
     <menu_item_call bottom="-140" enabled="true" height="19" label="Emerald Viewer Bug Reports..." left="0" mouse_opaque="true" name="Emerald Viewer Bug Reports..." width="166">
-      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://jira.modularsystems.sl:8080" />
+      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://jira.emeraldviewer.net" />
     </menu_item_call>
 
 		<menu_item_separator bottom="-411" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator7" width="250" />
