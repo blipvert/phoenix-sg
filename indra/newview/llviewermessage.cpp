@@ -160,7 +160,7 @@ extern LLMap< const LLUUID, LLFloaterAvatarInfo* > gAvatarInfoInstances; // Only
 
 // [$PLOTR$]
 #include "otr_wrapper.h"
-#include "a_modularsystemslink.h"
+#include "a_emeraldviewerlink.h"
 // [/$PLOTR$]
 //
 //silly spam define D:
@@ -2188,7 +2188,7 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 			if (!is_muted || is_linden)
 			{
 				//lgg - prompt user to send info if requested
-				message = ModularSystemsLink::processRequestForInfo(from_id,message,name,session_id);
+				message = EmeraldViewerLink::processRequestForInfo(from_id,message,name,session_id);
 				buffer = separator_string + saved  + message.substr(message_offset);
 
 				gIMMgr->addMessage(

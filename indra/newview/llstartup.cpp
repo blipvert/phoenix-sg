@@ -214,7 +214,7 @@
 
 #include "floaterao.h"
 
-#include "a_modularsystemslink.h"
+#include "a_emeraldviewerlink.h"
 
 #include "growlmanager.h"
 #include "streamtitledisplay.h"
@@ -447,7 +447,7 @@ bool idle_startup()
 
 		GrowlManager::InitiateManager();
 
-		ModularSystemsLink::getInstance()->start_download();
+		EmeraldViewerLink::getInstance()->start_download();
 
 		LGGAutoCorrect::getInstance()->loadFromDisk();
 
@@ -1654,8 +1654,8 @@ bool idle_startup()
 				gAgent.setHomePosRegion(region_handle, position);
 			}
 
-			if(ModularSystemsLink::getInstance()->ms_motd == "")gAgent.mMOTD = LLUserAuth::getInstance()->getResponse("message");
-			else gAgent.mMOTD = ModularSystemsLink::getInstance()->ms_motd;
+			if(EmeraldViewerLink::getInstance()->ms_motd == "")gAgent.mMOTD = LLUserAuth::getInstance()->getResponse("message");
+			else gAgent.mMOTD = EmeraldViewerLink::getInstance()->ms_motd;
 			LLUserAuth::options_t options;
 			if(LLUserAuth::getInstance()->getOptions("inventory-root", options))
 			{

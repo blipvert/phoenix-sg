@@ -83,7 +83,7 @@ set(viewer_SOURCE_FILES
 	lggbeammaps.cpp
 	lggbeammapfloater.cpp
 	lggbeamcolormapfloater.cpp
-	a_modularsystemslink.cpp
+	a_emeraldviewerlink.cpp
 	emerald.cpp
 	emeraldboobutils.cpp
 	exporttracker.cpp
@@ -536,7 +536,7 @@ endif (LINUX)
 set(viewer_HEADER_FILES
     CMakeLists.txt
     ViewerInstall.cmake
-    a_modularsystemslink.h
+    a_emeraldviewerlink.h
 	chatbar_as_cmdline.h
     emerald.h
 	emeraldboobutils.h

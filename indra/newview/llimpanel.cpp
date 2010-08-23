@@ -76,7 +76,7 @@
 #include "lltrans.h"
 #include "llversionviewer.h"
 #include "mfdkeywordfloater.h" //Emerald KeywordAlert
-#include "a_modularsystemslink.h"
+#include "a_emeraldviewerlink.h"
 
 // [RLVa:KB]
 #include "rlvhandler.h"
@@ -1229,7 +1229,7 @@ void LLFloaterIMPanel::init(const std::string& session_label)
 
 	if (LL_CHANNEL != EMERALD_RELEASE_CHANNEL && mDialog == IM_NOTHING_SPECIAL)
 	{
-		if(ModularSystemsLink::is_support(mOtherParticipantUUID))
+		if(EmeraldViewerLink::is_support(mOtherParticipantUUID))
 		{
 			addHistoryLine(getString("emerald_no_support_available"),
 						   gSavedSettings.getColor4("SystemChatColor"),
@@ -2895,7 +2895,7 @@ void LLFloaterIMPanel::sendMsg()
 				std::string my_name;
 				gAgent.buildFullname(my_name);
 				//utf8_text = "Sending my system information:";
-				ModularSystemsLink::sendInfo(mOtherParticipantUUID,mSessionUUID,my_name,mDialog);
+				EmeraldViewerLink::sendInfo(mOtherParticipantUUID,mSessionUUID,my_name,mDialog);
 				return;
 			}
 			// Convert MU*s style poses into IRC emotes here.

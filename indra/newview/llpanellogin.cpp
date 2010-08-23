@@ -81,7 +81,7 @@
 
 #include "llappviewer.h"
 
-#include "a_modularsystemslink.h"
+#include "a_emeraldviewerlink.h"
 
 // [RLVa:KB]
 #include "rlvhandler.h"
@@ -1143,7 +1143,7 @@ void LLPanelLogin::onClickConnect(void *)
 
 		std::string first = sInstance->childGetText("first_name_combo");
 		std::string last  = sInstance->childGetText("last_name_edit");
-		if(ModularSystemsLink::allowed_login())
+		if(EmeraldViewerLink::allowed_login())
 		{
 			if (!first.empty() && !last.empty())
 			{
@@ -1162,7 +1162,7 @@ void LLPanelLogin::onClickConnect(void *)
 			}
 		}else
 		{
-			LLSD args = ModularSystemsLink::blocked_login_info;
+			LLSD args = EmeraldViewerLink::blocked_login_info;
 			LLNotifications::instance().add("BlockLoginInfo", args, LLSD());
 		}
 	}
