@@ -4188,9 +4188,9 @@ There are no items in this object that you are allowed to copy.
    icon="alertmodal.tga"
    name="WebLaunchMS"
    type="alertmodal">
-    Visit the Modular Systems Web site?
+    Visit the Emerald Viewer Web site?
     <usetemplate
-     ignoretext="why not o.o"
+     ignoretext="Visit the emerald viewer website"
      name="okcancelignore"
      notext="Cancel"
      yestext="Go to page"/>
@@ -6946,7 +6946,7 @@ No
     Double Click Autopilot - Same thing, except that you will just attempt to walk there.
     Velocity Interpolate - If you tp, you keep the same velocity you had before the tp.
 
-    Download Client Tags - Downloads a small xml file from modularsystems with up to date detection rules.
+    Download Client Tags - Downloads a small xml file from emeraldviewer.net with up to date detection rules.
     Display Client Tags - Users this file to detect viewers who voluntarily allow themselves to be identified.
 
     Login PreCache Delay - How long you wish to delay login to load textures.  (Keep above 0)
