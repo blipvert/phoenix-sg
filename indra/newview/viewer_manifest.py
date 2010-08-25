@@ -583,7 +583,7 @@ class DarwinManifest(ViewerManifest):
                                      )
 
                 # plugin launcher
-                self.path("../llplugin/slplugin/" + self.args['configuration'] + "/SLPlugin", "SLPlugin")
+                self.path("../llplugin/slplugin/" + self.args['configuration'] + "/SLPlugin.app", "SLPlugin")
 
                 # plugins
                 if self.prefix(src="", dst="llplugin"):
