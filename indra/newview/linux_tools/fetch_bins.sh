@@ -5,9 +5,15 @@ BINS="bin/SLVoice bin/libemkdu.so lib/libortp.so lib/libvivoxsdk.so lib/libfmod-
 
 # Locations of client to use
 #URL="http://download.cloud.secondlife.com/SecondLife-i686-1.23.5.136262.tar.bz2"
-#URL="http://www.modularsystems.sl/box/fmod-vivox-kdu_022010.tar.bz2"
-URL="http://emeraldviewer.net/box/fmod-vivox-kdu.tar.bz2"
-ARCHIVE="${URL##*=}"
+
+#default to not downloading a package with emkdu for now, since LL has asked us not to use it.
+if [[ "$1" == "--emkdu" ]]; then
+	URL="http://emeraldviewer.net/box/fmod-vivox-kdu.tar.bz2"
+else
+	URL="http://emeraldviewer.net/box/fmod-vivox.tar.bz2"
+fi
+
+ARCHIVE="${URL##*/}"
 #FOLDER="${ARCHIVE%.*.*}"
 
 missing_bins() {
