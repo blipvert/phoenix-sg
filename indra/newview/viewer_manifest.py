@@ -484,7 +484,7 @@ class DarwinManifest(ViewerManifest):
 	    self.path("../../libraries/universal-darwin/lib_release/7za", "MacOS/7za");
 	    
 	    # emkdu
-	    self.path("emkdu/universal-darwin/libemkdu.dylib", "Resources/libemkdu.dylib")
+	    #self.path("emkdu/universal-darwin/libemkdu.dylib", "Resources/libemkdu.dylib")
 
             # most everything goes in the Resources directory
             if self.prefix(src="", dst="Resources"):
@@ -583,7 +583,7 @@ class DarwinManifest(ViewerManifest):
                                      )
 
                 # plugin launcher
-                self.path("../llplugin/slplugin/" + self.args['configuration'] + "/SLPlugin.app", "SLPlugin")
+                self.path("../llplugin/slplugin/" + self.args['configuration'] + "/SLPlugin.app", "SLPlugin.app")
 
                 # plugins
                 if self.prefix(src="", dst="llplugin"):
