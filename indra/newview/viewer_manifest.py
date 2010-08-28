@@ -565,9 +565,13 @@ class DarwinManifest(ViewerManifest):
                 self.path("../mac_crash_logger/" + self.args['configuration'] + "/mac-crash-logger.app", "mac-crash-logger.app")
                 self.path("../mac_updater/" + self.args['configuration'] + "/mac-updater.app", "mac-updater.app")
 
+                # plugin launcher
+                self.path("../llplugin/slplugin/" + self.args['configuration'] + "/SLPlugin.app", "SLPlugin.app")
+
                 # our apps dependencies on shared libs
                 mac_crash_logger_res_path = self.dst_path_of("mac-crash-logger.app/Contents/Resources")
                 mac_updater_res_path = self.dst_path_of("mac-updater.app/Contents/Resources")
+                slplugin_res_path = self.dst_path_of("SLPlugin.app/Contents/Resources")
                 for libfile in ("libllcommon.dylib",
                                 "libapr-1.0.3.7.dylib",
                                 "libaprutil-1.0.3.8.dylib",
@@ -581,9 +585,10 @@ class DarwinManifest(ViewerManifest):
                                      {'target': target_lib,
                                       'link' : os.path.join(mac_updater_res_path, libfile)}
                                      )
-
-                # plugin launcher
-                self.path("../llplugin/slplugin/" + self.args['configuration'] + "/SLPlugin.app", "SLPlugin.app")
+                    self.run_command("ln -sf %(target)r %(link)r" %
+                                     {'target': target_lib,
+                                      'link' : os.path.join(slplugin_res_path, libfile)}
+                                     )
 
                 # plugins
                 if self.prefix(src="", dst="llplugin"):
