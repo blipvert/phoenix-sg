@@ -455,7 +455,7 @@ class DarwinSetup(UnixSetup):
             targets = ' '.join(['-target ' + repr(t) for t in targets])
         else:
             targets = ''
-        cmd = ('xcodebuild -configuration %s %s %s' %
+        cmd = ('xcodebuild -configuration %s %s %s GCC_VERSION=4.0' %
                (self.build_type, ' '.join(opts), targets))
         for d in self.build_dirs():
             try:

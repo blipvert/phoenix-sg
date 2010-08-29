@@ -652,7 +652,7 @@ BOOL couldDL(LLAssetType::EType type)
 		return FALSE;
 		break;
 	}
-//	return FALSE;
+	return FALSE; // shut up compiler warning
 }
 
 void JCExportTracker::inventoryChanged(LLViewerObject* obj,

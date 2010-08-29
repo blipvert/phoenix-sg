@@ -518,7 +518,7 @@ void bridge_trash_check()
 						//cmdline_printchat("name="+name);
 						if(name.length() > bridgeprefix_length)
 						{
-							std::string version_str = name.substr(bridgeprefix_length,-1);
+							std::string version_str = name.substr(bridgeprefix_length; // use rest of string
 							std::istringstream vstream(version_str);
 							F32 version_float;
 							if(vstream >> version_float)
