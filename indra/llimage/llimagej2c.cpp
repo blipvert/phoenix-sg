@@ -79,6 +79,7 @@ bool LLImageJ2C::useEMKDU = false;
 //Loads the required "create", "destroy" and "engineinfo" functions needed
 void LLImageJ2C::openDSO()
 {
+	return;
 	// Loading emkdu on Tiger on Intel machines crashes, so don't do that.
 	// So does loading it on PPC (despite being supposedly universal).
 #ifdef LL_DARWIN
