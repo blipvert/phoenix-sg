@@ -160,7 +160,7 @@ extern LLMap< const LLUUID, LLFloaterAvatarInfo* > gAvatarInfoInstances; // Only
 
 // [$PLOTR$]
 #include "otr_wrapper.h"
-#include "a_emeraldviewerlink.h"
+#include "a_phoenixviewerlink.h"
 // [/$PLOTR$]
 //
 //silly spam define D:
@@ -952,7 +952,7 @@ void open_offer(const std::vector<LLUUID>& items, const std::string& from_name)
 		// Don't auto-open the inventory floater if we don't want to.
 		LLInventoryView* view = LLInventoryView::getActiveInventory();
 		// No point opening an inventory window if we're then not going to actually do anything with it.
-		bool show_inventory = gSavedSettings.getBOOL("ShowInInventory") && !gSavedSettings.getBOOL("EmeraldFreezeInventoryArangement");
+		bool show_inventory = gSavedSettings.getBOOL("ShowInInventory") && !gSavedSettings.getBOOL("PhoenixFreezeInventoryArangement");
 		if(!view)
 		{
 			if(show_inventory)
@@ -1703,7 +1703,7 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 //     {
 //         llinfos << "$PLOTR$ Looks like " << from_id << " went offline." << llendl;
 //     }
-	U32 otrpref = gSavedSettings.getU32("EmeraldUseOTR");
+	U32 otrpref = gSavedSettings.getU32("PhoenixUseOTR");
     // otrpref: 0 == Require use of OTR in IMs, 1 == Request OTR if available, 2 == Accept OTR requests, 3 == Decline use of OTR
 	if ((otrpref != 3) && !is_muted && (chat.mSourceType == CHAT_SOURCE_AGENT))
 	{
@@ -1834,10 +1834,10 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 	bool typing_init = false;
 	if( dialog == IM_TYPING_START && !is_muted )
 	{
-		if(!gIMMgr->hasSession(computed_session_id) && gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageAnnounceIncoming"))
+		if(!gIMMgr->hasSession(computed_session_id) && gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageAnnounceIncoming"))
 		{
 			typing_init = true;
-			if( gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageAnnounceStealFocus") )
+			if( gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageAnnounceStealFocus") )
 			{
 				/*LLUUID sess =*/ gIMMgr->addSession(name, IM_NOTHING_SPECIAL, from_id);
 				make_ui_sound("UISndNewIncomingIMSession");
@@ -1863,15 +1863,15 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 	}
 
 	bool do_auto_response = false;
-	if( gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageResponseAnyone" ) )
+	if( gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseAnyone" ) )
 		do_auto_response = true;
 
 	// odd name for auto respond to non-friends
-	if( gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageResponseFriends") &&
+	if( gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseFriends") &&
 		LLAvatarTracker::instance().getBuddyInfo(from_id) == NULL )
 		do_auto_response = true;
 
-	if( is_muted && !gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageResponseMuted") )
+	if( is_muted && !gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseMuted") )
 		do_auto_response = false;
 
 	if( offline != IM_ONLINE )
@@ -1887,19 +1887,19 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 		do_auto_response = false;
 
 //	if( do_auto_response )
-// [RLVa:KB] - Alternate: Emerald-370
-	// Emerald specific: auto-response should be blocked if the avie is RLV @sendim=n restricted and the recipient is not an exception
+// [RLVa:KB] - Alternate: Phoenix-370
+	// Phoenix specific: auto-response should be blocked if the avie is RLV @sendim=n restricted and the recipient is not an exception
 	if ( (do_auto_response) && ( (!gRlvHandler.hasBehaviour(RLV_BHVR_SENDIM)) || (gRlvHandler.isException(RLV_BHVR_SENDIM, from_id)) ) )
 // [/RLVa:KB]
 	{
 		if((dialog == IM_NOTHING_SPECIAL && !is_auto_response) ||
-			(dialog == IM_TYPING_START && gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageShowOnTyping"))
+			(dialog == IM_TYPING_START && gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageShowOnTyping"))
 			)
 		{
 			BOOL has = gIMMgr->hasSession(computed_session_id);
-			if(!has || gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageResponseRepeat") || typing_init)
+			if(!has || gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseRepeat") || typing_init)
 			{
-				BOOL show = !gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageShowResponded");
+				BOOL show = !gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageShowResponded");
 				if(!has && show)
 				{
 					gIMMgr->addSession(name, IM_NOTHING_SPECIAL, from_id);
@@ -1922,7 +1922,7 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 				gAgent.buildFullname(my_name);
 
 				//<-- Personalized Autoresponse by Madgeek
-				std::string autoresponse = gSavedPerAccountSettings.getText("EmeraldInstantMessageResponse");
+				std::string autoresponse = gSavedPerAccountSettings.getText("PhoenixInstantMessageResponse");
 				//Define Wildcards
 				std::string fname_wildcard = "#f";
 				std::string lname_wildcard = "#l";
@@ -1981,7 +1981,7 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 				}
 				//--> Personalized Autoresponse
 
-				if(gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageResponseRepeat") && has && !typing_init) {
+				if(gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseRepeat") && has && !typing_init) {
 					// send as busy auto response instead to prevent endless repeating replies
 					// when other end is a bot or broken client that answers to every usual IM
 					// reasoning for this decision can be found in RFC2812 3.3.2 Notices
@@ -2015,9 +2015,9 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 						session_id);
 				}
 				gAgent.sendReliableMessage();
-				if(gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageResponseItem") && (!has || typing_init))
+				if(gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseItem") && (!has || typing_init))
 				{
-					LLUUID itemid = (LLUUID)gSavedPerAccountSettings.getString("EmeraldInstantMessageResponseItemData");
+					LLUUID itemid = (LLUUID)gSavedPerAccountSettings.getString("PhoenixInstantMessageResponseItemData");
 					LLViewerInventoryItem* item = gInventory.getItem(itemid);
 					if(item)
 					{
@@ -2039,7 +2039,7 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 						LLToolDragAndDrop::giveInventory(from_id, item);
 					}
 				}
-				//EmeraldInstantMessageResponseItem<
+				//PhoenixInstantMessageResponseItem<
 
 			}
 		}
@@ -2188,7 +2188,7 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 			if (!is_muted || is_linden)
 			{
 				//lgg - prompt user to send info if requested
-				message = EmeraldViewerLink::processRequestForInfo(from_id,message,name,session_id);
+				message = PhoenixViewerLink::processRequestForInfo(from_id,message,name,session_id);
 				buffer = separator_string + saved  + message.substr(message_offset);
 
 				gIMMgr->addMessage(
@@ -3316,7 +3316,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 		else
 		{
 			// Work out if it was us, and if so whether we intend to use "You", so we can get the right verb.
-			bool second_person = (from_id == gAgent.getID() && gSavedSettings.getBOOL("EmeraldUseYou"));
+			bool second_person = (from_id == gAgent.getID() && gSavedSettings.getBOOL("PhoenixUseYou"));
 
 			switch(chat.mChatType)
 			{
@@ -3566,7 +3566,7 @@ void process_teleport_start(LLMessageSystem *msg, void**)
 	{
 		gTeleportDisplay = TRUE;
 		gAgent.setTeleportState( LLAgent::TELEPORT_START );
-		if(gSavedSettings.getBOOL("EmeraldPlayTpSound"))
+		if(gSavedSettings.getBOOL("PhoenixPlayTpSound"))
 			make_ui_sound("UISndTeleportOut");
 
 		LL_INFOS("Messaging") << "Teleport initiated by remote TeleportStart message with TeleportFlags: " <<  teleport_flags << LL_ENDL;
@@ -4505,7 +4505,7 @@ void process_sound_trigger(LLMessageSystem *msg, void **)
 	msg->getVector3Fast(_PREHASH_SoundData, _PREHASH_Position, pos_local);
 	msg->getF32Fast(_PREHASH_SoundData, _PREHASH_Gain, gain);
         if(owner_id != gAgent.getID())
-	if((object_id == owner_id) && gSavedSettings.getBOOL("EmeraldMuteGestures")) return;
+	if((object_id == owner_id) && gSavedSettings.getBOOL("PhoenixMuteGestures")) return;
 
 	// adjust sound location to true global coords
 	LLVector3d	pos_global = from_region_handle(region_handle);
@@ -4705,22 +4705,22 @@ void process_sim_stats(LLMessageSystem *msg, void **user_data)
 			LLViewerStats::getInstance()->mSimChildAgents.addValue(stat_value);
 			break;
 		case LL_SIM_STAT_NUMSCRIPTSACTIVE:
-			if (gSavedSettings.getBOOL("EmeraldDisplayTotalScriptJumps"))
+			if (gSavedSettings.getBOOL("PhoenixDisplayTotalScriptJumps"))
 			{
-				if(abs(stat_value - gSavedSettings.getF32("EmeraldNumScripts")) > gSavedSettings.getF32("EmeraldNumScriptDiff"))
+				if(abs(stat_value - gSavedSettings.getF32("PhoenixNumScripts")) > gSavedSettings.getF32("PhoenixNumScriptDiff"))
 				{
 					LLChat chat;
 					std::stringstream os;
-					os << (U32)gSavedSettings.getF32("EmeraldNumScripts");
+					os << (U32)gSavedSettings.getF32("PhoenixNumScripts");
 					std::stringstream ns;
 					ns << (U32)stat_value;
 					std::stringstream diff;
-					S32 tdiff = ((U32)stat_value - (U32)gSavedSettings.getF32("EmeraldNumScripts"));
+					S32 tdiff = ((U32)stat_value - (U32)gSavedSettings.getF32("PhoenixNumScripts"));
 					diff << tdiff;
 					chat.mText = "Total scripts jumped from " + os.str() + " to " + ns.str() + " (" + diff.str() + ")";
 					LLFloaterChat::addChat(chat, FALSE, FALSE);
 				}
-				gSavedSettings.setF32("EmeraldNumScripts", stat_value);
+				gSavedSettings.setF32("PhoenixNumScripts", stat_value);
 			}
 			LLViewerStats::getInstance()->mSimActiveScripts.addValue(stat_value);
 			break;
@@ -4926,7 +4926,7 @@ void process_avatar_appearance(LLMessageSystem *mesgsys, void **user_data)
 void process_camera_constraint(LLMessageSystem *mesgsys, void **user_data)
 {
 	//Zwag: THESE MAKE ME RAEG!!!!
-	if(gSavedSettings.getBOOL("EmeraldIgnoreSimulatorCameraConstraints"))
+	if(gSavedSettings.getBOOL("PhoenixIgnoreSimulatorCameraConstraints"))
 		return;
 	LLVector4 cameraCollidePlane;
 	mesgsys->getVector4Fast(_PREHASH_CameraCollidePlane, _PREHASH_Plane, cameraCollidePlane);
@@ -5289,7 +5289,7 @@ void process_money_balance_reply( LLMessageSystem* msg, void** )
 		args["MESSAGE"] = desc;
 		LLNotifications::instance().add("SystemMessage", args);
 
-		if (gSavedSettings.getBOOL("EmeraldShowMoneyChangeInChat"))
+		if (gSavedSettings.getBOOL("PhoenixShowMoneyChangeInChat"))
 		{
 			LLChat chat(desc);
 			LLFloaterChat::addChat(desc);
@@ -6152,7 +6152,7 @@ void process_teleport_failed(LLMessageSystem *msg, void**)
 		}
 	}
 
-	if(!gSavedSettings.getBOOL("EmeraldUseBridgeMoveToTarget") && !gSavedSettings.getBOOL("EmeraldDoubleClickTeleportChat"))//dont throw error when move to target on
+	if(!gSavedSettings.getBOOL("PhoenixUseBridgeMoveToTarget") && !gSavedSettings.getBOOL("PhoenixDoubleClickTeleportChat"))//dont throw error when move to target on
 		LLNotifications::instance().add("CouldNotTeleportReason", args);
 
 	if( gAgent.getTeleportState() != LLAgent::TELEPORT_NONE )
@@ -6196,7 +6196,7 @@ void process_teleport_local(LLMessageSystem *msg,void**)
 	}
 
 	// Sim tells us whether the new position is off the ground
-	if ((teleport_flags & TELEPORT_FLAGS_IS_FLYING) || gSavedSettings.getBOOL("EmeraldFlyAfterTeleport"))
+	if ((teleport_flags & TELEPORT_FLAGS_IS_FLYING) || gSavedSettings.getBOOL("PhoenixFlyAfterTeleport"))
 	{
 		gAgent.setFlying(TRUE);
 	}
@@ -6210,7 +6210,7 @@ void process_teleport_local(LLMessageSystem *msg,void**)
         avatarp->slamPosition();
 	gAgent.slamLookAt(look_at);
 
-	if(!gSavedSettings.getBOOL("EmeraldRotateCamAfterLocalTP"))
+	if(!gSavedSettings.getBOOL("PhoenixRotateCamAfterLocalTP"))
 		gAgent.resetView(FALSE);
 	else if ( !(gAgent.getTeleportKeepsLookAt() && LLViewerJoystick::getInstance()->getOverrideCamera()) )
 	{
@@ -6727,7 +6727,7 @@ void process_load_url(LLMessageSystem* msg, void**)
 	// Check if object or owner is muted
 	if (LLMuteList::getInstance()->isMuted(object_id, object_name) ||
 	    LLMuteList::getInstance()->isMuted(owner_id) ||
-	    (!gSavedSettings.getBOOL("EmeraldLoadURL") && (owner_id != gAgent.getID())))
+	    (!gSavedSettings.getBOOL("PhoenixLoadURL") && (owner_id != gAgent.getID())))
 	{
 		LL_INFOS("Messaging")<<"Ignoring load_url from muted object/owner."<<LL_ENDL;
 		return;
@@ -6785,7 +6785,7 @@ void process_script_teleport_request(LLMessageSystem* msg, void**)
 {
         if (!gAgent.mBlockSpam)
         {
-	if(gSavedSettings.getBOOL("EmeraldBlockMapTps"))return;
+	if(gSavedSettings.getBOOL("PhoenixBlockMapTps"))return;
 	std::string object_name;
 	std::string sim_name;
 	LLVector3 pos;

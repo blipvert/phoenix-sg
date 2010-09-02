@@ -499,7 +499,7 @@ void LLInventoryView::init(LLInventoryModel* inventory)
 	addBoolControl("Inventory.SystemFoldersToTop", sort_system_folders_to_top );
 
 	//Search Controls - RKeast
-	U32 search_type = gSavedPerAccountSettings.getU32("EmeraldInventorySearchType");
+	U32 search_type = gSavedPerAccountSettings.getU32("PhoenixInventorySearchType");
 	BOOL search_by_name = (search_type == 0);
 
 	addBoolControl("Inventory.SearchByName", search_by_name);
@@ -510,7 +510,7 @@ void LLInventoryView::init(LLInventoryModel* inventory)
 	addBoolControl("Inventory.SearchByAll", !search_by_name);
 	
 	//Bool for toggling the partial search results - RKeast
-	BOOL partial_search = gSavedPerAccountSettings.getBOOL("EmeraldInventoryPartialSearch");
+	BOOL partial_search = gSavedPerAccountSettings.getBOOL("PhoenixInventoryPartialSearch");
 	
 	addBoolControl("Inventory.PartialSearchToggle", partial_search);
 
@@ -581,7 +581,7 @@ void LLInventoryView::init(LLInventoryModel* inventory)
 	}
 
 	//Initialize item count - rkeast
-	mItemCount = gSavedPerAccountSettings.getS32("EmeraldInventoryPreviousCount");
+	mItemCount = gSavedPerAccountSettings.getS32("PhoenixInventoryPreviousCount");
 
 
 	mSearchEditor = getChild<LLSearchEditor>("inventory search editor");
@@ -861,7 +861,7 @@ void LLInventoryView::changed(U32 mask)
 			else title << " (Fetched " << item_count_string << " items of ~" << total_items << " - ~" << items_remaining << " remaining...)";
 		}
 	}
-	else gSavedPerAccountSettings.setS32("EmeraldInventoryPreviousCount", gInventory.getItemCount());
+	else gSavedPerAccountSettings.setS32("PhoenixInventoryPreviousCount", gInventory.getItemCount());
 	title << mFilterText;
 	setTitle(title.str());
 

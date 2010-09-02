@@ -512,7 +512,7 @@ public:
 	static void processAvatarPropertiesReply(LLMessageSystem *msg, void**); //Process the reply to a request for avatar properties
 	static void processBridgeReply(std::vector<LLUUID> avatars, LLSD bridgeResponce); //Process the update pos based on bridge info
 	static void processSoundTrigger(LLMessageSystem *msg, void**); //Process the reply to a request for avatar properties
-	static void callbackEmeraldChat(const LLSD &notification, const LLSD &response);
+	static void callbackPhoenixChat(const LLSD &notification, const LLSD &response);
 
 	BOOL avatarIsInList(LLUUID avatar); //Returns TRUE if the avatar is in the list of known avatars
 	LLAvatarListEntry* getAvatarEntry(LLUUID avatar); //Returns the entry for an avatar, if preset

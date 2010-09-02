@@ -348,7 +348,7 @@ void LLPanelPermissions::refresh()
 			fRlvEnableOwner = false;
 		}
 
-		// Emerald specific code
+		// Phoenix specific code
 		// TODO-RLVa: need to test the last owner filtering more
 		if ( (owners_identical) && (mLastOwnerID.notNull()) && (!last_owner_name.empty()) )
 		{
@@ -369,7 +369,7 @@ void LLPanelPermissions::refresh()
 	childSetText("Last Owner Name",last_owner_name);
 	childSetEnabled("Last Owner Name",TRUE);
 //	childSetEnabled("button last owner profile",owners_identical && mLastOwnerID.notNull());
-// [RLVa:KB] - Alternate: Emerald-370
+// [RLVa:KB] - Alternate: Phoenix-370
 	childSetEnabled("button last owner profile", fRlvEnableLastOwner && owners_identical && mLastOwnerID.notNull());
 // [/RLVa:KB]
 
@@ -903,7 +903,7 @@ void LLPanelPermissions::onClickLastOwner(void *data)
 {
 	LLPanelPermissions *self = (LLPanelPermissions *)data;
 
-// [RLVa:KB] - Alternate: Emerald-370
+// [RLVa:KB] - Alternate: Phoenix-370
 	if ( (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) && (self->mLastOwnerID.notNull()) )
 	{
 		LLFloaterAvatarInfo::showFromObject(self->mLastOwnerID);
@@ -982,7 +982,7 @@ void LLPanelPermissions::onClickCopyObjKey(void* data)
 	//We now have a copy button :>
 	//Madgeek - Hacked together method to copy more than one key, separated by comma.
 	std::string output;
-	std::string separator = gSavedSettings.getString("EmeraldCopyObjKeySeparator");
+	std::string separator = gSavedSettings.getString("PhoenixCopyObjKeySeparator");
 	for (LLObjectSelection::root_iterator iter = LLSelectMgr::getInstance()->getSelection()->root_begin();
 		iter != LLSelectMgr::getInstance()->getSelection()->root_end(); iter++)
 	{

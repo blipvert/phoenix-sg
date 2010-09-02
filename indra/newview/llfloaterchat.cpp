@@ -598,13 +598,13 @@ LLColor4 get_text_color(const LLChat& chat)
 			}
 		}
 	}
-	//Emerald KeywordAlert
+	//Phoenix KeywordAlert
 	if(gAgent.getID() != chat.mFromID)
 	{
 		if(MfdKeywordFloaterStart::hasKeyword(chat.mText,1))
 		{
-			if(gSavedPerAccountSettings.getBOOL("EmeraldKeywordChangeColor"))
-				text_color = gSavedPerAccountSettings.getColor4("EmeraldKeywordColor");
+			if(gSavedPerAccountSettings.getBOOL("PhoenixKeywordChangeColor"))
+				text_color = gSavedPerAccountSettings.getColor4("PhoenixKeywordColor");
 		}
 	}
 	return text_color;

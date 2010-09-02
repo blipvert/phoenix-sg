@@ -109,7 +109,7 @@ public :
 protected:
 	void handleResponse(const std::string &translation, const std::string &detectedLanguage)
 	{
-		static BOOL* rep = rebind_llcontrol<BOOL>("EmeraldTranslateReplace", &gSavedSettings, true);
+		static BOOL* rep = rebind_llcontrol<BOOL>("PhoenixTranslateReplace", &gSavedSettings, true);
 		if(*rep)
 			m_line->deleteSelection();
 		m_line->insert(((*rep)?"":" (") + translation + ((*rep)?"":")"),m_line->getCursor());
@@ -1840,7 +1840,7 @@ void LLLineEditor::doDelete()
 }
 void LLLineEditor::autoCorrectText()
 {
-	static BOOL *doAnything = rebind_llcontrol<BOOL>("EmeraldEnableAutoCorrect", &gSavedSettings, true);
+	static BOOL *doAnything = rebind_llcontrol<BOOL>("PhoenixEnableAutoCorrect", &gSavedSettings, true);
 	if( (!mReadOnly) && (*doAnything) && (isSpellDirty()))
 	{
 		S32 wordStart = 0;

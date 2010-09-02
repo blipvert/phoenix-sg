@@ -47,7 +47,7 @@ typedef LLImageJ2CImpl* (*CreateLLImageJ2CFunction)();
 typedef void (*DestroyLLImageJ2CFunction)(LLImageJ2CImpl*);
 typedef const char* (*EngineInfoLLImageJ2CFunction)();
 
-//The Emerald variants of the above;
+//The Phoenix variants of the above;
 typedef EMKDUImpl* (*EmCreateImageFunction)();
 typedef void (*EmDestroyImageFunction)(EMKDUImpl*);
 typedef const char* (*EmEngineInfoFunction)();

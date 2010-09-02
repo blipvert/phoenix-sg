@@ -394,8 +394,8 @@ void LLNetMap::draw()
 			// MOYMOD Minimap custom av colors.
 			for(a=0;a<mm_netmapnum;a+=1)if(avatar_ids[i]==mm_mapkeys[a])avatar_color=mm_mapcols[a];
 
-// [RLVa:KB] - Alternate: Emerald-370 | Checked: 2009-07-21 (RLVa-1.0.0) | Added: RLVa-1.0.0
-			// Emerald-specific: shouldn't be able to tell anything "personal" about anyone from the minimap under @shownames=n
+// [RLVa:KB] - Alternate: Phoenix-370 | Checked: 2009-07-21 (RLVa-1.0.0) | Added: RLVa-1.0.0
+			// Phoenix-specific: shouldn't be able to tell anything "personal" about anyone from the minimap under @shownames=n
 			LLWorldMapView::drawAvatar(
 				pos_map.mV[VX], pos_map.mV[VY], 
 				(!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) ? avatar_color : standard_color, 

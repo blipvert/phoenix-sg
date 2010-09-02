@@ -42,7 +42,7 @@
 	<string name="otr_gen_key_please_wait">OTR is generating keys.  This will happen once for each of your avatars and should take less than 45 seconds.</string>
 	<string name="otr_generic_name">Your buddy</string>
 	<string name="otr_err_send_in_finished">[NAME] has ended the private conversation, so your message was not sent.  You should restart the private conversation, or end the private conversation.</string>
-	<string name="otr_err_deacivated">OTR has been deactivated by preferences (edit > preferences > Emerald tab > IM tab)</string>
+	<string name="otr_err_deacivated">OTR has been deactivated by preferences (edit > preferences > Phoenix tab > IM tab)</string>
 	<string name="otr_err_failed_sending">Unable to encrypt your message for some reason; it has not been sent.</string>
 	<string name="otr_err_failed_starting">Unable to start private conversation.</string>
 	<string name="otr_err_offline_start">[NAME] appears offline; OTR will not try to start a private conversation.</string>
@@ -115,7 +115,7 @@ Please first check our SL Help Pages by pressing F1, or by accessing the Knowled
 If your answer is not there, please enter your question to begin, then allow a few moments for available helpers to respond.
 -=-=- Response times will vary, especially during peak times -=-=-
 	</string>
-	<string name="emerald_no_support_available">
-		You are NOT using a supported viewer! No member of the Emerald support team will be able to support you. If you are experiencing problems, please visit http://emeraldviewer.net to download the latest supported viewer before contacting support.
+	<string name="phoenix_no_support_available">
+		You are NOT using a supported viewer! No member of the Phoenix support team will be able to support you. If you are experiencing problems, please visit http://phoenixviewer.com to download the latest supported viewer before contacting support.
 	</string>
 </floater>

@@ -229,14 +229,14 @@ LLAgent gAgent;
 // Statics
 //
 
-BOOL LLAgent::emeraldPhantom = 0;
+BOOL LLAgent::phoenixPhantom = 0;
 BOOL LLAgent::ignorePrejump = 0;
 
 BOOL LLAgent::sFirstPersonBtnState;
 BOOL LLAgent::sMouselookBtnState;
 BOOL LLAgent::sThirdPersonBtnState;
 BOOL LLAgent::sBuildBtnState;
-BOOL LLAgent::EmeraldForceFly;
+BOOL LLAgent::PhoenixForceFly;
 
 BOOL LLAgent::lure_show = FALSE;
 std::string LLAgent::lure_name;
@@ -445,12 +445,12 @@ LLAgent::LLAgent() :
 	}
 
 	mFollowCam.setMaxCameraDistantFromSubject( MAX_CAMERA_DISTANCE_FROM_AGENT );
-	//EmeraldForceFly = gSavedSettings.getBOOL("EmeraldAlwaysFly");
-	//gSavedSettings.getControl("EmeraldAlwaysFly")->getSignal()->connect(&updateEmeraldForceFly);
+	//PhoenixForceFly = gSavedSettings.getBOOL("PhoenixAlwaysFly");
+	//gSavedSettings.getControl("PhoenixAlwaysFly")->getSignal()->connect(&updatePhoenixForceFly);
 }
-void LLAgent::updateEmeraldForceFly(const LLSD &data)
+void LLAgent::updatePhoenixForceFly(const LLSD &data)
 {
-	EmeraldForceFly = data.asBoolean();
+	PhoenixForceFly = data.asBoolean();
 }
 
 void LLAgent::updateIgnorePrejump(const LLSD &data)
@@ -487,11 +487,11 @@ void LLAgent::init()
 //	LLDebugVarMessageBox::show("Camera Lag", &CAMERA_FOCUS_HALF_LIFE, 0.5f, 0.01f);
 
 	mEffectColor = gSavedSettings.getColor4("EffectColor");
-	ignorePrejump = gSavedSettings.getBOOL("EmeraldIgnoreFinishAnimation");
-	gSavedSettings.getControl("EmeraldIgnoreFinishAnimation")->getSignal()->connect(&updateIgnorePrejump);
-	EmeraldForceFly = gSavedSettings.getBOOL("EmeraldAlwaysFly");
-	gSavedSettings.getControl("EmeraldAlwaysFly")->getSignal()->connect(&updateEmeraldForceFly);
-	mBlockSpam=gSavedSettings.getBOOL("EmeraldBlockSpam");
+	ignorePrejump = gSavedSettings.getBOOL("PhoenixIgnoreFinishAnimation");
+	gSavedSettings.getControl("PhoenixIgnoreFinishAnimation")->getSignal()->connect(&updateIgnorePrejump);
+	PhoenixForceFly = gSavedSettings.getBOOL("PhoenixAlwaysFly");
+	gSavedSettings.getControl("PhoenixAlwaysFly")->getSignal()->connect(&updatePhoenixForceFly);
+	mBlockSpam=gSavedSettings.getBOOL("PhoenixBlockSpam");
 	mInitialized = TRUE;
 }
 
@@ -609,7 +609,7 @@ void LLAgent::resetView(BOOL reset_camera, BOOL change_camera)
 //-----------------------------------------------------------------------------
 void LLAgent::onAppFocusGained()
 {
-	if (CAMERA_MODE_MOUSELOOK == mCameraMode && gSavedSettings.getBOOL("EmeraldLeaveMouselookOnFocus"))
+	if (CAMERA_MODE_MOUSELOOK == mCameraMode && gSavedSettings.getBOOL("PhoenixLeaveMouselookOnFocus"))
 	{
 		changeCameraToDefault();
 		LLToolMgr::getInstance()->clearSavedTool();
@@ -754,9 +754,9 @@ void LLAgent::moveUp(S32 direction)
 	{
 		setControlFlags(AGENT_CONTROL_UP_NEG | AGENT_CONTROL_FAST_UP);
 
-		if(!gSavedSettings.getBOOL("EmeraldCrouchToggleStatus"))
+		if(!gSavedSettings.getBOOL("PhoenixCrouchToggleStatus"))
 			resetView();
-		else if(!gSavedSettings.getBOOL("EmeraldCrouchToggle"))
+		else if(!gSavedSettings.getBOOL("PhoenixCrouchToggle"))
 			resetView();
 	}
 
@@ -811,7 +811,7 @@ BOOL LLAgent::canFly()
 // [/RLVa:KB]
 	if (isGodlike()) return TRUE;
 	//LGG always fly code
-	if(EmeraldForceFly) return TRUE;
+	if(PhoenixForceFly) return TRUE;
 	LLViewerRegion* regionp = getRegion();
 	if (regionp && regionp->getBlockFly()) return FALSE;
 	
@@ -832,14 +832,14 @@ BOOL LLAgent::canFly()
 //-----------------------------------------------------------------------------
 void LLAgent::setPhantom(BOOL phantom)
 {
-	emeraldPhantom = phantom;
+	phoenixPhantom = phantom;
 }
 //-----------------------------------------------------------------------------
 // getPhantom()  lgg
 //-----------------------------------------------------------------------------
 BOOL LLAgent::getPhantom()
 {
-	return emeraldPhantom;
+	return phoenixPhantom;
 }
 
 //-----------------------------------------------------------------------------
@@ -913,7 +913,7 @@ void LLAgent::toggleFlying()
 //-----------------------------------------------------------------------------
 void LLAgent::togglePhantom()
 {
-	BOOL phan = !(emeraldPhantom);
+	BOOL phan = !(phoenixPhantom);
 
 	setPhantom( phan );
 }
@@ -1760,7 +1760,7 @@ F32 LLAgent::getCameraZoomFraction()
 		// already [0,1]
 		return mHUDTargetZoom;
 	}
-	else if (gSavedSettings.getBOOL("EmeraldDisableMinZoomDist"))
+	else if (gSavedSettings.getBOOL("PhoenixDisableMinZoomDist"))
 	{
 		return mCameraZoomFraction;
 	}
@@ -1807,7 +1807,7 @@ void LLAgent::setCameraZoomFraction(F32 fraction)
 	// 0.f -> camera zoomed all the way out
 	// 1.f -> camera zoomed all the way in
 	LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
-	BOOL disable_min = gSavedSettings.getBOOL("EmeraldDisableMinZoomDist");
+	BOOL disable_min = gSavedSettings.getBOOL("PhoenixDisableMinZoomDist");
 	if (selection->getObjectCount() && selection->getSelectType() == SELECT_TYPE_HUD)
 	{
 		mHUDTargetZoom = fraction;
@@ -1938,12 +1938,12 @@ void LLAgent::cameraZoomIn(const F32 fraction)
 	F32 new_distance = current_distance * fraction;
 
 	
-	//Emerald:
+	//Phoenix:
 	//So many darned limits!
 	//~Zwag
 	// Don't move through focus point
 	
-        if (!gSavedSettings.getBOOL("EmeraldDisableMinZoomDist"))
+        if (!gSavedSettings.getBOOL("PhoenixDisableMinZoomDist"))
         {
 		if (mFocusObject)
 		{
@@ -2929,8 +2929,8 @@ static const LLFloaterView::skip_list_t& get_skip_list()
 {
 	static LLFloaterView::skip_list_t skip_list;
 	skip_list.insert(LLFloaterMap::getInstance());
-	static BOOL *sEmeraldShowStatusBarInMouselook = rebind_llcontrol<BOOL>("EmeraldShowStatusBarInMouselook", &gSavedSettings, true);
-	if(*sEmeraldShowStatusBarInMouselook)
+	static BOOL *sPhoenixShowStatusBarInMouselook = rebind_llcontrol<BOOL>("PhoenixShowStatusBarInMouselook", &gSavedSettings, true);
+	if(*sPhoenixShowStatusBarInMouselook)
 	{
 		skip_list.insert(LLFloaterStats::getInstance());
 	}
@@ -3718,7 +3718,7 @@ F32	LLAgent::calcCameraFOVZoomFactor()
 		// don't FOV zoom on mostly transparent objects
 		LLVector3 focus_offset = mFocusObjectOffset;
 		F32 obj_min_dist = 0.f;
-		if (!gSavedSettings.getBOOL("EmeraldDisableMinZoomDist"))
+		if (!gSavedSettings.getBOOL("PhoenixDisableMinZoomDist"))
 			calcCameraMinDistance(obj_min_dist);
 		F32 current_distance = llmax(0.001f, camera_offset_dir.magVec());
 
@@ -4149,7 +4149,7 @@ void LLAgent::changeCameraToMouselook(BOOL animate)
 	{
 		gFocusMgr.setKeyboardFocus( NULL );
 
-		if (gSavedPerAccountSettings.getBOOL("EmeraldAONoStandsInMouselook"))
+		if (gSavedPerAccountSettings.getBOOL("PhoenixAONoStandsInMouselook"))
 			LLFloaterAO::stopAOMotion(LLFloaterAO::getCurrentStandId(), TRUE);
 
 		mLastCameraMode = mCameraMode;
@@ -4370,14 +4370,14 @@ void LLAgent::changeCameraToCustomizeAvatar(BOOL avatar_animate, BOOL camera_ani
 		return;
 	}
 
-	if(gSavedSettings.getBOOL("EmeraldAppearanceForceStand"))
+	if(gSavedSettings.getBOOL("PhoenixAppearanceForceStand"))
 // [RLVa:KB] - Checked: 2009-07-10 (RLVa-1.0.0g)
 	if ( (gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) && (mAvatarObject.notNull()) && (mAvatarObject->mIsSitting) )
 	{
 		return;
 	}
 // [/RLVa:KB]
-	if(gSavedSettings.getBOOL("EmeraldAppearanceForceStand"))
+	if(gSavedSettings.getBOOL("PhoenixAppearanceForceStand"))
 	setControlFlags(AGENT_CONTROL_STAND_UP); // force stand up
 	gViewerWindow->getWindow()->resetBusyCount();
 
@@ -4425,7 +4425,7 @@ void LLAgent::changeCameraToCustomizeAvatar(BOOL avatar_animate, BOOL camera_ani
 
 	if (mAvatarObject.notNull())
 	{
-		if(avatar_animate  && gSavedSettings.getBOOL("EmeraldAppearanceAnimate"))
+		if(avatar_animate  && gSavedSettings.getBOOL("PhoenixAppearanceAnimate"))
 		{
 			// Remove any pitch from the avatar
 			LLVector3 at = mFrameAgent.getAtAxis();
@@ -5094,7 +5094,7 @@ void LLAgent::onAnimStop(const LLUUID& id)
 	else if (id == ANIM_AGENT_STANDUP)
 	{
                 // send stand up command
-                if(!gSavedSettings.getBOOL("EmeraldIgnoreFinishAnimation"))
+                if(!gSavedSettings.getBOOL("PhoenixIgnoreFinishAnimation"))
                 {
                         setControlFlags(AGENT_CONTROL_FINISH_ANIM);
                 }
@@ -5105,7 +5105,7 @@ void LLAgent::onAnimStop(const LLUUID& id)
 	}
 	else if (id == ANIM_AGENT_PRE_JUMP || id == ANIM_AGENT_LAND || id == ANIM_AGENT_MEDIUM_LAND)
 	{
-                if(!gSavedSettings.getBOOL("EmeraldIgnoreFinishAnimation"))
+                if(!gSavedSettings.getBOOL("PhoenixIgnoreFinishAnimation"))
                 {
                         setControlFlags(AGENT_CONTROL_FINISH_ANIM);
                 }
@@ -6314,7 +6314,7 @@ bool LLAgent::teleportCore(bool is_local)
 		gPipeline.resetVertexBuffers();
 	}
 	
-	if(gSavedSettings.getBOOL("EmeraldPlayTpSound"))
+	if(gSavedSettings.getBOOL("PhoenixPlayTpSound"))
 		make_ui_sound("UISndTeleportOut");
 	
 	// MBW -- Let the voice client know a teleport has begun so it can leave the existing channel.
@@ -6348,7 +6348,7 @@ void LLAgent::teleportRequest(
 		msg->addVector3("Position", pos_local);
 		//Chalice - 2 dTP modes: 0 - standard, 1 - TP AV with cam Z axis rotation.
 		LLVector3 look_at;
-		if (gSavedSettings.getBOOL("EmeraldDoubleClickTeleportMode") == 0)
+		if (gSavedSettings.getBOOL("PhoenixDoubleClickTeleportMode") == 0)
 		{
 			LLVOAvatar* avatarp = gAgent.getAvatarObject();
 			look_at=avatarp->getRotation().packToVector3();
@@ -6463,8 +6463,8 @@ void LLAgent::teleportViaLocation(const LLVector3d& pos_global, bool go_to)
 	LLViewerRegion* regionp = getRegion();
 //	LLSimInfo* info = LLWorldMap::getInstance()->simInfoFromPosGlobal(pos_global);
 	bool isLocal = regionp->getHandle() == to_region_handle_global((F32)pos_global.mdV[VX], (F32)pos_global.mdV[VY]);
-	bool ml = gSavedSettings.getBOOL("EmeraldUseBridgeMoveToTarget");
-	bool tpchat = gSavedSettings.getBOOL("EmeraldDoubleClickTeleportChat");
+	bool ml = gSavedSettings.getBOOL("PhoenixUseBridgeMoveToTarget");
+	bool tpchat = gSavedSettings.getBOOL("PhoenixDoubleClickTeleportChat");
 
 	LLVector3 offset = LLVector3(0.f,0.f,0.f);
 
@@ -6503,7 +6503,7 @@ void LLAgent::teleportViaLocation(const LLVector3d& pos_global, bool go_to)
 		pos.mV[VX] += 1;
 		LLVector3 look_at;
 		//Chalice - 2 dTP modes: 0 - standard, 1 - TP AV with cam Z axis rotation.
-		if (gSavedSettings.getBOOL("EmeraldDoubleClickTeleportMode") == 0)
+		if (gSavedSettings.getBOOL("PhoenixDoubleClickTeleportMode") == 0)
 		{
 			LLVOAvatar* avatarp = gAgent.getAvatarObject();
 			look_at=avatarp->getRotation().packToVector3();
@@ -6534,7 +6534,7 @@ void LLAgent::teleportViaLocation(const LLVector3d& pos_global, bool go_to)
 			gMessageSystem->addUUID("SessionID", gAgent.getSessionID());
 			gMessageSystem->nextBlock("Data");
 			gMessageSystem->addUUID("ObjectID", gAgent.getID());
-			gMessageSystem->addS32("ChatChannel", gSavedSettings.getS32("EmeraldDoubleClickTeleportChannel"));
+			gMessageSystem->addS32("ChatChannel", gSavedSettings.getS32("PhoenixDoubleClickTeleportChannel"));
 			gMessageSystem->addS32("ButtonIndex", 1);
 			std::stringstream strstr;
 			strstr << std::setiosflags(std::ios::fixed) << std::setprecision(6); // delicious iomanip
@@ -7643,9 +7643,9 @@ void LLAgent::sendAgentSetAppearance()
 	// to compensate for the COLLISION_TOLERANCE ugliness we will have 
 	// to tweak this number again
 	LLVector3 body_size = mAvatarObject->mBodySize;
-        body_size.mV[VX] = body_size.mV[VX] + gSavedPerAccountSettings.getF32("EmeraldAvatarXModifier");
-        body_size.mV[VY] = body_size.mV[VY] + gSavedPerAccountSettings.getF32("EmeraldAvatarYModifier");
-        body_size.mV[VZ] = body_size.mV[VZ] + gSavedPerAccountSettings.getF32("EmeraldAvatarZModifier");
+        body_size.mV[VX] = body_size.mV[VX] + gSavedPerAccountSettings.getF32("PhoenixAvatarXModifier");
+        body_size.mV[VY] = body_size.mV[VY] + gSavedPerAccountSettings.getF32("PhoenixAvatarYModifier");
+        body_size.mV[VZ] = body_size.mV[VZ] + gSavedPerAccountSettings.getF32("PhoenixAvatarZModifier");
 	msg->addVector3Fast(_PREHASH_Size, body_size);	
 
 	// To guard against out of order packets

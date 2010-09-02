@@ -3480,7 +3480,7 @@ void LLObjectBridge::openItem()
 	LLUUID object_id = mUUID;
 	LLViewerInventoryItem* item;
 	item = (LLViewerInventoryItem*)gInventory.getItem(object_id);
-	if (gSavedSettings.getBOOL("EmeraldDoubleClickWearInventoryObjects"))
+	if (gSavedSettings.getBOOL("PhoenixDoubleClickWearInventoryObjects"))
 	{
 		if(item && gInventory.isObjectDescendentOf(object_id, gAgent.getInventoryRootID()))
 		{

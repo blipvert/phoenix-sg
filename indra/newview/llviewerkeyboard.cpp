@@ -64,8 +64,8 @@ void agent_jump( EKeystate s )
 	if( KEYSTATE_UP == s  ) return;
 	F32 time = gKeyboard->getCurKeyElapsedTime();
 	S32 frame_count = llround(gKeyboard->getCurKeyElapsedFrameCount());
-	if(gSavedSettings.getBOOL("EmeraldCrouchToggleStatus"))
-	    gSavedSettings.setBOOL("EmeraldCrouchToggleStatus",false);
+	if(gSavedSettings.getBOOL("PhoenixCrouchToggleStatus"))
+	    gSavedSettings.setBOOL("PhoenixCrouchToggleStatus",false);
 	if( time < FLY_TIME 
 		|| frame_count <= FLY_FRAMES 
 		|| gAgent.upGrabbed()
@@ -85,13 +85,13 @@ void agent_push_down( EKeystate s )
 	if( KEYSTATE_UP == s ) return;
 	else if(KEYSTATE_DOWN == s)
 	{
-		if(gSavedSettings.getBOOL("EmeraldCrouchToggle"))
+		if(gSavedSettings.getBOOL("PhoenixCrouchToggle"))
 		{
-			if(gSavedSettings.getBOOL("EmeraldCrouchToggleStatus"))
-				gSavedSettings.setBOOL("EmeraldCrouchToggleStatus",false);
+			if(gSavedSettings.getBOOL("PhoenixCrouchToggleStatus"))
+				gSavedSettings.setBOOL("PhoenixCrouchToggleStatus",false);
 			else if(!gAgent.getFlying())
 			{
-				gSavedSettings.setBOOL("EmeraldCrouchToggleStatus",true);
+				gSavedSettings.setBOOL("PhoenixCrouchToggleStatus",true);
 				gAgent.moveUp(-1);
 			}
 		}
@@ -242,8 +242,8 @@ void agent_toggle_fly( EKeystate s )
 	if (KEYSTATE_DOWN == s )
 	{
 		gAgent.toggleFlying();
-		if(gSavedSettings.getBOOL("EmeraldCrouchToggleStatus"))
-		    gSavedSettings.setBOOL("EmeraldCrouchToggleStatus",false);
+		if(gSavedSettings.getBOOL("PhoenixCrouchToggleStatus"))
+		    gSavedSettings.setBOOL("PhoenixCrouchToggleStatus",false);
 	}
 }
 

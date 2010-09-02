@@ -496,7 +496,7 @@ class SetSearchType : public inventory_listener_t
 		{
 			mPtr->getActivePanel()->setSearchType(0);
 
-			gSavedPerAccountSettings.setU32("EmeraldInventorySearchType",0);
+			gSavedPerAccountSettings.setU32("PhoenixInventorySearchType",0);
 			
 			mPtr->getControl("Inventory.SearchByName")->setValue(TRUE);
 			mPtr->getControl("Inventory.SearchByCreator")->setValue(FALSE);	
@@ -508,7 +508,7 @@ class SetSearchType : public inventory_listener_t
 		{
 			mPtr->getActivePanel()->setSearchType(1);
 
-			gSavedPerAccountSettings.setU32("EmeraldInventorySearchType",1);
+			gSavedPerAccountSettings.setU32("PhoenixInventorySearchType",1);
 
 			mPtr->getControl("Inventory.SearchByName")->setValue(FALSE);
 			mPtr->getControl("Inventory.SearchByCreator")->setValue(TRUE);
@@ -520,7 +520,7 @@ class SetSearchType : public inventory_listener_t
 		{
 			mPtr->getActivePanel()->setSearchType(2);
 
-			gSavedPerAccountSettings.setU32("EmeraldInventorySearchType",2);
+			gSavedPerAccountSettings.setU32("PhoenixInventorySearchType",2);
 
 			mPtr->getControl("Inventory.SearchByName")->setValue(FALSE);
 			mPtr->getControl("Inventory.SearchByCreator")->setValue(FALSE);
@@ -532,7 +532,7 @@ class SetSearchType : public inventory_listener_t
 		{
 			mPtr->getActivePanel()->setSearchType(4);
 
-			gSavedPerAccountSettings.setU32("EmeraldInventorySearchType",4);
+			gSavedPerAccountSettings.setU32("PhoenixInventorySearchType",4);
 
 			mPtr->getControl("Inventory.SearchByName")->setValue(FALSE);
 			mPtr->getControl("Inventory.SearchByCreator")->setValue(FALSE);
@@ -544,7 +544,7 @@ class SetSearchType : public inventory_listener_t
 		{
 			mPtr->getActivePanel()->setSearchType(3);
 
-			gSavedPerAccountSettings.setU32("EmeraldInventorySearchType",3);
+			gSavedPerAccountSettings.setU32("PhoenixInventorySearchType",3);
 
 			mPtr->getControl("Inventory.SearchByName")->setValue(FALSE);
 			mPtr->getControl("Inventory.SearchByCreator")->setValue(FALSE);
@@ -576,14 +576,14 @@ class SetPartialSearch : public inventory_listener_t
 				mPtr->getActivePanel()->setPartialSearch(true);
 				mPtr->getControl("Inventory.PartialSearchToggle")->setValue(TRUE);
 
-				gSavedPerAccountSettings.setBOOL("EmeraldInventoryPartialSearch",TRUE);
+				gSavedPerAccountSettings.setBOOL("PhoenixInventoryPartialSearch",TRUE);
 			}
 			else 
 			{
 				mPtr->getActivePanel()->setPartialSearch(false);
 				mPtr->getControl("Inventory.PartialSearchToggle")->setValue(FALSE);
 
-				gSavedPerAccountSettings.setBOOL("EmeraldInventoryPartialSearch",FALSE);
+				gSavedPerAccountSettings.setBOOL("PhoenixInventoryPartialSearch",FALSE);
 			}
 		}
 		

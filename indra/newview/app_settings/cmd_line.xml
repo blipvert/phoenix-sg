@@ -373,9 +373,9 @@
     <key>portable</key>
     <map>
       <key>desc</key>
-      <string>Start emerald in portable mode</string>
+      <string>Start phoenix in portable mode</string>
       <key>map-to</key>
-      <string>EmeraldPortableMode</string>
+      <string>PhoenixPortableMode</string>
     </map>
 
   </map>

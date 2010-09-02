@@ -61,8 +61,8 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_LL_ICON             ICON                    "emerald_icon.ico"
-IDI_LCD_LL_ICON         ICON                    "emerald_icon.ico"
+IDI_LL_ICON             ICON                    "phoenix_icon.ico"
+IDI_LCD_LL_ICON         ICON                    "phoenix_icon.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -74,7 +74,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE
 FONT 8, "MS Sans Serif"
 BEGIN
     ICON            IDI_LL_ICON,IDC_STATIC,7,7,20,20
-    LTEXT           "Loading Emerald Viewer...",666,36,13,91,8
+    LTEXT           "Loading Phoenix Viewer...",666,36,13,91,8
 END
 
 
@@ -155,12 +155,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "CompanyName", "Modular Systems"
-            VALUE "FileDescription", "Emerald Viewer"
+            VALUE "FileDescription", "Phoenix Viewer"
             VALUE "FileVersion", "1.5.0.0"
-            VALUE "InternalName", "Emerald Viewer"
+            VALUE "InternalName", "Phoenix Viewer"
             VALUE "LegalCopyright", "Copyright © 2009-2010 Modular Systems"
-            VALUE "OriginalFilename", "Emerald Viewer.exe"
-            VALUE "ProductName", "Emerald Viewer"
+            VALUE "OriginalFilename", "Phoenix Viewer.exe"
+            VALUE "ProductName", "Phoenix Viewer"
             VALUE "ProductVersion", "1.5.0.0"
         END
     END

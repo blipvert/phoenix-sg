@@ -111,7 +111,7 @@
    name="MissingAlert"
    label="Unknown Alert Message"
    type="alertmodal">
-    Your version of the Emerald Viewer does not know how to display the alert message it just received.
+    Your version of the Phoenix Viewer does not know how to display the alert message it just received.
 
     Error details: The alert called &apos;[_NAME]&apos; was not found in notifications.xml.
     <usetemplate
@@ -163,7 +163,7 @@ No tutorial is currently available.
    icon="alertmodal.tga"
    name="BadInstallation"
    type="alertmodal">
-    An error occurred while updating the Emerald Viewer. Please download the latest version from secondlife.com.
+    An error occurred while updating the Phoenix Viewer. Please download the latest version from secondlife.com.
     <usetemplate
      name="okbutton"
      yestext="Ok"/>
@@ -1071,7 +1071,7 @@ Unable to write file [[FILE]]
    icon="alertmodal.tga"
    name="UnsupportedHardware"
    type="alertmodal">
-    Warning: Your system does not meet Emerald Viewer&apos;s minimum system requirements. If you continue using Emerald, you may experience poor performance. Unfortunately, we cannot provide technical support for unsupported system configurations.
+    Warning: Your system does not meet Phoenix Viewer&apos;s minimum system requirements. If you continue using Phoenix, you may experience poor performance. Unfortunately, we cannot provide technical support for unsupported system configurations.
 
     MINSPECS
     Do you wish to visit [_URL] for more information?
@@ -1091,7 +1091,7 @@ Unable to write file [[FILE]]
    name="UnknownGPU"
    type="alertmodal">
 Your system contains a graphics card that is unknown to us at this time.
-This is often the case with new hardware we haven&apos;t had a chance to test.  Emerald will most likely run properly, but you may need to adjust your graphics settings to something more appropriate.
+This is often the case with new hardware we haven&apos;t had a chance to test.  Phoenix will most likely run properly, but you may need to adjust your graphics settings to something more appropriate.
     (Edit menu &gt; Preferences &gt; Graphics).
     <form name="form">
       <ignore name="ignore"
@@ -3944,7 +3944,7 @@ Default: off
    label="Voice Version Mismatch"
    name="VoiceVersionMismatch"
    type="alertmodal">
-    This version of Emerald is not compatible with the Voice Chat feature in this region. In order for Voice Chat to function correctly you will need to update the Emerald Viewer.
+    This version of Phoenix is not compatible with the Voice Chat feature in this region. In order for Voice Chat to function correctly you will need to update the Phoenix Viewer.
   </notification>
 
   <notification
@@ -4188,9 +4188,9 @@ There are no items in this object that you are allowed to copy.
    icon="alertmodal.tga"
    name="WebLaunchMS"
    type="alertmodal">
-    Visit the Emerald Viewer Web site?
+    Visit the Phoenix Viewer Web site?
     <usetemplate
-     ignoretext="Visit the emerald viewer website"
+     ignoretext="Visit the phoenix viewer website"
      name="okcancelignore"
      notext="Cancel"
      yestext="Go to page"/>
@@ -4221,7 +4221,7 @@ This grid has no link for support.
    type="alertmodal">
 Are you sure you want to quit?
     <usetemplate
-     ignoretext="When Quitting Emerald."
+     ignoretext="When Quitting Phoenix."
      name="okcancelignore"
      notext="Continue"
      yestext="Quit"/>
@@ -6117,7 +6117,7 @@ Failed to find [TYPE] named [DESC] in database.
    icon="notify.tga"
    name="InvalidWearable"
    type="notify">
-    The item you are trying to wear uses a feature that your viewer can&apos;t read. Please upgrade your version of Emerald to wear this item.
+    The item you are trying to wear uses a feature that your viewer can&apos;t read. Please upgrade your version of Phoenix to wear this item.
   </notification>
 
   <notification
@@ -6335,7 +6335,7 @@ Flexible objects may not be physical and must be phantom until the flexible chec
    name="FirstDebugMenus"
    type="notify">
     You have enabled the Advanced menu.
-    This menu contains features useful for developers debugging Emerald.
+    This menu contains features useful for developers debugging Phoenix.
     To toggle this menu on Windows press Ctrl-Alt-D. On Mac press Cmd-Opt-Shift-D.
   </notification>
 
@@ -6661,7 +6661,7 @@ The URL you clicked cannot be opened from this web browser.
    icon="notify.tga"
    name="QueryClientTags"
    type="notify">
-  Would you like to have the client tag database automatically updated from emeraldviewer.net?
+  Would you like to have the client tag database automatically updated from phoenixviewer.com?
   This ensures that you have the latest information available regarding other clients.
   <form name="form">
       <button
@@ -6677,16 +6677,16 @@ The URL you clicked cannot be opened from this web browser.
  
   <notification
      icon="notifytip.tga"
-     name="EmeraldAutoReplace"
+     name="PhoenixAutoReplace"
      type="notifytip">
     &apos;[BEFORE]&apos; has been auto replaced by &apos;[REPLACEMENT]&apos;
     based on your [LISTNAME] list.
   </notification>
 <notification
    icon="notify.tga"
-   name="QueryEmeraldBuildBridge"
+   name="QueryPhoenixBuildBridge"
    type="alertmodal">
-    Emerald has a feature to create and attach a full perm item.
+    Phoenix has a feature to create and attach a full perm item.
     This allows it to get better online data and radar data.
     Would you like to permit this?
     <form name="form">
@@ -6703,7 +6703,7 @@ The URL you clicked cannot be opened from this web browser.
 
  <notification
    icon="notify.tga"
-   name="QueryEmeraldOTR"
+   name="QueryPhoenixOTR"
    type="alertmodal">
     OTR encrypts your IMs so they can't be
     read by anyone other than the person you are talking to.
@@ -6723,7 +6723,7 @@ The URL you clicked cannot be opened from this web browser.
 
 <notification
    icon="notify.tga"
-   name="QueryEmeraldNCreatorExport"
+   name="QueryPhoenixNCreatorExport"
    type="alertmodal">
     You are exporting an item that you are not the creator of; You
     should always make sure you have the rights to export content.
@@ -6737,11 +6737,11 @@ The URL you clicked cannot be opened from this web browser.
 
 <notification
    icon="notify.tga"
-   name="EmeraldStealth"
+   name="PhoenixStealth"
    type="alertmodal">
     This will go through your settings and disable any features that may be used to determine what client you are running.
     This Means that some features will be disabled, and although you will not be warned if you choose to turn some of them back on,
-    they may be used to identify that your client has emerald features.
+    they may be used to identify that your client has phoenix features.
     Currently clicking yes will
     * disable lsl Bridge boosts
     * disable OTR auto responce
@@ -6767,7 +6767,7 @@ The URL you clicked cannot be opened from this web browser.
 
 <notification
    icon="notify.tga"
-   name="EmeraldNoStealth"
+   name="PhoenixNoStealth"
    type="alertmodal">
     This will change your settings to re-enable all of the features that stealth mode may turn off.  This may turn on features that you did not have activated before stealth mode.  If you wish to do this, press yes.
     <form name="form">
@@ -6784,9 +6784,9 @@ The URL you clicked cannot be opened from this web browser.
 
 <notification
    icon="notify.tga"
-   name="EmeraldRadarChat"
+   name="PhoenixRadarChat"
    type="alertmodal">
-    A script you own is requesting access to your radar's data so it can lower lag, would you like to allow this? Unless you are trying to hide that you are using Emerald, this is OK to allow.
+    A script you own is requesting access to your radar's data so it can lower lag, would you like to allow this? Unless you are trying to hide that you are using Phoenix, this is OK to allow.
     <form name="form">
       <button
        index="1"
@@ -6817,7 +6817,7 @@ The URL you clicked cannot be opened from this web browser.
    icon="notify.tga"
    name="QueryBridgeCleanup"
    type="notify">
-    Emerald has noticed that you have [BRIDGES] in your inventory. Emerald does not need older bridges. If you do not want these for something else, you should click Yes to have them automatically moved to the trash folder for you. If you have do not want this done, you should click No, and you won't be bothered about it again.
+    Phoenix has noticed that you have [BRIDGES] in your inventory. Phoenix does not need older bridges. If you do not want these for something else, you should click Yes to have them automatically moved to the trash folder for you. If you have do not want this done, you should click No, and you won't be bothered about it again.
     <form name="form">
       <button
        index="0"
@@ -6832,10 +6832,10 @@ The URL you clicked cannot be opened from this web browser.
   
   <notification
    icon="notify.tga"
-   name="EmeraldReqInfo"
+   name="PhoenixReqInfo"
    type="notify">
-    [NAME] is requesting that you send them information about your Emerald setup.
-    (This is the same information that can be found by going to Help->About Emerald)    
+    [NAME] is requesting that you send them information about your Phoenix setup.
+    (This is the same information that can be found by going to Help->About Phoenix)    
     [REASON]
     Would you like to send them this information?
     <form name="form">
@@ -6854,7 +6854,7 @@ The URL you clicked cannot be opened from this web browser.
    icon="notify.tga"
    name="NotifyAOMove"
    type="notify">
-     You used the Client AO in a older version of Emerald. In order to improve performance, Emerald now only searches the #Emerald folder for your AO. Your currently set AO will be moved into that folder.
+     You used the Client AO in a older version of Phoenix. In order to improve performance, Phoenix now only searches the #Phoenix folder for your AO. Your currently set AO will be moved into that folder.
     <form name="form">
       <button
        index="0"
@@ -6908,9 +6908,9 @@ The URL you clicked cannot be opened from this web browser.
   </global>
 
   <global name="UnsupportedGLRequirements">
-    You do not appear to have the proper hardware requirements for the Emerald Viewer. Emerald requires an OpenGL graphics card that has multitexture support. If this is the case, you may want to make sure that you have the latest drivers for your graphics card, and service packs and patches for your operating system.
+    You do not appear to have the proper hardware requirements for the Phoenix Viewer. Phoenix requires an OpenGL graphics card that has multitexture support. If this is the case, you may want to make sure that you have the latest drivers for your graphics card, and service packs and patches for your operating system.
 
-    If you continue to have problems, please visit: http://www.emeraldviewer.net/
+    If you continue to have problems, please visit: http://www.phoenixviewer.com/
   </global>
 
   <global name="UnsupportedCPUAmount">
@@ -6939,22 +6939,22 @@ No
 
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_TeleportLogin"
+   label="Phoenix Help"
+   name="PhoenixHelp_TeleportLogin"
    type="alertmodal">
     Double Click Tp - If you double click something in a tp enabled sim, you will teleport there.
     Double Click Autopilot - Same thing, except that you will just attempt to walk there.
     Velocity Interpolate - If you tp, you keep the same velocity you had before the tp.
 
-    Download Client Tags - Downloads a small xml file from emeraldviewer.net with up to date detection rules.
+    Download Client Tags - Downloads a small xml file from phoenixviewer.com with up to date detection rules.
     Display Client Tags - Users this file to detect viewers who voluntarily allow themselves to be identified.
 
     Login PreCache Delay - How long you wish to delay login to load textures.  (Keep above 0)
   </notification>
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_Voice"
+   label="Phoenix Help"
+   name="PhoenixHelp_Voice"
    type="alertmodal">
     These are voice server settings for advanced users.
     You probably do not want to change this.
@@ -6965,8 +6965,8 @@ No
   </notification>
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_Shields"
+   label="Phoenix Help"
+   name="PhoenixHelp_Shields"
    type="alertmodal">
     Clothing Layer Protection - Masks your individual texture layers to prevent theft
     (Note: Leaving this on is also what allows people to see what client you are using)
@@ -6985,8 +6985,8 @@ No
   </notification>
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_IM"
+   label="Phoenix Help"
+   name="PhoenixHelp_IM"
    type="alertmodal">
     Announce Incoming IMs - Sends you a notification when someone begins typing to you (before they send)
     Steal Focus - makes this notification pop up a IM window to the person typing to you
@@ -6998,8 +6998,8 @@ No
   </notification>
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_Chat"
+   label="Phoenix Help"
+   name="PhoenixHelp_Chat"
    type="alertmodal">
     Display Radar Info To Chat - Alerts you via chat messages when people enter or leave.
     Display Total Script Changes - If the total scripts in the region jumps suddenly, you will be notified.
@@ -7011,8 +7011,8 @@ No
   </notification>
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_Misc"
+   label="Phoenix Help"
+   name="PhoenixHelp_Misc"
    type="alertmodal">
     Enable Always Fly - Allows you to override parcel settings as if you were in admin mode.
     Enable Phantom - Allows you to make your avatar unable to be moved by attacks.  Objects Pass through you.
@@ -7025,23 +7025,23 @@ No
   </notification>
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_CmdLine"
+   label="Phoenix Help"
+   name="PhoenixHelp_CmdLine"
    type="alertmodal">
     Various Options For Command Line features.
     To use a command, type it in your chat bar (Local chat) and press enter.
   </notification>
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_Avatar"
+   label="Phoenix Help"
+   name="PhoenixHelp_Avatar"
    type="alertmodal">
     X,Y,and Z Modifiers - Allow you to slightly adjust you avatars bounding box.
     This is useful (Z Modifier) to raise or lower where your avatars feet hit the ground.
     Agents Updates Per Second - How many updates you send the sim each second.
     Make this slightly higher for better performance (NEVER above 20)
     Make this lower to help lower sim lag.
-    Emerald Clothing Mode - Allows mode for infinite layers of clothing
+    Phoenix Clothing Mode - Allows mode for infinite layers of clothing
 
     Selection Beam Particles
     These are the particles that come from your hand when you right click and select objects.
@@ -7061,8 +7061,8 @@ No
   </notification>
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_Build"
+   label="Phoenix Help"
+   name="PhoenixHelp_Build"
    type="alertmodal">
     New Object Settings - Allows you to replace wood textured 0.5 Object with more Presets
     Pivot Point - Allows you to change the pivot point of an object.
@@ -7073,8 +7073,8 @@ No
   </notification>
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_IRC"
+   label="Phoenix Help"
+   name="PhoenixHelp_IRC"
    type="alertmodal">
     Use the color picker for each different kind of message type to set the color used to display the related text.
 
@@ -7082,8 +7082,8 @@ No
   </notification>
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_UtilityStream"
+   label="Phoenix Help"
+   name="PhoenixHelp_UtilityStream"
    type="alertmodal">
     The Utility Stream is a way to send data from the client to special lsl objects.
     Information such as your avatars eyelid state can optionally be set to send a chat
@@ -7091,8 +7091,8 @@ No
   </notification>
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_Inventory"
+   label="Phoenix Help"
+   name="PhoenixHelp_Inventory"
    type="alertmodal">
     Inventory Mirroring  -
     Allows you to back up your inventory tree to a offline folder.
@@ -7103,8 +7103,8 @@ No
 
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_IRCSettings"
+   label="Phoenix Help"
+   name="PhoenixHelp_IRCSettings"
    type="alertmodal">
 IRC is an alternative type of group chat.
 Irc chats happen inside irc "channels", all people on the same server and channel can talk with each other
@@ -7126,8 +7126,8 @@ Channel Password: You can set up a channel to have a password by (/msg ChanServ)
 
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_Effects"
+   label="Phoenix Help"
+   name="PhoenixHelp_Effects"
    type="alertmodal">
 Breast Physics
 This enables you and other avatar's breasts to have actual physics applied to them. You can use these settings to fine-tune the physics to match your personal taste.
@@ -7147,8 +7147,8 @@ This enables you and other avatar's breasts to have actual physics applied to th
   </notification>
   <notification
    icon="alertmodal.tga"
-   label="Emerald Help"
-   name="EmeraldHelp_SpellCheck"
+   label="Phoenix Help"
+   name="PhoenixHelp_SpellCheck"
    type="alertmodal">
 To Spell Check a word, right click on it and choose its replacement.
 You may choose a base dictionary which stores the language style and basic words
@@ -7166,7 +7166,7 @@ Shadows can't be enabled due to your graphics settings being set to low. Please 
   <notification
     icon="alertmodal.tga"
     label="All settings reset"
-    name="EmeraldResetAllSettingsComplete"
+    name="PhoenixResetAllSettingsComplete"
     type="alertmodal">
 All client settings, as well as all user-specific settings for this user, have been reset. You should relog to ensure this takes full effect.
   </notification>
@@ -7174,7 +7174,7 @@ All client settings, as well as all user-specific settings for this user, have b
   <notification
     icon="alertmodal.tga"
     label="All settings reset"
-    name="EmeraldResetAllSettingsCompleteNoUser"
+    name="PhoenixResetAllSettingsCompleteNoUser"
     type="alertmodal">
 All client settings (though no per-user settings) have been reset. You should relog to ensure this takes full effect.
   </notification>
@@ -7182,7 +7182,7 @@ All client settings (though no per-user settings) have been reset. You should re
   <notification
     icon="alertmodal.tga"
     label="Reset all settings"
-    name="EmeraldResetAllSettingsPrompt"
+    name="PhoenixResetAllSettingsPrompt"
     type="alertmodal">
 Resetting all settings may be helpful if you are experiencing problems; however, you will need to redo any changes you have made to the default configuration.
 
@@ -7196,7 +7196,7 @@ Are you sure you want to reset all settings?
   <notification
     icon="alertmodal.tga"
     label="Install new skin"
-    name="EmeraldSkinDownloadPrompt"
+    name="PhoenixSkinDownloadPrompt"
     type="alertmodal">
 Are you sure you want to download and use the "[DISPLAY_NAME]" skin?
     <usetemplate
@@ -7208,7 +7208,7 @@ Are you sure you want to download and use the "[DISPLAY_NAME]" skin?
   <notification
     icon="alertmodal.tga"
     label="Skin download failed"
-    name="EmeraldSkinDownloadFailed"
+    name="PhoenixSkinDownloadFailed"
     type="alertmodal">
 The download of [DISPLAY_NAME] failed:
 
@@ -7218,8 +7218,8 @@ The download of [DISPLAY_NAME] failed:
   <notification
     icon="alertmodal.tga"
     label="Skin download completed"
-    name="EmeraldSkinDownloadComplete"
+    name="PhoenixSkinDownloadComplete"
     type="alertmodal">
-[DISPLAY_NAME] has been downloaded and installed. The new skin will take effect after you relaunch Emerald Viewer.
+[DISPLAY_NAME] has been downloaded and installed. The new skin will take effect after you relaunch Phoenix Viewer.
   </notification>
 </notifications>

@@ -46,7 +46,7 @@
 
 #include "apr_time.h"
 
-// [RLVa:KB] - Emerald specific
+// [RLVa:KB] - Phoenix specific
 #include "rlvhandler.h"
 #include "llsdserialize.h"
 // [/RLVa:KB]
@@ -204,7 +204,7 @@ void LLFloaterTeleportHistory::addEntry(std::string regionName, S16 x, S16 y, S1
 		value["columns"][4]["value"] = simString;
 		value["out"]=outList;
 
-// [RLVa:KB] - Alternate: Emerald-370
+// [RLVa:KB] - Alternate: Phoenix-370
 		if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC))
 		{
 			value["columns"][0]["value"] = RlvStrings::getString(RLV_STRING_HIDDEN_REGION);
@@ -228,7 +228,7 @@ void LLFloaterTeleportHistory::addEntry(std::string regionName, S16 x, S16 y, S1
 
 void LLFloaterTeleportHistory::setButtonsEnabled(BOOL on)
 {
-// [RLVa:KB] - Alternate: Emerald-370
+// [RLVa:KB] - Alternate: Phoenix-370
 	if (rlv_handler_t::isEnabled())
 	{
 		if ( (pItem) && (pItem->getColumn(4)) && (RlvStrings::getString(RLV_STRING_HIDDEN) == pItem->getColumn(4)->getValue().asString()) )

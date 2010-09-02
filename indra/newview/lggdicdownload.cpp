@@ -43,16 +43,16 @@
 #include "llcolorswatch.h"
 #include "llcombobox.h"
 #include "llview.h"
-#include "llpanelemerald.h"
+#include "llpanelphoenix.h"
 #include "llhttpclient.h"
 #include "llbufferstream.h"
 
 class lggDicDownloadFloater;
-class EmeraldDicDownloader : public LLHTTPClient::Responder
+class PhoenixDicDownloader : public LLHTTPClient::Responder
 {
 public:
-	EmeraldDicDownloader(lggDicDownloadFloater * spanel,std::string sname);
-	~EmeraldDicDownloader() { }
+	PhoenixDicDownloader(lggDicDownloadFloater * spanel,std::string sname);
+	~PhoenixDicDownloader() { }
 	void completedRaw(
 		U32 status,
 		const std::string& reason,
@@ -74,7 +74,7 @@ public:
 	static void onClickDownload(void* data);
 	std::vector<std::string> sNames;
 	std::vector<std::string> lNames;
-	LLPanelEmerald * empanel;
+	LLPanelPhoenix * empanel;
 };
 lggDicDownloadFloater::~lggDicDownloadFloater()
 {
@@ -93,16 +93,16 @@ lggDicDownloadFloater::lggDicDownloadFloater(const LLSD& seed)
 
 BOOL lggDicDownloadFloater::postBuild(void)
 {
-	childSetAction("Emerald_dic_download",onClickDownload,this);
+	childSetAction("Phoenix_dic_download",onClickDownload,this);
 	return true;
 }
 void lggDicDownloadFloater::setData(std::vector<std::string> shortNames, std::vector<std::string> longNames, void * data)
 {
 	sNames=shortNames;
 	lNames=longNames;
-	empanel = (LLPanelEmerald*)data;
+	empanel = (LLPanelPhoenix*)data;
 
-	LLComboBox* comboBox = getChild<LLComboBox>("Emerald_combo_dics");
+	LLComboBox* comboBox = getChild<LLComboBox>("Phoenix_combo_dics");
 	if(comboBox != NULL) 
 	{
 		comboBox->removeall();
@@ -119,8 +119,8 @@ void lggDicDownloadFloater::onClickDownload(void* data)
 	lggDicDownloadFloater* self = (lggDicDownloadFloater*)data;
 	if(self)
 	{
-		//std::string selection = self->childGetValue("Emerald_combo_dics").asString();
-		LLComboBox* comboBox = self->getChild<LLComboBox>("Emerald_combo_dics");
+		//std::string selection = self->childGetValue("Phoenix_combo_dics").asString();
+		LLComboBox* comboBox = self->getChild<LLComboBox>("Phoenix_combo_dics");
 		if(comboBox != NULL) 
 		{
 			int index = comboBox->getCurrentIndex();
@@ -128,10 +128,10 @@ void lggDicDownloadFloater::onClickDownload(void* data)
 			{
 				index--;
 				std::string newDict(self->sNames[index]);
-				LLHTTPClient::get("http://www.emeraldviewer.net/app/dics/"+newDict+".aff", new EmeraldDicDownloader(self,newDict+".aff"));
-				LLHTTPClient::get("http://www.emeraldviewer.net/app/dics/"+newDict+".dic", new EmeraldDicDownloader(NULL,newDict+".dic"));
+				LLHTTPClient::get("http://www.phoenixviewer.com/app/dics/"+newDict+".aff", new PhoenixDicDownloader(self,newDict+".aff"));
+				LLHTTPClient::get("http://www.phoenixviewer.com/app/dics/"+newDict+".dic", new PhoenixDicDownloader(NULL,newDict+".dic"));
 				
-				LLButton* butt = self->getChild<LLButton>("Emerald_dic_download");
+				LLButton* butt = self->getChild<LLButton>("Phoenix_dic_download");
 				if(butt)
 				{
 					butt->setLabel(LLStringExplicit("Downloading... Please Wait"));
@@ -153,11 +153,11 @@ void LggDicDownload::show(BOOL showin, std::vector<std::string> shortNames, std:
 		dic_floater->setData(shortNames,longNames,data);
 	}
 }
-EmeraldDicDownloader::EmeraldDicDownloader(lggDicDownloadFloater* spanel, std::string sname):
+PhoenixDicDownloader::PhoenixDicDownloader(lggDicDownloadFloater* spanel, std::string sname):
 panel(spanel),name(sname){}
 
 
-void EmeraldDicDownloader::completedRaw(U32 status, const std::string& reason, const LLChannelDescriptors& channels, const LLIOPipe::buffer_ptr_t& buffer)
+void PhoenixDicDownloader::completedRaw(U32 status, const std::string& reason, const LLChannelDescriptors& channels, const LLIOPipe::buffer_ptr_t& buffer)
 {
 	if(status < 200 || status >= 300)
 	{

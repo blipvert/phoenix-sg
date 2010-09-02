@@ -598,8 +598,8 @@ void LLIMMgr::addMessage(
 	// create IM window as necessary
 	if(!floater)
 	{
-		BOOL all_groups_muted = gSavedSettings.getBOOL("EmeraldMuteAllGroups");
-		if (gSavedSettings.getBOOL("EmeraldMuteGroupWhenNoticesDisabled")
+		BOOL all_groups_muted = gSavedSettings.getBOOL("PhoenixMuteAllGroups");
+		if (gSavedSettings.getBOOL("PhoenixMuteGroupWhenNoticesDisabled")
 			|| all_groups_muted)
 		{
 			LLGroupData *group_data = NULL;
@@ -616,7 +616,7 @@ void LLIMMgr::addMessage(
 				}
 			}
 
-			// If the group is in our list and set up to not accept notices, and the Emerald
+			// If the group is in our list and set up to not accept notices, and the Phoenix
 			// option to mute such is enabled, return.
 
 			if (group_data && (!group_data->mAcceptNotices || all_groups_muted))
@@ -668,7 +668,7 @@ void LLIMMgr::addMessage(
 	bool is_encrypted = (msg.substr(0, 3) == "\xe2\x80\xa7");
 	LLColor4 color = ( is_from_system ? 
 							  gSavedSettings.getColor4("SystemChatColor") : 
-							  ( is_encrypted ? gSavedSettings.getColor("EmeraldIMEncryptedChatColor") :
+							  ( is_encrypted ? gSavedSettings.getColor("PhoenixIMEncryptedChatColor") :
 		                        gSavedSettings.getColor("IMChatColor") ) );
 	if ( !link_name )
 	{
@@ -822,7 +822,7 @@ LLUUID LLIMMgr::addSession(
 		floater->open();
 	}
 	//mTabContainer->selectTabPanel(panel);
-	if(gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageAnnounceStealFocus"))floater->setInputFocus(TRUE);
+	if(gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageAnnounceStealFocus"))floater->setInputFocus(TRUE);
 	return floater->getSessionID();
 }
 
@@ -872,7 +872,7 @@ LLUUID LLIMMgr::addSession(
 		floater->open();
 	}
 	//mTabContainer->selectTabPanel(panel);
-	if(gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageAnnounceStealFocus"))floater->setInputFocus(TRUE);
+	if(gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageAnnounceStealFocus"))floater->setInputFocus(TRUE);
 	return floater->getSessionID();
 }
 

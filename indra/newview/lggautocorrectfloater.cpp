@@ -43,7 +43,7 @@
 #include "llcolorswatch.h"
 #include "llcombobox.h"
 #include "llview.h"
-#include "llpanelemerald.h"
+#include "llpanelphoenix.h"
 #include "llhttpclient.h"
 #include "llbufferstream.h"
 #include "llcheckboxctrl.h"
@@ -86,7 +86,7 @@ public:
 	LLScrollListCtrl *namesList;
 
 	LLScrollListCtrl *entryList;
-	LLPanelEmerald * empanel;
+	LLPanelPhoenix * empanel;
 private:
 	static lggAutoCorrectFloater* sInstance;
 	static JCInvDropTarget* mNotecardDropTarget;
@@ -188,7 +188,7 @@ void lggAutoCorrectFloater::ResponseItemDrop(LLViewerInventoryItem* item)
 				&onNotecardLoadComplete,
 				(void*)item,
 				TRUE);
-			gSavedSettings.setBOOL("EmeraldEnableAutoCorrect",true);
+			gSavedSettings.setBOOL("PhoenixEnableAutoCorrect",true);
 
 		}
 	}
@@ -256,7 +256,7 @@ void lggAutoCorrectFloater::updateItemsList()
 	childSetValue("em_ac_text_name",listName);
 	childSetValue("em_ac_text_author",listData["author"]);
 	childSetValue("em_ac_priority",listData["priority"]);
-	static S32 *countAuto= rebind_llcontrol<S32>("EmeraldAutoCorrectCount", &gSavedSettings, true);
+	static S32 *countAuto= rebind_llcontrol<S32>("PhoenixAutoCorrectCount", &gSavedSettings, true);
 	childSetValue("em_ac_stats",*countAuto);
 	
 	LLSD autoCorrects = listData["data"];
@@ -287,13 +287,13 @@ void lggAutoCorrectFloater::updateItemsList()
 void lggAutoCorrectFloater::updateNamesList()
 {
 	namesList->deleteAllItems();
-	static BOOL *enabledd = rebind_llcontrol<BOOL>("EmeraldEnableAutoCorrect", &gSavedSettings, true);
+	static BOOL *enabledd = rebind_llcontrol<BOOL>("PhoenixEnableAutoCorrect", &gSavedSettings, true);
 	if(!(*enabledd))
 	{
 		updateItemsList();
 		return;
 	}
-	static S32 *countAuto= rebind_llcontrol<S32>("EmeraldAutoCorrectCount", &gSavedSettings, true);
+	static S32 *countAuto= rebind_llcontrol<S32>("PhoenixAutoCorrectCount", &gSavedSettings, true);
 	childSetValue("em_ac_stats",*countAuto);
 	LLSD autoCorrects = LGGAutoCorrect::getInstance()->getAutoCorrects();
 	LLSD::map_const_iterator loc_it = autoCorrects.beginMap();
@@ -337,7 +337,7 @@ void lggAutoCorrectFloater::updateListControlsEnabled(BOOL selected)
 }
 void lggAutoCorrectFloater::updateEnabledStuff()
 {
-	static BOOL *enabledd = rebind_llcontrol<BOOL>("EmeraldEnableAutoCorrect", &gSavedSettings, true);
+	static BOOL *enabledd = rebind_llcontrol<BOOL>("PhoenixEnableAutoCorrect", &gSavedSettings, true);
 	if(!(*enabledd))
 	{
 		getChild<LLCheckBoxCtrl>("em_ac_enable")->setEnabledColor(LLColor4(1.0f,0.0f,0.0f,1.0f));		
@@ -355,7 +355,7 @@ void lggAutoCorrectFloater::updateEnabledStuff()
 }
 void lggAutoCorrectFloater::setData(void * data)
 {
-	empanel = (LLPanelEmerald*)data;
+	empanel = (LLPanelPhoenix*)data;
 }
 void lggAutoCorrectFloater::onBoxCommitEnabled(LLUICtrl* caller, void* user_data)
 {
@@ -400,7 +400,7 @@ void lggAutoCorrectFloater::loadList(void* data)
 		LLSDSerialize::fromXMLDocument(blankllsd, file);
 	}
 	file.close();
-	gSavedSettings.setBOOL("EmeraldEnableAutoCorrect",true);
+	gSavedSettings.setBOOL("PhoenixEnableAutoCorrect",true);
 	LGGAutoCorrect::getInstance()->addCorrectionList(blankllsd);
 	sInstance->updateEnabledStuff();
 }
@@ -429,7 +429,7 @@ void lggAutoCorrectFloater::addEntry(void* data)
 {
 	std::string listName= sInstance->namesList->getFirstSelected()->getColumn(0)->getValue().asString();
 	LLChat chat;
-	chat.mText = "To add an entry, please type in chat \""+gSavedSettings.getString("EmeraldCmdLineAutocorrect")+" "+listName+"|wrongWord|rightWord\"";
+	chat.mText = "To add an entry, please type in chat \""+gSavedSettings.getString("PhoenixCmdLineAutocorrect")+" "+listName+"|wrongWord|rightWord\"";
 	chat.mSourceType = CHAT_SOURCE_SYSTEM;
 	LLFloaterChat::addChat(chat, FALSE, FALSE);
 }

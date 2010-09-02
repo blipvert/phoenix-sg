@@ -1,6 +1,6 @@
 <llsd>
     <map>
-      <key>EmeraldAvatarlistCustomAction</key>
+      <key>PhoenixAvatarlistCustomAction</key>
       <map>
         <key>Comment</key>
         <string>custom chat command to run on avatars</string>
@@ -11,7 +11,7 @@
         <key>Value</key>
         <string></string>
       </map>
-      <key>EmeraldInventoryPreviousCount</key>
+      <key>PhoenixInventoryPreviousCount</key>
 	    <map>
 	      <key>Comment</key>
 	      <string>Used to keep track of the number of items in inventory when fetching for progress reasons. DO NOT EDIT.</string>
@@ -22,7 +22,7 @@
 	      <key>Value</key>
 	      <integer>-1</integer>
 	    </map>
-	    <key>EmeraldInventorySearchType</key>
+	    <key>PhoenixInventorySearchType</key>
 	    <map>
 	      <key>Comment</key>
 	      <string>Controls what type of inventory search we perform.</string>
@@ -33,7 +33,7 @@
 	      <key>Value</key>
 	      <integer>0</integer>
 	    </map>
-	    <key>EmeraldInventoryPartialSearch</key>
+	    <key>PhoenixInventoryPartialSearch</key>
 	    <map>
 	      <key>Comment</key>
 	      <string>Toggles whether to search using partial search filters on normal (name, desc, creator) searches.</string>
@@ -44,7 +44,7 @@
 	      <key>Value</key>
 	      <integer>0</integer>
 	    </map>
-		<key>EmeraldAOEnabled</key>
+		<key>PhoenixAOEnabled</key>
 		<map>
 			<key>Comment</key>
 			<string>Turn on Animation Overrider</string>
@@ -55,7 +55,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldAOSitsEnabled</key>
+		<key>PhoenixAOSitsEnabled</key>
 		<map>
 			<key>Comment</key>
 			<string>Overrides sit animations.</string>
@@ -66,7 +66,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-      <key>EmeraldAONoStandsInMouselook</key>
+      <key>PhoenixAONoStandsInMouselook</key>
       <map>
         <key>Comment</key>
         <string>Disables stand anims during mouselook</string>
@@ -77,7 +77,7 @@
         <key>Value</key>
         <integer>1</integer>
       </map>
-      <key>EmeraldAOStandCycling</key>
+      <key>PhoenixAOStandCycling</key>
       <map>
         <key>Comment</key>
         <string>Enables stand cycling</string>
@@ -88,7 +88,7 @@
         <key>Value</key>
         <integer>1</integer>
       </map>
-      <key>EmeraldAOStandInterval</key>
+      <key>PhoenixAOStandInterval</key>
 		<map>
 			<key>Comment</key>
 			<string>AO stand time in seconds</string>
@@ -99,7 +99,7 @@
 			<key>Value</key>
 			<real>20</real>
 		</map>
-<key>EmeraldInstantMessageAnnounceIncoming</key>
+<key>PhoenixInstantMessageAnnounceIncoming</key>
 	<map>
 	<key>Comment</key>
 		<string>Open a new IM tab when another person begins typing to you and announce that they are doing so.</string>
@@ -110,7 +110,7 @@
 	<key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldInstantMessageAnnounceStealFocus</key>
+<key>PhoenixInstantMessageAnnounceStealFocus</key>
 	<map>
 	<key>Comment</key>
 		<string>Steal focus when opening new IM tab due to other person begins first typing this session</string>
@@ -121,7 +121,7 @@
 	<key>Value</key>
 		<integer>1</integer>
 	</map>
-<key>EmeraldInstantMessageResponse</key>
+<key>PhoenixInstantMessageResponse</key>
 	<map>
 	<key>Comment</key>
 		<string>Auto response to instant messages</string>
@@ -132,7 +132,7 @@
 	<key>Value</key>
 		<string>This is an autoresponse!</string>
 	</map>
-<key>EmeraldInstantMessageResponseAnyone</key>
+<key>PhoenixInstantMessageResponseAnyone</key>
 	<map>
 	<key>Comment</key>
 		<string>Whether to auto-respond to anyone</string>
@@ -143,7 +143,7 @@
 	<key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldInstantMessageResponseFriends</key>
+<key>PhoenixInstantMessageResponseFriends</key>
 	<map>
 	<key>Comment</key>
 		<string>Whether to auto-respond to non-friends</string>
@@ -154,7 +154,7 @@
 	<key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldInstantMessageResponseItem</key>
+<key>PhoenixInstantMessageResponseItem</key>
 	<map>
 	<key>Comment</key>
 		<string>Whether to send a item along with the autoresponse</string>
@@ -165,7 +165,7 @@
 	<key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldInstantMessageResponseItemData</key>
+<key>PhoenixInstantMessageResponseItemData</key>
 	<map>
 	<key>Comment</key>
 		<string>UUID</string>
@@ -176,7 +176,7 @@
 	<key>Value</key>
 		<string></string>
 	</map>
-<key>EmeraldInstantMessageResponseMuted</key>
+<key>PhoenixInstantMessageResponseMuted</key>
 	<map>
 	<key>Comment</key>
 		<string>Whether to auto-respond to muted people</string>
@@ -187,7 +187,7 @@
 	<key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldInstantMessageResponseRepeat</key>
+<key>PhoenixInstantMessageResponseRepeat</key>
 	<map>
 	<key>Comment</key>
 		<string>Whether to keep on resending the autoresponse every line they send</string>
@@ -198,7 +198,7 @@
 	<key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldInstantMessageShowOnTyping</key>
+<key>PhoenixInstantMessageShowOnTyping</key>
 	<map>
 	<key>Comment</key>
 		<string>Whether to perform the autorespond the moment they begin to type instead of waiting for a actual message</string>
@@ -209,7 +209,7 @@
 	<key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldInstantMessageShowResponded</key>
+<key>PhoenixInstantMessageShowResponded</key>
 	<map>
 	<key>Comment</key>
 		<string>Whether to hide IMs entirely from those you have chosen to send autoresponses</string>
@@ -220,7 +220,7 @@
 	<key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldKeywords</key>
+<key>PhoenixKeywords</key>
 	<map>
     <key>Comment</key>
 		<string>Comma seperated key words to search for</string>
@@ -231,7 +231,7 @@
     <key>Value</key>
 		<string></string>
 	</map>
-<key>EmeraldKeywordInChat</key>
+<key>PhoenixKeywordInChat</key>
 	<map>
     <key>Comment</key>
 		<string>Look for keywords in local chat</string>
@@ -242,7 +242,7 @@
     <key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldKeywordInGroup</key>
+<key>PhoenixKeywordInGroup</key>
 	<map>
     <key>Comment</key>
 		<string>Look for keywords in group chat</string>
@@ -253,7 +253,7 @@
 	<key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldKeywordInIM</key>
+<key>PhoenixKeywordInIM</key>
 	<map>
     <key>Comment</key>
 		<string>Look for keywords in group instant messages</string>
@@ -264,7 +264,7 @@
     <key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldKeywordInIRC</key>
+<key>PhoenixKeywordInIRC</key>
 	<map>
     <key>Comment</key>
 		<string>Look for keywords in irc chat</string>
@@ -275,7 +275,7 @@
     <key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldKeywordChangeColor</key>
+<key>PhoenixKeywordChangeColor</key>
 	<map>
     <key>Comment</key>
 		<string>change message color if keyword found</string>
@@ -286,7 +286,7 @@
     <key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldKeywordColor</key>
+<key>PhoenixKeywordColor</key>
 	<map>
     <key>Comment</key>
 		<string>Color of keyword detects messages</string>
@@ -302,7 +302,7 @@
 			<real>1.0</real>
 		</array>
 	</map>
-<key>EmeraldKeywordOn</key>
+<key>PhoenixKeywordOn</key>
 	<map>
     <key>Comment</key>
 		<string>Look for keywords</string>
@@ -313,7 +313,7 @@
     <key>Value</key>
 		<integer>0</integer>
 	</map>
-<key>EmeraldKeywordPlaySound</key>
+<key>PhoenixKeywordPlaySound</key>
 	<map>
 	<key>Comment</key>
 		<string>Play a sound if keyword found</string>
@@ -324,7 +324,7 @@
     <key>Value</key>
 		<integer>1</integer>
 	</map>
-<key>EmeraldKeywordSound</key>
+<key>PhoenixKeywordSound</key>
 	<map>
 	<key>Comment</key>
 		<string>The sound to play if a keyword is found</string>
@@ -335,7 +335,7 @@
 	<key>Value</key>
 		<string></string>
 	</map>
-  <key>EmeraldAOConfigNotecardID</key>
+  <key>PhoenixAOConfigNotecardID</key>
   <map>
     <key>Comment</key>
     <string>InventoryItemID of the AO config notecard</string>
@@ -346,7 +346,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultwalk</key>
+  <key>PhoenixAODefaultwalk</key>
   <map>
     <key>Comment</key>
     <string>Default walk anim</string>
@@ -357,7 +357,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultsit</key>
+  <key>PhoenixAODefaultsit</key>
   <map>
     <key>Comment</key>
     <string>Default sit anim</string>
@@ -368,7 +368,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultrun</key>
+  <key>PhoenixAODefaultrun</key>
   <map>
     <key>Comment</key>
     <string>Default run anim</string>
@@ -379,7 +379,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultjump</key>
+  <key>PhoenixAODefaultjump</key>
   <map>
     <key>Comment</key>
     <string>Default jump anim</string>
@@ -390,7 +390,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultgsit</key>
+  <key>PhoenixAODefaultgsit</key>
   <map>
     <key>Comment</key>
     <string>Default groundsit anim</string>
@@ -401,7 +401,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultcrouch</key>
+  <key>PhoenixAODefaultcrouch</key>
   <map>
     <key>Comment</key>
     <string>Default crouch anim</string>
@@ -412,7 +412,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultcwalk</key>
+  <key>PhoenixAODefaultcwalk</key>
   <map>
     <key>Comment</key>
     <string>Default crouchwalk anim</string>
@@ -423,7 +423,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultfall</key>
+  <key>PhoenixAODefaultfall</key>
   <map>
     <key>Comment</key>
     <string>Default fall anim</string>
@@ -434,7 +434,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaulthover</key>
+  <key>PhoenixAODefaulthover</key>
   <map>
     <key>Comment</key>
     <string>Default hover anim</string>
@@ -445,7 +445,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultfly</key>
+  <key>PhoenixAODefaultfly</key>
   <map>
     <key>Comment</key>
     <string>Default fly anim</string>
@@ -456,7 +456,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultflyslow</key>
+  <key>PhoenixAODefaultflyslow</key>
   <map>
     <key>Comment</key>
     <string>Default flyslow anim</string>
@@ -467,7 +467,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultflyup</key>
+  <key>PhoenixAODefaultflyup</key>
   <map>
     <key>Comment</key>
     <string>Default flyup anim</string>
@@ -478,7 +478,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultflydown</key>
+  <key>PhoenixAODefaultflydown</key>
   <map>
     <key>Comment</key>
     <string>Default flydown anim</string>
@@ -489,7 +489,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultland</key>
+  <key>PhoenixAODefaultland</key>
   <map>
     <key>Comment</key>
     <string>Default land anim</string>
@@ -500,7 +500,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultstandup</key>
+  <key>PhoenixAODefaultstandup</key>
   <map>
     <key>Comment</key>
     <string>Default standup anim</string>
@@ -511,7 +511,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultprejump</key>
+  <key>PhoenixAODefaultprejump</key>
   <map>
     <key>Comment</key>
     <string>Default prejump anim</string>
@@ -522,7 +522,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultturnleft</key>
+  <key>PhoenixAODefaultturnleft</key>
   <map>
     <key>Comment</key>
     <string>anim</string>
@@ -533,7 +533,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultturnright</key>
+  <key>PhoenixAODefaultturnright</key>
   <map>
     <key>Comment</key>
     <string>anim</string>
@@ -544,7 +544,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaulttyping</key>
+  <key>PhoenixAODefaulttyping</key>
   <map>
     <key>Comment</key>
     <string>anim</string>
@@ -555,7 +555,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultfloating</key>
+  <key>PhoenixAODefaultfloating</key>
   <map>
     <key>Comment</key>
     <string>anim</string>
@@ -566,7 +566,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultswimmingforwards</key>
+  <key>PhoenixAODefaultswimmingforwards</key>
   <map>
     <key>Comment</key>
     <string>anim</string>
@@ -577,7 +577,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultswimmingup</key>
+  <key>PhoenixAODefaultswimmingup</key>
   <map>
     <key>Comment</key>
     <string>anim</string>
@@ -588,7 +588,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>EmeraldAODefaultswimmingdown</key>
+  <key>PhoenixAODefaultswimmingdown</key>
   <map>
     <key>Comment</key>
     <string>anim</string>
@@ -599,7 +599,7 @@
     <key>Value</key>
     <string></string>
   </map>
-      <key>EmeraldAORandomizestand</key>
+      <key>PhoenixAORandomizestand</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -610,7 +610,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizewalk</key>
+      <key>PhoenixAORandomizewalk</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -621,7 +621,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizesit</key>
+      <key>PhoenixAORandomizesit</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -632,7 +632,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizerun</key>
+      <key>PhoenixAORandomizerun</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -643,7 +643,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizejump</key>
+      <key>PhoenixAORandomizejump</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -654,7 +654,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizegsit</key>
+      <key>PhoenixAORandomizegsit</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -665,7 +665,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizecrouch</key>
+      <key>PhoenixAORandomizecrouch</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -676,7 +676,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizecwalk</key>
+      <key>PhoenixAORandomizecwalk</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -687,7 +687,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizefall</key>
+      <key>PhoenixAORandomizefall</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -698,7 +698,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizehover</key>
+      <key>PhoenixAORandomizehover</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -709,7 +709,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizefly</key>
+      <key>PhoenixAORandomizefly</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -720,7 +720,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizeflyslow</key>
+      <key>PhoenixAORandomizeflyslow</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -731,7 +731,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizeflyup</key>
+      <key>PhoenixAORandomizeflyup</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -742,7 +742,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizeflydown</key>
+      <key>PhoenixAORandomizeflydown</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -753,7 +753,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizeland</key>
+      <key>PhoenixAORandomizeland</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -764,7 +764,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizestandup</key>
+      <key>PhoenixAORandomizestandup</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -775,7 +775,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizeprejump</key>
+      <key>PhoenixAORandomizeprejump</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -786,7 +786,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizeturnleft</key>
+      <key>PhoenixAORandomizeturnleft</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -797,7 +797,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizeturnright</key>
+      <key>PhoenixAORandomizeturnright</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -808,7 +808,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizetyping</key>
+      <key>PhoenixAORandomizetyping</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -819,7 +819,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizefloating</key>
+      <key>PhoenixAORandomizefloating</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -830,7 +830,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizeswimmingforward</key>
+      <key>PhoenixAORandomizeswimmingforward</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -841,7 +841,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizeswimmingup</key>
+      <key>PhoenixAORandomizeswimmingup</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -852,7 +852,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-      <key>EmeraldAORandomizeswimmingdown</key>
+      <key>PhoenixAORandomizeswimmingdown</key>
       <map>
         <key>Comment</key>
         <string>Randomize</string>
@@ -863,7 +863,7 @@
         <key>Value</key>
         <integer>0</integer>
       </map>
-  <key>EmeraldAvatarXModifier</key>
+  <key>PhoenixAvatarXModifier</key>
   <map>
     <key>Comment</key>
     <string>wat</string>
@@ -874,7 +874,7 @@
     <key>Value</key>
     <real>0.0</real>
   </map>
-  <key>EmeraldAvatarYModifier</key>
+  <key>PhoenixAvatarYModifier</key>
   <map>
     <key>Comment</key>
     <string>wat</string>
@@ -885,7 +885,7 @@
     <key>Value</key>
     <real>0.0</real>
   </map>
-  <key>EmeraldAvatarZModifier</key>
+  <key>PhoenixAvatarZModifier</key>
   <map>
     <key>Comment</key>
     <string>wat</string>

@@ -175,7 +175,7 @@ void LLCrashLogger::gatherFiles()
 	updateApplication("Gathering logs...");
 
 	// Figure out the filename of the debug log
-	std::string db_file_name = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"emerald_debug_info.log");
+	std::string db_file_name = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"phoenix_debug_info.log");
 	std::ifstream debug_log_file(db_file_name.c_str());
 
 	// Look for it in the debug_info.log file
@@ -203,7 +203,7 @@ void LLCrashLogger::gatherFiles()
 	{
 		// Figure out the filename of the second life log
 		LLCurl::setCAFile(gDirUtilp->getCAFile());
-		mFileMap["SecondLifeLog"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"EmeraldViewer.log");
+		mFileMap["SecondLifeLog"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"PhoenixViewer.log");
 		mFileMap["SettingsXml"] = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,"settings.xml");
 	}
 
@@ -243,12 +243,12 @@ void LLCrashLogger::gatherFiles()
 	// Use login servers as the alternate, since they are already load balanced and have a known name
 	//mAltCrashHost = "https://login.agni.lindenlab.com:12043/crash/report";
 
-	mCrashHost = "http://emeraldviewer.net/app/crash/crash.php";
-	mAltCrashHost = "http://emeraldviewer.net/app/crash/crash.php";
+	mCrashHost = "http://phoenixviewer.com/app/crash/crash.php";
+	mAltCrashHost = "http://phoenixviewer.com/app/crash/crash.php";
 
 	mCrashInfo["DebugLog"] = mDebugLog;
-	mFileMap["StatsLog"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"emerald_stats.log");
-	//mFileMap["StackTrace"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"emerald_stack_trace.log");
+	mFileMap["StatsLog"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"phoenix_stats.log");
+	//mFileMap["StackTrace"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"phoenix_stack_trace.log");
 	//doesn;t seem to exist
 	
 	updateApplication("Encoding files...");
@@ -376,7 +376,7 @@ bool LLCrashLogger::init()
 	gDirUtilp->initAppDirs("SecondLife");
 
 	// Default to the product name "Second Life" (this is overridden by the -name argument)
-	mProductName = "Emerald Viewer";
+	mProductName = "Phoenix Viewer";
 	
 	mCrashSettings.declareS32(CRASH_BEHAVIOR_SETTING, CRASH_BEHAVIOR_ASK, "Controls behavior when viewer crashes "
 		"(0 = ask before sending crash report, 1 = always send crash report, 2 = never send crash report)");

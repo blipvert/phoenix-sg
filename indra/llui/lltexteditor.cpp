@@ -118,7 +118,7 @@ public :
 protected:
 	void handleResponse(const std::string &translation, const std::string &detectedLanguage)
 	{
-		BOOL rep = gSavedSettings.getBOOL("EmeraldTranslateReplace");
+		BOOL rep = gSavedSettings.getBOOL("PhoenixTranslateReplace");
 		m_line->insertText((rep?"":" (") + translation +(rep?"":")"),rep);
 	}
 	void handleFailure()
@@ -3068,7 +3068,7 @@ void LLTextEditor::drawSelectionBackground()
 void LLTextEditor::autoCorrectText()
 {
 	
-	static BOOL *doAnything = rebind_llcontrol<BOOL>("EmeraldEnableAutoCorrect", &gSavedSettings, true);
+	static BOOL *doAnything = rebind_llcontrol<BOOL>("PhoenixEnableAutoCorrect", &gSavedSettings, true);
 	if( (!mReadOnly) && (*doAnything) && (isSpellDirty()) )
 	{
 		S32 wordStart = 0;
@@ -5063,7 +5063,7 @@ BOOL LLTextEditor::findHTML(const std::string &line, S32 *begin, S32 *end, std::
 		const int jira_count = 4;
 		const char* jiras[] = { "SVC-", "VWR-", "SNOW-", "EMLD-" };
 		int jurl_types[] = { 0, 0, 0, 1 };
-		const char* jurls[] = { "https://jira.secondlife.com/browse/%s", "http://jira.emeraldviewer.net/browse/%s" };
+		const char* jurls[] = { "https://jira.secondlife.com/browse/%s", "http://jira.phoenixviewer.com/browse/%s" };
 		for(int j = 0; j < jira_count; ++j)
 		{
 			std::string jira(jiras[j]);

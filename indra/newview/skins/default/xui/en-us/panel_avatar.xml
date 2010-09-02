@@ -7,7 +7,7 @@
       <string name="CaptionTextAcctInfo">
 [ACCTTYPE]
 [PAYMENTINFO]
-[EMERALD]
+[PHOENIX]
       </string>
       <string name="AcctTypeResident">
 Resident
@@ -36,11 +36,11 @@ Age-verified
       <string name="NotAgeVerified">
 Not Age-verified
       </string>
-      <string name="EmeraldDeveloper">
-Emerald Developer
+      <string name="PhoenixDeveloper">
+Phoenix Developer
       </string>
-      <string name="EmeraldSupport">
-Emerald Support
+      <string name="PhoenixSupport">
+Phoenix Support
       </string>
       <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 			     bottom="-24" drop_shadow_visible="true" follows="left|top"
@@ -135,7 +135,7 @@ Emerald Support
         Groups:
       </text>
       <button follows="left|top" left="40"  bottom="-280" height="20" halign="center"
-              label="+" label_selected="+" name="EmeraldGroupInvite_Button" tool_tip="Invite to Group." width="40" />
+              label="+" label_selected="+" name="PhoenixGroupInvite_Button" tool_tip="Invite to Group." width="40" />
       <scroll_list background_visible="true" bottom="-282" column_padding="5" draw_border="true"
 			     follows="left|top" height="90" left="79" mouse_opaque="false"
 			     multi_select="false" name="groups" width="321" />

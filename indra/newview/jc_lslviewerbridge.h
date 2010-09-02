@@ -35,7 +35,7 @@
 
 #include "llviewerobject.h"
 
-#define emerald_category_name "#Emerald"
+#define phoenix_category_name "#Phoenix"
 
 class JCBridgeCallback : public LLRefCount
 {

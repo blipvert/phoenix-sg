@@ -49,7 +49,7 @@
 
 
 #include "llsdserialize.h"
-#include "llpanelemerald.h"
+#include "llpanelphoenix.h"
 #include "llfocusmgr.h"
 class lggPoint;
 class lggBeamMapFloater;
@@ -74,7 +74,7 @@ public:
 	BOOL handleRightMouseDown(S32 x,S32 y,MASK mask);
 	
 	void setData(void* data);
-	LLPanelEmerald * empanel;
+	LLPanelPhoenix * empanel;
 
 	void draw();
 	void clearPoints();
@@ -237,7 +237,7 @@ BOOL lggBeamMapFloater::handleMouseDown(S32 x,S32 y,MASK mask)
 }
 void lggBeamMapFloater::setData(void* data)
 {
-	empanel = (LLPanelEmerald*)data;
+	empanel = (LLPanelPhoenix*)data;
 	if(empanel)
 	{
 
@@ -323,7 +323,7 @@ void lggBeamMapFloater::onClickSave(void* data)
 	export_file.open(filename);
 	LLSDSerialize::toPrettyXML(main, export_file);
 	export_file.close();
-	gSavedSettings.setString("EmeraldBeamShape",gDirUtilp->getBaseFileName(filename,true));
+	gSavedSettings.setString("PhoenixBeamShape",gDirUtilp->getBaseFileName(filename,true));
 
 	if(self->empanel)
 	{

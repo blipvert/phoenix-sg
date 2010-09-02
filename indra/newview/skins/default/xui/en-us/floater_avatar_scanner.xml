@@ -43,30 +43,30 @@
 				   width="200" follows="top|left"
 				   hidden="false" mouse_opaque="true" font="SansSerifSmall"
 		       enabled="true" radio_style="false"
-           control_name="EmeraldRadarChatAlerts"/>
+           control_name="PhoenixRadarChatAlerts"/>
       <check_box bottom_delta="-20" enabled="true" follows="top|left" font="SansSerifSmall" height="16"
 					 label="Av entering / leaving simulator" left_delta="10"
 					 mouse_opaque="true" name="radar_chat_sim_toggle" radio_style="false" width="270"
-					 control_name="EmeraldRadarAlertSim"/>
+					 control_name="PhoenixRadarAlertSim"/>
       <check_box bottom_delta="-20" enabled="true" follows="top|left" font="SansSerifSmall" height="16"
            label="Av entering / leaving draw distance"
            left_delta="0" mouse_opaque="true" name="radar_chat_draw_toggle" radio_style="false"
-           width="270" control_name="EmeraldRadarAlertDraw"/>
+           width="270" control_name="PhoenixRadarAlertDraw"/>
       <check_box bottom_delta="-20" enabled="true" follows="top|left" font="SansSerifSmall" height="16"
            label="Av entering / leaving chat range" left_delta="0"
            mouse_opaque="true" name="radar_chat_chatrange_toggle" radio_style="false" width="270"
-           control_name="EmeraldRadarAlertChatRange"/>
+           control_name="PhoenixRadarAlertChatRange"/>
       <check_box height="16" label="Av Age Alert"
 				   left_delta="0" bottom_delta="-20" name="agealert"
 				   width="200" follows="top|left"
 				   hidden="false" mouse_opaque="true" font="SansSerifSmall"
 				   initial_value="true" enabled="true" radio_style="false"
-           control_name="EmeraldAvatarAgeAlert"
+           control_name="PhoenixAvatarAgeAlert"
   			   tool_tip="Enables Avatar Age Alert" />
       <spinner bottom_delta="-1" decimal_digits="0" follows="top|left" height="16"
            left_delta="90" increment="1" initial_val="3" max_val="999" min_val="0"
            mouse_opaque="true" name="AgeAlertDays" label="Threshold" label_width="60"
-           tool_tip="Age Threshold" width="110" control_name="EmeraldAvatarAgeAlertDays" />
+           tool_tip="Age Threshold" width="110" control_name="PhoenixAvatarAgeAlertDays" />
 
       <check_box height="16" label="Update"
 				   left="5" bottom_delta="-30" name="update_enabled_cb" 
@@ -79,7 +79,7 @@
 				   width="200" follows="top|left"
 				   hidden="false" mouse_opaque="true" font="SansSerifSmall"
 				   initial_value="true" enabled="true" radio_style="false"
-           control_name="EmeraldAvatarListKeepOpen"
+           control_name="PhoenixAvatarListKeepOpen"
   			   tool_tip="Hides floater instead of closing to still announce in chat" />
 			<check_box height="16" label="Get avatar info"
 				   left="10" bottom_delta="-21" name="fetch_avdata_enabled_cb" 
@@ -92,7 +92,7 @@
 				   width="200" follows="top|left"
 				   hidden="false" mouse_opaque="true" font="SansSerifSmall"
 				   initial_value="true" enabled="true" radio_style="false" 
-           control_name="EmeraldRadarChatKeys"
+           control_name="PhoenixRadarChatKeys"
   			   tool_tip="Set whether to chat keys of avatars to LSL scripts" />
 
       <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
@@ -109,14 +109,14 @@ placeholders are #k = av key, #n = av name
            enabled="true" follows="left|right|top" font="SansSerifSmall"
            handle_edit_keys_directly="false" height="18" label="Custom command."
            left="250" max_length="2147483647" mouse_opaque="true" name="customcommand"
-           right="-10" select_all_on_focus_received="false" select_on_focus="false" control_name="EmeraldAvatarlistCustomAction"
+           right="-10" select_all_on_focus_received="false" select_on_focus="false" control_name="PhoenixAvatarlistCustomAction"
            tab_group="1" tool_tip="Custom chat command" />
       <check_box height="16" label="Color friends and muted avatars"
 				   left="250" bottom_delta="-30" name="colorfriends"
 				   width="200" follows="top|left"
 				   hidden="false" mouse_opaque="true" font="SansSerifSmall"
 				   initial_value="false" enabled="true" radio_style="false"
-           control_name="EmeraldAvatarListColorEntries"
+           control_name="PhoenixAvatarListColorEntries"
 				   tool_tip="Color names of friends and muted avatars" />
 
 

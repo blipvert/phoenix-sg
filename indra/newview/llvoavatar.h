@@ -49,7 +49,7 @@
 #include "llwearable.h"
 #include "llvoavatardefines.h"
 
-#include "emeraldboobutils.h"
+#include "phoenixboobutils.h"
 
 extern const LLUUID ANIM_AGENT_BODY_NOISE;
 extern const LLUUID ANIM_AGENT_BREATHE_ROT;
@@ -517,9 +517,9 @@ private:
 private:
 	bool			mFirstSetActualBoobGravRan;
 	LLFrameTimer	mBoobBounceTimer;
-	EmeraldAvatarLocalBoobConfig mLocalBoobConfig;
-	EmeraldBoobState mBoobState;
-	static EmeraldGlobalBoobConfig sBoobConfig;
+	PhoenixAvatarLocalBoobConfig mLocalBoobConfig;
+	PhoenixBoobState mBoobState;
+	static PhoenixGlobalBoobConfig sBoobConfig;
 
 public:
 	//boob

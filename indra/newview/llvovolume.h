@@ -212,7 +212,7 @@ public:
 	BOOL canBeFlexible() const;
 	BOOL setIsFlexible(BOOL is_flexible);
 
-	// tag: vaa emerald local_asset_browser
+	// tag: vaa phoenix local_asset_browser
 	void setSculptChanged(BOOL has_changed) { mSculptChanged = has_changed; }
 			
 protected:

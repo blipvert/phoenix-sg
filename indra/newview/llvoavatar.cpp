@@ -739,7 +739,7 @@ F32 LLVOAvatar::sLODFactor = 1.f;
 BOOL LLVOAvatar::sUseImpostors = FALSE;
 BOOL LLVOAvatar::sJointDebug = FALSE;
 
-EmeraldGlobalBoobConfig LLVOAvatar::sBoobConfig;
+PhoenixGlobalBoobConfig LLVOAvatar::sBoobConfig;
 
 
 
@@ -1021,13 +1021,13 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
 	}
 
 	// grab the boob savedparams (prob a better place for this)
-	sBoobConfig.mass             = EmeraldBoobUtils::convertMass(gSavedSettings.getF32("EmeraldBoobMass"));
-	sBoobConfig.hardness         = EmeraldBoobUtils::convertHardness(gSavedSettings.getF32("EmeraldBoobHardness"));
-	sBoobConfig.velMax           = EmeraldBoobUtils::convertVelMax(gSavedSettings.getF32("EmeraldBoobVelMax"));
-	sBoobConfig.velMin           = EmeraldBoobUtils::convertVelMin(gSavedSettings.getF32("EmeraldBoobVelMin"));
-	sBoobConfig.friction         = EmeraldBoobUtils::convertFriction(gSavedSettings.getF32("EmeraldBoobFriction"));
-	sBoobConfig.enabled          = gSavedSettings.getBOOL("EmeraldBreastPhysicsToggle");
-	sBoobConfig.XYInfluence		 = gSavedSettings.getF32("EmeraldBoobXYInfluence");
+	sBoobConfig.mass             = PhoenixBoobUtils::convertMass(gSavedSettings.getF32("PhoenixBoobMass"));
+	sBoobConfig.hardness         = PhoenixBoobUtils::convertHardness(gSavedSettings.getF32("PhoenixBoobHardness"));
+	sBoobConfig.velMax           = PhoenixBoobUtils::convertVelMax(gSavedSettings.getF32("PhoenixBoobVelMax"));
+	sBoobConfig.velMin           = PhoenixBoobUtils::convertVelMin(gSavedSettings.getF32("PhoenixBoobVelMin"));
+	sBoobConfig.friction         = PhoenixBoobUtils::convertFriction(gSavedSettings.getF32("PhoenixBoobFriction"));
+	sBoobConfig.enabled          = gSavedSettings.getBOOL("PhoenixBreastPhysicsToggle");
+	sBoobConfig.XYInfluence		 = gSavedSettings.getF32("PhoenixBoobXYInfluence");
 
 
 	if (gNoRender)
@@ -2987,7 +2987,7 @@ void LLVOAvatar::idleUpdateBoobEffect()
 		// BOOBS
 		param = getVisualParam(105); //boob size
 		mLocalBoobConfig.boobSize = param->getCurrentWeight();
-		EmeraldBoobInputs boobInputs;
+		PhoenixBoobInputs boobInputs;
 		boobInputs.type = 0;
 		boobInputs.chestPosition	= mChestp->getWorldPosition();
 		boobInputs.chestRotation	= mChestp->getWorldRotation();
@@ -2995,7 +2995,7 @@ void LLVOAvatar::idleUpdateBoobEffect()
 		boobInputs.appearanceFlag	= getAppearanceFlag();
 
 
-		EmeraldBoobState newBoobState = EmeraldBoobUtils::idleUpdate(sBoobConfig, mLocalBoobConfig, mBoobState, boobInputs);
+		PhoenixBoobState newBoobState = PhoenixBoobUtils::idleUpdate(sBoobConfig, mLocalBoobConfig, mBoobState, boobInputs);
 
 		if(mBoobState.boobGrav != newBoobState.boobGrav)
 		{
@@ -3209,58 +3209,58 @@ void LLVOAvatar::resolveClient(LLColor4& avatar_name_color, std::string& client,
 		//legacy code
 		if(idx == LLUUID("ccda2b3b-e72c-a112-e126-fee238b67218"))//green
 		{
-			avatar_name_color += LLColor4::green;//emerald
+			avatar_name_color += LLColor4::green;//phoenix
 			avatar_name_color += LLColor4::green;
 			avatar_name_color = avatar_name_color * (F32)0.333333333333;
-			client = "Emerald";
+			client = "Phoenix";
 		}
 		else if(idx == LLUUID("1e0948ab-706a-b309-434c-a694436a79be"))//white
 		{
-			avatar_name_color += LLColor4::white;//emerald
+			avatar_name_color += LLColor4::white;//phoenix
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
 		}
 		else if(idx == LLUUID("072343d0-1ce9-0952-4106-5312af4a789a"))//pink
 		{
-			avatar_name_color += LLColor4::pink;//emerald
+			avatar_name_color += LLColor4::pink;//phoenix
 			avatar_name_color += LLColor4::pink;
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
 		}
 		else if(idx == LLUUID("1da8eb54-a70f-bd4a-77e5-c7b815c3b2a2"))//red
 		{
-			avatar_name_color += LLColor4::red;//emerald
+			avatar_name_color += LLColor4::red;//phoenix
 			avatar_name_color += LLColor4::red;
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
 		}
 		else if(idx == LLUUID("e741e2bf-cf8c-191c-97f2-b2709a843dfc"))//orange
 		{
-			avatar_name_color += LLColor4::orange;//emerald
+			avatar_name_color += LLColor4::orange;//phoenix
 			avatar_name_color += LLColor4::orange;
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
 		}
 		else if(idx == LLUUID("0ae2f973-98c1-a4e8-9f4b-9db2044ab079")) //purple
 		{
-			avatar_name_color += LLColor4::purple;//emerald
+			avatar_name_color += LLColor4::purple;//phoenix
 			avatar_name_color += LLColor4::purple;
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
 		}
 		else if(idx == LLUUID("8078ffb3-840c-d037-caf3-5cd02c2e7040"))//yellow
 		{
-			avatar_name_color += LLColor4::yellow;//emerald
+			avatar_name_color += LLColor4::yellow;//phoenix
 			avatar_name_color += LLColor4::yellow;
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
 		}
 		else if(idx == LLUUID("4eb67510-0924-ebb1-50ca-8af5694cd267"))//blue
 		{
-			avatar_name_color += LLColor4::blue;//emerald
+			avatar_name_color += LLColor4::blue;//phoenix
 			avatar_name_color += LLColor4::blue;
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
 		}
 	}
 	if(avatar->getTE(5)->getID() != avatar->getTE(6)->getID() && client != "" && avatar->isReallyFullyLoaded())
@@ -3402,14 +3402,14 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 				if(!mIsSelf)
 					resolveClient(avatar_name_color,client, this);
 
-				static BOOL* sEmeraldChangeColorOnClient = rebind_llcontrol<BOOL>("EmeraldChangeColorOnClient", &gSavedSettings, true);
-				static BOOL* sEmeraldClientTagDisplay = rebind_llcontrol<BOOL>("EmeraldClientTagDisplay", &gSavedSettings, true);
+				static BOOL* sPhoenixChangeColorOnClient = rebind_llcontrol<BOOL>("PhoenixChangeColorOnClient", &gSavedSettings, true);
+				static BOOL* sPhoenixClientTagDisplay = rebind_llcontrol<BOOL>("PhoenixClientTagDisplay", &gSavedSettings, true);
 
-				if(!*sEmeraldChangeColorOnClient)
+				if(!*sPhoenixChangeColorOnClient)
 				{
 					avatar_name_color = (*sAvatarNameColor);
 				}
-				if(!*sEmeraldClientTagDisplay)
+				if(!*sPhoenixClientTagDisplay)
 				{
 					client = "";
 				}
@@ -3773,7 +3773,7 @@ void LLVOAvatar::idleUpdateBelowWater()
 	if ((avatar_height < water_height) != mBelowWater)
 	{
 		mBelowWater = avatar_height < water_height;
-		if ((mIsSelf) && gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled"))
+		if ((mIsSelf) && gSavedPerAccountSettings.getBOOL("PhoenixAOEnabled"))
 		{
 			// update AO if mBelowWater changes..
 			LLFloaterAO::startAOMotion(LLFloaterAO::GetAnimIDFromState(LLFloaterAO::getAnimationState()), TRUE,FALSE);
@@ -5122,7 +5122,7 @@ void LLVOAvatar::processAnimationStateChanges()
 		{
 			if (mIsSelf)
 			{
-				if (gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled"))
+				if (gSavedPerAccountSettings.getBOOL("PhoenixAOEnabled"))
 				{
 					LLFloaterAO::stopAOMotion(anim_it->first, FALSE);
 				}
@@ -5151,7 +5151,7 @@ void LLVOAvatar::processAnimationStateChanges()
 
 				if (mIsSelf) // AO is only for ME
 				{
-					if (gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled"))
+					if (gSavedPerAccountSettings.getBOOL("PhoenixAOEnabled"))
 					{
 						LLFloaterAO::startAOMotion(anim_it->first, FALSE,FALSE); // AO overrides the anim if needed
 					}
@@ -5230,7 +5230,7 @@ BOOL LLVOAvatar::processSingleAnimationStateChange( const LLUUID& anim_id, BOOL 
 			mIsSitting = TRUE;
 		}else if(anim_id == ANIM_AGENT_SNAPSHOT)
 		{
-			if(gSavedSettings.getBOOL("EmeraldAlertOnSnapshot"))
+			if(gSavedSettings.getBOOL("PhoenixAlertOnSnapshot"))
 			{
 				LLChat chat;
 				chat.mText =getFullname()+ " took a snapshot";
@@ -6678,7 +6678,7 @@ void LLVOAvatar::sitOnObject(LLViewerObject *sit_object)
 		if (gAgent.mForceMouselook) gAgent.changeCameraToMouselook();
 
 		//Name Short - Revoke permissions for the object you've just sat on.
-		U32 state = gSavedSettings.getU32("EmeraldRevokePerms");
+		U32 state = gSavedSettings.getU32("PhoenixRevokePerms");
 		if(state == 1 || (state == 3 && !sit_object->permYouOwner()))
 		{
 			gMessageSystem->newMessageFast(_PREHASH_RevokePermissions);
@@ -6766,7 +6766,7 @@ void LLVOAvatar::getOffObject()
 		gAgent.setSitCamera(LLUUID::null);
 
 		//Name Short - Revoke permissions for the object you've just stood up from.
-		U32 state = gSavedSettings.getU32("EmeraldRevokePerms");
+		U32 state = gSavedSettings.getU32("PhoenixRevokePerms");
 		if(state == 2 || (state == 3 && !sit_object->permYouOwner()))
 		{
 			gMessageSystem->newMessageFast(_PREHASH_RevokePermissions);

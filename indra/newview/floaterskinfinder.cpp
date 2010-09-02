@@ -41,7 +41,7 @@
 #include "llviewercontrol.h"
 #include "llfloaterpreference.h"
 
-FloaterSkinfinder::FloaterSkinfinder(const LLSD& key = LLSD()) : LLFloaterHtmlSimple("http://emeraldviewer.net/app/skins/")
+FloaterSkinfinder::FloaterSkinfinder(const LLSD& key = LLSD()) : LLFloaterHtmlSimple("http://phoenixviewer.com/app/skins/")
 {
 	setTrusted(true);
 	setTitle("Skin Browser");
@@ -93,7 +93,7 @@ bool FloaterSkinfinderHandler::handle(const LLSD& tokens, const LLSD& query_map,
 	payload["display_name"] = display_name;
 	payload["skin_name"] = skin_name;
 	
-	LLNotifications::instance().add("EmeraldSkinDownloadPrompt", subs, payload, &notificationCallback);
+	LLNotifications::instance().add("PhoenixSkinDownloadPrompt", subs, payload, &notificationCallback);
 	
 	return true;
 }
@@ -118,35 +118,35 @@ void FloaterSkinfinderHandler::notificationCallback(const LLSD& notification, co
 		
 		LLSD args;
 		args["[DISPLAY_NAME]"] = display_name;
-		LLNotifications::instance().add("EmeraldSkinDownloadComplete", args);
+		LLNotifications::instance().add("PhoenixSkinDownloadComplete", args);
 		return;
 	}
 	
-	std::string url = llformat("http://emeraldviewer.net/app/skins/download/%s.7z", skin_name.c_str());
+	std::string url = llformat("http://phoenixviewer.com/app/skins/download/%s.7z", skin_name.c_str());
 	
 	LL_INFOS("SkinDownload") << "Downloading '" << display_name << "' (" << skin_name << ") skin from " << url << LL_ENDL;
 	
-	LLHTTPClient::get(url, new EmeraldSkinDownloader(skin_name, display_name));
+	LLHTTPClient::get(url, new PhoenixSkinDownloader(skin_name, display_name));
 	return;
 }
 
-EmeraldSkinDownloader::EmeraldSkinDownloader(const std::string& skin_name, const std::string& display_name) : 
+PhoenixSkinDownloader::PhoenixSkinDownloader(const std::string& skin_name, const std::string& display_name) : 
 	mSkinName(skin_name),
 	mDisplayName(display_name)
 {
 
 }
 
-void EmeraldSkinDownloader::error(U32 status, const std::string& reason)
+void PhoenixSkinDownloader::error(U32 status, const std::string& reason)
 {
 	LLSD args;
 	args["[REASON]"] = reason;
 	args["[STATUS]"] = LLSD::Integer(status);
 	args["[DISPLAY_NAME]"] = mDisplayName;
-	LLNotifications::instance().add("EmeraldSkinDownloadFailed", args);
+	LLNotifications::instance().add("PhoenixSkinDownloadFailed", args);
 }
 
-void EmeraldSkinDownloader::completedRaw(U32 status, const std::string& reason, const LLChannelDescriptors& channels, const LLIOPipe::buffer_ptr_t& buffer)
+void PhoenixSkinDownloader::completedRaw(U32 status, const std::string& reason, const LLChannelDescriptors& channels, const LLIOPipe::buffer_ptr_t& buffer)
 {
 	if(status < 200 || status >= 300)
 	{
@@ -178,19 +178,19 @@ void EmeraldSkinDownloader::completedRaw(U32 status, const std::string& reason, 
 	
 	LLSD args;
 	args["[DISPLAY_NAME]"] = mDisplayName;
-	LLNotifications::instance().add("EmeraldSkinDownloadComplete", args, LLSD(), &download_complete_dismissed);
+	LLNotifications::instance().add("PhoenixSkinDownloadComplete", args, LLSD(), &download_complete_dismissed);
 }
 
 // HACK: There's no good way to tell when the decompression is complete (it's asynchronous,
 // and waiting for it hangs SL). However, it is very fast. This uses the user clicking "OK"
 // on the download dialog to refresh the skin panel (as a hackish non-blocking timer, basically)
-void EmeraldSkinDownloader::download_complete_dismissed(const LLSD& notification, const LLSD& response)
+void PhoenixSkinDownloader::download_complete_dismissed(const LLSD& notification, const LLSD& response)
 {
 	LLFloaterPreference::refreshSkinPanel();
 }
 	
 
-bool EmeraldSkinDownloader::decompressSkin(const std::string& zip, const std::string& dir)
+bool PhoenixSkinDownloader::decompressSkin(const std::string& zip, const std::string& dir)
 {
 	// Forking magic stolen from llvoiceclient.cpp
 	// The lzma library is a PITA. And undocumented.

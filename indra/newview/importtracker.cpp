@@ -167,7 +167,7 @@ void ImportTracker::get_update(S32 newid, BOOL justCreated, BOOL createSelected)
 				LLPrimitive obj;
 				obj.setNumTEs(U8(10));	
 				S32 shinnyLevel = 0;
-				static std::string* shinystr = rebind_llcontrol<std::string>("EmeraldBuildPrefs_Shiny", &gSavedSettings, true);
+				static std::string* shinystr = rebind_llcontrol<std::string>("PhoenixBuildPrefs_Shiny", &gSavedSettings, true);
 				if(*shinystr == "None") shinnyLevel = 0;
 				if(*shinystr == "Low") shinnyLevel = 1;
 				if(*shinystr == "Medium") shinnyLevel = 2;
@@ -175,13 +175,13 @@ void ImportTracker::get_update(S32 newid, BOOL justCreated, BOOL createSelected)
 				
 				for (int i = 0; i < 10; i++)
 				{
-					static std::string* buildpreftex = rebind_llcontrol<std::string>("EmeraldBuildPrefs_Texture", &gSavedSettings, true);
+					static std::string* buildpreftex = rebind_llcontrol<std::string>("PhoenixBuildPrefs_Texture", &gSavedSettings, true);
 
 					LLTextureEntry tex =  LLTextureEntry(LLUUID(*buildpreftex));
-					tex.setColor(gSavedSettings.getColor4("EmeraldBuildPrefs_Color"));
-					tex.setAlpha(1.0 - ((gSavedSettings.getF32("EmeraldBuildPrefs_Alpha")) / 100.0));
-					tex.setGlow(gSavedSettings.getF32("EmeraldBuildPrefs_Glow"));
-					if(gSavedSettings.getBOOL("EmeraldBuildPrefs_FullBright"))
+					tex.setColor(gSavedSettings.getColor4("PhoenixBuildPrefs_Color"));
+					tex.setAlpha(1.0 - ((gSavedSettings.getF32("PhoenixBuildPrefs_Alpha")) / 100.0));
+					tex.setGlow(gSavedSettings.getF32("PhoenixBuildPrefs_Glow"));
+					if(gSavedSettings.getBOOL("PhoenixBuildPrefs_FullBright"))
 					{
 						tex.setFullbright(TEM_FULLBRIGHT_MASK);
 					}
@@ -200,15 +200,15 @@ void ImportTracker::get_update(S32 newid, BOOL justCreated, BOOL createSelected)
 				msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
 				msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
 				msg->addU32Fast(_PREHASH_ObjectLocalID, (U32)newid );
-				msg->addBOOLFast(_PREHASH_UsePhysics, gSavedSettings.getBOOL("EmeraldBuildPrefs_Physical"));
-				msg->addBOOL("IsTemporary", gSavedSettings.getBOOL("EmeraldBuildPrefs_Temporary"));
-				msg->addBOOL("IsPhantom", gSavedSettings.getBOOL("EmeraldBuildPrefs_Phantom") );
+				msg->addBOOLFast(_PREHASH_UsePhysics, gSavedSettings.getBOOL("PhoenixBuildPrefs_Physical"));
+				msg->addBOOL("IsTemporary", gSavedSettings.getBOOL("PhoenixBuildPrefs_Temporary"));
+				msg->addBOOL("IsPhantom", gSavedSettings.getBOOL("PhoenixBuildPrefs_Phantom") );
 				msg->addBOOL("CastsShadows", true );
 				msg->sendReliable(gAgent.getRegion()->getHost());
 
-				if(gSavedSettings.getBOOL("EmeraldBuildPrefs_EmbedItem"))
+				if(gSavedSettings.getBOOL("PhoenixBuildPrefs_EmbedItem"))
 				{
-					LLViewerInventoryItem* item = (LLViewerInventoryItem*)gInventory.getItem((LLUUID)gSavedSettings.getString("EmeraldBuildPrefs_Item"));
+					LLViewerInventoryItem* item = (LLViewerInventoryItem*)gInventory.getItem((LLUUID)gSavedSettings.getString("PhoenixBuildPrefs_Item"));
 					LLViewerObject* objectp = find((U32)newid);
 					if(objectp)
 						if(item)

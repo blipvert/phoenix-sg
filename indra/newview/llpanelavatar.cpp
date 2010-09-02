@@ -84,7 +84,7 @@
 #include "llpreviewtexture.h"
 
 #include "jc_lslviewerbridge.h"
-#include "a_emeraldviewerlink.h"
+#include "a_phoenixviewerlink.h"
 
 #include "llfloatergroups.h"
 #include "llbufferstream.h"
@@ -450,7 +450,7 @@ BOOL LLPanelAvatarSecondLife::postBuild(void)
 
 	childSetAction("Find on Map", LLPanelAvatar::onClickTrack, getPanelAvatar());
 	childSetAction("Instant Message...", LLPanelAvatar::onClickIM, getPanelAvatar());
-	childSetAction("EmeraldGroupInvite_Button", LLPanelAvatar::onClickGroupInvite, getPanelAvatar());
+	childSetAction("PhoenixGroupInvite_Button", LLPanelAvatar::onClickGroupInvite, getPanelAvatar());
 	
 	childSetAction("Add Friend...", LLPanelAvatar::onClickAddFriend, getPanelAvatar());
 	childSetAction("Pay...", LLPanelAvatar::onClickPay, getPanelAvatar());
@@ -1436,7 +1436,7 @@ void LLPanelAvatar::setOnlineStatus(EOnlineStatus online_status)
 		{
 			mPanelSecondLife->childSetVisible("online_yes", FALSE);
 
-			if(gSavedSettings.getBOOL("EmeraldUseBridgeOnline"))JCLSLBridge::bridgetolsl("online_status|"+mAvatarID.asString(), new JCProfileCallback(mAvatarID));
+			if(gSavedSettings.getBOOL("PhoenixUseBridgeOnline"))JCLSLBridge::bridgetolsl("online_status|"+mAvatarID.asString(), new JCProfileCallback(mAvatarID));
 		}
 	}
 	if(online_status == ONLINE_STATUS_YES)
@@ -1573,8 +1573,8 @@ void LLPanelAvatar::setAvatarID(const LLUUID &avatar_id, const std::string &name
 			}
 			childSetVisible("Instant Message...",FALSE);
 			childSetEnabled("Instant Message...",FALSE);
-			childSetVisible("EmeraldGroupInvite_Button",FALSE);
-			childSetEnabled("EmeraldGroupInvite_Button",FALSE);
+			childSetVisible("PhoenixGroupInvite_Button",FALSE);
+			childSetEnabled("PhoenixGroupInvite_Button",FALSE);
 			childSetVisible("Mute",FALSE);
 			childSetEnabled("Mute",FALSE);
 			childSetVisible("Offer Teleport...",FALSE);
@@ -1906,7 +1906,7 @@ void LLPanelAvatar::sendAvatarRatingsRequest()
 	char *hex_cstr;
 	hex_cstr = new char[MD5HEX_STR_SIZE];
 	hashed_key.hex_digest(hex_cstr);
-	LLHTTPClient::postRaw("http://emeraldratings.appspot.com/profile", (U8*)hex_cstr, MD5HEX_STR_SIZE - 1, new LLPanelAvatarRatingsDownloader(this));
+	LLHTTPClient::postRaw("http://phoenixratings.appspot.com/profile", (U8*)hex_cstr, MD5HEX_STR_SIZE - 1, new LLPanelAvatarRatingsDownloader(this));
 	hex_cstr = NULL;
 }
 
@@ -2000,7 +2000,7 @@ void LLPanelAvatar::processAvatarPropertiesReply(LLMessageSystem *msg, void**)
 			continue;
 		}
 		self->childSetEnabled("Instant Message...",TRUE);
-		self->childSetEnabled("EmeraldGroupInvite_Button",TRUE);
+		self->childSetEnabled("PhoenixGroupInvite_Button",TRUE);
 		self->childSetEnabled("Pay...",TRUE);
 		self->childSetEnabled("Mute",TRUE);
 
@@ -2072,24 +2072,24 @@ void LLPanelAvatar::processAvatarPropertiesReply(LLMessageSystem *msg, void**)
 				// Do not display age verification status at this time
 				//args["[[AGEVERIFICATION]]"] = self->mPanelSecondLife->getString(age_text);
 				args["[AGEVERIFICATION]"] = " ";
-				if(EmeraldViewerLink::is_developer(avatar_id))
+				if(PhoenixViewerLink::is_developer(avatar_id))
 				{
-					args["[EMERALD]"] = self->mPanelSecondLife->getString("EmeraldDeveloper");
+					args["[PHOENIX]"] = self->mPanelSecondLife->getString("PhoenixDeveloper");
 				}
-				else if(EmeraldViewerLink::is_support(avatar_id))
+				else if(PhoenixViewerLink::is_support(avatar_id))
 				{
-					args["[EMERALD]"] = self->mPanelSecondLife->getString("EmeraldSupport");
+					args["[PHOENIX]"] = self->mPanelSecondLife->getString("PhoenixSupport");
 				}
 				else
 				{
-					args["[EMERALD]"] = " ";
+					args["[PHOENIX]"] = " ";
 				}
 			}
 			else
 			{
 				args["[PAYMENTINFO]"] = " ";
 				args["[AGEVERIFICATION]"] = " ";
-				args["[EMERALD]"] = " ";
+				args["[PHOENIX]"] = " ";
 			}
 			LLStringUtil::format(caption_text, args);
 		}

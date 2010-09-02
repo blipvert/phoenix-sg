@@ -299,7 +299,7 @@ void LLCrashLoggerWindows::gatherPlatformSpecificFiles()
 	// At this point we're responsive enough the user could click the close button
 	SetCursor(gCursorArrow);
 	mDebugLog["DisplayDeviceInfo"] = gDXHardware.getDisplayInfo();
-	mFileMap["CrashLog"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"EmeraldViewerException.log");
+	mFileMap["CrashLog"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"PhoenixViewerException.log");
 }
 
 bool LLCrashLoggerWindows::mainLoop()

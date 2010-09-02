@@ -79,9 +79,9 @@ void LLHUDManager::updateEffects()
 
 void LLHUDManager::sendEffects()
 {
-	static BOOL* sEmeraldBroadcastEffects = rebind_llcontrol<BOOL>("EmeraldBroadcastEffects", &gSavedSettings, true);
+	static BOOL* sPhoenixBroadcastEffects = rebind_llcontrol<BOOL>("PhoenixBroadcastEffects", &gSavedSettings, true);
 
-	if(!(*sEmeraldBroadcastEffects))return;
+	if(!(*sPhoenixBroadcastEffects))return;
 	S32 i;
 	for (i = 0; i < mHUDEffects.count(); i++)
 	{

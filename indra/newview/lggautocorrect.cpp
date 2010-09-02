@@ -233,7 +233,7 @@ LLSD LGGAutoCorrect::getAutoCorrectEntries(std::string listName)
 }
 std::string LGGAutoCorrect::replaceWord(std::string currentWord)
 {
-	static BOOL *doAnything = rebind_llcontrol<BOOL>("EmeraldEnableAutoCorrect", &gSavedSettings, true);
+	static BOOL *doAnything = rebind_llcontrol<BOOL>("PhoenixEnableAutoCorrect", &gSavedSettings, true);
 	if(!(*doAnything))return currentWord;
 
 	//loop through priorities
@@ -279,9 +279,9 @@ std::string LGGAutoCorrect::replaceWord(std::string currentWord)
 						args["BEFORE"] = currentWord;
 						args["LISTNAME"]=location;
 						args["REPLACEMENT"]=replacement;
-						LLNotifications::getInstance()->add("EmeraldAutoReplace",args);
+						LLNotifications::getInstance()->add("PhoenixAutoReplace",args);
 					}
-					gSavedSettings.setS32("EmeraldAutoCorrectCount",gSavedSettings.getS32("EmeraldAutoCorrectCount")+1);
+					gSavedSettings.setS32("PhoenixAutoCorrectCount",gSavedSettings.getS32("PhoenixAutoCorrectCount")+1);
 					llinfos << "found a word in list " << location.c_str() << " and it will replace  " << currentWord.c_str() << " => " << replacement.c_str() << llendl;
 					return replacement;
 				}
@@ -292,7 +292,7 @@ std::string LGGAutoCorrect::replaceWord(std::string currentWord)
 }
 std::string LGGAutoCorrect::replaceWords(std::string words)
 {
-	static BOOL *doAnything = rebind_llcontrol<BOOL>("EmeraldEnableAutoCorrect", &gSavedSettings, true);
+	static BOOL *doAnything = rebind_llcontrol<BOOL>("PhoenixEnableAutoCorrect", &gSavedSettings, true);
 	if(!(*doAnything))return words;
 	//TODO update this function to use the "wordStyle" thing,
 	//but so far this function is never used, so later
@@ -319,7 +319,7 @@ std::string LGGAutoCorrect::replaceWords(std::string words)
 					args["BEFORE"] = currentWord;
 					args["LISTNAME"]=location;
 					args["REPLACEMENT"]=replacement;
-					LLNotifications::getInstance()->add("EmeraldAutoReplace",args);
+					LLNotifications::getInstance()->add("PhoenixAutoReplace",args);
 				}
 				llinfos << "found a word in list " << location.c_str() << " and it will replace  " << currentWord.c_str() << " => " << replacement.c_str() << llendl;
 				int wordStart = words.find(currentWord);

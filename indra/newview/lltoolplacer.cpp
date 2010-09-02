@@ -208,17 +208,17 @@ BOOL LLToolPlacer::addObject( LLPCode pcode, S32 x, S32 y, U8 use_physics )
 	// Set params for new object based on its PCode.
 	LLQuaternion	rotation;
 	LLVector3		scale = LLVector3(
-		gSavedSettings.getF32("EmeraldBuildPrefs_Xsize"),
-		gSavedSettings.getF32("EmeraldBuildPrefs_Ysize"),
-		gSavedSettings.getF32("EmeraldBuildPrefs_Zsize"));
+		gSavedSettings.getF32("PhoenixBuildPrefs_Xsize"),
+		gSavedSettings.getF32("PhoenixBuildPrefs_Ysize"),
+		gSavedSettings.getF32("PhoenixBuildPrefs_Zsize"));
 	
 	U8				material = LL_MCODE_WOOD;
-	if(gSavedSettings.getString("EmeraldBuildPrefs_Material")== "Stone") material = LL_MCODE_STONE;
-	if(gSavedSettings.getString("EmeraldBuildPrefs_Material")== "Metal") material = LL_MCODE_METAL;
-	if(gSavedSettings.getString("EmeraldBuildPrefs_Material")== "Wood") material = LL_MCODE_WOOD;
-	if(gSavedSettings.getString("EmeraldBuildPrefs_Material")== "Flesh") material = LL_MCODE_FLESH;
-	if(gSavedSettings.getString("EmeraldBuildPrefs_Material")== "Rubber") material = LL_MCODE_RUBBER;
-	if(gSavedSettings.getString("EmeraldBuildPrefs_Material")== "Plastic") material = LL_MCODE_PLASTIC;
+	if(gSavedSettings.getString("PhoenixBuildPrefs_Material")== "Stone") material = LL_MCODE_STONE;
+	if(gSavedSettings.getString("PhoenixBuildPrefs_Material")== "Metal") material = LL_MCODE_METAL;
+	if(gSavedSettings.getString("PhoenixBuildPrefs_Material")== "Wood") material = LL_MCODE_WOOD;
+	if(gSavedSettings.getString("PhoenixBuildPrefs_Material")== "Flesh") material = LL_MCODE_FLESH;
+	if(gSavedSettings.getString("PhoenixBuildPrefs_Material")== "Rubber") material = LL_MCODE_RUBBER;
+	if(gSavedSettings.getString("PhoenixBuildPrefs_Material")== "Plastic") material = LL_MCODE_PLASTIC;
 		
 
 	
@@ -277,7 +277,7 @@ BOOL LLToolPlacer::addObject( LLPCode pcode, S32 x, S32 y, U8 use_physics )
 	gMessageSystem->addU8Fast(_PREHASH_Material,	material);
 
 	U32 flags = 0;		// not selected
-	if (use_physics || gSavedSettings.getBOOL("EmeraldBuildPrefs_Physical"))
+	if (use_physics || gSavedSettings.getBOOL("PhoenixBuildPrefs_Physical"))
 	{
 		flags |= FLAGS_USE_PHYSICS;
 	}

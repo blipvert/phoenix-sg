@@ -92,7 +92,7 @@ LLSD lggBeamMaps::getPic(std::string filename)
 LLColor4U lggBeamMaps::getCurrentColor(LLColor4U agentColor)
 {
 
-	static std::string* settingName = rebind_llcontrol<std::string >("EmeraldBeamColorFile", &gSavedSettings, true);
+	static std::string* settingName = rebind_llcontrol<std::string >("PhoenixBeamColorFile", &gSavedSettings, true);
 
 	if(*settingName == "===OFF===") return agentColor;
 
@@ -155,7 +155,7 @@ void lggBeamMaps::fireCurrentBeams(LLPointer<LLHUDEffectSpiral> mBeam, LLColor4U
 	for(int i = 0; i < (int)dots.size(); i++)
 	{
 		LLColor4U myColor = rgb;
-		static std::string* colorf = rebind_llcontrol<std::string >("EmeraldBeamColorFile", &gSavedSettings, true);
+		static std::string* colorf = rebind_llcontrol<std::string >("PhoenixBeamColorFile", &gSavedSettings, true);
 		if(*colorf == "===OFF===")
 			myColor = dots[i].c;
 
@@ -198,7 +198,7 @@ void lggBeamMaps::forceUpdate()
 }
 F32 lggBeamMaps::setUpAndGetDuration()
 {
-	static std::string* settingName = rebind_llcontrol<std::string>("EmeraldBeamShape", &gSavedSettings, true);
+	static std::string* settingName = rebind_llcontrol<std::string>("PhoenixBeamShape", &gSavedSettings, true);
 	if(*settingName != lastFileName)
 	{
 		lastFileName = *settingName;
@@ -223,7 +223,7 @@ F32 lggBeamMaps::setUpAndGetDuration()
 				LLSD beamData = myPicture[i];
 				lggBeamData dot;
 				dot.p = beamData["offset"];
-				dot.p *= (gSavedSettings.getF32("EmeraldBeamShapeScale")*2.0f);
+				dot.p *= (gSavedSettings.getF32("PhoenixBeamShapeScale")*2.0f);
 				LLColor4 color = beamData["color"];
 				
 				dot.c = LLColor4U(color);
@@ -231,7 +231,7 @@ F32 lggBeamMaps::setUpAndGetDuration()
 				dots.push_back(dot);
 			}
 			
-			F32 maxBPerQS = gSavedSettings.getF32("EmeraldMaxBeamsPerSecond") / 4.0f;
+			F32 maxBPerQS = gSavedSettings.getF32("PhoenixMaxBeamsPerSecond") / 4.0f;
 			duration = llceil((F32)(myPicture.size()) / maxBPerQS) * 0.25f;
 			llinfos << "reading it all now size is " << myPicture.size() << " and duration is " << duration << llendl;
 		
@@ -363,7 +363,7 @@ std::vector<std::string> lggBeamMaps::getColorsFileNames()
 }
 void lggBeamMaps::stopBeamChat()
 {
-	if(gSavedSettings.getBOOL("EmeraldParticleChat"))
+	if(gSavedSettings.getBOOL("PhoenixParticleChat"))
 	{
 		if(sPartsNow != FALSE)
 		{
@@ -385,7 +385,7 @@ void lggBeamMaps::stopBeamChat()
 }
 void lggBeamMaps::updateBeamChat(LLVector3d currentPos)
 {
-	if(gSavedSettings.getBOOL("EmeraldParticleChat"))
+	if(gSavedSettings.getBOOL("PhoenixParticleChat"))
 	{
 		if(sPartsNow != TRUE)
 		{

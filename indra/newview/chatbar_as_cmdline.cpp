@@ -222,23 +222,23 @@ void invrepair()
 	gInventory.collectDescendents(gAgent.getInventoryRootID(),cats,items,FALSE);//,objectnamematches);
 }
 
-/*static BOOL *sEmeraldCmdLine;
-static std::string *sEmeraldCmdLinePos;
-static std::string *sEmeraldCmdLineDrawDistance;
-static std::string *sEmeraldCmdTeleportToCam;
-static std::string *sEmeraldCmdLineAO;
-static std::string *sEmeraldCmdLineKeyToName;
-static std::string *sEmeraldCmdLineOfferTp;
-static std::string *sEmeraldCmdLineGround;
-static std::string *sEmeraldCmdLineHeight;
-static std::string *sEmeraldCmdLineTeleportHome;
-static std::string *sEmeraldCmdLineRezPlatform;
-static std::string *sEmeraldCmdLineMapTo;
-static BOOL *sEmeraldCmdLineMapToKeepPos;
-static std::string *sEmeraldCmdLineCalc;
-static std::string *sEmeraldCmdLineTP2;
-static std::string *sEmeraldCmdLineClearChat;
-static F32 *sEmeraldCmdLinePlatformSize;*/
+/*static BOOL *sPhoenixCmdLine;
+static std::string *sPhoenixCmdLinePos;
+static std::string *sPhoenixCmdLineDrawDistance;
+static std::string *sPhoenixCmdTeleportToCam;
+static std::string *sPhoenixCmdLineAO;
+static std::string *sPhoenixCmdLineKeyToName;
+static std::string *sPhoenixCmdLineOfferTp;
+static std::string *sPhoenixCmdLineGround;
+static std::string *sPhoenixCmdLineHeight;
+static std::string *sPhoenixCmdLineTeleportHome;
+static std::string *sPhoenixCmdLineRezPlatform;
+static std::string *sPhoenixCmdLineMapTo;
+static BOOL *sPhoenixCmdLineMapToKeepPos;
+static std::string *sPhoenixCmdLineCalc;
+static std::string *sPhoenixCmdLineTP2;
+static std::string *sPhoenixCmdLineClearChat;
+static F32 *sPhoenixCmdLinePlatformSize;*/
 
 /*
 class another_rebind_group
@@ -264,36 +264,36 @@ std::map<std::string, int> get_gsaved_calls();
 
 bool cmd_line_chat(std::string revised_text, EChatType type)
 {
-	static BOOL *sEmeraldCmdLine = rebind_llcontrol<BOOL>("EmeraldCmdLine", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLinePos = rebind_llcontrol<std::string>("EmeraldCmdLinePos", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineDrawDistance = rebind_llcontrol<std::string>("EmeraldCmdLineDrawDistance", &gSavedSettings, true);
-	static std::string *sEmeraldCmdTeleportToCam = rebind_llcontrol<std::string>("EmeraldCmdTeleportToCam", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineAO = rebind_llcontrol<std::string>("EmeraldCmdLineAO", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineKeyToName = rebind_llcontrol<std::string>("EmeraldCmdLineKeyToName", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineOfferTp = rebind_llcontrol<std::string>("EmeraldCmdLineOfferTp", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineGround = rebind_llcontrol<std::string>("EmeraldCmdLineGround", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineHeight = rebind_llcontrol<std::string>("EmeraldCmdLineHeight", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineTeleportHome = rebind_llcontrol<std::string>("EmeraldCmdLineTeleportHome", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineRezPlatform = rebind_llcontrol<std::string>("EmeraldCmdLineRezPlatform", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineMapTo = rebind_llcontrol<std::string>("EmeraldCmdLineMapTo", &gSavedSettings, true);
-	static BOOL *sEmeraldCmdLineMapToKeepPos = rebind_llcontrol<BOOL>("EmeraldCmdLineMapToKeepPos", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineCalc = rebind_llcontrol<std::string>("EmeraldCmdLineCalc", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineTP2 = rebind_llcontrol<std::string>("EmeraldCmdLineTP2", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineClearChat = rebind_llcontrol<std::string>("EmeraldCmdLineClearChat", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineMedia = rebind_llcontrol<std::string>("EmeraldCmdLineMedia", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineMusic = rebind_llcontrol<std::string>("EmeraldCmdLineMusic", &gSavedSettings, true);
-	static std::string *sEmeraldCmdLineAutocorrect = rebind_llcontrol<std::string>("EmeraldCmdLineAutocorrect", &gSavedSettings, true);
-	//static std::string *sEmeraldCmdUndeform = rebind_llcontrol<std::string>("EmeraldCmdUndeform", &gSavedSettings, true);
-	//gSavedSettings.getString("EmeraldCmdUndeform")
+	static BOOL *sPhoenixCmdLine = rebind_llcontrol<BOOL>("PhoenixCmdLine", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLinePos = rebind_llcontrol<std::string>("PhoenixCmdLinePos", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineDrawDistance = rebind_llcontrol<std::string>("PhoenixCmdLineDrawDistance", &gSavedSettings, true);
+	static std::string *sPhoenixCmdTeleportToCam = rebind_llcontrol<std::string>("PhoenixCmdTeleportToCam", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineAO = rebind_llcontrol<std::string>("PhoenixCmdLineAO", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineKeyToName = rebind_llcontrol<std::string>("PhoenixCmdLineKeyToName", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineOfferTp = rebind_llcontrol<std::string>("PhoenixCmdLineOfferTp", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineGround = rebind_llcontrol<std::string>("PhoenixCmdLineGround", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineHeight = rebind_llcontrol<std::string>("PhoenixCmdLineHeight", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineTeleportHome = rebind_llcontrol<std::string>("PhoenixCmdLineTeleportHome", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineRezPlatform = rebind_llcontrol<std::string>("PhoenixCmdLineRezPlatform", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineMapTo = rebind_llcontrol<std::string>("PhoenixCmdLineMapTo", &gSavedSettings, true);
+	static BOOL *sPhoenixCmdLineMapToKeepPos = rebind_llcontrol<BOOL>("PhoenixCmdLineMapToKeepPos", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineCalc = rebind_llcontrol<std::string>("PhoenixCmdLineCalc", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineTP2 = rebind_llcontrol<std::string>("PhoenixCmdLineTP2", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineClearChat = rebind_llcontrol<std::string>("PhoenixCmdLineClearChat", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineMedia = rebind_llcontrol<std::string>("PhoenixCmdLineMedia", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineMusic = rebind_llcontrol<std::string>("PhoenixCmdLineMusic", &gSavedSettings, true);
+	static std::string *sPhoenixCmdLineAutocorrect = rebind_llcontrol<std::string>("PhoenixCmdLineAutocorrect", &gSavedSettings, true);
+	//static std::string *sPhoenixCmdUndeform = rebind_llcontrol<std::string>("PhoenixCmdUndeform", &gSavedSettings, true);
+	//gSavedSettings.getString("PhoenixCmdUndeform")
 	
-	if(*sEmeraldCmdLine)
+	if(*sPhoenixCmdLine)
 	{
 		std::istringstream i(revised_text);
 		std::string command;
 		i >> command;
 		if(command != "")
 		{
-			if(command == *sEmeraldCmdLinePos)
+			if(command == *sPhoenixCmdLinePos)
 			{
 				F32 x,y,z;
 				if (i >> x)
@@ -316,7 +316,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 					}
 				}
 			}
-			else if(command == *sEmeraldCmdLineDrawDistance)
+			else if(command == *sPhoenixCmdLineDrawDistance)
 			{
                 int drawDist;
                 if(i >> drawDist)
@@ -329,18 +329,18 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 					return false;
                 }
 			}
-			else if(command == *sEmeraldCmdTeleportToCam)
+			else if(command == *sPhoenixCmdTeleportToCam)
             {
 				gAgent.teleportViaLocation(gAgent.getCameraPositionGlobal());
 				return false;
             }
-			/*else if(command == *sEmeraldCmdUndeform)
+			/*else if(command == *sPhoenixCmdUndeform)
             {
 				llinfos << "UNDEFORM: Do you feel your bones cracking back into place?" << llendl;
 				gAgent.getAvatarObject()->undeform();
 				return false;
             }*/ //what the fuck is this shit, thought it would be something useful like repairing the skeleton but its some shitty playing of inworld anims
-			else if(command == *sEmeraldCmdLineMedia)
+			else if(command == *sPhoenixCmdLineMedia)
 			{
 				std::string url;
 				std::string type;
@@ -358,7 +358,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 					}
 				}
 			}
-			else if(command == *sEmeraldCmdLineMusic)
+			else if(command == *sPhoenixCmdLineMusic)
 			{
 				std::string status;
 				if(i >> status)
@@ -371,30 +371,30 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 					return false;
 				}
 			}
-			else if(command == *sEmeraldCmdLineAO)
+			else if(command == *sPhoenixCmdLineAO)
             {
 				std::string status;
                 if(i >> status)
                 {
 					if (status == "on" )
 					{
-						gSavedPerAccountSettings.setBOOL("EmeraldAOEnabled",TRUE);
+						gSavedPerAccountSettings.setBOOL("PhoenixAOEnabled",TRUE);
 //						LLFloaterAO::init();
 						LLFloaterAO::run();
 					}
 					else if (status == "off" )
 					{
-						gSavedPerAccountSettings.setBOOL("EmeraldAOEnabled",FALSE);
+						gSavedPerAccountSettings.setBOOL("PhoenixAOEnabled",FALSE);
 						LLFloaterAO::run();
 					}
 					else if (status == "sit" )
 					{
-						gSavedPerAccountSettings.setBOOL("EmeraldAOSitsEnabled",!gSavedPerAccountSettings.getBOOL("EmeraldAOSitsEnabled"));
+						gSavedPerAccountSettings.setBOOL("PhoenixAOSitsEnabled",!gSavedPerAccountSettings.getBOOL("PhoenixAOSitsEnabled"));
 					}
 				}
 				return false;
             }
-			else if(command == *sEmeraldCmdLineKeyToName)
+			else if(command == *sPhoenixCmdLineKeyToName)
             {
                 LLUUID targetKey;
                 if(i >> targetKey)
@@ -496,7 +496,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 				cmdline_printchat(std::string("Standing up"));
 				return false;
             }
-			else if(command == *sEmeraldCmdLineOfferTp)
+			else if(command == *sPhoenixCmdLineOfferTp)
             {
                 std::string avatarKey;
 //				llinfos << "CMD DEBUG 0 " << command << " " << avatarName << llendl;
@@ -532,7 +532,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
                 }
             }
 			
-			else if(command == *sEmeraldCmdLineGround)
+			else if(command == *sPhoenixCmdLineGround)
 			{
 				LLVector3 agentPos = gAgent.getPositionAgent();
 				U64 agentRegion = gAgent.getRegion()->getHandle();
@@ -541,7 +541,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 				pos_global += LLVector3d((F64)targetPos.mV[0],(F64)targetPos.mV[1],(F64)targetPos.mV[2]);
 				gAgent.teleportViaLocation(pos_global);
 				return false;
-			}else if(command == *sEmeraldCmdLineHeight)
+			}else if(command == *sPhoenixCmdLineHeight)
 			{
 				F32 z;
 				if(i >> z)
@@ -554,17 +554,17 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 					gAgent.teleportViaLocation(pos_global);
 					return false;
 				}
-			}else if(command == *sEmeraldCmdLineTeleportHome)
+			}else if(command == *sPhoenixCmdLineTeleportHome)
 			{
 				gAgent.teleportHome();
 				return false;
-            }else if(command == *sEmeraldCmdLineRezPlatform)
+            }else if(command == *sPhoenixCmdLineRezPlatform)
             {
 				F32 width;
 				if (i >> width) cmdline_rezplat(false, width);
 				else cmdline_rezplat();
 				return false;
-			}else if(command == *sEmeraldCmdLineMapTo)
+			}else if(command == *sPhoenixCmdLineMapTo)
 			{
 				if (revised_text.length() > command.length() + 1) //Typing this command with no argument was causing a crash. -Madgeek
 				{
@@ -575,7 +575,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 					std::string region_name = LLWeb::escapeURL(revised_text.substr(command.length()+1));
 					std::string url;
 
-					if(!*sEmeraldCmdLineMapToKeepPos)
+					if(!*sPhoenixCmdLineMapToKeepPos)
 					{
 						agent_x = 128;
 						agent_y = 128;
@@ -586,7 +586,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 					LLURLDispatcher::dispatch(url, NULL, true);
 				}
 				return false;
-			}else if(command == *sEmeraldCmdLineCalc)//Cryogenic Blitz
+			}else if(command == *sPhoenixCmdLineCalc)//Cryogenic Blitz
 			{
 				bool success;
 				F32 result = 0.f;
@@ -615,7 +615,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 					cmdline_printchat(out);
 					return false;
 				}
-			}else if(command == *sEmeraldCmdLineTP2)
+			}else if(command == *sPhoenixCmdLineTP2)
 			{
 				if (revised_text.length() > command.length() + 1) //Typing this command with no argument was causing a crash. -Madgeek
 				{
@@ -640,15 +640,15 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 				cmdline_printchat("Displaying AutoCorrection Floater.");
 				return false;
 			}
-			else if(command == *sEmeraldCmdLineAutocorrect)
+			else if(command == *sPhoenixCmdLineAutocorrect)
 			{
-				std::string info = revised_text.substr((*sEmeraldCmdLineAutocorrect).length()+1);
+				std::string info = revised_text.substr((*sPhoenixCmdLineAutocorrect).length()+1);
 				//addac list name|wrong word|right word
 				int bar = info.find("|");
 				if (bar==std::string::npos)
 				{
 					cmdline_printchat("Wrong usage, correct usage is"+
-				*sEmeraldCmdLineAutocorrect+" list Name|wrong word|right word.");
+				*sPhoenixCmdLineAutocorrect+" list Name|wrong word|right word.");
 					return false;
 				}
 				
@@ -660,7 +660,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 				if (bar==std::string::npos)
 				{
 					cmdline_printchat("Wrong usage, correct usage is"+
-						*sEmeraldCmdLineAutocorrect+" list Name|wrong word|right word.");
+						*sPhoenixCmdLineAutocorrect+" list Name|wrong word|right word.");
 					return false;
 				}
 
@@ -683,7 +683,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 // 				//gAgent.getAvatarObject()->loadAvatar();
 // 				return false;
 // 			}
-			else if(command == *sEmeraldCmdLineClearChat)
+			else if(command == *sPhoenixCmdLineClearChat)
 			{
 				LLFloaterChat* chat = LLFloaterChat::getInstance(LLSD());
 				if(chat)
@@ -930,9 +930,9 @@ void cmdline_rezplat(bool use_saved_value, F32 visual_radius) //cmdline_rezplat(
     LLQuaternion rotation;
     rotation.setQuat(90.f * DEG_TO_RAD, LLVector3::y_axis);
 
-	static F32 *sEmeraldCmdLinePlatformSize = rebind_llcontrol<F32>("EmeraldCmdLinePlatformSize", &gSavedSettings, true);
+	static F32 *sPhoenixCmdLinePlatformSize = rebind_llcontrol<F32>("PhoenixCmdLinePlatformSize", &gSavedSettings, true);
 
-	if (use_saved_value) visual_radius = *sEmeraldCmdLinePlatformSize;
+	if (use_saved_value) visual_radius = *sPhoenixCmdLinePlatformSize;
 	F32 realsize = visual_radius / 3.0f;
 	if (realsize < 0.01f) realsize = 0.01f;
 	else if (realsize > 10.0f) realsize = 10.0f;

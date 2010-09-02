@@ -69,8 +69,8 @@
 #include "floaterao.h"
 
 
-#define emerald_point (LLAssetType::EType)127
-#define emerald_bridge_name "#LSL<->Client Bridge v0.06"
+#define phoenix_point (LLAssetType::EType)127
+#define phoenix_bridge_name "#LSL<->Client Bridge v0.06"
 
 void cmdline_printchat(std::string message);
 
@@ -100,8 +100,8 @@ JCLSLBridge::JCLSLBridge() : LLEventTimer( (F32)1.0 )
 		lastcall = 0;
 		l2c = 0;
 		l2c_inuse = false;
-		gSavedSettings.getControl("EmeraldBuildBridge")->getSignal()->connect(&updateBuildBridge);
-		sBuildBridge = gSavedSettings.getBOOL("EmeraldBuildBridge");
+		gSavedSettings.getControl("PhoenixBuildBridge")->getSignal()->connect(&updateBuildBridge);
+		sBuildBridge = gSavedSettings.getBOOL("PhoenixBuildBridge");
 		//getPermissions();
 	}
 }
@@ -247,19 +247,19 @@ bool JCLSLBridge::lsltobridge(std::string message, std::string from_name, LLUUID
 				i >> cmd;
 				if (args[1].asString() == "on")
 				{
-					gSavedPerAccountSettings.setBOOL("EmeraldAOEnabled",TRUE);
+					gSavedPerAccountSettings.setBOOL("PhoenixAOEnabled",TRUE);
 					LLFloaterAO::run();
 				}
 				else if (args[1].asString() == "off")
 				{
-					gSavedPerAccountSettings.setBOOL("EmeraldAOEnabled",FALSE);
+					gSavedPerAccountSettings.setBOOL("PhoenixAOEnabled",FALSE);
 					LLFloaterAO::run();
 				}
 				else if (cmd == "state")
 				{
 					S32 chan = atoi(args[2].asString().c_str());
 					std::string tmp="off";
-					if(gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled"))tmp="on";
+					if(gSavedPerAccountSettings.getBOOL("PhoenixAOEnabled"))tmp="on";
 					send_chat_to_object(tmp,chan,gAgent.getID());
 				}
 				return true;
@@ -368,13 +368,13 @@ private:
 
 LLUUID JCLSLBridge::findCategoryByNameOrCreate(std::string name)
 {
-	LLUUID emerald_category;
-	emerald_category = gInventory.findCategoryByName(emerald_category_name);
-	if(emerald_category.isNull())
+	LLUUID phoenix_category;
+	phoenix_category = gInventory.findCategoryByName(phoenix_category_name);
+	if(phoenix_category.isNull())
 	{
-		emerald_category = gInventory.createNewCategory(gAgent.getInventoryRootID(), LLAssetType::AT_NONE, emerald_category_name);
+		phoenix_category = gInventory.createNewCategory(gAgent.getInventoryRootID(), LLAssetType::AT_NONE, phoenix_category_name);
 	}
-	return emerald_category;
+	return phoenix_category;
 }
 
 
@@ -416,7 +416,7 @@ static const U32 bridgeprefix_length = U32(bridgeprefix.length());
 
 void callbackBridgeCleanup(const LLSD &notification, const LLSD &response, LLViewerInventoryItem::item_array_t items)
 {
-	gSavedSettings.setWarning("EmeraldOldBridgeCleanup", FALSE);
+	gSavedSettings.setWarning("PhoenixOldBridgeCleanup", FALSE);
 
 	S32 option = LLNotification::getSelectedOption(notification, response);
 	
@@ -486,7 +486,7 @@ private:
 
 void bridge_trash_check()
 {
-	if(gSavedSettings.getWarning("EmeraldOldBridgeCleanup"))
+	if(gSavedSettings.getWarning("PhoenixOldBridgeCleanup"))
 	{
 		//cmdline_printchat("doing cleaner scan");
 		BridgeCleanupMatches prefixmatcher;
@@ -546,7 +546,7 @@ void bridge_trash_check()
 			if(dqlen > 0)
 			{
 				//cmdline_printchat("dqlen > 0");
-				std::string bridges = llformat("%d",delete_queue.count())+" older Emerald LSL Bridge object";
+				std::string bridges = llformat("%d",delete_queue.count())+" older Phoenix LSL Bridge object";
 				if(dqlen > 1)bridges += "s";
 				LLSD args;
 				args["BRIDGES"] = bridges;
@@ -565,10 +565,10 @@ BOOL JCLSLBridge::tick()
 	{
 		if(firstsim == TRUE && gInventory.isInventoryUsable())
 		{
-			//cmdline_printchat("firstsim fetching #Emerald");
+			//cmdline_printchat("firstsim fetching #Phoenix");
 			firstsim = FALSE;
-			LLUUID emerald_category = findCategoryByNameOrCreate(emerald_category_name);
-			gInventory.fetchDescendentsOf(emerald_category);
+			LLUUID phoenix_category = findCategoryByNameOrCreate(phoenix_category_name);
+			gInventory.fetchDescendentsOf(phoenix_category);
 		}
 		static BOOL first_full_load = TRUE;
 		if(first_full_load)
@@ -586,16 +586,16 @@ BOOL JCLSLBridge::tick()
 			{
 				if(!sBuildBridge)
 				{
-					//cmdline_printchat("EmeraldBuildBridge is false");
+					//cmdline_printchat("PhoenixBuildBridge is false");
 					sBridgeStatus = FAILED;
 					break;
 				}
 				//cmdline_printchat("initializing");//<< llendl;
-				LLUUID emerald_category = findCategoryByNameOrCreate(emerald_category_name);
-				LLUUID item_id = findInventoryByName(emerald_bridge_name);
-				if(gInventory.isCategoryComplete(emerald_category))// || (item_id.notNull() && isworn(item_id)))
+				LLUUID phoenix_category = findCategoryByNameOrCreate(phoenix_category_name);
+				LLUUID item_id = findInventoryByName(phoenix_bridge_name);
+				if(gInventory.isCategoryComplete(phoenix_category))// || (item_id.notNull() && isworn(item_id)))
 				{
-					//cmdline_printchat("#Emerald is fetched");//<< llendl;
+					//cmdline_printchat("#Phoenix is fetched");//<< llendl;
 					
 					if(item_id.notNull())
 					{
@@ -623,7 +623,7 @@ BOOL JCLSLBridge::tick()
 								msg->nextBlockFast(_PREHASH_ObjectData);
 								msg->addUUIDFast(_PREHASH_ItemID, bridge->getUUID());
 								msg->addUUIDFast(_PREHASH_OwnerID, bridge->getPermissions().getOwner());
-								msg->addU8Fast(_PREHASH_AttachmentPt, emerald_point);
+								msg->addU8Fast(_PREHASH_AttachmentPt, phoenix_point);
 								pack_permissions_slam(msg, bridge->getFlags(), bridge->getPermissions());
 								msg->addStringFast(_PREHASH_Name, bridge->getName());
 								msg->addStringFast(_PREHASH_Description, bridge->getDescription());
@@ -663,7 +663,7 @@ BOOL JCLSLBridge::tick()
 					}
 				}/*else
 				{
-					cmdline_printchat("#Emerald is not fetched");
+					cmdline_printchat("#Phoenix is not fetched");
 				}*/
 			}
 			break;
@@ -676,7 +676,7 @@ BOOL JCLSLBridge::tick()
 				msg->nextBlockFast(_PREHASH_AgentData);
 				msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
 				msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-				msg->addU8Fast(_PREHASH_AttachmentPoint, emerald_point);
+				msg->addU8Fast(_PREHASH_AttachmentPoint, phoenix_point);
 				
 				msg->nextBlockFast(_PREHASH_ObjectData);
 				msg->addU32Fast(_PREHASH_ObjectLocalID, sBridgeObject->getLocalID());
@@ -690,16 +690,16 @@ BOOL JCLSLBridge::tick()
 			{
 				//cmdline_printchat("foldering");
 				////cmdline_printchat("foldering");
-				LLUUID emerald_category = findCategoryByNameOrCreate(emerald_category_name);
+				LLUUID phoenix_category = findCategoryByNameOrCreate(phoenix_category_name);
 
-				LLUUID bridge_id = findInventoryByName(emerald_bridge_name);
+				LLUUID bridge_id = findInventoryByName(phoenix_bridge_name);
 				//cmdline_printchat("bridge_id="+bridge_id.asString());
 				//cmdline_printchat("id="+bridge_id.asString());
 				LLViewerInventoryItem* bridge = gInventory.getItem(bridge_id);
 				if(bridge)
 				{
-					//cmdline_printchat("bridge exists, moving to #Emerald.");
-					move_inventory_item(gAgent.getID(),gAgent.getSessionID(),bridge->getUUID(),emerald_category,emerald_bridge_name, NULL);
+					//cmdline_printchat("bridge exists, moving to #Phoenix.");
+					move_inventory_item(gAgent.getID(),gAgent.getSessionID(),bridge->getUUID(),phoenix_category,phoenix_bridge_name, NULL);
 					sBridgeStatus = RECHANNEL;
 					////cmdline_printchat("moving to folder");
 				}
@@ -716,7 +716,7 @@ BOOL JCLSLBridge::tick()
 			break;
 		case ACTIVE:
 			{
-				LLUUID bridge = findInventoryByName(emerald_bridge_name,emerald_category_name);
+				LLUUID bridge = findInventoryByName(phoenix_bridge_name,phoenix_category_name);
 				//if(bridge)
 				//LLVOAvatar* avatar = gAgent.getAvatarObject();
 				if(bridge.isNull() || !isworn(bridge))
@@ -746,7 +746,7 @@ void JCLSLBridge::setBridgeObject(LLViewerObject* obj)
 		msg->addUUIDFast(_PREHASH_SessionID,gAgent.getSessionID());
 		msg->nextBlockFast(_PREHASH_ObjectData);
 		msg->addU32Fast(_PREHASH_LocalID,obj->getLocalID());
-		msg->addStringFast(_PREHASH_Name,emerald_bridge_name);
+		msg->addStringFast(_PREHASH_Name,phoenix_bridge_name);
 		gAgent.sendReliableMessage();
 	}
 }
@@ -808,15 +808,15 @@ void JCLSLBridge::processSoundTrigger(LLMessageSystem* msg,void**)
 		{
 			if(sBridgeStatus == ACTIVE)
 			{
-                std::string mess = "emerald_bridge_rdy";
+                std::string mess = "phoenix_bridge_rdy";
 				send_chat_to_object(mess, JCLSLBridge::bridge_channel(gAgent.getID()), object_id);
 			}else if(sBridgeStatus == FAILED)
 			{
-                std::string mess = "emerald_bridge_failed";
+                std::string mess = "phoenix_bridge_failed";
 				send_chat_to_object(mess, JCLSLBridge::bridge_channel(gAgent.getID()), object_id);
 			}else
 			{
-                std::string mess = "emerald_bridge_working";
+                std::string mess = "phoenix_bridge_working";
 				send_chat_to_object(mess, JCLSLBridge::bridge_channel(gAgent.getID()), object_id);
 			}
 		}
@@ -824,12 +824,12 @@ void JCLSLBridge::processSoundTrigger(LLMessageSystem* msg,void**)
 	}
 }
 /*
-LLUUID BridgePermissions_Emerald("c78f9f3f-56ac-4442-a0b9-8b41dad455ae");
+LLUUID BridgePermissions_Phoenix("c78f9f3f-56ac-4442-a0b9-8b41dad455ae");
 
 void JCLSLBridge::loadPermissions()
 {
 	std::vector<std::string> strings;
-	strings.push_back( BridgePermissions_Emerald.asString() );//BridgePermissions Emerald
+	strings.push_back( BridgePermissions_Phoenix.asString() );//BridgePermissions Phoenix
 	send_generic_message("avatarnotesrequest", strings);
 }
 
@@ -841,7 +841,7 @@ void JCLSLBridge::storePermissions()
 	msg->addUUID("AgentID", gAgent.getID());
 	msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
 	msg->nextBlock("Data");
-	msg->addUUID("TargetID", BridgePermissions_Emerald);
+	msg->addUUID("TargetID", BridgePermissions_Phoenix);
 	msg->addString("Notes", "");//RECHANNEL_permissions);
 	gAgent.sendReliableMessage();
 }
@@ -854,7 +854,7 @@ void JCLSLBridge::processAvatarNotesReply(LLMessageSystem *msg, void**)
 	LLUUID target_id;
 	msg->getUUID("Data", "TargetID", target_id);
 
-	/*if(target_id == BridgePermissions_Emerald)
+	/*if(target_id == BridgePermissions_Phoenix)
 	{
 		std::string text;
 		msg->getString("Data", "Notes", text);

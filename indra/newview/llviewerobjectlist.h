@@ -65,7 +65,7 @@ public:
 
 	void destroy();
 	
-	friend class LocalBitmap; // tag: vaa emerald local_asset_browser
+	friend class LocalBitmap; // tag: vaa phoenix local_asset_browser
 
 	// For internal use only.  Does NOT take a local id, takes an index into
 	// an internal dynamic array.

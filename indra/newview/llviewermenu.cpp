@@ -2095,7 +2095,7 @@ class LLObjectDerender : public view_listener_t
 		{
 			LLViewerObject *objectp = gObjectList.findObject(id);
 //			if (objectp)
-// [RLVa:KB] - Alternate: Emerald-1371 | Checked: 2009-01-17 (RLVa-1.1.0) | Added: RLVa-1.1.0
+// [RLVa:KB] - Alternate: Phoenix-1371 | Checked: 2009-01-17 (RLVa-1.1.0) | Added: RLVa-1.1.0
 			LLVOAvatar* pAvatar = NULL, *pAvatarSelf = gAgent.getAvatarObject();
 			// Don't allow derendering this avie's own attachments when RLV is enabled (or the object the avie is sitting on)
 			if (
@@ -2114,7 +2114,7 @@ class LLObjectDerender : public view_listener_t
 	}
 };
 
-// [RLVa:KB] - Alternate: Emerald-1371 | Checked: 2009-01-17 (RLVa-1.1.0) | Added: RLVa-1.1.0
+// [RLVa:KB] - Alternate: Phoenix-1371 | Checked: 2009-01-17 (RLVa-1.1.0) | Added: RLVa-1.1.0
 class LLObjectEnableDerender : public view_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent>, const LLSD& userdata)
@@ -3722,7 +3722,7 @@ void reset_view_final( BOOL proceed, void* )
         return;
     }
 
-    if(!gFloaterTools->getVisible() || gSavedSettings.getBOOL("EmeraldResetCamOnEscape"))
+    if(!gFloaterTools->getVisible() || gSavedSettings.getBOOL("PhoenixResetCamOnEscape"))
     {
     	gAgent.changeCameraToDefault();
         gAgent.resetView(TRUE,TRUE);
@@ -7744,10 +7744,10 @@ class LLToolsShowSelectionHighlights : public view_listener_t
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
 	{
 		//LLSelectMgr::enableSilhouette = !LLSelectMgr::enableSilhouette;
-		//gSavedSettings.setBOOL("EmeraldRenderHighlightSelections",!gSavedSettings.getBOOL("EmeraldRenderHighlightSelections"));
+		//gSavedSettings.setBOOL("PhoenixRenderHighlightSelections",!gSavedSettings.getBOOL("PhoenixRenderHighlightSelections"));
 		LLSelectMgr::sRenderSelectionHighlights = !LLSelectMgr::sRenderSelectionHighlights;
 		
-		gSavedSettings.setBOOL("EmeraldRenderHighlightSelections", LLSelectMgr::sRenderSelectionHighlights);
+		gSavedSettings.setBOOL("PhoenixRenderHighlightSelections", LLSelectMgr::sRenderSelectionHighlights);
 		return true;
 	}
 };
@@ -8736,11 +8736,11 @@ class LLWorldChat : public view_listener_t
 		return true;
 	}
 };
-class LLEmeraldTogglePhantom: public view_listener_t
+class LLPhoenixTogglePhantom: public view_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
 	{
-		if(gSavedSettings.getBOOL("EmeraldAllowPhantomToggle"))
+		if(gSavedSettings.getBOOL("PhoenixAllowPhantomToggle"))
 		{
 			LLAgent::togglePhantom();
 			BOOL ph = LLAgent::getPhantom();
@@ -8754,7 +8754,7 @@ class LLEmeraldTogglePhantom: public view_listener_t
 	}
 
 };
-class LLEmeraldToggleRadar: public view_listener_t
+class LLPhoenixToggleRadar: public view_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
 	{
@@ -8770,7 +8770,7 @@ class LLEmeraldToggleRadar: public view_listener_t
 	}
 };
 
-class LLEmeraldCheckPhantom: public view_listener_t
+class LLPhoenixCheckPhantom: public view_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
 	{
@@ -8779,11 +8779,11 @@ class LLEmeraldCheckPhantom: public view_listener_t
 	}
 };
 
-class LLEmeraldToggleSit: public view_listener_t
+class LLPhoenixToggleSit: public view_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
 	{
-// [RLVa:KB] - Alternate: Emerald-370
+// [RLVa:KB] - Alternate: Phoenix-370
 		// Can't sit on land when @unsit=n restricted
 		if (gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT))
 		{
@@ -8791,7 +8791,7 @@ class LLEmeraldToggleSit: public view_listener_t
 		}
 // [/RLVa:KB]
 
-		if(gSavedSettings.getBOOL("EmeraldAllowSitToggle"))
+		if(gSavedSettings.getBOOL("PhoenixAllowSitToggle"))
 		{
 			LLChat chat;
 			chat.mSourceType = CHAT_SOURCE_SYSTEM;
@@ -8812,7 +8812,7 @@ class LLEmeraldToggleSit: public view_listener_t
 	}
 
 };
-class LLEmeraldCheckSit : public view_listener_t
+class LLPhoenixCheckSit : public view_listener_t
 {
     bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
     {
@@ -8828,12 +8828,12 @@ class LLEmeraldCheckSit : public view_listener_t
 	}
 };
 
-class EmeraldToggleBlockSpam : public view_listener_t
+class PhoenixToggleBlockSpam : public view_listener_t
 {
     bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
     {
-        BOOL new_value = !gSavedSettings.getBOOL("EmeraldBlockSpam");
-        gSavedSettings.setBOOL("EmeraldBlockSpam", new_value);
+        BOOL new_value = !gSavedSettings.getBOOL("PhoenixBlockSpam");
+        gSavedSettings.setBOOL("PhoenixBlockSpam", new_value);
 
         // Srsly kill some dialogs and stuf.
                 std::string msg;
@@ -8850,17 +8850,17 @@ class EmeraldToggleBlockSpam : public view_listener_t
     }
 };
 
-class EmeraldCheckBlockSpam : public view_listener_t
+class PhoenixCheckBlockSpam : public view_listener_t
 {
     bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
     {
-        BOOL new_value = gSavedSettings.getBOOL("EmeraldBlockSpam");
+        BOOL new_value = gSavedSettings.getBOOL("PhoenixBlockSpam");
         gMenuHolder->findControl(userdata["control"].asString())->setValue(new_value);
         return true;
     }
 };
 
-class EmeraldMarkAllDead : public view_listener_t
+class PhoenixMarkAllDead : public view_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
 	{
@@ -9056,31 +9056,31 @@ class LLWorldDayCycle : public view_listener_t
 	}
 };
 
-class LLEmeraldToggleAutoResponse: public view_listener_t
+class LLPhoenixToggleAutoResponse: public view_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
 	{
-		gSavedPerAccountSettings.setBOOL("EmeraldInstantMessageResponseAnyone",!gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageResponseAnyone"));
+		gSavedPerAccountSettings.setBOOL("PhoenixInstantMessageResponseAnyone",!gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseAnyone"));
 		return true;
 	}
 
 };
 
-class LLEmeraldCheckAutoResponse: public view_listener_t
+class LLPhoenixCheckAutoResponse: public view_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
 	{
-		gMenuHolder->findControl(userdata["control"].asString())->setValue(gSavedPerAccountSettings.getBOOL("EmeraldInstantMessageResponseAnyone"));
+		gMenuHolder->findControl(userdata["control"].asString())->setValue(gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseAnyone"));
 		return true;
 	}
 };
 
-class LLEmeraldToggleDoubleClickTeleport: public view_listener_t
+class LLPhoenixToggleDoubleClickTeleport: public view_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
 	{
-			gSavedSettings.setBOOL("EmeraldDoubleClickTeleport",!gSavedSettings.getBOOL("EmeraldDoubleClickTeleport"));
-			BOOL tp = gSavedSettings.getBOOL("EmeraldDoubleClickTeleport");
+			gSavedSettings.setBOOL("PhoenixDoubleClickTeleport",!gSavedSettings.getBOOL("PhoenixDoubleClickTeleport"));
+			BOOL tp = gSavedSettings.getBOOL("PhoenixDoubleClickTeleport");
 			LLChat chat;
 			chat.mSourceType = CHAT_SOURCE_SYSTEM;
 			chat.mText = llformat("%s%s","Doubleclick Teleporting ",(tp ? "On" : "Off"));
@@ -9090,11 +9090,11 @@ class LLEmeraldToggleDoubleClickTeleport: public view_listener_t
 
 };
 
-class LLEmeraldCheckDoubleClickTeleport: public view_listener_t
+class LLPhoenixCheckDoubleClickTeleport: public view_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
 	{
-		gMenuHolder->findControl(userdata["control"].asString())->setValue(gSavedSettings.getBOOL("EmeraldDoubleClickTeleport"));
+		gMenuHolder->findControl(userdata["control"].asString())->setValue(gSavedSettings.getBOOL("PhoenixDoubleClickTeleport"));
 		return true;
 	}
 };
@@ -9203,23 +9203,23 @@ void initialize_menus()
 	addMenu(new LLViewCheckRenderType(), "View.CheckRenderType");
 	addMenu(new LLViewCheckHUDAttachments(), "View.CheckHUDAttachments");
 
-	//Emerald menu
-	addMenu(new LLEmeraldTogglePhantom(), "Emerald.TogglePhantom");
-	addMenu(new LLEmeraldCheckPhantom(), "Emerald.CheckPhantom");
-	addMenu(new LLEmeraldToggleSit(), "Emerald.ToggleSit");
-	addMenu(new LLEmeraldCheckSit(), "Emerald.CheckSit");
+	//Phoenix menu
+	addMenu(new LLPhoenixTogglePhantom(), "Phoenix.TogglePhantom");
+	addMenu(new LLPhoenixCheckPhantom(), "Phoenix.CheckPhantom");
+	addMenu(new LLPhoenixToggleSit(), "Phoenix.ToggleSit");
+	addMenu(new LLPhoenixCheckSit(), "Phoenix.CheckSit");
 
-	addMenu(new LLEmeraldToggleDoubleClickTeleport(), "Emerald.ToggleDoubleClickTeleport");
-	addMenu(new LLEmeraldCheckDoubleClickTeleport(), "Emerald.CheckDoubleClickTeleport");
+	addMenu(new LLPhoenixToggleDoubleClickTeleport(), "Phoenix.ToggleDoubleClickTeleport");
+	addMenu(new LLPhoenixCheckDoubleClickTeleport(), "Phoenix.CheckDoubleClickTeleport");
 
-	addMenu(new LLEmeraldToggleAutoResponse(), "Emerald.ToggleAutoResponse");
-	addMenu(new LLEmeraldCheckAutoResponse(), "Emerald.CheckAutoResponse");
+	addMenu(new LLPhoenixToggleAutoResponse(), "Phoenix.ToggleAutoResponse");
+	addMenu(new LLPhoenixCheckAutoResponse(), "Phoenix.CheckAutoResponse");
 
-	addMenu(new LLEmeraldToggleRadar(), "Emerald.ToggleAvatarList");
-    addMenu(new EmeraldToggleBlockSpam(), "Emerald.ToggleBlockSpam");
-    addMenu(new EmeraldCheckBlockSpam(), "Emerald.CheckBlockSpam");
+	addMenu(new LLPhoenixToggleRadar(), "Phoenix.ToggleAvatarList");
+    addMenu(new PhoenixToggleBlockSpam(), "Phoenix.ToggleBlockSpam");
+    addMenu(new PhoenixCheckBlockSpam(), "Phoenix.CheckBlockSpam");
 	addMenu(new LLToggleDebugMenus(), "ToggleDebugMenus");
-	addMenu(new EmeraldMarkAllDead(), "Emerald.ClearEffects");
+	addMenu(new PhoenixMarkAllDead(), "Phoenix.ClearEffects");
     addMenu(new LLScriptDelete(), "Tools.ScriptDelete");
     addMenu(new LLObjectEnableScriptDelete(), "Tools.EnableScriptDelete");
 	
@@ -9328,7 +9328,7 @@ void initialize_menus()
 	addMenu(new LLObjectEdit(), "Object.Edit");
 	addMenu(new LLObjectInspect(), "Object.Inspect");
 	addMenu(new LLObjectDerender(), "Object.DERENDER"); //Phox: Added visible mute here.
-// [RLVa:KB] - Alternate: Emerald-1371 | Checked: 2009-01-17 (RLVa-1.1.0) | Added: RLVa-1.1.0
+// [RLVa:KB] - Alternate: Phoenix-1371 | Checked: 2009-01-17 (RLVa-1.1.0) | Added: RLVa-1.1.0
 	addMenu(new LLObjectEnableDerender(), "Object.EnableDerender");
 // [/RLVa:KB]
 	addMenu(new LLObjectEnableOpen(), "Object.EnableOpen");

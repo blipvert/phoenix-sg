@@ -99,7 +99,7 @@ LLPrefsChatImpl::LLPrefsChatImpl()
 	getChild<LLColorSwatchCtrl>("owner")->set(gSavedSettings.getColor4("llOwnerSayChatColor"));
 	getChild<LLColorSwatchCtrl>("background")->set(gSavedSettings.getColor4("BackgroundChatColor"));
 	getChild<LLColorSwatchCtrl>("links")->set(gSavedSettings.getColor4("HTMLLinkColor"));
-	getChild<LLColorSwatchCtrl>("encrypted")->set(gSavedSettings.getColor4("EmeraldIMEncryptedChatColor"));
+	getChild<LLColorSwatchCtrl>("encrypted")->set(gSavedSettings.getColor4("PhoenixIMEncryptedChatColor"));
 
 	childSetValue("arrow_keys_move_avatar_check", gSavedSettings.getBOOL("ArrowKeysMoveAvatar"));
 	childSetValue("show_timestamps_check", gSavedSettings.getBOOL("ChatShowTimestamps"));
@@ -144,7 +144,7 @@ void LLPrefsChatImpl::refreshValues()
 	mBubbleOpacity = *sChatBubbleOpacity;
 	mTranslateLanguage = gSavedSettings.getString("TranslateLanguage");
 	mTranslateChat = gSavedSettings.getBOOL("TranslateChat");
-	mIMEncryptedChatColor = gSavedSettings.getColor4("EmeraldIMEncryptedChatColor");
+	mIMEncryptedChatColor = gSavedSettings.getColor4("PhoenixIMEncryptedChatColor");
 }
 
 void LLPrefsChatImpl::cancel()
@@ -172,7 +172,7 @@ void LLPrefsChatImpl::cancel()
 	gSavedSettings.setF32("ChatBubbleOpacity", mBubbleOpacity);	
 	gSavedSettings.setString("TranslateLanguage", mTranslateLanguage);	
 	gSavedSettings.setBOOL("TranslateChat", mTranslateChat);
-	gSavedSettings.setColor4("EmeraldIMEncryptedChatColor", mIMEncryptedChatColor);
+	gSavedSettings.setColor4("PhoenixIMEncryptedChatColor", mIMEncryptedChatColor);
 }
 
 void LLPrefsChatImpl::apply()
@@ -189,7 +189,7 @@ void LLPrefsChatImpl::apply()
 	gSavedSettings.setColor4("ObjectChatColor", childGetValue("objects"));
 	gSavedSettings.setColor4("llOwnerSayChatColor", childGetValue("owner"));
 	gSavedSettings.setColor4("BackgroundChatColor", childGetValue("background"));
-	gSavedSettings.setColor4("EmeraldIMEncryptedChatColor", childGetValue("encrypted"));
+	gSavedSettings.setColor4("PhoenixIMEncryptedChatColor", childGetValue("encrypted"));
 
 	gSavedSettings.setColor4("HTMLLinkColor", childGetValue("links"));
 	LLTextEditor::setLinkColor(childGetValue("links"));

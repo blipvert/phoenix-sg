@@ -214,7 +214,7 @@
 
 #include "floaterao.h"
 
-#include "a_emeraldviewerlink.h"
+#include "a_phoenixviewerlink.h"
 
 #include "growlmanager.h"
 #include "streamtitledisplay.h"
@@ -447,7 +447,7 @@ bool idle_startup()
 
 		GrowlManager::InitiateManager();
 
-		EmeraldViewerLink::getInstance()->start_download();
+		PhoenixViewerLink::getInstance()->start_download();
 
 		LGGAutoCorrect::getInstance()->loadFromDisk();
 
@@ -876,7 +876,7 @@ bool idle_startup()
 			gViewerWindow->setShowProgress(FALSE);
 
 			// Load login history
-			std::string login_hist_filepath = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "saved_logins_emerald.xml");
+			std::string login_hist_filepath = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "saved_logins_phoenix.xml");
 			LLSavedLogins login_history = LLSavedLogins::loadFile(login_hist_filepath);
 
 			// Show the login dialog.
@@ -1023,7 +1023,7 @@ bool idle_startup()
 		}
 
 		//Always use default in portable mode
-		if (gSavedSettings.getBOOL("EmeraldPortableMode"))
+		if (gSavedSettings.getBOOL("PhoenixPortableMode"))
 		{
 			gDirUtilp->setChatLogsDir(gDirUtilp->getOSUserAppDir());
 			gSavedPerAccountSettings.setString("InstantMessageLogPath",gDirUtilp->getChatLogsDir());
@@ -1133,7 +1133,7 @@ bool idle_startup()
 		}
 
 		// Display the startup progress bar.
-		gViewerWindow->setShowProgress(!gSavedSettings.getBOOL("EmeraldDisableLoginScreens"));
+		gViewerWindow->setShowProgress(!gSavedSettings.getBOOL("PhoenixDisableLoginScreens"));
 		gViewerWindow->setProgressCancelButtonVisible(TRUE, std::string("Quit")); // *TODO: Translate
 
 		// Poke the VFS, which could potentially block for a while if
@@ -1542,7 +1542,7 @@ bool idle_startup()
 
 			{
 				// Save the login history data to disk
-				std::string history_file = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "saved_logins_emerald.xml");
+				std::string history_file = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "saved_logins_phoenix.xml");
 
 				LLSavedLogins history_data = LLSavedLogins::loadFile(history_file);
 				//LLViewerLogin* login_data = LLViewerLogin::getInstance();
@@ -1654,8 +1654,8 @@ bool idle_startup()
 				gAgent.setHomePosRegion(region_handle, position);
 			}
 
-			if(EmeraldViewerLink::getInstance()->ms_motd == "")gAgent.mMOTD = LLUserAuth::getInstance()->getResponse("message");
-			else gAgent.mMOTD = EmeraldViewerLink::getInstance()->ms_motd;
+			if(PhoenixViewerLink::getInstance()->ms_motd == "")gAgent.mMOTD = LLUserAuth::getInstance()->getResponse("message");
+			else gAgent.mMOTD = PhoenixViewerLink::getInstance()->ms_motd;
 			LLUserAuth::options_t options;
 			if(LLUserAuth::getInstance()->getOptions("inventory-root", options))
 			{
@@ -1971,7 +1971,7 @@ bool idle_startup()
 			//FloaterAvatarList::showInstance();
 			LLFloaterAvatarList::toggle(NULL);
 		}
-		else if (gSavedSettings.getBOOL("EmeraldAvatarListKeepOpen"))
+		else if (gSavedSettings.getBOOL("PhoenixAvatarListKeepOpen"))
 		{
 			//FloaterAvatarList::showInstance();
 			LLFloaterAvatarList::toggle(NULL);
@@ -2784,8 +2784,8 @@ bool idle_startup()
 		{
 			gAgent.requestEnterGodMode();
 		}
-		LLUUID emerald_category = JCLSLBridge::findCategoryByNameOrCreate(emerald_category_name);
-		gInventory.fetchDescendentsOf(emerald_category);
+		LLUUID phoenix_category = JCLSLBridge::findCategoryByNameOrCreate(phoenix_category_name);
+		gInventory.fetchDescendentsOf(phoenix_category);
 
 		// Start automatic replay if the flag is set.
 		if (gSavedSettings.getBOOL("StatsAutoRun"))
@@ -3020,7 +3020,7 @@ bool first_run_dialog_callback(const LLSD& notification, const LLSD& response)
 
 void set_startup_status(const F32 frac, const std::string& string, const std::string& msg)
 {
-	if(gSavedSettings.getBOOL("EmeraldDisableLoginScreens"))
+	if(gSavedSettings.getBOOL("PhoenixDisableLoginScreens"))
 	{
 		static std::string last_d;
 		std::string new_d = string;

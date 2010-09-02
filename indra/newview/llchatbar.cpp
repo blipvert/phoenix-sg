@@ -443,7 +443,7 @@ void LLChatBar::sendChat( EChatType type )
 			if(type == CHAT_TYPE_OOC)
 			{
 				std::string tempText = mInputEditor->getText();
-				tempText = gSavedSettings.getString("EmeraldOOCPrefix") + " " + tempText + " " + gSavedSettings.getString("EmeraldOOCPostfix");
+				tempText = gSavedSettings.getString("PhoenixOOCPrefix") + " " + tempText + " " + gSavedSettings.getString("PhoenixOOCPostfix");
 				mInputEditor->setText(tempText);
 				text = utf8str_to_wstring(tempText);
 			}
@@ -462,7 +462,7 @@ void LLChatBar::sendChat( EChatType type )
 			std::string utf8_revised_text;
 			if (0 == channel)
 			{
-				if (gSavedSettings.getBOOL("EmeraldAutoCloseOOC"))
+				if (gSavedSettings.getBOOL("PhoenixAutoCloseOOC"))
 				{
 					// Chalice - OOC autoclosing patch based on code by Henri Beauchamp
 					int needsClosingType=0;
@@ -510,7 +510,7 @@ void LLChatBar::sendChat( EChatType type )
 					}
 				}
 				// Convert MU*s style poses into IRC emotes here.
-				if (gSavedSettings.getBOOL("EmeraldAllowMUpose") && utf8text.find(":") == 0 && utf8text.length() > 3)
+				if (gSavedSettings.getBOOL("PhoenixAllowMUpose") && utf8text.find(":") == 0 && utf8text.length() > 3)
 				{
 					if (utf8text.find(":'") == 0)
 					{
@@ -563,7 +563,7 @@ void LLChatBar::sendChat( EChatType type )
 // static 
 void LLChatBar::startChat(const char* line)
 {
-	if (gSavedSettings.getBOOL("EmeraldUseChatBar"))
+	if (gSavedSettings.getBOOL("PhoenixUseChatBar"))
 	{
 		gChatBar->setVisible(TRUE);
 		gChatBar->setKeyboardFocus(TRUE);

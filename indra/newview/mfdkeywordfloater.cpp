@@ -47,7 +47,7 @@
 #include "llcolorswatch.h"
 
 #include "llsdserialize.h"
-#include "llpanelemerald.h"
+#include "llpanelphoenix.h"
 #include "llsliderctrl.h"
 #include "llfocusmgr.h"
 #include <boost/regex.hpp>
@@ -79,7 +79,7 @@ public:
 
 protected:
 	F32 mContextConeOpacity;
-	LLPanelEmerald * empanel;
+	LLPanelPhoenix * empanel;
 
 };
 
@@ -154,28 +154,28 @@ BOOL mfdKeywordFloater::postBuild(void)
 {
 	setCanMinimize(false);
 
-	childSetAction("EmeraldKeywords_cancel",onClickCancel,this);
+	childSetAction("PhoenixKeywords_cancel",onClickCancel,this);
 	if(LLStartUp::getStartupState() >= STATE_INVENTORY_SEND)
 	{
-		childSetAction("EmeraldKeywords_save",onClickSave,this);\
+		childSetAction("PhoenixKeywords_save",onClickSave,this);\
 
-		childSetValue("EmeraldKeywords_Alert",gSavedPerAccountSettings.getBOOL("EmeraldKeywordOn"));
-		childSetValue("EmeraldKeywords_Entries",gSavedPerAccountSettings.getString("EmeraldKeywords"));
-		childSetValue("EmeraldKeywords_IM",gSavedPerAccountSettings.getBOOL("EmeraldKeywordInIM"));
-		childSetValue("EmeraldKeywords_GroupChat",gSavedPerAccountSettings.getBOOL("EmeraldKeywordInGroup"));
-		childSetValue("EmeraldKeywords_LocalChat",gSavedPerAccountSettings.getBOOL("EmeraldKeywordInChat"));
-		childSetValue("EmeraldKeywords_IRC",gSavedPerAccountSettings.getBOOL("EmeraldKeywordInIRC"));
-		childSetValue("EmeraldKeywords_Highlight",gSavedPerAccountSettings.getBOOL("EmeraldKeywordChangeColor"));
-		//childSetValue("EmeraldKeywords_Color",gSavedPerAccountSettings.getLLSD("EmeraldKeywordColor"));
-		childSetValue("EmeraldKeywords_PlaySound",gSavedPerAccountSettings.getBOOL("EmeraldKeywordPlaySound"));
-		childSetValue("EmeraldKeywords_SoundUUID",gSavedPerAccountSettings.getString("EmeraldKeywordSound"));
+		childSetValue("PhoenixKeywords_Alert",gSavedPerAccountSettings.getBOOL("PhoenixKeywordOn"));
+		childSetValue("PhoenixKeywords_Entries",gSavedPerAccountSettings.getString("PhoenixKeywords"));
+		childSetValue("PhoenixKeywords_IM",gSavedPerAccountSettings.getBOOL("PhoenixKeywordInIM"));
+		childSetValue("PhoenixKeywords_GroupChat",gSavedPerAccountSettings.getBOOL("PhoenixKeywordInGroup"));
+		childSetValue("PhoenixKeywords_LocalChat",gSavedPerAccountSettings.getBOOL("PhoenixKeywordInChat"));
+		childSetValue("PhoenixKeywords_IRC",gSavedPerAccountSettings.getBOOL("PhoenixKeywordInIRC"));
+		childSetValue("PhoenixKeywords_Highlight",gSavedPerAccountSettings.getBOOL("PhoenixKeywordChangeColor"));
+		//childSetValue("PhoenixKeywords_Color",gSavedPerAccountSettings.getLLSD("PhoenixKeywordColor"));
+		childSetValue("PhoenixKeywords_PlaySound",gSavedPerAccountSettings.getBOOL("PhoenixKeywordPlaySound"));
+		childSetValue("PhoenixKeywords_SoundUUID",gSavedPerAccountSettings.getString("PhoenixKeywordSound"));
 
-		LLColorSwatchCtrl* colorctrl = getChild<LLColorSwatchCtrl>("EmeraldKeywords_Color");
-		colorctrl->set(LLColor4(gSavedPerAccountSettings.getColor4("EmeraldKeywordColor")),TRUE);
+		LLColorSwatchCtrl* colorctrl = getChild<LLColorSwatchCtrl>("PhoenixKeywords_Color");
+		colorctrl->set(LLColor4(gSavedPerAccountSettings.getColor4("PhoenixKeywordColor")),TRUE);
 	}else
 	{
-		childSetEnabled("EmeraldKeywords_save",FALSE);
-		childSetValue("EmeraldKeywords_Entries","You must login to change these settings");
+		childSetEnabled("PhoenixKeywords_save",FALSE);
+		childSetValue("PhoenixKeywords_Entries","You must login to change these settings");
 
 	}
 
@@ -183,7 +183,7 @@ BOOL mfdKeywordFloater::postBuild(void)
 }
 void mfdKeywordFloater::setData(void* data)
 {
-	empanel = (LLPanelEmerald*)data;
+	empanel = (LLPanelPhoenix*)data;
 	if(empanel)
 	{
 		gFloaterView->getParentFloater(empanel)->addDependentFloater(this);
@@ -198,20 +198,20 @@ void mfdKeywordFloater::onClickSave(void* data)
 	
 	mfdKeywordFloater* self = (mfdKeywordFloater*)data;
 
-	gSavedPerAccountSettings.setBOOL("EmeraldKeywordOn", self->childGetValue("EmeraldKeywords_Alert").asBoolean());
-	gSavedPerAccountSettings.setBOOL("EmeraldKeywordInIM", self->childGetValue("EmeraldKeywords_IM").asBoolean());
-	gSavedPerAccountSettings.setBOOL("EmeraldKeywordInGroup", self->childGetValue("EmeraldKeywords_GroupChat").asBoolean());
-	gSavedPerAccountSettings.setBOOL("EmeraldKeywordInChat", self->childGetValue("EmeraldKeywords_LocalChat").asBoolean());
-	gSavedPerAccountSettings.setBOOL("EmeraldKeywordInIRC", self->childGetValue("EmeraldKeywords_IRC").asBoolean());
-	gSavedPerAccountSettings.setBOOL("EmeraldKeywordChangeColor", self->childGetValue("EmeraldKeywords_Highlight").asBoolean());
-	gSavedPerAccountSettings.setBOOL("EmeraldKeywordPlaySound", self->childGetValue("EmeraldKeywords_PlaySound").asBoolean());
+	gSavedPerAccountSettings.setBOOL("PhoenixKeywordOn", self->childGetValue("PhoenixKeywords_Alert").asBoolean());
+	gSavedPerAccountSettings.setBOOL("PhoenixKeywordInIM", self->childGetValue("PhoenixKeywords_IM").asBoolean());
+	gSavedPerAccountSettings.setBOOL("PhoenixKeywordInGroup", self->childGetValue("PhoenixKeywords_GroupChat").asBoolean());
+	gSavedPerAccountSettings.setBOOL("PhoenixKeywordInChat", self->childGetValue("PhoenixKeywords_LocalChat").asBoolean());
+	gSavedPerAccountSettings.setBOOL("PhoenixKeywordInIRC", self->childGetValue("PhoenixKeywords_IRC").asBoolean());
+	gSavedPerAccountSettings.setBOOL("PhoenixKeywordChangeColor", self->childGetValue("PhoenixKeywords_Highlight").asBoolean());
+	gSavedPerAccountSettings.setBOOL("PhoenixKeywordPlaySound", self->childGetValue("PhoenixKeywords_PlaySound").asBoolean());
 
-	gSavedPerAccountSettings.setString("EmeraldKeywords", self->childGetValue("EmeraldKeywords_Entries").asString());
-	gSavedPerAccountSettings.setString("EmeraldKeywordSound", self->childGetValue("EmeraldKeywords_SoundUUID").asString());
+	gSavedPerAccountSettings.setString("PhoenixKeywords", self->childGetValue("PhoenixKeywords_Entries").asString());
+	gSavedPerAccountSettings.setString("PhoenixKeywordSound", self->childGetValue("PhoenixKeywords_SoundUUID").asString());
 
 	
-	gSavedPerAccountSettings.setColor4("EmeraldKeywordColor", 
-		 ((LLColorSwatchCtrl*)(self->getChild<LLColorSwatchCtrl>("EmeraldKeywords_Color")))->get()
+	gSavedPerAccountSettings.setColor4("PhoenixKeywordColor", 
+		 ((LLColorSwatchCtrl*)(self->getChild<LLColorSwatchCtrl>("PhoenixKeywords_Color")))->get()
 		 );
 
 
@@ -237,7 +237,7 @@ void MfdKeywordFloaterStart::show(BOOL showin, void * data)
 }
 bool containsKeyWord(std::string source)
 {
-	std::string s = gSavedPerAccountSettings.getString("EmeraldKeywords");
+	std::string s = gSavedPerAccountSettings.getString("PhoenixKeywords");
 	LLStringUtil::toLower(s);
 	LLStringUtil::toLower(source);
 	boost::regex re(",");
@@ -248,8 +248,8 @@ bool containsKeyWord(std::string source)
 	{
 		if(source.find( *i++) != std::string::npos)
 		{
-			if(gSavedPerAccountSettings.getBOOL("EmeraldKeywordPlaySound"))
-				LLUI::sAudioCallback(LLUUID(gSavedPerAccountSettings.getString("EmeraldKeywordSound")));
+			if(gSavedPerAccountSettings.getBOOL("PhoenixKeywordPlaySound"))
+				LLUI::sAudioCallback(LLUUID(gSavedPerAccountSettings.getString("PhoenixKeywordSound")));
 
 			return true;
 		}
@@ -260,15 +260,15 @@ bool containsKeyWord(std::string source)
 
 BOOL MfdKeywordFloaterStart::hasKeyword(std::string msg,int source)
 {
-	if(!gSavedPerAccountSettings.getBOOL("EmeraldKeywordOn"))return FALSE;
+	if(!gSavedPerAccountSettings.getBOOL("PhoenixKeywordOn"))return FALSE;
 
-// 	if((source ==3) && (gSavedPerAccountSettings.getBOOL("EmeraldKeywordInGroup")))
+// 	if((source ==3) && (gSavedPerAccountSettings.getBOOL("PhoenixKeywordInGroup")))
 // 		return containsKeyWord(msg);
-// 	if((source ==4) && (gSavedPerAccountSettings.getBOOL("EmeraldKeywordInIRC")))
+// 	if((source ==4) && (gSavedPerAccountSettings.getBOOL("PhoenixKeywordInIRC")))
 // 		return containsKeyWord(msg);
-	if((source == 1) && (gSavedPerAccountSettings.getBOOL("EmeraldKeywordInChat")))
+	if((source == 1) && (gSavedPerAccountSettings.getBOOL("PhoenixKeywordInChat")))
 		return containsKeyWord(msg);
-	if((source == 2) && (gSavedPerAccountSettings.getBOOL("EmeraldKeywordInIM")))
+	if((source == 2) && (gSavedPerAccountSettings.getBOOL("PhoenixKeywordInIM")))
 		return containsKeyWord(msg);
 	return FALSE;
 	

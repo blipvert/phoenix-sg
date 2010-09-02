@@ -62,7 +62,7 @@
 #include "llpanelmsgs.h"
 #include "llpanelweb.h"
 #include "llpanelskins.h"
-#include "llpanelemerald.h"
+#include "llpanelphoenix.h"
 #include "llprefschat.h"
 #include "llprefsvoice.h"
 #include "llprefsim.h"
@@ -136,7 +136,7 @@ LLPreferenceCore::LLPreferenceCore(LLTabContainer* tab_container, LLButton * def
 	mSkinsPanel(NULL),
 	mGridsPanel(NULL),
 	mLCDPanel(NULL),
-	mEmeraldPanel(NULL)
+	mPhoenixPanel(NULL)
 {
 	mGeneralPanel = new LLPanelGeneral();
 	mTabContainer->addTabPanel(mGeneralPanel, mGeneralPanel->getLabel(), FALSE, onTabChanged, mTabContainer);
@@ -200,9 +200,9 @@ LLPreferenceCore::LLPreferenceCore(LLTabContainer* tab_container, LLButton * def
 	mTabContainer->addTabPanel(mGridsPanel, mGridsPanel->getLabel(), FALSE, onTabChanged, mTabContainer);
 	mGridsPanel->setDefaultBtn(default_btn);
 
-	mEmeraldPanel = new LLPanelEmerald();
-	mTabContainer->addTabPanel(mEmeraldPanel, mEmeraldPanel->getLabel(), FALSE, onTabChanged, mTabContainer);
-	mEmeraldPanel->setDefaultBtn(default_btn);
+	mPhoenixPanel = new LLPanelPhoenix();
+	mTabContainer->addTabPanel(mPhoenixPanel, mPhoenixPanel->getLabel(), FALSE, onTabChanged, mTabContainer);
+	mPhoenixPanel->setDefaultBtn(default_btn);
 
 	if (!mTabContainer->selectTab(gSavedSettings.getS32("LastPrefTab")))
 	{
@@ -264,10 +264,10 @@ LLPreferenceCore::~LLPreferenceCore()
 		mSkinsPanel = NULL;
 	}
 
-	if (mEmeraldPanel)
+	if (mPhoenixPanel)
 	{
-		delete mEmeraldPanel;
-		mEmeraldPanel = NULL;
+		delete mPhoenixPanel;
+		mPhoenixPanel = NULL;
 	}
 
 	if (mGridsPanel)
@@ -291,7 +291,7 @@ void LLPreferenceCore::apply()
 	mMsgPanel->apply();
 	mSkinsPanel->apply();
 	mGridsPanel->apply();
-	mEmeraldPanel->apply();
+	mPhoenixPanel->apply();
 
 	// hardware menu apply
 	LLFloaterHardwareSettings::instance()->apply();
@@ -321,7 +321,7 @@ void LLPreferenceCore::cancel()
 	mMsgPanel->cancel();
 	mSkinsPanel->cancel();
 	mGridsPanel->cancel();
-	mEmeraldPanel->cancel();
+	mPhoenixPanel->cancel();
 
 	// cancel hardware menu
 	LLFloaterHardwareSettings::instance()->cancel();

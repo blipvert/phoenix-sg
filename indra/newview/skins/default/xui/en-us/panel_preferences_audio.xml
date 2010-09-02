@@ -40,14 +40,14 @@
        tool_tip="If you have this enabled, regardless of whether you have media stopped or not,
        when you enter a new parcel your media will automatically turn on after a few seconds."
 	     width="338" />
-  <check_box bottom_delta="-20" control_name="EmeraldAllowScriptedMedia" enabled="true"
+  <check_box bottom_delta="-20" control_name="PhoenixAllowScriptedMedia" enabled="true"
 	     follows="left|top" font="SansSerifSmall" height="16"
 	     initial_value="true" label="Let scripts control my play button" left="162"
 	     mouse_opaque="true" name="scripted_media" radio_style="false"
        tool_tip="Having this turned on will prevent scripts from turning on your media (if it was already off) 
        until you have pressed the play button yourself, or auto play turns it on."
 	     width="338" />
-  <check_box bottom_delta="-20" control_name="EmeraldStopMusicOnParcelChange" enabled="true"
+  <check_box bottom_delta="-20" control_name="PhoenixStopMusicOnParcelChange" enabled="true"
 	     follows="left|top" font="SansSerifSmall" height="16"
 	     initial_value="true" label="Turn off media when you change parcels." left="142"
 	     mouse_opaque="true" name="auto_streaming_music" radio_style="false"

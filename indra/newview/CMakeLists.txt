@@ -83,9 +83,9 @@ set(viewer_SOURCE_FILES
 	lggbeammaps.cpp
 	lggbeammapfloater.cpp
 	lggbeamcolormapfloater.cpp
-	a_emeraldviewerlink.cpp
-	emerald.cpp
-	emeraldboobutils.cpp
+	a_phoenixviewerlink.cpp
+	phoenix.cpp
+	phoenixboobutils.cpp
 	exporttracker.cpp
 	chatbar_as_cmdline.cpp
 	floaterlocalassetbrowse.cpp
@@ -344,7 +344,7 @@ set(viewer_SOURCE_FILES
     llpanelpick.cpp
     llpanelplace.cpp
     llpanelskins.cpp
-    llpanelemerald.cpp
+    llpanelphoenix.cpp
     llpanelvolume.cpp
     llpanelweb.cpp
     llparcelselection.cpp
@@ -536,10 +536,10 @@ endif (LINUX)
 set(viewer_HEADER_FILES
     CMakeLists.txt
     ViewerInstall.cmake
-    a_emeraldviewerlink.h
+    a_phoenixviewerlink.h
 	chatbar_as_cmdline.h
-    emerald.h
-	emeraldboobutils.h
+    phoenix.h
+	phoenixboobutils.h
 	exporttracker.h
 	floaterlocalassetbrowse.h
 	floateravatarlist.h
@@ -807,7 +807,7 @@ set(viewer_HEADER_FILES
     llpanelpick.h
     llpanelplace.h
     llpanelskins.h
-    llpanelemerald.h
+    llpanelphoenix.h
     llpanelvolume.h
     llpanelweb.h
     llparcelselection.h
@@ -1110,8 +1110,8 @@ if (WINDOWS)
         ${ARTWORK_DIR}/res/lltooltranslate.cur
         ${ARTWORK_DIR}/res/lltoolzoomin.cur
         ${ARTWORK_DIR}/res/lltoolzoomout.cur
-        ${ARTWORK_DIR}/res/emerald_icon.BMP
-        ${ARTWORK_DIR}/res/emerald_icon.ico
+        ${ARTWORK_DIR}/res/phoenix_icon.BMP
+        ${ARTWORK_DIR}/res/phoenix_icon.ico
         ${ARTWORK_DIR}/res/resource.h
         ${ARTWORK_DIR}/res/toolbuy.cur
         ${ARTWORK_DIR}/res/toolopen.cur

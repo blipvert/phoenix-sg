@@ -216,8 +216,8 @@ char *otrl_proto_default_query_msg(const char *ourname, OtrlPolicy policy)
      * free()ing). */
     const char *format = "?OTR%s\n has requested an Off-the-Record "
         "private conversation.  However, your viewer doesn't support "
-        "OTR.  Emerald Viewer does, see "
-        "http://EmeraldViewer.net/ for more information about Emerald, "
+        "OTR.  Phoenix Viewer does, see "
+        "http://phoenixviewer.com/ for more information about Phoenix, "
         "and http://otr.cypherpunks.ca/ for more information about OTR.";
 
     /* Figure out the version tag */

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <floater
-	name="EmeraldAOfloater"
-  rect_control="EmeraldAORect"
+	name="PhoenixAOfloater"
+  rect_control="PhoenixAORect"
 	title="Animation Overrider"
 	can_resize="false"
 	can_minimize="true"
@@ -63,12 +63,12 @@
 	     tool_tip="Advanced Options" width="58" />
 
   
-  <check_box bottom_delta="-42" control_name="EmeraldAOEnabled" enabled="true"
+  <check_box bottom_delta="-42" control_name="PhoenixAOEnabled" enabled="true"
 	 follows="left|top" font="SansSerifSmall" height="16" initial_value="false" label="Override Anims" left="10"
-	 mouse_opaque="true" name="EmeraldAOEnabled" radio_style="false" width="90" />
-  <check_box bottom_delta="0" control_name="EmeraldAOSitsEnabled" enabled="true"
+	 mouse_opaque="true" name="PhoenixAOEnabled" radio_style="false" width="90" />
+  <check_box bottom_delta="0" control_name="PhoenixAOSitsEnabled" enabled="true"
 	 follows="left|top" font="SansSerifSmall" height="16" initial_value="true" label="Override Sits" left="110"
-	 mouse_opaque="true" name="EmeraldAOSitsEnabled" radio_style="false" width="90" />
+	 mouse_opaque="true" name="PhoenixAOSitsEnabled" radio_style="false" width="90" />
 
   <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	     bottom_delta="-20" drop_shadow_visible="true" follows="left|top"
@@ -99,16 +99,16 @@
   height="20"
   follows="top|left"
 		/>
-  <check_box bottom_delta="-20" control_name="EmeraldAOStandCycling" enabled="true"
+  <check_box bottom_delta="-20" control_name="PhoenixAOStandCycling" enabled="true"
    follows="left|top" font="SansSerifSmall" height="16" initial_value="false" label="Cycle Stands" left="10"
-   mouse_opaque="true" name="EmeraldAOStandCycling" radio_style="false" width="200" />
-  <check_box bottom_delta="-20" control_name="EmeraldAORandomizestand" enabled="true"
+   mouse_opaque="true" name="PhoenixAOStandCycling" radio_style="false" width="200" />
+  <check_box bottom_delta="-20" control_name="PhoenixAORandomizestand" enabled="true"
    follows="left|top" font="SansSerifSmall" height="16" initial_value="false" label="Randomize Stand Cycling" left="10"
-   mouse_opaque="true" name="EmeraldAORandomizestand" radio_style="false" width="200" />
-  <check_box bottom_delta="-20" control_name="EmeraldAONoStandsInMouselook" enabled="true"
+   mouse_opaque="true" name="PhoenixAORandomizestand" radio_style="false" width="200" />
+  <check_box bottom_delta="-20" control_name="PhoenixAONoStandsInMouselook" enabled="true"
 	 follows="left|top" font="SansSerifSmall" height="16" initial_value="true" label="Disable Stands in Mouselook" left="10"
-	 mouse_opaque="true" name="EmeraldAONoStandsInMouselook" radio_style="false" width="180" />
-  <spinner bottom_delta="-20" decimal_digits="2" follows="left|top" height="16" control_name="EmeraldAOStandInterval"
+	 mouse_opaque="true" name="PhoenixAONoStandsInMouselook" radio_style="false" width="180" />
+  <spinner bottom_delta="-20" decimal_digits="2" follows="left|top" height="16" control_name="PhoenixAOStandInterval"
 	 increment="1" initial_val="20" left="10" max_val="9000" min_val="1.00"
 	 mouse_opaque="true" name="standtime" label="Stand Time" label_width="80"
 	 tool_tip="AO Stand Time in seconds" width="180" />
@@ -128,7 +128,7 @@
           Default Walk:
         </text>
         <combo_box name="walk" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizewalk" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizewalk" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	           bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
 	           font="SansSerifSmall" h_pad="0" halign="left" height="16" left="10"
@@ -136,7 +136,7 @@
           Default Run:
         </text>
         <combo_box name="run" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizerun" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizerun" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	           bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
 	           font="SansSerifSmall" h_pad="0" halign="left" height="16" left="10"
@@ -144,7 +144,7 @@
           Default Pre-Jump:
         </text>
         <combo_box name="prejump" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizeprejump" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizeprejump" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	           bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
 	           font="SansSerifSmall" h_pad="0" halign="left" height="16" left="10"
@@ -152,7 +152,7 @@
           Default Jump:
         </text>
         <combo_box name="jump" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizejump" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizejump" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
            bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
            font="SansSerifSmall" h_pad="0" halign="left" height="16" left="10"
@@ -160,7 +160,7 @@
           Default Sit:
         </text>
         <combo_box name="sit" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizesit" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizesit" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	           bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
 	           font="SansSerifSmall" h_pad="0" halign="left" height="16" left="10"
@@ -168,7 +168,7 @@
           Default Groundsit:
         </text>
         <combo_box name="gsit" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizegsit" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizegsit" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	           bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
 	           font="SansSerifSmall" h_pad="0" halign="left" height="16" left="10"
@@ -176,7 +176,7 @@
           Default Crouch:
         </text>
         <combo_box name="crouch" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizecrouch" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizecrouch" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	           bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
 	           font="SansSerifSmall" h_pad="0" halign="left" height="16" left="10"
@@ -184,7 +184,7 @@
           Default Crouchwalk:
         </text>
         <combo_box name="cwalk" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizecwalk" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizecwalk" radio_style="false" width="20" />
 
 
       <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
@@ -200,7 +200,7 @@
           Default Fall:
         </text>
         <combo_box name="fall" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizefall" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizefall" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	           bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
 	           font="SansSerifSmall" h_pad="0" halign="left" height="16" left="200"
@@ -208,7 +208,7 @@
           Default Hover:
         </text>
         <combo_box name="hover" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizehover" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizehover" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	           bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
 	           font="SansSerifSmall" h_pad="0" halign="left" height="16" left="200"
@@ -216,7 +216,7 @@
           Default Fly:
         </text>
         <combo_box name="fly" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizefly" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizefly" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	           bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
 	           font="SansSerifSmall" h_pad="0" halign="left" height="16" left="200"
@@ -224,7 +224,7 @@
           Default Slow Fly:
         </text>
         <combo_box name="flyslow" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizeflyslow" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizeflyslow" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	           bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
 	           font="SansSerifSmall" h_pad="0" halign="left" height="16" left="200"
@@ -232,7 +232,7 @@
           Default Upward Fly:
         </text>
         <combo_box name="flyup" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizeflyup" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizeflyup" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	           bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
 	           font="SansSerifSmall" h_pad="0" halign="left" height="16" left="200"
@@ -240,7 +240,7 @@
           Default Downward Fly:
         </text>
         <combo_box name="flydown" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizeflydown" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizeflydown" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	           bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
 	           font="SansSerifSmall" h_pad="0" halign="left" height="16" left="200"
@@ -248,7 +248,7 @@
           Default Land:
         </text>
         <combo_box name="land" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizeland" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizeland" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	           bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
 	           font="SansSerifSmall" h_pad="0" halign="left" height="16" left="200"
@@ -256,7 +256,7 @@
           Default Standup:
         </text>
         <combo_box name="standup" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizestandup" radio_style="false" width="20" />
+      <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizestandup" radio_style="false" width="20" />
       </panel>
       <panel border="true" left="0" bottom="0" follows="left|top|right|bottom" height="350" label="Advanced" mouse_opaque="true" name="tabdefaultanims" width="390">
 
@@ -267,7 +267,7 @@
           Default Turn Left:
         </text>
         <combo_box name="turnleft" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizeturnleft" radio_style="false" width="20" />
+        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizeturnleft" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
              bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
              font="SansSerifSmall" h_pad="0" halign="left" height="16" left="10"
@@ -275,7 +275,7 @@
           Default Turn Right:
         </text>
         <combo_box name="turnright" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizeturnright" radio_style="false" width="20" />
+        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizeturnright" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
              bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
              font="SansSerifSmall" h_pad="0" halign="left" height="16" left="10"
@@ -283,7 +283,7 @@
           Default Typing:
         </text>
         <combo_box name="typing" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizetyping" radio_style="false" width="20" />
+        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizetyping" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
              bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
              font="SansSerifSmall" h_pad="0" halign="left" height="16" left="10"
@@ -291,7 +291,7 @@
           Default Floating:
         </text>
         <combo_box name="floating" enabled="true" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizefloating" radio_style="false" width="20" />
+        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizefloating" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
              bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
              font="SansSerifSmall" h_pad="0" halign="left" height="16" left="10"
@@ -299,7 +299,7 @@
           Default Swimming Forward:
         </text>
         <combo_box name="swimmingforward" enabled="true" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizeswimmingforward" radio_style="false" width="20" />
+        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizeswimmingforward" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
              bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
              font="SansSerifSmall" h_pad="0" halign="left" height="16" left="10"
@@ -307,7 +307,7 @@
           Default Swimming Up:
         </text>
         <combo_box name="swimmingup" enabled="true" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizeswimmingup" radio_style="false" width="20" />
+        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizeswimmingup" radio_style="false" width="20" />
         <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
              bottom_delta="-40" drop_shadow_visible="true" follows="left|bottom"
              font="SansSerifSmall" h_pad="0" halign="left" height="16" left="10"
@@ -315,7 +315,7 @@
           Default Swimming Down:
         </text>
         <combo_box name="swimmingdown" enabled="true" label="" follows="left|top" height="20" left_delta="0" width="160" bottom_delta="0"/>
-        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="EmeraldAORandomizeswimmingdown" radio_style="false" width="20" />
+        <check_box bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" height="20" initial_value="false" left_delta="164" mouse_opaque="true" name="PhoenixAORandomizeswimmingdown" radio_style="false" width="20" />
 
 
       </panel>

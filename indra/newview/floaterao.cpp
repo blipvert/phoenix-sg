@@ -42,7 +42,7 @@ void cmdline_printchat(std::string message);
 
 AOStandTimer* mAOStandTimer;
 
-AOStandTimer::AOStandTimer() : LLEventTimer( gSavedPerAccountSettings.getF32("EmeraldAOStandInterval") )
+AOStandTimer::AOStandTimer() : LLEventTimer( gSavedPerAccountSettings.getF32("PhoenixAOStandInterval") )
 {
 	AOStandTimer::tick();
 }
@@ -51,12 +51,12 @@ AOStandTimer::~AOStandTimer()
 }
 void AOStandTimer::reset()
 {
-	mPeriod = gSavedPerAccountSettings.getF32("EmeraldAOStandInterval");
+	mPeriod = gSavedPerAccountSettings.getF32("PhoenixAOStandInterval");
 	mEventTimer.reset();
 }
 BOOL AOStandTimer::tick()
 {
-	if (gSavedPerAccountSettings.getBOOL("EmeraldAOStandCycling"))
+	if (gSavedPerAccountSettings.getBOOL("PhoenixAOStandCycling"))
 	{
 		LLFloaterAO::stand_iterator++;
 		LLFloaterAO::ChangeStand(FALSE);
@@ -73,19 +73,19 @@ AOInvTimer::~AOInvTimer()
 BOOL AOInvTimer::tick()
 {
 	//todo: find a better way to preload the AO on login even though it is disabled 
-	if (!(gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled"))) return TRUE; 
+	if (!(gSavedPerAccountSettings.getBOOL("PhoenixAOEnabled"))) return TRUE; 
 
 
 	if(LLStartUp::getStartupState() >= STATE_INVENTORY_SEND)
 	{
-		LLUUID emerald_category = JCLSLBridge::findCategoryByNameOrCreate(emerald_category_name);
-		if(gInventory.isCategoryComplete(emerald_category))
+		LLUUID phoenix_category = JCLSLBridge::findCategoryByNameOrCreate(phoenix_category_name);
+		if(gInventory.isCategoryComplete(phoenix_category))
 		{
 			return LLFloaterAO::init();
 		}
 		else
 		{
-			gInventory.fetchDescendentsOf(emerald_category);
+			gInventory.fetchDescendentsOf(phoenix_category);
 		}
 	}
 	return FALSE;
@@ -234,8 +234,8 @@ LLFloaterAO::LLFloaterAO():LLFloater(std::string("floater_ao"))
 
 	if (mAOAllAnims.empty()) // ao hasn't been loaded yet (login with ao off) do it now
 	{
-		LLUUID emerald_category = JCLSLBridge::findCategoryByNameOrCreate(emerald_category_name);
-		if((LLStartUp::getStartupState() >= STATE_INVENTORY_SEND) && gInventory.isCategoryComplete(emerald_category))
+		LLUUID phoenix_category = JCLSLBridge::findCategoryByNameOrCreate(phoenix_category_name);
+		if((LLStartUp::getStartupState() >= STATE_INVENTORY_SEND) && gInventory.isCategoryComplete(phoenix_category))
 		{
 			LLFloaterAO::init();
 		}
@@ -303,7 +303,7 @@ BOOL LLFloaterAO::postBuild()
 	}
 	if(LLStartUp::getStartupState() == STATE_STARTED)
 	{
-		LLUUID itemidimport = (LLUUID)gSavedPerAccountSettings.getString("EmeraldAOConfigNotecardID");
+		LLUUID itemidimport = (LLUUID)gSavedPerAccountSettings.getString("PhoenixAOConfigNotecardID");
 		LLViewerInventoryItem* itemimport = gInventory.getItem(itemidimport);
 		if(itemimport)
 		{
@@ -330,10 +330,10 @@ BOOL LLFloaterAO::postBuild()
 	childSetAction("prevstand",onClickPrevStand,this);
 	childSetAction("nextstand",onClickNextStand,this);
 	
-	childSetCommitCallback("EmeraldAOEnabled",onClickToggleAO);
-	childSetCommitCallback("EmeraldAOSitsEnabled",onClickToggleSits);
-	childSetCommitCallback("EmeraldAOStandCycling",onCheckBoxCommit);
-	childSetCommitCallback("EmeraldAONoStandsInMouselook",onClickNoMouselookStands);
+	childSetCommitCallback("PhoenixAOEnabled",onClickToggleAO);
+	childSetCommitCallback("PhoenixAOSitsEnabled",onClickToggleSits);
+	childSetCommitCallback("PhoenixAOStandCycling",onCheckBoxCommit);
+	childSetCommitCallback("PhoenixAONoStandsInMouselook",onClickNoMouselookStands);
 	childSetCommitCallback("standtime",onSpinnerCommit);
 	
 	return TRUE;
@@ -343,7 +343,7 @@ void LLFloaterAO::updateLayout(LLFloaterAO* floater)
 {
 	if (floater)
 	{
-		BOOL advanced = gSavedSettings.getBOOL("EmeraldAOAdvanced");
+		BOOL advanced = gSavedSettings.getBOOL("PhoenixAOAdvanced");
 		if (advanced)
 		{
 			floater->reshape(610,380);
@@ -360,11 +360,11 @@ void LLFloaterAO::updateLayout(LLFloaterAO* floater)
 		floater->childSetVisible("tabdefaultanims", advanced);
 
 		// Set relevant per-account stuff.
-		floater->childSetValue("EmeraldAOEnabled", gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled"));
-		floater->childSetValue("EmeraldAOSitsEnabled", gSavedPerAccountSettings.getBOOL("EmeraldAOSitsEnabled"));
-		floater->childSetValue("EmeraldAOStandCycling", gSavedPerAccountSettings.getBOOL("EmeraldAOStandCycling"));
-		floater->childSetValue("EmeraldAONoStandsInMouselook", gSavedPerAccountSettings.getBOOL("EmeraldAONoStandsInMouselook"));
-		floater->childSetValue("standtime", gSavedPerAccountSettings.getF32("EmeraldAOStandInterval"));
+		floater->childSetValue("PhoenixAOEnabled", gSavedPerAccountSettings.getBOOL("PhoenixAOEnabled"));
+		floater->childSetValue("PhoenixAOSitsEnabled", gSavedPerAccountSettings.getBOOL("PhoenixAOSitsEnabled"));
+		floater->childSetValue("PhoenixAOStandCycling", gSavedPerAccountSettings.getBOOL("PhoenixAOStandCycling"));
+		floater->childSetValue("PhoenixAONoStandsInMouselook", gSavedPerAccountSettings.getBOOL("PhoenixAONoStandsInMouselook"));
+		floater->childSetValue("standtime", gSavedPerAccountSettings.getF32("PhoenixAOStandInterval"));
 
 		for (std::vector<struct_combobox>::iterator iter = mComboBoxes.begin(); iter != mComboBoxes.end(); ++iter)
 		{
@@ -412,11 +412,11 @@ BOOL LLFloaterAO::init()
     if (!sInstance)
 	sInstance = new LLFloaterAO();
 
-	LLUUID configncitem = (LLUUID)gSavedPerAccountSettings.getString("EmeraldAOConfigNotecardID");
+	LLUUID configncitem = (LLUUID)gSavedPerAccountSettings.getString("PhoenixAOConfigNotecardID");
 	if(LLStartUp::getStartupState() >= STATE_INVENTORY_SEND)
 	{
-		LLUUID emerald_category = JCLSLBridge::findCategoryByNameOrCreate(emerald_category_name);
-		if(gInventory.isCategoryComplete(emerald_category))
+		LLUUID phoenix_category = JCLSLBridge::findCategoryByNameOrCreate(phoenix_category_name);
+		if(gInventory.isCategoryComplete(phoenix_category))
 		{
 			if (configncitem.notNull())
 			{
@@ -427,12 +427,12 @@ BOOL LLFloaterAO::init()
 					BOOL in_emcat = FALSE;
 					LLUUID parent_id = item->getParentUUID();
 					LLViewerInventoryCategory* parent = gInventory.getCategory(item->getParentUUID());
-					if(parent_id != emerald_category)
+					if(parent_id != phoenix_category)
 					{
 						while(parent)
 						{
 							parent_id = parent->getParentUUID();
-							if(parent_id == emerald_category)
+							if(parent_id == phoenix_category)
 							{
 								in_emcat = TRUE;
 								break;
@@ -443,12 +443,12 @@ BOOL LLFloaterAO::init()
 					
 					if(in_emcat == FALSE)
 					{
-						cmdline_printchat("Your AO notecard and animations must be in the #Emerald folder in order to function correctly.");
+						cmdline_printchat("Your AO notecard and animations must be in the #Phoenix folder in order to function correctly.");
 						/*LLViewerInventoryCategory* parent = gInventory.getCategory(item->getParentUUID());
 						if(parent->getPreferredType() == LLAssetType::AT_NONE)
 						{
 							LLNotifications::instance().add("NotifyAOMove", LLSD(),LLSD());
-							move_inventory_item(gAgent.getID(),gAgent.getSessionID(),parent->getUUID(),emerald_category,parent->getName(), NULL);
+							move_inventory_item(gAgent.getID(),gAgent.getSessionID(),parent->getUUID(),phoenix_category,parent->getName(), NULL);
 						}else
 						{
 							cmdline_printchat("Unable to move AO, as its containing folder is a category.");
@@ -564,9 +564,9 @@ BOOL LLFloaterAO::init()
 		if(configncitem.notNull())
 		{
 			cmdline_printchat("Could not read the specified Config Notecard");
-			cmdline_printchat("If your specified notecard is not in the #emerald folder, please move it there.");
+			cmdline_printchat("If your specified notecard is not in the #phoenix folder, please move it there.");
 		}
-		gSavedPerAccountSettings.setBOOL("EmeraldAOEnabled",FALSE);
+		gSavedPerAccountSettings.setBOOL("PhoenixAOEnabled",FALSE);
 	}
 	return success;
 }
@@ -577,11 +577,11 @@ void LLFloaterAO::run()
 {
 	setAnimationState(STATE_AGENT_IDLE); // reset state
 	int state = getAnimationState(); // check if sitting or hovering
-	if (gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled"))
+	if (gSavedPerAccountSettings.getBOOL("PhoenixAOEnabled"))
 	{
 		//if we are sitting but sits are disabled, dont play any anims but start the stand timer in the background
 		//otherwise just start overriding
-		if (!((state == STATE_AGENT_SIT) && !gSavedPerAccountSettings.getBOOL("EmeraldAOSitsEnabled")))
+		if (!((state == STATE_AGENT_SIT) && !gSavedPerAccountSettings.getBOOL("PhoenixAOSitsEnabled")))
 		startAOMotion(GetAnimIDFromState(state),TRUE, FALSE);
 
 		if (mAOStandTimer)
@@ -661,8 +661,8 @@ void LLFloaterAO::startAOMotion(const LLUUID& id, const BOOL stand, const BOOL a
 	if ((sitting) && (startmotionstate != STATE_AGENT_SIT) && (startmotionstate != STATE_AGENT_GROUNDSIT)) return;
 //	if ((!sitting) && ((startmotionstate == STATE_AGENT_SIT) || (startmotionstate == STATE_AGENT_GROUNDSIT))) return;
 	if (startmotionstate == STATE_AGENT_IDLE) return;
-	if ((startmotionstate == STATE_AGENT_SIT) && !(gSavedPerAccountSettings.getBOOL("EmeraldAOSitsEnabled"))) return;
-	if (override_id.isNull() || !gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled")) return;
+	if ((startmotionstate == STATE_AGENT_SIT) && !(gSavedPerAccountSettings.getBOOL("PhoenixAOSitsEnabled"))) return;
+	if (override_id.isNull() || !gSavedPerAccountSettings.getBOOL("PhoenixAOEnabled")) return;
 
 	for (std::vector<struct_all_anims>::iterator iter = mAOAllAnims.begin(); iter != mAOAllAnims.end(); ++iter)
 	{
@@ -719,7 +719,7 @@ void LLFloaterAO::stopAOMotion(const LLUUID& id, const BOOL stand)
 	}
 
 	if (stopmotionstate == STATE_AGENT_IDLE) return;
-	if (override_id.isNull()) return; //|| !gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled") //always stop, enabled or not
+	if (override_id.isNull()) return; //|| !gSavedPerAccountSettings.getBOOL("PhoenixAOEnabled") //always stop, enabled or not
 
 	BOOL stopped = FALSE;
 	for (std::vector<struct_all_anims>::iterator iter = mAOAllAnims.begin(); iter != mAOAllAnims.end(); ++iter)
@@ -750,17 +750,17 @@ void LLFloaterAO::stopAOMotion(const LLUUID& id, const BOOL stand)
 
 void LLFloaterAO::ChangeStand(const BOOL announce)
 {
-	if (gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled"))
+	if (gSavedPerAccountSettings.getBOOL("PhoenixAOEnabled"))
 	{
 		if (gAgent.getAvatarObject())
 		{
-			if (gSavedPerAccountSettings.getBOOL("EmeraldAONoStandsInMouselook") && gAgent.cameraMouselook()) return;
+			if (gSavedPerAccountSettings.getBOOL("PhoenixAONoStandsInMouselook") && gAgent.cameraMouselook()) return;
 			if (gAgent.getAvatarObject()->mIsSitting) return;
 		}
 		if ((getAnimationState() == STATE_AGENT_IDLE) || (getAnimationState() == STATE_AGENT_STAND))// stands have lowest priority
 		{
 			if (!(mAOStands.size() > 0)) return;
-			if (gSavedPerAccountSettings.getBOOL("EmeraldAORandomizestand"))
+			if (gSavedPerAccountSettings.getBOOL("PhoenixAORandomizestand"))
 			{
 				stand_iterator = ll_rand(mAOStands.size()-1);
 			}
@@ -826,7 +826,7 @@ void LLFloaterAO::setCurrentStandId(const LLUUID& id)
 
 void LLFloaterAO::AOItemDrop(LLViewerInventoryItem* item)
 {
-	gSavedPerAccountSettings.setString("EmeraldAOConfigNotecardID", item->getUUID().asString());
+	gSavedPerAccountSettings.setString("PhoenixAOConfigNotecardID", item->getUUID().asString());
 	sInstance->childSetValue("ao_nc_text","Currently set to: "+item->getName());
 }
 
@@ -994,7 +994,7 @@ BOOL LLFloaterAO::isRandom(const int state)
 	for (std::vector<struct_anim_types>::iterator iter = mAnimTypes.begin(); iter != mAnimTypes.end(); ++iter)
 	{
 		if (iter->state == state) 
-			return gSavedPerAccountSettings.getBOOL("EmeraldAORandomize"+iter->name);
+			return gSavedPerAccountSettings.getBOOL("PhoenixAORandomize"+iter->name);
 	}
 	return FALSE;
 }
@@ -1017,7 +1017,7 @@ void LLFloaterAO::onSpinnerCommit(LLUICtrl* ctrl, void* userdata)
 	{
 		if (spin->getName() == "standtime")
 		{
-			gSavedPerAccountSettings.setF32("EmeraldAOStandInterval", spin->get());
+			gSavedPerAccountSettings.setF32("PhoenixAOStandInterval", spin->get());
 			if (mAOStandTimer) mAOStandTimer->reset();
 		}
 	}
@@ -1034,31 +1034,31 @@ void LLFloaterAO::onCheckBoxCommit(LLUICtrl* ctrl, void* userdata)
 
 void LLFloaterAO::onClickMore(void* data)
 {
-	gSavedSettings.setBOOL( "EmeraldAOAdvanced", TRUE );
+	gSavedSettings.setBOOL( "PhoenixAOAdvanced", TRUE );
 	updateLayout(sInstance);
 }
 void LLFloaterAO::onClickLess(void* data)
 {
-	gSavedSettings.setBOOL( "EmeraldAOAdvanced", FALSE );
+	gSavedSettings.setBOOL( "PhoenixAOAdvanced", FALSE );
 	updateLayout(sInstance);
 }
 
 void LLFloaterAO::onClickToggleAO(LLUICtrl *checkbox, void*)
 {
-	gSavedPerAccountSettings.setBOOL("EmeraldAOEnabled", checkbox->getValue().asBoolean());
-	llinfos << "Save EmeraldAOEnabled: " << checkbox->getValue().asBoolean() << llendl;
+	gSavedPerAccountSettings.setBOOL("PhoenixAOEnabled", checkbox->getValue().asBoolean());
+	llinfos << "Save PhoenixAOEnabled: " << checkbox->getValue().asBoolean() << llendl;
 	run();
 }
 
 void LLFloaterAO::onClickToggleSits(LLUICtrl *checkbox, void*)
 {
-	gSavedPerAccountSettings.setBOOL("EmeraldAOSitsEnabled", checkbox->getValue().asBoolean());
+	gSavedPerAccountSettings.setBOOL("PhoenixAOSitsEnabled", checkbox->getValue().asBoolean());
 	run();
 }
 
 void LLFloaterAO::onClickNoMouselookStands(LLUICtrl *checkbox, void*)
 {
-	gSavedPerAccountSettings.setBOOL("EmeraldAONoStandsInMouselook", checkbox->getValue().asBoolean());
+	gSavedPerAccountSettings.setBOOL("PhoenixAONoStandsInMouselook", checkbox->getValue().asBoolean());
 }
 
 void LLFloaterAO::onComboBoxCommit(LLUICtrl* ctrl, void* userdata)
@@ -1080,7 +1080,7 @@ void LLFloaterAO::onComboBoxCommit(LLUICtrl* ctrl, void* userdata)
 			{
 				if (box->getName() == iter->name)
 				{
-					gSavedPerAccountSettings.setString("EmeraldAODefault"+iter->name,stranim);
+					gSavedPerAccountSettings.setString("PhoenixAODefault"+iter->name,stranim);
 					int boxstate = iter->state;
 
 					for (std::vector<struct_default_anims>::iterator iter = mAODefaultAnims.begin(); iter != mAODefaultAnims.end(); ++iter)
@@ -1133,7 +1133,7 @@ void LLFloaterAO::onClickOpenCard(void* user_data)
 {
 //	if(gInventory.isEverythingFetched())
 //	{
-		LLUUID configncitem = (LLUUID)gSavedPerAccountSettings.getString("EmeraldAOConfigNotecardID");
+		LLUUID configncitem = (LLUUID)gSavedPerAccountSettings.getString("PhoenixAOConfigNotecardID");
 		if (configncitem.notNull())
 		{
 			const LLInventoryItem* item = gInventory.getItem(configncitem);
@@ -1178,8 +1178,8 @@ void LLFloaterAO::loadComboBoxes()
 		for (std::vector<struct_combobox>::iterator iter = mComboBoxes.begin(); iter != mComboBoxes.end(); ++iter)
 		{
 			sInstance->getChild<LLComboBox>(iter->name)->setCommitCallback(onComboBoxCommit);
-			sInstance->childSetCommitCallback("EmeraldAORandomize"+iter->name,onCheckBoxCommit);
-			sInstance->childSetValue("EmeraldAORandomize"+iter->name, gSavedPerAccountSettings.getBOOL("EmeraldAORandomize"+iter->name));
+			sInstance->childSetCommitCallback("PhoenixAORandomize"+iter->name,onCheckBoxCommit);
+			sInstance->childSetValue("PhoenixAORandomize"+iter->name, gSavedPerAccountSettings.getBOOL("PhoenixAORandomize"+iter->name));
 		}
 
 		// fill
@@ -1206,7 +1206,7 @@ void LLFloaterAO::loadComboBoxes()
 			{
 				if (iter->state == comboiter->state)
 				{
-					std::string defaultanim = gSavedPerAccountSettings.getString("EmeraldAODefault"+comboiter->name);
+					std::string defaultanim = gSavedPerAccountSettings.getString("PhoenixAODefault"+comboiter->name);
 					if (GetAnimIDByName(defaultanim) != LLUUID::null) iter->ao_id = GetAnimIDByName(defaultanim);
 					if (comboiter->combobox) SetDefault(comboiter->combobox,iter->ao_id,defaultanim);
 				}

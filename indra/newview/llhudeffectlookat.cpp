@@ -51,7 +51,7 @@
 
 #include "llxmltree.h"
 
-// [RLVa:KB] - Emerald specific
+// [RLVa:KB] - Phoenix specific
 #include "rlvhandler.h"
 // [/RLVa:KB]
 
@@ -509,9 +509,9 @@ void LLHUDEffectLookAt::setSourceObject(LLViewerObject* objectp)
 //-----------------------------------------------------------------------------
 void LLHUDEffectLookAt::render()
 {
-	static BOOL *sEmeraldDontShowMyLookAt = rebind_llcontrol<BOOL>("EmeraldDontShowMyLookAt", &gSavedSettings, true);
+	static BOOL *sPhoenixDontShowMyLookAt = rebind_llcontrol<BOOL>("PhoenixDontShowMyLookAt", &gSavedSettings, true);
 	
-	if (*sEmeraldDontShowMyLookAt &&
+	if (*sPhoenixDontShowMyLookAt &&
         (gAgent.getAvatarObject() == ((LLVOAvatar*)(LLViewerObject*)mSourceObject))) return;
 		if (sDebugLookAt && mSourceObject.notNull())
 		{
@@ -537,8 +537,8 @@ void LLHUDEffectLookAt::render()
 			} gGL.end();
 			gGL.popMatrix();
 
-			static BOOL *sEmeraldShowLookAtNames = rebind_llcontrol<BOOL>("EmeraldShowLookAtNames", &gSavedSettings, true);
-			if (*sEmeraldShowLookAtNames)
+			static BOOL *sPhoenixShowLookAtNames = rebind_llcontrol<BOOL>("PhoenixShowLookAtNames", &gSavedSettings, true);
+			if (*sPhoenixShowLookAtNames)
 				{
 					const LLFontGL* fontp = LLResMgr::getInstance()->getRes( LLFONT_SANSSERIF_SMALL );
 					LLGLEnable color_mat(GL_COLOR_MATERIAL);
@@ -558,7 +558,7 @@ void LLHUDEffectLookAt::render()
 					LLColor4 Color = LLColor4( (*mAttentions)[mTargetType].mColor, 1.0f ); 
 					std::string text = ((LLVOAvatar*)(LLViewerObject*)mSourceObject)->getFullname();
 					
-// [RLVa:KB] - Alternate: Emerald-370
+// [RLVa:KB] - Alternate: Phoenix-370
 					// Show anonyms in place of actual names when @shownames=n restricted
 					if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))
 					{

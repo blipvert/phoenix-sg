@@ -43,11 +43,11 @@ public:
 	static void show(void*);
 };
 
-class EmeraldSkinDownloader : public LLHTTPClient::Responder
+class PhoenixSkinDownloader : public LLHTTPClient::Responder
 {
 public:
-	EmeraldSkinDownloader(const std::string& skin_name, const std::string& display_name);
-	~EmeraldSkinDownloader() { }
+	PhoenixSkinDownloader(const std::string& skin_name, const std::string& display_name);
+	~PhoenixSkinDownloader() { }
 	void error(U32 status, const std::string& reason);
 	void completedRaw(
 							  U32 status,

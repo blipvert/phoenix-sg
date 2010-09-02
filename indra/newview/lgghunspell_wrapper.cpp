@@ -503,7 +503,7 @@ void lggHunSpell_Wrapper::setNewDictionary(std::string newDict)
 	myHunspell = new Hunspell(dicaffpath.c_str(),dicdicpath.c_str());
 	llinfos << "Adding custom dictionary " << llendl;
 	createCustomDic();
-	addDictionary("emerald_custom");
+	addDictionary("phoenix_custom");
 	std::vector<std::string> toInstall = getInstalledDicts();
 	for(int i =0;i<(int)toInstall.size();i++)
 		addDictionary(toInstall[i]);
@@ -513,7 +513,7 @@ void lggHunSpell_Wrapper::setNewDictionary(std::string newDict)
 void lggHunSpell_Wrapper::createCustomDic()
 {
 	std::string filename(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,
-		"dictionaries", "emerald_custom.dic"));
+		"dictionaries", "phoenix_custom.dic"));
 	if(!gDirUtilp->fileExists(filename))
 	{
 		llofstream export_file;	
@@ -527,7 +527,7 @@ void lggHunSpell_Wrapper::addWordToCustomDictionary(std::string wordToAdd)
 {
 	if(!myHunspell)return;
 	myHunspell->add(wordToAdd.c_str());
-	std::string filename(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "dictionaries", "emerald_custom.dic"));
+	std::string filename(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "dictionaries", "phoenix_custom.dic"));
 	std::vector<std::string> lines;
 	if(gDirUtilp->fileExists(filename))
 	{
@@ -606,8 +606,8 @@ void lggHunSpell_Wrapper::processSettings()
 {
 	//expects everything to already be in saved settings
 	//this will also reload and read the installed dicts
-	setNewDictionary(gSavedSettings.getString("EmeraldSpellBase"));
-	highlightInRed= gSavedSettings.getBOOL("EmeraldSpellDisplay");
+	setNewDictionary(gSavedSettings.getString("PhoenixSpellBase"));
+	highlightInRed= gSavedSettings.getBOOL("PhoenixSpellDisplay");
 	
 }
 void lggHunSpell_Wrapper::addDictionary(std::string additionalDictionary)
@@ -769,7 +769,7 @@ std::vector<std::string> lggHunSpell_Wrapper::getInstalledDicts()
 {
 	std::vector<std::string> toReturn;
 	//expecting short names to be stored...
-	std::vector<std::string> shortNames =  CSV2VEC(gSavedSettings.getString("EmeraldSpellInstalled"));
+	std::vector<std::string> shortNames =  CSV2VEC(gSavedSettings.getString("PhoenixSpellInstalled"));
 	for(int i =0;i<(int)shortNames.size();i++)
 		toReturn.push_back(dictName2FullName(shortNames[i]));
 	return toReturn;
@@ -789,7 +789,7 @@ std::vector<std::string> lggHunSpell_Wrapper::getAvailDicts()
 		}
 		if(0==LLStringUtil::compareInsensitive(dics[i],currentBaseDic))
 			found=true;
-		if(0==LLStringUtil::compareInsensitive(dics[i],"Emerald (CUSTOM)"))
+		if(0==LLStringUtil::compareInsensitive(dics[i],"Phoenix (CUSTOM)"))
 			found=true;
 		if(!found)toReturn.push_back(dics[i]);
 	}
@@ -817,9 +817,9 @@ void lggHunSpell_Wrapper::addButton(std::string selection)
 {
 	if(selection=="")return;
 	addDictionary(selection);
-	std::vector<std::string> alreadyInstalled = CSV2VEC(gSavedSettings.getString("EmeraldSpellInstalled"));
+	std::vector<std::string> alreadyInstalled = CSV2VEC(gSavedSettings.getString("PhoenixSpellInstalled"));
 	alreadyInstalled.push_back(fullName2DictName(selection));	
-	gSavedSettings.setString("EmeraldSpellInstalled",VEC2CSV(alreadyInstalled));
+	gSavedSettings.setString("PhoenixSpellInstalled",VEC2CSV(alreadyInstalled));
 }
 void lggHunSpell_Wrapper::removeButton(std::string selection)
 {
@@ -831,23 +831,23 @@ void lggHunSpell_Wrapper::removeButton(std::string selection)
 		if(0!=LLStringUtil::compareInsensitive(selection,currentlyInstalled[i]))
 			newInstalledDics.push_back(fullName2DictName(currentlyInstalled[i]));
 	}
-	gSavedSettings.setString("EmeraldSpellInstalled",VEC2CSV(newInstalledDics));
+	gSavedSettings.setString("PhoenixSpellInstalled",VEC2CSV(newInstalledDics));
 	processSettings();
 }
 void lggHunSpell_Wrapper::newDictSelection(std::string selection)
 {
 	currentBaseDic=selection;
-	gSavedSettings.setString("EmeraldSpellBase",selection);
+	gSavedSettings.setString("PhoenixSpellBase",selection);
 	//better way to do this would be to check and see if there is a installed conflict
 	//and then only remove that one.. messy
-	gSavedSettings.setString("EmeraldSpellInstalled","en_sl");
+	gSavedSettings.setString("PhoenixSpellInstalled","en_sl");
 	processSettings();
 }
 void lggHunSpell_Wrapper::getMoreButton(void * data)
 {
 	std::vector<std::string> shortNames;
 	std::vector<std::string> longNames;
-	LLSD response = LLHTTPClient::blockingGet("http://www.emeraldviewer.net/app/dics/dic_list.xml");
+	LLSD response = LLHTTPClient::blockingGet("http://www.phoenixviewer.com/app/dics/dic_list.xml");
 	if(response.has("body"))
 	{
 		const LLSD &dict_list = response["body"];
@@ -866,7 +866,7 @@ void lggHunSpell_Wrapper::getMoreButton(void * data)
 }
 void lggHunSpell_Wrapper::editCustomButton()
 {
-	std::string dicdicpath(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "dictionaries", std::string("emerald_custom.dic")).c_str());
+	std::string dicdicpath(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "dictionaries", std::string("phoenix_custom.dic")).c_str());
 	gViewerWindow->getWindow()->openFile(dicdicpath);
 }
 

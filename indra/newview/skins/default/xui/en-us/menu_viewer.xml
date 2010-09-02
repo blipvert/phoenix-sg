@@ -446,7 +446,7 @@
 		</menu_item_check>
 		<menu_item_check bottom="" enabled="true" height="19" label="Show Selection Outlines" left="0" mouse_opaque="true" name="Show Selection Outlines" shortcut="control|o" width="250">
 			<on_click function="Tools.ShowSelectionHighlights" userdata="" />
-			<on_check control="EmeraldRenderHighlightSelections" />
+			<on_check control="PhoenixRenderHighlightSelections" />
 		</menu_item_check>
 		<menu_item_check bottom="-113" enabled="true" height="19" label="Show Hidden Selection" left="0" mouse_opaque="true" name="Show Hidden Selection" width="250">
 			<on_click function="Tools.ShowHiddenSelection" userdata="" />
@@ -579,17 +579,17 @@
 			<on_click function="ShowFloater" userdata="help tutorial" />
 		</menu_item_call>
     <menu_item_separator bottom="-102" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator2" width="166" />
-    <menu_item_call bottom="-140" enabled="true" height="19" label="Emerald Viewer Blog..." left="0" mouse_opaque="true" name="Emerald Viewer Blog..." width="166">
-      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://emeraldviewer.net/index.shtml" />
+    <menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Blog..." left="0" mouse_opaque="true" name="Phoenix Viewer Blog..." width="166">
+      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://phoenixviewer.com/index.shtml" />
     </menu_item_call>
-    <menu_item_call bottom="-140" enabled="true" height="19" label="Emerald Viewer Wiki..." left="0" mouse_opaque="true" name="Emerald Viewer Wiki..." width="166">
-      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://emeraldviewer.net/wiki.shtml" />
+    <menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Wiki..." left="0" mouse_opaque="true" name="Phoenix Viewer Wiki..." width="166">
+      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://phoenixviewer.com/wiki.shtml" />
     </menu_item_call>
-    <menu_item_call bottom="-140" enabled="true" height="19" label="Emerald Viewer Support..." left="0" mouse_opaque="true" name="Emerald Viewer Support..." width="166">
-      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://emeraldviewer.net/support.shtml" />
+    <menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Support..." left="0" mouse_opaque="true" name="Phoenix Viewer Support..." width="166">
+      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://phoenixviewer.com/support.shtml" />
     </menu_item_call>
-    <menu_item_call bottom="-140" enabled="true" height="19" label="Emerald Viewer Bug Reports..." left="0" mouse_opaque="true" name="Emerald Viewer Bug Reports..." width="166">
-      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://jira.emeraldviewer.net" />
+    <menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Bug Reports..." left="0" mouse_opaque="true" name="Phoenix Viewer Bug Reports..." width="166">
+      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://jira.phoenixviewer.com" />
     </menu_item_call>
 
 		<menu_item_separator bottom="-411" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator7" width="250" />
@@ -634,23 +634,23 @@
       <on_click function="ShowFloater" userdata="lag meter" />
     </menu_item_call>
     <menu_item_separator bottom="-148" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator3" width="166" />
-		<menu_item_call bottom="-313" enabled="true" height="19" label="About Emerald Viewer..." left="0" mouse_opaque="true" name="About Second Life..." width="166">
+		<menu_item_call bottom="-313" enabled="true" height="19" label="About Phoenix Viewer..." left="0" mouse_opaque="true" name="About Second Life..." width="166">
 			<on_click function="ShowFloater" userdata="about" />
 		</menu_item_call>
 	</menu>
-	<menu bottom="729" create_jump_keys="true" drop_shadow="true" enabled="true" height="210" label="Emerald" left="269" mouse_opaque="false" name="Emerald" opaque="true" tear_off="true" width="155">
+	<menu bottom="729" create_jump_keys="true" drop_shadow="true" enabled="true" height="210" label="Phoenix" left="269" mouse_opaque="false" name="Phoenix" opaque="true" tear_off="true" width="155">
 		<tearoff_menu bottom="-10" enabled="true" height="10" label="~~~~~~~~~~~" left="0" mouse_opaque="true" name="~~~~~~~~~~~" width="155" />
 		<menu_item_check enabled="true" height="20" label="Phantom" left="0" mouse_opaque="true" name="Phantom" shortcut="control|alt|p" width="155">
-			<on_click function="Emerald.TogglePhantom" userdata="" />
-			<on_check function="Emerald.CheckPhantom" userdata="" />
+			<on_click function="Phoenix.TogglePhantom" userdata="" />
+			<on_check function="Phoenix.CheckPhantom" userdata="" />
 		</menu_item_check>
 		<menu_item_check bottom="-50" enabled="true" height="20" label="Ground Sit" left="0" mouse_opaque="true" name="Ground Sit" shortcut="control|alt|s" width="155">
-			<on_click function="Emerald.ToggleSit" userdata="" />
-			<on_Check function="Emerald.CheckSit" userdata="" />
+			<on_click function="Phoenix.ToggleSit" userdata="" />
+			<on_Check function="Phoenix.CheckSit" userdata="" />
 		</menu_item_check>
     <menu_item_check bottom="-67" enabled="true" height="19" label="Block Spam" left="0" mouse_opaque="true" name="BlockSpam" shortcut="alt|shift|s" width="185">
-      <on_click function="Emerald.ToggleBlockSpam" userdata="" />
-      <on_check function="Emerald.CheckBlockSpam" userdata="" />
+      <on_click function="Phoenix.ToggleBlockSpam" userdata="" />
+      <on_check function="Phoenix.CheckBlockSpam" userdata="" />
     </menu_item_check>
     
 		<menu_item_separator bottom="-58" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator1" width="155" />
@@ -659,23 +659,23 @@
 			<on_check control="DoubleClickAutoPilot" />
 		</menu_item_check>
 		<menu_item_check enabled="true" label="DoubleClick Teleports" name="DoubleClick Teleports" shortcut="control|shift|d">
-			<on_click function="Emerald.ToggleDoubleClickTeleport" userdata="" />
-			<on_check function="Emerald.CheckDoubleClickTeleport" userdata="" />
+			<on_click function="Phoenix.ToggleDoubleClickTeleport" userdata="" />
+			<on_check function="Phoenix.CheckDoubleClickTeleport" userdata="" />
 		</menu_item_check>
     <menu_item_check enabled="true" label="Enable Autoresponse">
-      <on_click function="Emerald.ToggleAutoResponse" userdata="" />
-      <on_check function="Emerald.CheckAutoResponse" userdata="" />
+      <on_click function="Phoenix.ToggleAutoResponse" userdata="" />
+      <on_check function="Phoenix.CheckAutoResponse" userdata="" />
     </menu_item_check>
 		<menu_item_check enabled="true" label="Show LookAt" left="0" mouse_opaque="true" name="show LookAt" width="155">
 			<on_click function="ToggleControl" userdata="PersistShowLookAt" />
 			<on_check control="PersistShowLookAt" />
 		</menu_item_check>
     <menu_item_check enabled="true" label="Broadcast viewer effects" left="0" mouse_opaque="true" name="SL Particle Chat" width="155">
-      <on_click function="ToggleControl" userdata="EmeraldBroadcastEffects" />
-      <on_check control="EmeraldBroadcastEffects" />
+      <on_click function="ToggleControl" userdata="PhoenixBroadcastEffects" />
+      <on_check control="PhoenixBroadcastEffects" />
     </menu_item_check>
 		<menu_item_check enabled="false" label="Clear Effects" name="cleareffects" shortcut="control|shift|v" width="155">
-			<on_click function="Emerald.ClearEffects" userdata="" />
+			<on_click function="Phoenix.ClearEffects" userdata="" />
 		</menu_item_check>
     
 	  <menu_item_separator enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator2" width="155" />
@@ -698,7 +698,7 @@
 		  <on_click function="ShowFloater" userdata="areasearch" />
 	  </menu_item_call>
     <menu_item_call enabled="false" label="Avatar List" shortcut="control|shift|a">
-		  <on_click function="Emerald.ToggleAvatarList" userdata="avatars" />
+		  <on_click function="Phoenix.ToggleAvatarList" userdata="avatars" />
 		  <on_check control="ShowAvatarList" />
 		  <on_enable function="RLV.EnableIfNot" userdata="shownames" />
 	  </menu_item_call>

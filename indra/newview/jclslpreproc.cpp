@@ -34,7 +34,7 @@
 #include "jclslpreproc.h"
 #include "llagent.h"
 #include "llappviewer.h"
-#include "emerald.h"
+#include "phoenix.h"
 #include "llcurl.h"
 #include "llscrolllistctrl.h"
 #include "llviewertexteditor.h"
@@ -943,8 +943,8 @@ void JCLSLPreprocessor::start_process()
 	std::string output;
 	
 	std::string name = mMainScriptName;
-	BOOL lazy_lists = gSavedSettings.getBOOL("EmeraldLSLLazyLists");
-	BOOL use_switch = gSavedSettings.getBOOL("EmeraldLSLSwitch");
+	BOOL lazy_lists = gSavedSettings.getBOOL("PhoenixLSLLazyLists");
+	BOOL use_switch = gSavedSettings.getBOOL("PhoenixLSLSwitch");
 	std::string settings;
 	settings = "Settings: preproc ";
 	if (lazy_lists == TRUE)
@@ -955,15 +955,15 @@ void JCLSLPreprocessor::start_process()
 	{
 	  settings = settings + " switches";
 	}
-	if(gSavedSettings.getBOOL("EmeraldLSLOptimizer")  == TRUE)
+	if(gSavedSettings.getBOOL("PhoenixLSLOptimizer")  == TRUE)
 	{
 		  settings = settings + " Optimize";
 	}
-	if(gSavedSettings.getBOOL("EmeraldEnableHDDInclude") == TRUE)
+	if(gSavedSettings.getBOOL("PhoenixEnableHDDInclude") == TRUE)
 	{
 		   settings = settings + " HDDInclude";
 	}
-	if(gSavedSettings.getBOOL("EmeraldLSLTextCompress")== TRUE)
+	if(gSavedSettings.getBOOL("PhoenixLSLTextCompress")== TRUE)
 	{
 			settings = settings + " Compress";
 	}
@@ -988,9 +988,9 @@ void JCLSLPreprocessor::start_process()
 		
 		std::string path = gDirUtilp->getExpandedFilename(LL_PATH_CACHE,"")+gDirUtilp->getDirDelimiter()+"lslpreproc"+gDirUtilp->getDirDelimiter();
 		ctx.add_include_path(path.c_str());
-		if(gSavedSettings.getBOOL("EmeraldEnableHDDInclude"))
+		if(gSavedSettings.getBOOL("PhoenixEnableHDDInclude"))
 		{
-			std::string hddpath = gSavedSettings.getString("EmeraldHDDIncludeLocation");
+			std::string hddpath = gSavedSettings.getString("PhoenixHDDIncludeLocation");
 			if(hddpath != "")
 			{
 				ctx.add_include_path(hddpath.c_str());
@@ -1118,7 +1118,7 @@ void JCLSLPreprocessor::start_process()
 	{
 		if(!errored)
 		{
-			if(gSavedSettings.getBOOL("EmeraldLSLOptimizer"))
+			if(gSavedSettings.getBOOL("PhoenixLSLOptimizer"))
 			{
 				mCore->mErrorList->addCommentText("Optimizing out unreferenced user-defined functions and global variables");
 				try
@@ -1134,7 +1134,7 @@ void JCLSLPreprocessor::start_process()
 		}
 		if(!errored)
 		{
-			if(gSavedSettings.getBOOL("EmeraldLSLTextCompress"))
+			if(gSavedSettings.getBOOL("PhoenixLSLTextCompress"))
 			{
 				mCore->mErrorList->addCommentText("Compressing lsltext by removing unnecessary space");
 				try

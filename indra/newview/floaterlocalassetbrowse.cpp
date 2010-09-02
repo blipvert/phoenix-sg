@@ -1,7 +1,7 @@
 /* Local Asset Browser: source */
 /*
 
-tag: vaa emerald local_asset_browser
+tag: vaa phoenix local_asset_browser
 
 this feature is still a work in progress.
 

@@ -64,7 +64,7 @@
 	         name="inventory panel" sort_order="TexturePickerSortOrder" width="271" />
     </panel>
     <panel border="false" bottom_delta="0" follows="left|top" height="300" label="Local" left="175" mouse_opaque="false" name="local_tab" width="410">
-  <!-- tag: vaa emerald local_asset_browser [begin] -->
+  <!-- tag: vaa phoenix local_asset_browser [begin] -->
       <button bottom_delta="-26" enabled="true" follows="left|top" font="SansSerifSmall" halign="center" height="20" label="Add" label_selected="Add" left="4" mouse_opaque="true" name="Add" scale_image="true" width="64" visible="true" />
       <button bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" halign="center" height="20" label="Remove" label_selected="Remove" left="72" mouse_opaque="true" name="Remove" scale_image="true" width="64" visible="true" />
       <button bottom_delta="0" enabled="true" follows="left|top" font="SansSerifSmall" halign="center" height="20" label="Browser" label_selected="Browser" left="140" mouse_opaque="true" name="Browser" scale_image="true" width="64" visible="true" />
@@ -85,7 +85,7 @@
 	    <column name="unit_name" label="Name" dynamicwidth="true" />
 	    <column name="unit_id_HIDDEN" label="ID" width="0" />
 	  </scroll_list>
-	  <!-- tag: vaa emerald local_asset_browser [end] -->
+	  <!-- tag: vaa phoenix local_asset_browser [end] -->
     </panel>
   </tab_container>
 </floater>

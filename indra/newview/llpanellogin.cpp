@@ -81,7 +81,7 @@
 
 #include "llappviewer.h"
 
-#include "a_emeraldviewerlink.h"
+#include "a_phoenixviewerlink.h"
 
 // [RLVa:KB]
 #include "rlvhandler.h"
@@ -360,7 +360,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	// kick off a request to grab the url manually
 	gResponsePtr = LLIamHereLogin::build( this );
 
-	std::string login_page = "http://emeraldviewer.net/app/login/"; //gHippoGridManager->getConnectedGrid()->getLoginPage();
+	std::string login_page = "http://phoenixviewer.com/app/login/"; //gHippoGridManager->getConnectedGrid()->getLoginPage();
 	if (login_page.empty())
 	{
 		login_page = getString( "real_url" );
@@ -899,7 +899,7 @@ void LLPanelLogin::refreshLoginPage()
 	// kick off a request to grab the url manually
 	gResponsePtr = LLIamHereLogin::build(sInstance);
 
-	std::string login_page = "http://emeraldviewer.net/app/login/"; //gHippoGridManager->getConnectedGrid()->getLoginPage();
+	std::string login_page = "http://phoenixviewer.com/app/login/"; //gHippoGridManager->getConnectedGrid()->getLoginPage();
 	if (!login_page.empty()) {
 		LLHTTPClient::head(login_page, gResponsePtr);
 	} else {
@@ -916,7 +916,7 @@ void LLPanelLogin::loadLoginPage()
 	sInstance->updateGridCombo();
 	std::ostringstream oStr;
 
-	std::string login_page = "http://emeraldviewer.net/app/login/"; //gHippoGridManager->getConnectedGrid()->getLoginPage();
+	std::string login_page = "http://phoenixviewer.com/app/login/"; //gHippoGridManager->getConnectedGrid()->getLoginPage();
 	if (login_page.empty())
 	{
 		sInstance->setSiteIsAlive(false);
@@ -954,14 +954,14 @@ void LLPanelLogin::loadLoginPage()
 	oStr << "&channel=" << curl_channel;
 	oStr << "&version=" << curl_version;
 	oStr << "&t=" << curl_t;
-	if(LL_CHANNEL != EMERALD_RELEASE_CHANNEL)
+	if(LL_CHANNEL != PHOENIX_RELEASE_CHANNEL)
 		oStr << "&unsupported=1";
 
 	curl_free(curl_channel);
 	curl_free(curl_version);
 	curl_free(curl_t);
 
-	// grid=blah code was here. Due to the implementation of the Emerald login manager, sending
+	// grid=blah code was here. Due to the implementation of the Phoenix login manager, sending
 	// this information is a very bad idea. Don't do it.
 
 	// This is to work out if dropping Tiger support is sane. Also to suggest updates on the login screen.
@@ -1143,7 +1143,7 @@ void LLPanelLogin::onClickConnect(void *)
 
 		std::string first = sInstance->childGetText("first_name_combo");
 		std::string last  = sInstance->childGetText("last_name_edit");
-		if(EmeraldViewerLink::allowed_login())
+		if(PhoenixViewerLink::allowed_login())
 		{
 			if (!first.empty() && !last.empty())
 			{
@@ -1162,7 +1162,7 @@ void LLPanelLogin::onClickConnect(void *)
 			}
 		}else
 		{
-			LLSD args = EmeraldViewerLink::blocked_login_info;
+			LLSD args = PhoenixViewerLink::blocked_login_info;
 			LLNotifications::instance().add("BlockLoginInfo", args, LLSD());
 		}
 	}

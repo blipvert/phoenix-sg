@@ -193,12 +193,12 @@ LLScriptEdCore::LLScriptEdCore(
 	mErrorListResizer(NULL),
 	// We need to check for a new file every five seconds, or autosave every 60.
 	// There's probably a better solution to both of the above.
-	LLEventTimer((gSavedSettings.getString("EmeraldLSLExternalEditor").length() < 3) ? 60 : 5)
+	LLEventTimer((gSavedSettings.getString("PhoenixLSLExternalEditor").length() < 3) ? 60 : 5)
 {
 	setFollowsAll();
 	setBorderVisible(FALSE);
 
-	BOOL preproc = gSavedSettings.getBOOL("EmeraldLSLPreprocessor");
+	BOOL preproc = gSavedSettings.getBOOL("PhoenixLSLPreprocessor");
 	
 	
 	
@@ -222,9 +222,9 @@ LLScriptEdCore::LLScriptEdCore(
 		mErrorList->addChild( mErrorListResizer );
 		LLSD lol = mErrorList->getRect().getValue();
 		//llinfos << "lol:" << lol[0].asInteger() << "|" << lol[1].asInteger() << "|" << lol[2].asInteger() << "|" << lol[3].asInteger() << llendl;
-		mErrorOldRect = gSavedSettings.getRect("EmeraldScriptErrorRect");
+		mErrorOldRect = gSavedSettings.getRect("PhoenixScriptErrorRect");
 		LLRect errect = mErrorList->getRect();
-		//gSavedSettings.setRect("EmeraldScriptErrorRect",errect);
+		//gSavedSettings.setRect("PhoenixScriptErrorRect",errect);
 		mErrorOldRect.mLeft = errect.mLeft;
 		mErrorOldRect.mRight = errect.mRight;
 		mErrorList->userSetShape(mErrorOldRect);
@@ -301,7 +301,7 @@ LLScriptEdCore::LLScriptEdCore(
 	}
 	
 	//LLColor3 color(0.5f, 0.0f, 0.15f);
-	LLColor3 color(gSavedSettings.getColor3("EmeraldColorllFunction"));
+	LLColor3 color(gSavedSettings.getColor3("PhoenixColorllFunction"));
 	if(mPostEditor)
 	{
 		mPostEditor->loadKeywords(keyword_path, funcs, tooltips, color);
@@ -346,7 +346,7 @@ LLScriptEdCore::LLScriptEdCore(
 		mEditor->addToken(LLKeywordToken::WORD,"#",LLColor3(0.0f,0.0f,0.8f),
 			std::string("Preprocessor command. See Advanced menu of the script editor."));
 
-		if(gSavedSettings.getBOOL("EmeraldLSLSwitch"))
+		if(gSavedSettings.getBOOL("PhoenixLSLSwitch"))
 		{
 			mEditor->addToken(LLKeywordToken::WORD,"switch",LLColor3(0.0f,0.0f,0.8f),
 				std::string("Switch statement. See Advanced menu of the script editor."));
@@ -422,7 +422,7 @@ void menu_toggle_gsaved(void* userdata)
 	LLMenuItemCheckGL* self = (LLMenuItemCheckGL*)userdata;
 	std::string cntrl = self->getControlName();
 	if(cntrl != "")
-	{	if (cntrl == "EmeraldLSLPreprocessor")
+	{	if (cntrl == "PhoenixLSLPreprocessor")
 		{
 		gSavedSettings.setBOOL(cntrl,!gSavedSettings.getBOOL(cntrl));
 		LLSD args;	
@@ -437,7 +437,7 @@ void LLScriptEdCore::updateResizer(void* userdata)
 {
 	LLScriptEdCore* self = (LLScriptEdCore*)userdata;
 	LLRect newrect = self->mErrorList->getRect();
-	LLRect oldrect = self->mErrorOldRect;//gSavedSettings.getRect("EmeraldScriptErrorRect");
+	LLRect oldrect = self->mErrorOldRect;//gSavedSettings.getRect("PhoenixScriptErrorRect");
 	oldrect.mLeft = newrect.mLeft;
 	oldrect.mRight = newrect.mRight;
 	oldrect.mBottom = newrect.mBottom;
@@ -452,14 +452,14 @@ void LLScriptEdCore::updateResizer(void* userdata)
 
 		self->mErrorOldRect = newrect;
 		self->mErrorListResizer->setResizeLimits(10,TabSetRect.getHeight()+newrect.getHeight());
-		gSavedSettings.setRect("EmeraldScriptErrorRect",newrect);
+		gSavedSettings.setRect("PhoenixScriptErrorRect",newrect);
 	}
 }
 
 BOOL LLScriptEdCore::tick()
 {
 	//autoSave();
-	if (gSavedSettings.getString("EmeraldLSLExternalEditor").length() < 3)
+	if (gSavedSettings.getString("PhoenixLSLExternalEditor").length() < 3)
 	{
 		if (hasChanged(this))
 		{
@@ -523,21 +523,21 @@ void LLScriptEdCore::initMenu()
 	// fixed dim.
 
 	LLMenuItemCheckGL* check = getChild<LLMenuItemCheckGL>("preproc_on");
-	check->setControlName("EmeraldLSLPreprocessor",NULL);
+	check->setControlName("PhoenixLSLPreprocessor",NULL);
 	check->setMenuCallback(menu_toggle_gsaved,check);
 
-	if(gSavedSettings.getBOOL("EmeraldLSLPreprocessor"))
+	if(gSavedSettings.getBOOL("PhoenixLSLPreprocessor"))
 	{
 		check = getChild<LLMenuItemCheckGL>("optim_on");
-		check->setControlName("EmeraldLSLOptimizer",NULL);
+		check->setControlName("PhoenixLSLOptimizer",NULL);
 		check->setMenuCallback(menu_toggle_gsaved,check);
 
 		check = getChild<LLMenuItemCheckGL>("lazylist_on");
-		check->setControlName("EmeraldLSLLazyLists",NULL);
+		check->setControlName("PhoenixLSLLazyLists",NULL);
 		check->setMenuCallback(menu_toggle_gsaved,check);
 
 		check = getChild<LLMenuItemCheckGL>("switch_on");
-		check->setControlName("EmeraldLSLSwitch",NULL);
+		check->setControlName("PhoenixLSLSwitch",NULL);
 		check->setMenuCallback(menu_toggle_gsaved,check);
 	}
 
@@ -550,7 +550,7 @@ void LLScriptEdCore::onToggleProc(void* userdata)
 	LLScriptEdCore* corep = (LLScriptEdCore*)userdata;
 	corep->mErrorList->addCommentText(std::string("Toggling the preprocessor will not take full effect unless you close and reopen this editor."));
 	corep->mErrorList->selectFirstItem();
-	gSavedSettings.setBOOL("EmeraldLSLPreprocessor",!gSavedSettings.getBOOL("EmeraldLSLPreprocessor"));
+	gSavedSettings.setBOOL("PhoenixLSLPreprocessor",!gSavedSettings.getBOOL("PhoenixLSLPreprocessor"));
 }
 
 void LLScriptEdCore::setScriptText(const std::string& text, BOOL is_valid)
@@ -558,7 +558,7 @@ void LLScriptEdCore::setScriptText(const std::string& text, BOOL is_valid)
 	if (mEditor)
 	{
 		std::string ntext = text;
-		if(gSavedSettings.getBOOL("EmeraldLSLPreprocessor"))
+		if(gSavedSettings.getBOOL("PhoenixLSLPreprocessor"))
 		{
 			if(mPostEditor)mPostEditor->setText(ntext);
 			ntext = mLSLProc->decode(ntext);
@@ -566,7 +566,7 @@ void LLScriptEdCore::setScriptText(const std::string& text, BOOL is_valid)
 		LLStringUtil::replaceTabsWithSpaces(ntext, 4);   // fix tabs in text
 		mEditor->setText(ntext);
 		mHasScriptData = is_valid;
-		if (gSavedSettings.getString("EmeraldLSLExternalEditor").length() > 3)
+		if (gSavedSettings.getString("PhoenixLSLExternalEditor").length() > 3)
 		{
 		childSetEnabled("XEd_btn", true);
 		}
@@ -575,7 +575,7 @@ void LLScriptEdCore::setScriptText(const std::string& text, BOOL is_valid)
 
 std::string LLScriptEdCore::getScriptText()
 {
-	if(gSavedSettings.getBOOL("EmeraldLSLPreprocessor") && mPostEditor)
+	if(gSavedSettings.getBOOL("PhoenixLSLPreprocessor") && mPostEditor)
 	{
 		//return mPostEditor->getText();
 		return mPostScript;
@@ -714,7 +714,7 @@ void LLScriptEdCore::xedLaunch()
 	//launch
 #if LL_WINDOWS
 	//just to get rid of the pesky black window
-	std::string exe = gSavedSettings.getString("EmeraldLSLExternalEditor");
+	std::string exe = gSavedSettings.getString("PhoenixLSLExternalEditor");
 	int spaces=0;
 	for(int i=0; i!=exe.size(); ++i)
 	{
@@ -738,7 +738,7 @@ void LLScriptEdCore::xedLaunch()
 	LSApplicationParameters appParams;
 	memset(&appParams, 0, sizeof(appParams));
 	FSRef ref;
-	FSPathMakeRef((UInt8*)gSavedSettings.getString("EmeraldLSLExternalEditor").c_str(), &ref, NULL);
+	FSPathMakeRef((UInt8*)gSavedSettings.getString("PhoenixLSLExternalEditor").c_str(), &ref, NULL);
 	appParams.application = &ref;
 	appParams.flags = kLSLaunchAsync | kLSLaunchStartClassic;
 	LSOpenURLsWithRole(arguments, kLSRolesAll, NULL, &appParams, NULL, 0);
@@ -746,11 +746,11 @@ void LLScriptEdCore::xedLaunch()
 	CFRelease(tempPath);
 	CFRelease(strPath);
 #else
-	//std::system(std::string(gSavedSettings.getString("EmeraldLSLExternalEditor") + " " + mXfname).c_str());
+	//std::system(std::string(gSavedSettings.getString("PhoenixLSLExternalEditor") + " " + mXfname).c_str());
 	
 	// Any approach involving std::system will fail because SL eats signals.
 	// This was stolen from floaterskinfinder.cpp.
-	std::string exe = gSavedSettings.getString("EmeraldLSLExternalEditor");
+	std::string exe = gSavedSettings.getString("PhoenixLSLExternalEditor");
 	const char *zargv[] = {exe.c_str(), mXfname.c_str(), NULL};
 	fflush(NULL);
 	pid_t id = vfork();
@@ -1113,7 +1113,7 @@ void LLScriptEdCore::doSave( void* userdata, BOOL close_after_save )
 	llinfos << "Saving!" << llendl;
 	LLScriptEdCore* self = (LLScriptEdCore*)userdata;
 	self->mErrorList->deleteAllItems();	// Clear the data so it shows our messages WTF!
-	if(gSavedSettings.getBOOL("EmeraldLSLPreprocessor"))
+	if(gSavedSettings.getBOOL("PhoenixLSLPreprocessor"))
 	{
 		llinfos << "passing to preproc" << llendl;
 		self->mLSLProc->preprocess_script(close_after_save);
@@ -1303,7 +1303,7 @@ void LLScriptEdCore::onErrorList(LLUICtrl*, void* user_data)
 		sscanf(line.c_str(), "%d %d", &row, &column);
 		//llinfos << "LLScriptEdCore::onErrorList() - " << row << ", "
 		//<< column << llendl;
-		if(gSavedSettings.getBOOL("EmeraldLSLPreprocessor") && self->mPostEditor)
+		if(gSavedSettings.getBOOL("PhoenixLSLPreprocessor") && self->mPostEditor)
 		{
 			LLPanel* tab = self->getChild<LLPanel>("postscript");
 			LLTabContainer* tabset = self->getChild<LLTabContainer>("tabset");

@@ -75,8 +75,8 @@
 #include "llstylemap.h"
 #include "lltrans.h"
 #include "llversionviewer.h"
-#include "mfdkeywordfloater.h" //Emerald KeywordAlert
-#include "a_emeraldviewerlink.h"
+#include "mfdkeywordfloater.h" //Phoenix KeywordAlert
+#include "a_phoenixviewerlink.h"
 
 // [RLVa:KB]
 #include "rlvhandler.h"
@@ -88,7 +88,7 @@
 #include "otr_wrapper.h"
 #include "otr_floater_smp_dialog.h"
 #include "otr_floater_smp_progress.h"
-#include "emerald.h"
+#include "phoenix.h"
 // USE_OTR // [/$PLOTR$]
 
 //
@@ -1227,11 +1227,11 @@ void LLFloaterIMPanel::init(const std::string& session_label)
 				       (void *)this);
 	}
 
-	if (LL_CHANNEL != EMERALD_RELEASE_CHANNEL && mDialog == IM_NOTHING_SPECIAL)
+	if (LL_CHANNEL != PHOENIX_RELEASE_CHANNEL && mDialog == IM_NOTHING_SPECIAL)
 	{
-		if(EmeraldViewerLink::is_support(mOtherParticipantUUID))
+		if(PhoenixViewerLink::is_support(mOtherParticipantUUID))
 		{
-			addHistoryLine(getString("emerald_no_support_available"),
+			addHistoryLine(getString("phoenix_no_support_available"),
 						   gSavedSettings.getColor4("SystemChatColor"),
 						   false);
 		}
@@ -1581,13 +1581,13 @@ BOOL LLFloaterIMPanel::inviteToSession(const LLDynamicArray<LLUUID>& ids)
 
 void LLFloaterIMPanel::addHistoryLine(const std::string &utf8msg, LLColor4 incolor, bool log_to_file, const LLUUID& source, const std::string& name)
 {
-	//Emerald KeywordAlert
+	//Phoenix KeywordAlert
 	if(gAgent.getID() != source)
 	{
 		if(MfdKeywordFloaterStart::hasKeyword(utf8msg,2))
 		{
-			if(gSavedPerAccountSettings.getBOOL("EmeraldKeywordChangeColor"))
-				incolor= gSavedPerAccountSettings.getColor4("EmeraldKeywordColor");
+			if(gSavedPerAccountSettings.getBOOL("PhoenixKeywordChangeColor"))
+				incolor= gSavedPerAccountSettings.getColor4("PhoenixKeywordColor");
 		}
 	}
 
@@ -2097,7 +2097,7 @@ void otr_deliver_message(const std::string& utf8_text,
     }
     if ((new_dialog == IM_NOTHING_SPECIAL) &&
         (g_otr_force_typing_stop ||
-         (gSavedSettings.getBOOL("EmeraldOTRInTypingStop"))))
+         (gSavedSettings.getBOOL("PhoenixOTRInTypingStop"))))
     {
         OtrlMessageType mtype = otrl_proto_message_type(utf8_text.c_str());
         switch (mtype)
@@ -2175,7 +2175,7 @@ void LLFloaterIMPanel::onClickOtr(LLUICtrl* source, void* userdata)
 
 void LLFloaterIMPanel::doOtrStart()
 {
-    U32 otrpref = gSavedSettings.getU32("EmeraldUseOTR");
+    U32 otrpref = gSavedSettings.getU32("PhoenixUseOTR");
     // otrpref: 0 == Require use of OTR in IMs, 1 == Request OTR if available, 2 == Accept OTR requests, 3 == Decline use of OTR
     if (3 == otrpref)
     {
@@ -2261,7 +2261,7 @@ void LLFloaterIMPanel::doOtrStart()
 void LLFloaterIMPanel::doOtrStop(bool pretend_they_did)
 {
     llinfos << "$PLOTR$ otr menu stop 1" << llendl;
-    // do not disable this bassed on gSavedSettings.getU32("EmeraldUseOTR");
+    // do not disable this bassed on gSavedSettings.getU32("PhoenixUseOTR");
     // when the user disables OTR we may still need to stop currently encrypted conversations
     if (gOTR && (IM_NOTHING_SPECIAL == mDialog))
     {
@@ -2412,7 +2412,7 @@ void LLFloaterIMPanel::showOtrStatus()
         else
         {
             ConnContext *context = getOtrContext();
-            U32 otrpref = gSavedSettings.getU32("EmeraldUseOTR");
+            U32 otrpref = gSavedSettings.getU32("PhoenixUseOTR");
             // otrpref: 0 == Require OTR, 1 == Request OTR, 2 == Accept OTR, 3 == Decline OTR
             if (3 == otrpref)
             {
@@ -2848,7 +2848,7 @@ void LLFloaterIMPanel::sendMsg()
 			if (mInputEditor) mInputEditor->updateHistory();
 			// Truncate and convert to UTF8 for transport
 			std::string utf8_text = wstring_to_utf8str(text);
-			if (gSavedSettings.getBOOL("EmeraldAutoCloseOOC"))
+			if (gSavedSettings.getBOOL("PhoenixAutoCloseOOC"))
 			{
 				if(utf8_text.length() > 2)
 				{
@@ -2895,11 +2895,11 @@ void LLFloaterIMPanel::sendMsg()
 				std::string my_name;
 				gAgent.buildFullname(my_name);
 				//utf8_text = "Sending my system information:";
-				EmeraldViewerLink::sendInfo(mOtherParticipantUUID,mSessionUUID,my_name,mDialog);
+				PhoenixViewerLink::sendInfo(mOtherParticipantUUID,mSessionUUID,my_name,mDialog);
 				return;
 			}
 			// Convert MU*s style poses into IRC emotes here.
-			if (gSavedSettings.getBOOL("EmeraldAllowMUpose") && utf8_text.find(":") == 0 && utf8_text.length() > 3)
+			if (gSavedSettings.getBOOL("PhoenixAllowMUpose") && utf8_text.find(":") == 0 && utf8_text.length() > 3)
 			{
 				if (utf8_text.find(":'") == 0)
 				{
@@ -3124,7 +3124,7 @@ void LLFloaterIMPanel::sendMsg()
 					bool is_emote = (prefix == "/me " || prefix == "/me'");
 
 					// Use the right prefix ("You" / your name)
-					if(!is_emote && gSavedSettings.getBOOL("EmeraldUseYou"))
+					if(!is_emote && gSavedSettings.getBOOL("PhoenixUseYou"))
 						history_echo += LLTrans::getString("You");
 					else
 						gAgent.buildFullname(history_echo);
@@ -3156,7 +3156,7 @@ void LLFloaterIMPanel::sendMsg()
 					BOOL other_was_typing = mOtherTyping;
 	                if(isEncrypted())
 	                {
-	                    addHistoryLine(history_echo, gSavedSettings.getColor("EmeraldIMEncryptedChatColor"), true, gAgent.getID());
+	                    addHistoryLine(history_echo, gSavedSettings.getColor("PhoenixIMEncryptedChatColor"), true, gAgent.getID());
 	                }
 	                else
 	                {

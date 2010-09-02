@@ -3555,7 +3555,7 @@ void LLVoiceClient::sendFriendsListUpdates()
 	{
 		mFriendsListDirty = false;
 		
-		if(gSavedSettings.getBOOL("EmeraldLargeFriendslistNoSLim"))
+		if(gSavedSettings.getBOOL("PhoenixLargeFriendslistNoSLim"))
 		{
 			// FOR TESTING ONLY -- clear all buddy list, block list, and auto-accept list entries.
 			clearAllLists();

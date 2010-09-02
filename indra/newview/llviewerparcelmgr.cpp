@@ -1710,7 +1710,7 @@ void optionally_start_music(const std::string& music_url)
 		// changed as part of SL-4878
 		if ( gOverlayBar && gOverlayBar->musicPlaying())
 		{
-			if(gSavedSettings.getBOOL("EmeraldStopMusicOnParcelChange"))
+			if(gSavedSettings.getBOOL("PhoenixStopMusicOnParcelChange"))
 			{
 				gOverlayBar->toggleMusicPlay(gOverlayBar);
 			}else

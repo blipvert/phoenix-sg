@@ -122,7 +122,7 @@ BOOL LLFloaterImagePreview::postBuild()
 		if (mRawImagep->getWidth() * mRawImagep->getHeight () <= LL_IMAGE_REZ_LOSSLESS_CUTOFF * LL_IMAGE_REZ_LOSSLESS_CUTOFF)
 			childEnable("lossless_check");
 
-		gSavedSettings.setBOOL("EmeraldTemporaryUpload",FALSE);
+		gSavedSettings.setBOOL("PhoenixTemporaryUpload",FALSE);
 		childSetValue("temp_check",FALSE);
 	}
 	else

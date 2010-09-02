@@ -164,7 +164,7 @@ void LLPanelGeneral::cancel()
 // static
 void LLPanelGeneral::onClickClearSettings(void*)
 {
-	LLNotifications::instance().add("EmeraldResetAllSettingsPrompt",
+	LLNotifications::instance().add("PhoenixResetAllSettingsPrompt",
 									LLSD(),
 									LLSD(),
 									&callbackResetAllSettings);
@@ -188,11 +188,11 @@ void LLPanelGeneral::callbackResetAllSettings(const LLSD& notification, const LL
 		{
 			gSavedPerAccountSettings.resetToDefaults();
 			gSavedPerAccountSettings.saveToFile(gSavedSettings.getString("PerAccountSettingsFile"), TRUE);
-			LLNotifications::instance().add("EmeraldResetAllSettingsComplete");
+			LLNotifications::instance().add("PhoenixResetAllSettingsComplete");
 		}
 		else
 		{
-			LLNotifications::instance().add("EmeraldResetAllSettingsCompleteNoUser");
+			LLNotifications::instance().add("PhoenixResetAllSettingsCompleteNoUser");
 		}			
 
 		// *HACK: Now close the floater without cancelling or applying.

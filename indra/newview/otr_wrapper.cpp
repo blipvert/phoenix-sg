@@ -58,10 +58,10 @@ static void otrwui_tbd(const char *msg)
 static OtrlPolicy otrwui_policy(void *opdata, ConnContext *context)
 {
     OtrlPolicy result = 0;
-    U32 useotr = gSavedSettings.getU32("EmeraldUseOTR");
+    U32 useotr = gSavedSettings.getU32("PhoenixUseOTR");
     if (3 < useotr)
     {
-        llwarns << "$PLOTR$ Unknown setting for EmeraldUseOTR" << useotr << llendl;
+        llwarns << "$PLOTR$ Unknown setting for PhoenixUseOTR" << useotr << llendl;
         useotr = 2;
     }
     if (0 == useotr) // Require use of OTR in IMs

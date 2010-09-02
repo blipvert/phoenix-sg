@@ -440,7 +440,7 @@ bool handleTranslateChatPrefsChanged(const LLSD& newvalue)
 	return true;
 }
 
-static bool handleEmeraldBlockSpam(const LLSD& newvalue)
+static bool handlePhoenixBlockSpam(const LLSD& newvalue)
 {
         gAgent.mBlockSpam = newvalue.asBoolean();
         return true;
@@ -575,7 +575,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("AudioLevelMic")->getSignal()->connect(boost::bind(&handleVoiceClientPrefsChanged, _1));
 	gSavedSettings.getControl("LipSyncEnabled")->getSignal()->connect(boost::bind(&handleVoiceClientPrefsChanged, _1));	
 	gSavedSettings.getControl("TranslateChat")->getSignal()->connect(boost::bind(&handleTranslateChatPrefsChanged, _1));	
-	gSavedSettings.getControl("EmeraldBlockSpam")->getSignal()->connect(boost::bind(&handleEmeraldBlockSpam, _1));
+	gSavedSettings.getControl("PhoenixBlockSpam")->getSignal()->connect(boost::bind(&handlePhoenixBlockSpam, _1));
 }
 
 template <> eControlType get_control_type<U32>(const U32& in, LLSD& out) 

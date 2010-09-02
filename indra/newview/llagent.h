@@ -416,7 +416,7 @@ public:
 	void			setFlying(BOOL fly);
 	void			toggleFlying();
 
-	static BOOL			getPhantom();// const				{ return emeraldPhantom; }
+	static BOOL			getPhantom();// const				{ return phoenixPhantom; }
 	static void			setPhantom(BOOL phantom);
 	static void			togglePhantom();
 
@@ -821,11 +821,11 @@ public:
 private:
 	bool mbTeleportKeepsLookAt; // try to keep look-at after teleport is complete
 	static BOOL ignorePrejump;
-	static BOOL EmeraldForceFly;
+	static BOOL PhoenixForceFly;
 	static void updateIgnorePrejump(const LLSD &data);
-	static void	updateEmeraldForceFly(const LLSD &data);
+	static void	updatePhoenixForceFly(const LLSD &data);
 	
-	static BOOL emeraldPhantom;
+	static BOOL phoenixPhantom;
 	bool mbAlwaysRun; // should the avatar run by default rather than walk
 	bool mbRunning;	// is the avatar trying to run right now
 

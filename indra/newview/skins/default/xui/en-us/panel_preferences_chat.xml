@@ -71,7 +71,7 @@
 	     can_apply_immediately="true" color="0.6 0.6 1 1"
 	     enabled="true" follows="left|top" height="47"
 	     label="URLs" left_delta="54" mouse_opaque="true" name="links" width="44" />
-      <text bottom="-150" follows="left|top" font="SansSerifSmall" height="16" left_delta="54" name="EmeraldEncrypted" width="55">Encrypted</text>
+      <text bottom="-150" follows="left|top" font="SansSerifSmall" height="16" left_delta="54" name="PhoenixEncrypted" width="55">Encrypted</text>
 	<color_swatch border_color="0.45098 0.517647 0.607843 1" bottom="-150"
 	     can_apply_immediately="true" color="0.6 0.6 1 1"
 	     enabled="true" follows="left|top" height="47"

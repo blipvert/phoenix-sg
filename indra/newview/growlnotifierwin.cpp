@@ -52,7 +52,7 @@ void GrowlNotifierWin::registerApplication(const std::string& application, const
 	}
 	growl = new Growl(GROWL_TCP,NULL,application.c_str(),(const char **const)arr,notificationTypes.size(),
 		std::string(gDirUtilp->getDefaultSkinDir()+gDirUtilp->getDirDelimiter()+
-		"textures"+gDirUtilp->getDirDelimiter()+"emeraldicon.ico").c_str());
+		"textures"+gDirUtilp->getDirDelimiter()+"phoenixicon.ico").c_str());
 	growl->setProtocol(GROWL_UDP);
 
 	for(i = 0; i < (int)notificationTypes.size(); ++i) {
@@ -63,11 +63,11 @@ void GrowlNotifierWin::registerApplication(const std::string& application, const
 void GrowlNotifierWin::showNotification(const std::string& notification_title, const std::string& notification_message, 
 										 const std::string& notification_type)
 {
-	//LL_INFOS("GrowlNotifierWin") << std::string(gDirUtilp->getDefaultSkinDir()+gDirUtilp->getDirDelimiter()+"textures"+gDirUtilp->getDirDelimiter()+"emeraldicon.ico").c_str() << LL_ENDL;
+	//LL_INFOS("GrowlNotifierWin") << std::string(gDirUtilp->getDefaultSkinDir()+gDirUtilp->getDirDelimiter()+"textures"+gDirUtilp->getDirDelimiter()+"phoenixicon.ico").c_str() << LL_ENDL;
 	growl->Notify(notification_type.c_str(),notification_title.c_str(),notification_message.c_str()
 		//,
 		//std::string("").c_str(),//url
-		//std::string("http://emeraldviewer.net/box/emeraldicon.ico").c_str()
+		//std::string("http://phoenixviewer.com/box/phoenixicon.ico").c_str()
 		);	
 }
 

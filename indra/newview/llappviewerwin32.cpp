@@ -208,7 +208,7 @@ int APIENTRY WINMAIN(HINSTANCE hInstance,
 
 		if(pos != std::string::npos)
 		{
-			gDebugInfo["EmeraldPortableMode"] = LLSD::Boolean(true);
+			gDebugInfo["PhoenixPortableMode"] = LLSD::Boolean(true);
 		}
 	}
 

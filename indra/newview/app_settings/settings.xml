@@ -56,7 +56,7 @@
       <key>Value</key>
       <integer>50000.0</integer>
     </map>
-    <key>EmeraldMuteGestures</key>
+    <key>PhoenixMuteGestures</key>
     <map>
       <key>Comment</key>
       <string>Enable to mute gestures</string>
@@ -67,7 +67,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldAssetBlacklist</key>
+    <key>PhoenixAssetBlacklist</key>
     <map>
       <key>Comment</key>
       <string>List for blacklisting assets</string>
@@ -80,7 +80,7 @@
         <string />
       </array>
     </map>
-    <key>EmeraldAssetBlacklistVersion</key>
+    <key>PhoenixAssetBlacklistVersion</key>
     <map>
       <key>Comment</key>
       <string>Do not edit this value.</string>
@@ -91,7 +91,7 @@
       <key>Value</key>
       <string>0</string>
     </map>
-    <key>EmeraldSpecialBlacklist</key>
+    <key>PhoenixSpecialBlacklist</key>
     <map>
       <key>Comment</key>
       <string>List for blacklisting dangerous assets</string>
@@ -104,7 +104,7 @@
         <string />
       </array>
     </map>
-    <key>EmeraldAllowScriptedMedia</key>
+    <key>PhoenixAllowScriptedMedia</key>
     <map>
       <key>Comment</key>
       <string>Allow any script to press your play button</string>
@@ -115,7 +115,7 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
-    <key>EmeraldAlertOnSnapshot</key>
+    <key>PhoenixAlertOnSnapshot</key>
     <map>
       <key>Comment</key>
       <string>show a message when someone takes a detectable snapshot nearby</string>
@@ -126,7 +126,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldTemporaryUpload</key>
+    <key>PhoenixTemporaryUpload</key>
     <map>
       <key>Comment</key>
       <string>Whether or not a upload is temp</string>
@@ -137,7 +137,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldFreezeInventoryArangement</key>
+    <key>PhoenixFreezeInventoryArangement</key>
     <map>
       <key>Comment</key>
       <string>If true, prevents the inventory folders from changing on new items</string>
@@ -148,7 +148,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldEnableInvMirror</key>
+    <key>PhoenixEnableInvMirror</key>
     <map>
       <key>Comment</key>
       <string>lolu</string>
@@ -159,7 +159,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldEnableAutoCorrect</key>
+    <key>PhoenixEnableAutoCorrect</key>
     <map>
       <key>Comment</key>
       <string>whether to enable autocorrect or not</string>
@@ -170,7 +170,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldInvMirrorLocation</key>
+    <key>PhoenixInvMirrorLocation</key>
     <map>
       <key>Comment</key>
       <string>toast</string>
@@ -181,7 +181,7 @@
       <key>Value</key>
       <string></string>
     </map>
-    <key>EmeraldEnableHDDInclude</key>
+    <key>PhoenixEnableHDDInclude</key>
     <map>
       <key>Comment</key>
       <string>orly</string>
@@ -192,7 +192,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldHDDIncludeLocation</key>
+    <key>PhoenixHDDIncludeLocation</key>
     <map>
       <key>Comment</key>
       <string>toast</string>
@@ -203,7 +203,7 @@
       <key>Value</key>
       <string></string>
     </map>
-    <key>EmeraldInvMirrorGestures</key>
+    <key>PhoenixInvMirrorGestures</key>
     <map>
       <key>Comment</key>
       <string>lolu</string>
@@ -214,7 +214,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldInvMirrorNotecards</key>
+    <key>PhoenixInvMirrorNotecards</key>
     <map>
       <key>Comment</key>
       <string>lolu</string>
@@ -225,7 +225,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldInvMirrorScripts</key>
+    <key>PhoenixInvMirrorScripts</key>
     <map>
       <key>Comment</key>
       <string>lolu</string>
@@ -236,7 +236,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-		<key>EmeraldExportProperties</key>
+		<key>PhoenixExportProperties</key>
 		<map>
 			<key>Comment</key>
 			<string>o.o</string>
@@ -247,7 +247,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldExportInventory</key>
+		<key>PhoenixExportInventory</key>
 		<map>
 			<key>Comment</key>
 			<string>o.o</string>
@@ -258,7 +258,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-    <key>EmeraldTranslateReplace</key>
+    <key>PhoenixTranslateReplace</key>
     <map>
       <key>Comment</key>
       <string>Whether or not right click tranlate replaces the selected text or adds to it.</string>
@@ -269,7 +269,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldUseChatBar</key>
+    <key>PhoenixUseChatBar</key>
 		<map>
 			<key>Comment</key>
 			<string>Set to FALSE to disable the chat bar and chat display in the bottom left. All chat will go to the Communicate window.</string>
@@ -280,7 +280,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldUseBridgeMoveToTarget</key>
+		<key>PhoenixUseBridgeMoveToTarget</key>
 		<map>
 			<key>Comment</key>
 			<string>Enable llmovetotarget teleporting (requires bridge)</string>
@@ -291,7 +291,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldDoubleClickTeleportChat</key>
+		<key>PhoenixDoubleClickTeleportChat</key>
 		<map>
 			<key>Comment</key>
 			<string>Send TP destination coordinates to channel?</string>
@@ -302,7 +302,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldDoubleClickTeleportChannel</key>
+		<key>PhoenixDoubleClickTeleportChannel</key>
 		<map>
 			<key>Comment</key>
 			<string>Channel for magical move-lock teleporting system</string>
@@ -313,7 +313,7 @@
 			<key>Value</key>
 			<integer>90000</integer>
 		</map>
-		<key>EmeraldDoubleClickWearInventoryObjects</key>
+		<key>PhoenixDoubleClickWearInventoryObjects</key>
 		<map>
 			<key>Comment</key>
 			<string>Whether or not to automatically wear objects in your inventory you wear</string>
@@ -324,7 +324,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldAgentUpdatesPerSecond</key>
+		<key>PhoenixAgentUpdatesPerSecond</key>
 		<map>
 			<key>Comment</key>
 			<string>Sets the amount of updates to send per second.</string>
@@ -335,7 +335,7 @@
 			<key>Value</key>
 			<real>10.0</real>
 		</map>
-		<key>EmeraldAllowMUpose</key>
+		<key>PhoenixAllowMUpose</key>
 		<map>
 			<key>Comment</key>
 			<string>Allow MU* pose style in chat and IM (with ':' as a synonymous to '/me ')</string>
@@ -346,7 +346,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-    <key>EmeraldAppearanceAnimate</key>
+    <key>PhoenixAppearanceAnimate</key>
     <map>
       <key>Comment</key>
       <string>Play appearance anim when entering appearance mode?</string>
@@ -357,7 +357,7 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
-    <key>EmeraldAutoCorrectCount</key>
+    <key>PhoenixAutoCorrectCount</key>
     <map>
       <key>Comment</key>
       <string>How many words have been auto replaced.</string>
@@ -368,7 +368,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldAppearanceForceStand</key>
+    <key>PhoenixAppearanceForceStand</key>
     <map>
       <key>Comment</key>
       <string>Unsit avatar when entering appearance mode?</string>
@@ -379,7 +379,7 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
-    <key>EmeraldBeamShape</key>
+    <key>PhoenixBeamShape</key>
     <map>
       <key>Comment</key>
       <string>Beam file for the shape of your beam</string>
@@ -388,9 +388,9 @@
       <key>Type</key>
       <string>String</string>
       <key>Value</key>
-      <string>Emerald</string>
+      <string>Phoenix</string>
     </map>
-    <key>EmeraldBeamColorFile</key>
+    <key>PhoenixBeamColorFile</key>
     <map>
       <key>Comment</key>
       <string>Beam file for the shape of your beam</string>
@@ -401,7 +401,7 @@
       <key>Value</key>
       <string>===OFF===</string>
     </map>
-    <key>EmeraldBeamShapeScale</key>
+    <key>PhoenixBeamShapeScale</key>
     <map>
       <key>Comment</key>
       <string>How Big You Want to let the beam be</string>
@@ -412,7 +412,7 @@
       <key>Value</key>
       <real>1.0</real>
     </map>
-    <key>EmeraldBlockMapTps</key>
+    <key>PhoenixBlockMapTps</key>
     <map>
       <key>Comment</key>
       <string>Whether or not to block all script map tps</string>
@@ -423,7 +423,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldBlockSpam</key>
+    <key>PhoenixBlockSpam</key>
     <map>
       <key>Comment</key>
       <string>Drop/kill all dialogs?</string>
@@ -434,7 +434,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldBuildPrefs_Xsize</key>
+    <key>PhoenixBuildPrefs_Xsize</key>
     <map>
       <key>Comment</key>
       <string>Default Size For New Objects to be created X</string>
@@ -445,7 +445,7 @@
       <key>Value</key>
       <real>0.5</real>
     </map>
-    <key>EmeraldBuildPrefs_Ysize</key>
+    <key>PhoenixBuildPrefs_Ysize</key>
     <map>
       <key>Comment</key>
       <string>Default Size For New Objects to be created Y</string>
@@ -456,7 +456,7 @@
       <key>Value</key>
       <real>0.5</real>
     </map>
-    <key>EmeraldBuildPrefs_Zsize</key>
+    <key>PhoenixBuildPrefs_Zsize</key>
     <map>
       <key>Comment</key>
       <string>Default Size For New Objects to be created Z</string>
@@ -467,7 +467,7 @@
       <key>Value</key>
       <real>0.5</real>
     </map>
-    <key>EmeraldBuildPrefs_Phantom</key>
+    <key>PhoenixBuildPrefs_Phantom</key>
     <map>
       <key>Comment</key>
       <string>Default Setting For New Objects to be created, phantom flag</string>
@@ -478,7 +478,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldBuildPrefs_Temporary</key>
+    <key>PhoenixBuildPrefs_Temporary</key>
     <map>
       <key>Comment</key>
       <string>Default Setting For New Objects to be created, temp flag</string>
@@ -489,7 +489,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldBuildPrefs_Physical</key>
+    <key>PhoenixBuildPrefs_Physical</key>
     <map>
       <key>Comment</key>
       <string>Default Setting For New Objects to be created, physical flag</string>
@@ -500,7 +500,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldBuildPrefs_EmbedItem</key>
+    <key>PhoenixBuildPrefs_EmbedItem</key>
     <map>
       <key>Comment</key>
       <string>Whether to add item to objects</string>
@@ -511,7 +511,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldBuildPrefs_Material</key>
+    <key>PhoenixBuildPrefs_Material</key>
     <map>
       <key>Comment</key>
       <string>Default Setting For New Objects to be created, physical flag</string>
@@ -522,7 +522,7 @@
       <key>Value</key>
       <string>Wood</string>
     </map>
-    <key>EmeraldBuildPrefs_Color</key>
+    <key>PhoenixBuildPrefs_Color</key>
     <map>
       <key>Comment</key>
       <string>Color of new objects textures</string>
@@ -538,7 +538,7 @@
         <real>1.0</real>
       </array>
     </map>
-    <key>EmeraldBuildPrefs_Texture</key>
+    <key>PhoenixBuildPrefs_Texture</key>
     <map>
       <key>Comment</key>
       <string>Texture used as 'Default' for new object created</string>
@@ -549,7 +549,7 @@
       <key>Value</key>
       <string>89556747-24cb-43ed-920b-47caed15465f</string>
     </map>
-    <key>EmeraldBuildPrefs_Item</key>
+    <key>PhoenixBuildPrefs_Item</key>
     <map>
       <key>Comment</key>
       <string>item added to new object created</string>
@@ -560,7 +560,7 @@
       <key>Value</key>
       <string></string>
     </map>
-    <key>EmeraldBuildPrefs_Alpha</key>
+    <key>PhoenixBuildPrefs_Alpha</key>
     <map>
       <key>Comment</key>
       <string>Default Alpha For New Objects to be created</string>
@@ -571,7 +571,7 @@
       <key>Value</key>
       <real>0.0</real>
     </map>
-    <key>EmeraldBuildPrefs_Glow</key>
+    <key>PhoenixBuildPrefs_Glow</key>
     <map>
       <key>Comment</key>
       <string>Default Glow For New Objects to be created</string>
@@ -582,7 +582,7 @@
       <key>Value</key>
       <real>0.0</real>
     </map>
-    <key>EmeraldBuildPrefs_FullBright</key>
+    <key>PhoenixBuildPrefs_FullBright</key>
     <map>
       <key>Comment</key>
       <string>Default Setting For New Objects to be created, whether textures are full bright</string>
@@ -593,7 +593,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldBuildPrefs_Shiny</key>
+    <key>PhoenixBuildPrefs_Shiny</key>
     <map>
       <key>Comment</key>
       <string>Shiny level used as 'Default' for new objects created</string>
@@ -604,7 +604,7 @@
       <key>Value</key>
       <string>None</string>
     </map>
-    <key>EmeraldBuildPrefs_PivotX</key>
+    <key>PhoenixBuildPrefs_PivotX</key>
     <map>
       <key>Comment</key>
       <string>Pivot point on the X axis</string>
@@ -615,7 +615,7 @@
       <key>Value</key>
       <real>50</real>
     </map>
-    <key>EmeraldBuildPrefs_PivotY</key>
+    <key>PhoenixBuildPrefs_PivotY</key>
     <map>
       <key>Comment</key>
       <string>Pivot point on the Y axis</string>
@@ -626,7 +626,7 @@
       <key>Value</key>
       <real>50</real>
     </map>
-    <key>EmeraldBuildPrefs_PivotZ</key>
+    <key>PhoenixBuildPrefs_PivotZ</key>
     <map>
       <key>Comment</key>
       <string>Pivot point on the Z axis</string>
@@ -637,7 +637,7 @@
       <key>Value</key>
       <real>50</real>
     </map>
-    <key>EmeraldBuildPrefs_PivotIsPercent</key>
+    <key>PhoenixBuildPrefs_PivotIsPercent</key>
     <map>
       <key>Comment</key>
       <string>Consider the Pivot points values as a percentage</string>
@@ -648,7 +648,7 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
-    <key>EmeraldBuildPrefs_ActualRoot</key>
+    <key>PhoenixBuildPrefs_ActualRoot</key>
     <map>
       <key>Comment</key>
       <string>Show the axis on the actual root of a linkset instead of mass center</string>
@@ -659,7 +659,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldDisableMinZoomDist</key>
+    <key>PhoenixDisableMinZoomDist</key>
     <map>
       <key>Comment</key>
       <string>Disable the constraint on the closest distance the camera is allowed to get to an object.</string>
@@ -670,7 +670,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldDisableMaxZoomDist</key>
+    <key>PhoenixDisableMaxZoomDist</key>
     <map>
       <key>Comment</key>
       <string>Disable the constraint on the farthest distance the camera is allowed to zoom out.</string>
@@ -681,7 +681,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldEnableGrowl</key>
+    <key>PhoenixEnableGrowl</key>
     <map>
       <key>Comment</key>
       <string>Enables Growl notifications</string>
@@ -692,7 +692,7 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
-    <key>EmeraldGrowlWhenActive</key>
+    <key>PhoenixGrowlWhenActive</key>
     <map>
       <key>Comment</key>
       <string>If Growl notifications are active, show them even when the window is active.</string>
@@ -703,7 +703,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldEnableHDDInclude</key>
+    <key>PhoenixEnableHDDInclude</key>
     <map>
       <key>Comment</key>
       <string>orly</string>
@@ -714,7 +714,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldGeneralSpamEnabled</key>
+    <key>PhoenixGeneralSpamEnabled</key>
     <map>
       <key>Comment</key>
       <string>Enables General Spam Prevention</string>
@@ -725,7 +725,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldChatSpamEnabled</key>
+    <key>PhoenixChatSpamEnabled</key>
     <map>
       <key>Comment</key>
       <string>Enables Chat Spam Prevention</string>
@@ -736,7 +736,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldCardSpamEnabled</key>
+    <key>PhoenixCardSpamEnabled</key>
     <map>
       <key>Comment</key>
       <string>Enables CallingCard Spam Prevention</string>
@@ -747,7 +747,7 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
-    <key>EmeraldCrouchToggle</key>
+    <key>PhoenixCrouchToggle</key>
     <map>
       <key>Comment</key>
       <string>Enables using the crouch key as a toggle</string>
@@ -759,7 +759,7 @@
       <integer>0</integer>
     </map>
 
-    <key>EmeraldCrouchToggleStatus</key>
+    <key>PhoenixCrouchToggleStatus</key>
     <map>
       <key>Comment</key>
       <string>Status of crouch toggle</string>
@@ -771,7 +771,7 @@
       <integer>0</integer>
     </map>
 
-    <key>EmeraldDialogSpamEnabled</key>
+    <key>PhoenixDialogSpamEnabled</key>
     <map>
       <key>Comment</key>
       <string>Enables Dialog Spam Prevention</string>
@@ -782,7 +782,7 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
-    <key>EmeraldHDDIncludeLocation</key>
+    <key>PhoenixHDDIncludeLocation</key>
     <map>
       <key>Comment</key>
       <string>toast</string>
@@ -793,7 +793,7 @@
       <key>Value</key>
       <string/>
     </map>
-    <key>EmeraldLoadURL</key>
+    <key>PhoenixLoadURL</key>
     <map>
       <key>Comment</key>
       <string>Disable to prevent Load URL dialogs. (Enabled by default)</string>
@@ -804,7 +804,7 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
-    <key>EmeraldMaxBeamsPerSecond</key>
+    <key>PhoenixMaxBeamsPerSecond</key>
     <map>
       <key>Comment</key>
       <string>How many selection beam updates to send in a second</string>
@@ -815,7 +815,7 @@
       <key>Value</key>
       <real>40</real>
     </map>
-    <key>EmeraldParticleChat</key>
+    <key>PhoenixParticleChat</key>
     <map>
       <key>Comment</key>
       <string>Speak Particle Info on channel 9000</string>
@@ -826,7 +826,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldPlayTpSound</key>
+    <key>PhoenixPlayTpSound</key>
     <map>
       <key>Comment</key>
       <string>Whether or not to hear the teleport sound</string>
@@ -837,7 +837,7 @@
       <key>Value</key>
       <integer>1</integer>
 	</map>
-    <key>EmeraldChatSpamTime</key>
+    <key>PhoenixChatSpamTime</key>
     <map>
       <key>Comment</key>
           <string>ADVANCED SETTINGS: Time of Evalulating spam. RECOMMENDED NUMBER IS 1.000</string>
@@ -848,10 +848,10 @@
       <key>Value</key>
       <real>1.0</real>
     </map>
-        <key>EmeraldChatSpamCount</key>
+        <key>PhoenixChatSpamCount</key>
     <map>
       <key>Comment</key>
-      <string>ADVANCED SETTINGS: Number of items spammed per time set in EmeraldSpamTime. RECOMMENDED IS 10.000</string>
+      <string>ADVANCED SETTINGS: Number of items spammed per time set in PhoenixSpamTime. RECOMMENDED IS 10.000</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -859,7 +859,7 @@
       <key>Value</key>
       <real>10.0</real>
     </map>
-    <key>EmeraldSkinBrowserRect</key>
+    <key>PhoenixSkinBrowserRect</key>
     <map>
         <key>Comment</key>
         <string>Rectangle for skin browser</string>
@@ -875,7 +875,7 @@
             <integer>0</integer>
         </array>
     </map>
-    <key>EmeraldSpamTime</key>
+    <key>PhoenixSpamTime</key>
     <map>
       <key>Comment</key>
           <string>ADVANCED SETTINGS: Time of Evalulating spam. RECOMMENDED NUMBER IS 1.000</string>
@@ -886,10 +886,10 @@
       <key>Value</key>
       <real>1.0</real>
     </map>
-        <key>EmeraldSpamCount</key>
+        <key>PhoenixSpamCount</key>
     <map>
       <key>Comment</key>
-      <string>ADVANCED SETTINGS: Number of items spammed per time set in EmeraldSpamTime. RECOMMENDED IS 4.000</string>
+      <string>ADVANCED SETTINGS: Number of items spammed per time set in PhoenixSpamTime. RECOMMENDED IS 4.000</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -897,7 +897,7 @@
       <key>Value</key>
       <real>4.0</real>
     </map>
-    <key>EmeraldSpellDisplay</key>
+    <key>PhoenixSpellDisplay</key>
     <map>
       <key>Comment</key>
       <string>Turn on to show mispelled text in red</string>
@@ -908,7 +908,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldSpellInstalled</key>
+    <key>PhoenixSpellInstalled</key>
     <map>
       <key>Comment</key>
       <string>The list of installed dictionaries</string>
@@ -919,7 +919,7 @@
       <key>Value</key>
       <string>EN_SL</string>
     </map>
-    <key>EmeraldSpellBase</key>
+    <key>PhoenixSpellBase</key>
     <map>
       <key>Comment</key>
       <string>The base dictionary to spell check with</string>
@@ -930,7 +930,7 @@
       <key>Value</key>
       <string>English (United States of America)</string>
     </map>
-    <key>EmeraldTagColor</key>
+    <key>PhoenixTagColor</key>
     <map>
       <key>Comment</key>
       <string>Default Setting For Client Tag Color</string>
@@ -941,7 +941,7 @@
       <key>Value</key>
       <string>Green</string>
     </map>
-   <key>EmeraldAvatarAgeAlert</key>
+   <key>PhoenixAvatarAgeAlert</key>
 		<map>
 			<key>Comment</key>
 			<string>Enables the avatar age alert</string>
@@ -952,7 +952,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldAvatarAgeAlertDays</key>
+		<key>PhoenixAvatarAgeAlertDays</key>
 		<map>
 			<key>Comment</key>
 			<string>You will be notified when an avatar younger than X days appears on the radar</string>
@@ -963,7 +963,7 @@
 			<key>Value</key>
 			<real>3</real>
 		</map>
-		<key>EmeraldAvatarAgeAlertSoundUUID</key>
+		<key>PhoenixAvatarAgeAlertSoundUUID</key>
 		<map>
 			<key>Comment</key>
 			<string>The signal sound for the avatar age alert</string>
@@ -974,7 +974,7 @@
 			<key>Value</key>
 			<string>5fcbee19-8dd4-2888-d6bf-14310d2f7c9f</string>
 		</map>
-    <key>EmeraldAvatarListKeepOpen</key>
+    <key>PhoenixAvatarListKeepOpen</key>
     <map>
       <key>Comment</key>
       <string>Keeps Avatar List updates running in background</string>
@@ -985,7 +985,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldAvatarListColorEntries</key>
+    <key>PhoenixAvatarListColorEntries</key>
     <map>
       <key>Comment</key>
       <string>Display names of friends and muted people in different colors in the list</string>
@@ -996,7 +996,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-		<key>EmeraldBoobFriction</key>
+		<key>PhoenixBoobFriction</key>
 		<map>
 			<key>Comment</key>
 			<string>Internal friction (brings boobs to rest). Shouldn't ever be above 1.</string>
@@ -1007,7 +1007,7 @@
 			<key>Value</key>
 			<real>80</real>
 		</map>
-		<key>EmeraldBoobHardness</key>
+		<key>PhoenixBoobHardness</key>
 		<map>
 			<key>Comment</key>
 			<string>Hardness (dampening) of boobs.</string>
@@ -1018,7 +1018,7 @@
 			<key>Value</key>
 			<real>51</real>
 		</map>
-		<key>EmeraldBoobMass</key>
+		<key>PhoenixBoobMass</key>
 		<map>
 			<key>Comment</key>
 			<string>Mass of boobs.</string>
@@ -1029,7 +1029,7 @@
 			<key>Value</key>
 			<real>54.0</real>
 		</map>
-		<key>EmeraldBreastPhysicsToggle</key>
+		<key>PhoenixBreastPhysicsToggle</key>
 		<map>
 			<key>Comment</key>
 			<string>Enables/Disables breast physics</string>
@@ -1040,7 +1040,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldBreastSportsBra</key>
+		<key>PhoenixBreastSportsBra</key>
 		<map>
 			<key>Comment</key>
 			<string>allows disabling the physics for 1 av, in case their outfit looks wrong with it on</string>
@@ -1051,7 +1051,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldBoobVelMax</key>
+		<key>PhoenixBoobVelMax</key>
 		<map>
 			<key>Comment</key>
 			<string>Max amount of velocity boobs can have</string>
@@ -1062,7 +1062,7 @@
 			<key>Value</key>
 			<real>64</real>
 		</map>
-		<key>EmeraldBoobVelMin</key>
+		<key>PhoenixBoobVelMin</key>
 		<map>
 			<key>Comment</key>
 			<string>Friction Fraction of FPS (used to keep friction uniform through FPS change).</string>
@@ -1073,7 +1073,7 @@
 			<key>Value</key>
 			<real>24</real>
 		</map>
-		<key>EmeraldBoobXYInfluence</key>
+		<key>PhoenixBoobXYInfluence</key>
 		<map>
 			<key>Comment</key>
 			<string>Amount of influence along the X and Y planes.</string>
@@ -1084,7 +1084,7 @@
 			<key>Value</key>
 			<real>0.1</real>
 		</map>
-		<key>EmeraldBroadcastEffects</key>
+		<key>PhoenixBroadcastEffects</key>
 		<map>
 			<key>Comment</key>
 			<string>Whether or not to broadcast your head and point at movements</string>
@@ -1095,7 +1095,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldBroadcastPointers</key>
+		<key>PhoenixBroadcastPointers</key>
 		<map>
 			<key>Comment</key>
 			<string>Disable to prevent broadcasting your Lookat target (Enabled by default)</string>
@@ -1106,7 +1106,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldBroadcastPointers2</key>
+		<key>PhoenixBroadcastPointers2</key>
 		<map>
 			<key>Comment</key>
 			<string>Disable to prevent broadcasting your Pointat target (Enabled by default)</string>
@@ -1117,7 +1117,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldBuildPrefs_Item</key>
+		<key>PhoenixBuildPrefs_Item</key>
 		<map>
 			<key>Comment</key>
 			<string>item added to new object created</string>
@@ -1128,7 +1128,7 @@
 			<key>Value</key>
 			<string></string>
 		</map>
-		<key>EmeraldBuildPrefs_Material</key>
+		<key>PhoenixBuildPrefs_Material</key>
 		<map>
 			<key>Comment</key>
 			<string>Default Setting For New Objects to be created, physical flag</string>
@@ -1139,7 +1139,7 @@
 			<key>Value</key>
 			<string>Wood</string>
 		</map>
-		<key>EmeraldBuildPrefs_Shiny</key>
+		<key>PhoenixBuildPrefs_Shiny</key>
 		<map>
 			<key>Comment</key>
 			<string>Shiny level used as 'Default' for new objects created</string>
@@ -1150,7 +1150,7 @@
 			<key>Value</key>
 			<string>None</string>
 		</map>
-		<key>EmeraldChangeColorOnClient</key>
+		<key>PhoenixChangeColorOnClient</key>
 		<map>
 			<key>Comment</key>
 			<string>Whether or not to change tag color based on client</string>
@@ -1161,7 +1161,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldClientTagDisplay</key>
+		<key>PhoenixClientTagDisplay</key>
 		<map>
 			<key>Comment</key>
 			<string>Whether or not to change tag color based on client</string>
@@ -1172,7 +1172,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldDontShowMyLookAt</key>
+		<key>PhoenixDontShowMyLookAt</key>
 		<map>
 			<key>Comment</key>
 			<string>Don't draw my lookat beacon on my screen.</string>
@@ -1183,7 +1183,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldDownloadClientTags</key>
+		<key>PhoenixDownloadClientTags</key>
 		<map>
 			<key>Comment</key>
 			<string>download tags</string>
@@ -1194,7 +1194,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldIMEncryptedChatColor</key>
+		<key>PhoenixIMEncryptedChatColor</key>
 		<map>
 			<key>Comment</key>
 			<string>Color of encrypted instant messages from other residents</string>
@@ -1210,7 +1210,7 @@
 				<real>1.0</real>
 			</array>
 		</map>
-		<key>EmeraldOTRInTypingStop</key>
+		<key>PhoenixOTRInTypingStop</key>
 		<map>
 			<key>Comment</key>
 			<string>Setting this to true will make all encrypted OTR messages be sent in an IM_TYPING_STOP packet. This is non-standard behavior, but prevents OTR encrypted IM from being saved and delivered as offline IM. Though it currently works LL may decide to disable the feature at any time. This is incompatible with previous versions of OTR.</string>
@@ -1221,7 +1221,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldRadarAlertChatRange</key>
+		<key>PhoenixRadarAlertChatRange</key>
 		<map>
 			<key>Comment</key>
 			<string>Whether the radar emits chat alerts for entering / exiting chat range</string>
@@ -1232,7 +1232,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldRadarAlertDraw</key>
+		<key>PhoenixRadarAlertDraw</key>
 		<map>
 			<key>Comment</key>
 			<string>Whether the radar emits chat alerts for entering / exiting draw distance</string>
@@ -1243,7 +1243,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldRadarAlertSim</key>
+		<key>PhoenixRadarAlertSim</key>
 		<map>
 			<key>Comment</key>
 			<string>Whether the radar emits chat alerts for entering / exiting sim</string>
@@ -1254,7 +1254,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldRadarChatAlerts</key>
+		<key>PhoenixRadarChatAlerts</key>
 		<map>
 			<key>Comment</key>
 			<string>Whether the radar emits chat alerts regarding the status of avatars it displays</string>
@@ -1265,7 +1265,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldRadarChatKeys</key>
+		<key>PhoenixRadarChatKeys</key>
 		<map>
 			<key>Comment</key>
 			<string>Enable silent chat of avatar keys when they enter the region to boost lsl radars speed and range</string>
@@ -1276,7 +1276,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldRadarChatKeysChannel</key>
+		<key>PhoenixRadarChatKeysChannel</key>
 		<map>
 			<key>Comment</key>
 			<string>What channel you want the avatar key chat to go on, -777777777 is default</string>
@@ -1287,7 +1287,7 @@
 			<key>Value</key>
 			<integer>-777777777</integer>
 		</map>
-		<key>EmeraldShadowsToggle</key>
+		<key>PhoenixShadowsToggle</key>
 		<map>
 			<key>Comment</key>
 			<string>Enable shadow rendering</string>
@@ -1298,7 +1298,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldShowLookAtNames</key>
+		<key>PhoenixShowLookAtNames</key>
 		<map>
 			<key>Comment</key>
 			<string>Whether or not to show names over who looks at you</string>
@@ -1309,7 +1309,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-    <key>EmeraldShowStatusBarInMouselook</key>
+    <key>PhoenixShowStatusBarInMouselook</key>
     <map>
       <key>Comment</key>
       <string>Makes it so that the statistics bar stays visable when entering mouselook if it was open already.</string>
@@ -1320,7 +1320,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-		<key>EmeraldShowStreamMetadata</key>
+		<key>PhoenixShowStreamMetadata</key>
 		<map>
 			<key>Comment</key>
 			<string>Display stream metadata in chat when it changes.</string>
@@ -1331,7 +1331,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldShowMoneyChangeInChat</key>
+		<key>PhoenixShowMoneyChangeInChat</key>
 		<map>
 			<key>Comment</key>
 			<string>Whether or not to chat out money events</string>
@@ -1342,7 +1342,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldOOCPrefix</key>
+		<key>PhoenixOOCPrefix</key>
 		<map>
 			<key>Comment</key>
 			<string>Prefix to mark OOC chat</string>
@@ -1353,7 +1353,7 @@
 			<key>Value</key>
 			<string>((</string>
 		</map>
-		<key>EmeraldOOCPostfix</key>
+		<key>PhoenixOOCPostfix</key>
 		<map>
 			<key>Comment</key>
 			<string>Prefix to mark OOC chat</string>
@@ -1364,7 +1364,7 @@
 			<key>Value</key>
 			<string>))</string>
 		</map>
-		<key>EmeraldUseBridgeRadar</key>
+		<key>PhoenixUseBridgeRadar</key>
 		<map>
 			<key>Comment</key>
 			<string>whether or not to use the lsl bridge to boost radar</string>
@@ -1375,7 +1375,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldUseBridgeOnline</key>
+		<key>PhoenixUseBridgeOnline</key>
 		<map>
 			<key>Comment</key>
 			<string>whether or not to use the lsl bridge to boost online info</string>
@@ -1387,7 +1387,7 @@
 			<integer>1</integer>
 		</map>
 
-		<key>EmeraldUseOTR</key>
+		<key>PhoenixUseOTR</key>
 		<map>
 			<key>Comment</key>
 			<string>Setting this to 0 will require the use of OTR in every IM, 1 will try OTR when available, 2 will accept incoming OTR requests, and 3 will deny OTR usage</string>
@@ -1398,7 +1398,7 @@
 			<key>Value</key>
 			<integer>2</integer>
 		</map>
-		<key>EmeraldAllowPhantomToggle</key>
+		<key>PhoenixAllowPhantomToggle</key>
 		<map>
 			<key>Comment</key>
 			<string>Do you want to be able to hit ctrl alt p to become visably phantom?</string>
@@ -1409,7 +1409,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldAlwaysFly</key>
+		<key>PhoenixAlwaysFly</key>
 		<map>
 			<key>Comment</key>
 			<string>Do you want to always be able to fly, even in fly restricted zones?</string>
@@ -1420,7 +1420,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldAutoCloseOOC</key>
+		<key>PhoenixAutoCloseOOC</key>
 		<map>
 			<key>Comment</key>
 			<string>Auto-close OOC chat (i.e. add \"))\" if not found and \"((\" was used)</string>
@@ -1431,7 +1431,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldIgnoreFinishAnimation</key>
+		<key>PhoenixIgnoreFinishAnimation</key>
 		<map>
 			<key>Comment</key>
 			<string>Disable the wait for pre-jump or landing.</string>
@@ -1442,7 +1442,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldAllowSitToggle</key>
+		<key>PhoenixAllowSitToggle</key>
 		<map>
 			<key>Comment</key>
 			<string>Do you want to be able to hit ctrl-alt-s to ground sit anywhere?</string>
@@ -1453,7 +1453,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldBlockClickSit</key>
+		<key>PhoenixBlockClickSit</key>
 		<map>
 			<key>Comment</key>
 			<string>Whether or not to block left-click sitting on things</string>
@@ -1464,7 +1464,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldResetCamOnEscape</key>
+		<key>PhoenixResetCamOnEscape</key>
 		<map>
 			<key>Comment</key>
 			<string>Setting this value to False prevents the camera from resetting when escape is pressed.</string>
@@ -1475,7 +1475,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldVerticalIMTabs</key>
+		<key>PhoenixVerticalIMTabs</key>
 		<map>
 			<key>Comment</key>
 			<string>Vertical tabs layout for Communicate window, set to false for default tabs at bottom.</string>
@@ -1486,7 +1486,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldLSLExternalEditor</key>
+		<key>PhoenixLSLExternalEditor</key>
 		<map>
 			<key>Comment</key>
 			<string>Controls the location of the External editor</string>
@@ -1497,7 +1497,7 @@
 			<key>Value</key>
 			<string />
 		</map>
-    <key>EmeraldMuteGroupWhenNoticesDisabled</key>
+    <key>PhoenixMuteGroupWhenNoticesDisabled</key>
     <map>
       <key>Comment</key>
       <string>When "Receive group notices" is disabled, mute also the group chat. (Muting means that it won't open new windows.)</string>
@@ -1508,7 +1508,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldMuteAllGroups</key>
+    <key>PhoenixMuteAllGroups</key>
     <map>
       <key>Comment</key>
       <string>Mute all groups at a time. (Muting means that it won't open new windows.)</string>
@@ -1519,7 +1519,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-	<key>EmeraldDisplayTotalScriptJumps</key>
+	<key>PhoenixDisplayTotalScriptJumps</key>
 	<map>
 		<key>Comment</key>
 		<string>Display significant changes to the sim's total script count</string>
@@ -1530,7 +1530,7 @@
 		<key>Value</key>
 		<integer>0</integer>
 	</map>
-	<key>EmeraldNumScriptDiff</key>
+	<key>PhoenixNumScriptDiff</key>
 	<map>
 		<key>Comment</key>
 		<string>The delta to spam you the script jump difference</string>
@@ -1541,10 +1541,10 @@
 		<key>Value</key>
 		<real>100.0</real>
 	</map>
-	<key>EmeraldNumScripts</key>
+	<key>PhoenixNumScripts</key>
 	<map>
 		<key>Comment</key>
-		<string>Temporary; used to hold the current number of scripts (see EmeraldDisplayTotalScriptJumps)</string>
+		<string>Temporary; used to hold the current number of scripts (see PhoenixDisplayTotalScriptJumps)</string>
 		<key>Persist</key>
 		<integer>0</integer>
 		<key>Type</key>
@@ -1552,7 +1552,7 @@
 		<key>Value</key>
 		<real>0.0</real>
 	</map>
-    <key>EmeraldIgnoreSimulatorCameraConstraints</key>
+    <key>PhoenixIgnoreSimulatorCameraConstraints</key>
     <map>
       <key>Comment</key>
       <string>Ignores the 'push' the simulator applies to your camera to keep it out of objects.(Requires restart to work correctly)</string>
@@ -1683,7 +1683,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-    <key>EmeraldPortableMode</key>
+    <key>PhoenixPortableMode</key>
     <map>
       <key>Comment</key>
       <string>Client is running in portable mode</string>
@@ -1705,7 +1705,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>WarnEmeraldRadarChat</key>
+		<key>WarnPhoenixRadarChat</key>
 		<map>
 			<key>Comment</key>
 			<string>Enables radarchat info dialog</string>
@@ -1716,7 +1716,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldAOAdvanced</key>
+		<key>PhoenixAOAdvanced</key>
 		<map>
 			<key>Comment</key>
 			<string>Advanced options</string>
@@ -1727,7 +1727,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldAORect</key>
+		<key>PhoenixAORect</key>
 		<map>
 			<key>Comment</key>
 			<string>Rectangle for AO window</string>
@@ -1743,7 +1743,7 @@
 				<integer>100</integer>
 			</array>
 		</map>
-		<key>EmeraldUseYou</key>
+		<key>PhoenixUseYou</key>
 		<map>
 			<key>Comment</key>
 			<string>Use "You:" in place of your name in chat (old style!)</string>
@@ -5142,7 +5142,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldMiniMapPrimMaxRadius</key>
+		<key>PhoenixMiniMapPrimMaxRadius</key>
 		<map>
 			<key>Comment</key>
 			<string>Radius of the largest prim to show on the MiniMap. Increasing beyond 256 may cause client lag.</string>
@@ -5153,7 +5153,7 @@
 			<key>Value</key>
 			<real>16.0</real>
 		</map>
-		<key>EmeraldDisableLoginScreens</key>
+		<key>PhoenixDisableLoginScreens</key>
 		<map>
 			<key>Comment</key>
 			<string>Disable login screen progress bar</string>
@@ -5164,7 +5164,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldDisableLogoutScreens</key>
+		<key>PhoenixDisableLogoutScreens</key>
 		<map>
 			<key>Comment</key>
 			<string>Disable logout screen progress bar</string>
@@ -5175,7 +5175,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldDisableTeleportScreens</key>
+		<key>PhoenixDisableTeleportScreens</key>
 		<map>
 			<key>Comment</key>
 			<string>Disable teleport screens</string>
@@ -5186,7 +5186,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>Emeraldmm_sndcacheloc</key>
+		<key>Phoenixmm_sndcacheloc</key>
 		<map>
 			<key>Comment</key>
 			<string>Location of unpacked sound files.</string>
@@ -5197,7 +5197,7 @@
 			<key>Value</key>
 			<string></string>
 		</map>
-		<key>EmeraldPurgeInvCache</key>
+		<key>PhoenixPurgeInvCache</key>
 		<map>
 			<key>Comment</key>
 			<string>agent id to purge, if purge is desired</string>
@@ -5274,7 +5274,7 @@
 			<key>Value</key>
 			<real>2.0</real>
 		</map>
-		<key>EmeraldAddSecondsInLog</key>
+		<key>PhoenixAddSecondsInLog</key>
 		<map>
 			<key>Comment</key>
 			<string>Add the seconds to the timestamp in the logs</string>
@@ -5285,7 +5285,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldAddSecondsInHistory</key>
+		<key>PhoenixAddSecondsInHistory</key>
 		<map>
 			<key>Comment</key>
 			<string>Add the seconds to the timestamp in all the chat windows</string>
@@ -5296,7 +5296,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldDoubleClickTeleport</key>
+		<key>PhoenixDoubleClickTeleport</key>
 		<map>
 			<key>Comment</key>
 			<string>Enable double click teleportation</string>
@@ -5307,7 +5307,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldDoubleClickTeleportAvCalc</key>
+		<key>PhoenixDoubleClickTeleportAvCalc</key>
 		<map>
 			<key>Comment</key>
 			<string>Add half of Avatar's height to doubleclick TP calculations</string>
@@ -5318,7 +5318,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldDoubleClickTeleportMode</key>
+		<key>PhoenixDoubleClickTeleportMode</key>
 		<map>
 			<key>Comment</key>
 			<string>Double click teleport cam mode: 0 - Default, 1 - Use cam rotaton</string>
@@ -5329,7 +5329,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldDoubleClickZOffset</key>
+		<key>PhoenixDoubleClickZOffset</key>
 		<map>
 	      		<key>Comment</key>
 		        <string>Sets the Z offset for double click teleport.</string>
@@ -5340,7 +5340,7 @@
 	                <key>Value</key>
                 	<real>0.0</real>
                 </map>
-    <key>EmeraldFlyAfterTeleport</key>
+    <key>PhoenixFlyAfterTeleport</key>
     <map>
       <key>Comment</key>
       <string>Fly after teleports</string>
@@ -5351,7 +5351,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldRevokePerms</key>
+    <key>PhoenixRevokePerms</key>
     <map>
       <key>Comment</key>
       <string>Setting this option to 1 will revoke perms when you sit on an object, 2 will revoke perms when you get off an object, 3 will revoke perms when you sit and stand.</string>
@@ -5362,7 +5362,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldRotateCamAfterLocalTP</key>
+    <key>PhoenixRotateCamAfterLocalTP</key>
     <map>
       <key>Comment</key>
       <string>Setting this flag to TRUE, rotates your camera behind the avatar after using double-click teleport.</string>
@@ -5373,7 +5373,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>EmeraldVelocityDoubleClickTeleport</key>
+    <key>PhoenixVelocityDoubleClickTeleport</key>
     <map>
       <key>Comment</key>
       <string>Interpolate double click teleportation</string>
@@ -5433,7 +5433,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldLSLPreprocessor</key>
+		<key>PhoenixLSLPreprocessor</key>
 		<map>
 			<key>Comment</key>
 			<string>now you fucked up</string>
@@ -5444,7 +5444,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldLSLOptimizer</key>
+		<key>PhoenixLSLOptimizer</key>
 		<map>
 			<key>Comment</key>
 			<string>now you fucked up</string>
@@ -5455,18 +5455,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldLSLTextCompress</key>
-		<map>
-			<key>Comment</key>
-			<string>now you fucked up</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>Boolean</string>
-			<key>Value</key>
-			<integer>0</integer>
-		</map>
-		<key>EmeraldLSLLazyLists</key>
+		<key>PhoenixLSLTextCompress</key>
 		<map>
 			<key>Comment</key>
 			<string>now you fucked up</string>
@@ -5477,7 +5466,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldLSLSwitch</key>
+		<key>PhoenixLSLLazyLists</key>
 		<map>
 			<key>Comment</key>
 			<string>now you fucked up</string>
@@ -5488,7 +5477,18 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldKeepUnpackedCacheFiles</key>
+		<key>PhoenixLSLSwitch</key>
+		<map>
+			<key>Comment</key>
+			<string>now you fucked up</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixKeepUnpackedCacheFiles</key>
 		<map>
 			<key>Comment</key>
 			<string>If TRUE, the viewer won't delete unpacked cache files when logging out (improves overall performance and fixes sound bugs)</string>
@@ -8857,7 +8857,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-    <key>EmeraldStopMusicOnParcelChange</key>
+    <key>PhoenixStopMusicOnParcelChange</key>
     <map>
       <key>Comment</key>
       <string>Turns off your mmedia when you change parcels</string>
@@ -9005,7 +9005,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldBuildBridge</key>
+		<key>PhoenixBuildBridge</key>
 		<map>
 			<key>Comment</key>
 			<string>whether or not to create the lsl bridge</string>
@@ -9016,7 +9016,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>WarnEmeraldOldBridgeCleanup</key>
+		<key>WarnPhoenixOldBridgeCleanup</key>
 		<map>
 			<key>Comment</key>
 			<string>offer to deletre any obsolete bridge objects</string>
@@ -9156,7 +9156,7 @@
 				<integer>0</integer>
 			</array>
 		</map>
-		<key>EmeraldScriptErrorRect</key>
+		<key>PhoenixScriptErrorRect</key>
 		<map>
 			<key>Comment</key>
 			<string>o.o</string>
@@ -9188,7 +9188,7 @@
 				<integer>0</integer>
 			</array>
 		</map>
-		<key>EmeraldColorllFunction</key>
+		<key>PhoenixColorllFunction</key>
 		<map>
 			<key>Comment</key>
 			<string>Color for llFunction builtins in the script editor.</string>
@@ -9203,7 +9203,7 @@
 				<real>0.15</real>
 			</array>
 		</map>
-		<key>EmeraldLargeFriendslistNoSLim</key>
+		<key>PhoenixLargeFriendslistNoSLim</key>
 		<map>
 			<key>Comment</key>
 			<string>Wipes SLim FriendsList [TESTING ONLY!]</string>
@@ -9214,7 +9214,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldCmdLine</key>
+		<key>PhoenixCmdLine</key>
 		<map>
 			<key>Comment</key>
 			<string>Enable usage of chat bar as a command line</string>
@@ -9225,7 +9225,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldCmdLineMapToKeepPos</key>
+		<key>PhoenixCmdLineMapToKeepPos</key>
 		<map>
 			<key>Comment</key>
 			<string>Whether to use current local pos on tp to the new sim</string>
@@ -9236,7 +9236,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldCmdLineAO</key>
+		<key>PhoenixCmdLineAO</key>
 		<map>
 			<key>Comment</key>
 			<string>Turn AO on/off</string>
@@ -9247,7 +9247,7 @@
 			<key>Value</key>
 			<string>cao</string>
 		</map>
-		<key>EmeraldCmdLineAutocorrect</key>
+		<key>PhoenixCmdLineAutocorrect</key>
 		<map>
 			<key>Comment</key>
 			<string>Command for adding new entries to autocorrect</string>
@@ -9258,7 +9258,7 @@
 			<key>Value</key>
 			<string>/addac</string>
 		</map>
-    <key>EmeraldCmdLineMedia</key>
+    <key>PhoenixCmdLineMedia</key>
     <map>
       <key>Comment</key>
       <string>Chat command for setting a media url</string>
@@ -9269,7 +9269,7 @@
       <key>Value</key>
       <string>/media</string>
     </map>
-    <key>EmeraldCmdLineMusic</key>
+    <key>PhoenixCmdLineMusic</key>
     <map>
       <key>Comment</key>
       <string>Chat command for setting a music url</string>
@@ -9280,7 +9280,7 @@
       <key>Value</key>
       <string>/music</string>
     </map>
-    <key>EmeraldCmdLineClearChat</key>
+    <key>PhoenixCmdLineClearChat</key>
 		<map>
 			<key>Comment</key>
 			<string>Clear chat hsitory to stop lag from chat spam</string>
@@ -9291,7 +9291,7 @@
 			<key>Value</key>
 			<string>clrchat</string>
 		</map>
-		<key>EmeraldCmdLineHeight</key>
+		<key>PhoenixCmdLineHeight</key>
 		<map>
 			<key>Comment</key>
 			<string>Teleport to height function command</string>
@@ -9302,7 +9302,7 @@
 			<key>Value</key>
 			<string>gth</string>
 		</map>
-		<key>EmeraldCmdLinePos</key>
+		<key>PhoenixCmdLinePos</key>
 		<map>
 			<key>Comment</key>
 			<string>Teleport to position function command</string>
@@ -9313,7 +9313,7 @@
 			<key>Value</key>
 			<string>gtp</string>
 		</map>
-		<key>EmeraldCmdLineGround</key>
+		<key>PhoenixCmdLineGround</key>
 		<map>
 			<key>Comment</key>
 			<string>Teleport to ground function command</string>
@@ -9324,7 +9324,7 @@
 			<key>Value</key>
 			<string>flr</string>
 		</map>
-		<key>EmeraldCmdLineTeleportHome</key>
+		<key>PhoenixCmdLineTeleportHome</key>
 		<map>
 			<key>Comment</key>
 			<string>Teleport to home function command</string>
@@ -9335,7 +9335,7 @@
 			<key>Value</key>
 			<string>tph</string>
 		</map>
-		<key>EmeraldCmdLineRezPlatform</key>
+		<key>PhoenixCmdLineRezPlatform</key>
 		<map>
 			<key>Comment</key>
 			<string>Rez a platform underneath you</string>
@@ -9346,7 +9346,7 @@
 			<key>Value</key>
 			<string>rezplat</string>
 		</map>
-		<key>EmeraldCmdLinePlatformSize</key>
+		<key>PhoenixCmdLinePlatformSize</key>
 		<map>
 			<key>Comment</key>
 			<string>How wide the rezzed platform will appear to be.</string>
@@ -9357,7 +9357,7 @@
 			<key>Value</key>
 			<real>30</real>
 		</map>
-		<key>EmeraldCmdLineMapTo</key>
+		<key>PhoenixCmdLineMapTo</key>
 		<map>
 			<key>Comment</key>
 			<string>Teleport to a region by name rapidly</string>
@@ -9368,7 +9368,7 @@
 			<key>Value</key>
 			<string>mapto</string>
 		</map>
-		<key>EmeraldCmdLineDrawDistance</key>
+		<key>PhoenixCmdLineDrawDistance</key>
 		<map>
 			<key>Comment</key>
 			<string>Change draw distance quickly</string>
@@ -9379,7 +9379,7 @@
 			<key>Value</key>
 			<string>dd</string>
 		</map>
-		<key>EmeraldCmdTeleportToCam</key>
+		<key>PhoenixCmdTeleportToCam</key>
 		<map>
 			<key>Comment</key>
 			<string>Teleport to your camera</string>
@@ -9390,7 +9390,7 @@
 			<key>Value</key>
 			<string>tp2cam</string>
 		</map>
-		<key>EmeraldCmdLineKeyToName</key>
+		<key>PhoenixCmdLineKeyToName</key>
 		<map>
 			<key>Comment</key>
 			<string>Use a fast key to name querry</string>
@@ -9401,7 +9401,7 @@
 			<key>Value</key>
 			<string>key2name</string>
 		</map>
-		<key>EmeraldCmdLineOfferTp</key>
+		<key>PhoenixCmdLineOfferTp</key>
 		<map>
 			<key>Comment</key>
 			<string>Offer a teleport to target avatar</string>
@@ -9412,7 +9412,7 @@
 			<key>Value</key>
 			<string>offertp</string>
 		</map>
-		<key>EmeraldCmdLineCalc</key>
+		<key>PhoenixCmdLineCalc</key>
 		<map>
 			<key>Comment</key>
 			<string>Calculates an expression</string>
@@ -9423,7 +9423,7 @@
 			<key>Value</key>
 			<string>calc</string>
 		</map>
-		<key>EmeraldCmdLineTP2</key>
+		<key>PhoenixCmdLineTP2</key>
 		<map>
 			<key>Comment</key>
 			<string>Teleport to a person by name, partials work.</string>
@@ -10303,7 +10303,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldRenderHighlightSelections</key>
+		<key>PhoenixRenderHighlightSelections</key>
 		<map>
 			<key>Comment</key>
 			<string>Show selection outlines on objects</string>
@@ -14885,7 +14885,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-    <key>EmeraldLeaveMouselookOnFocus</key>
+    <key>PhoenixLeaveMouselookOnFocus</key>
     <map>
       <key>Comment</key>
       <string>Leave mouselook when the application gains focus</string>
@@ -14912,7 +14912,7 @@
 	        <integer>200</integer>
 	      </array>
 	    </map>
-		<key>EmeraldFilterDefaultAnims</key>
+		<key>PhoenixFilterDefaultAnims</key>
 		<map>
 			<key>Comment</key>
 			<string>Filter Linden default anims in the anim floater</string>

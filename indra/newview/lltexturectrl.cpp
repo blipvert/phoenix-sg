@@ -68,12 +68,12 @@
 #include "lluictrlfactory.h"
 #include "lltrans.h"
 
-// tag: vaa emerald local_asset_browser [begin]
+// tag: vaa phoenix local_asset_browser [begin]
 #include "floaterlocalassetbrowse.h"
 #include "llscrolllistctrl.h"
 #include "llfilepicker.h"
 #define	LOCALLIST_COL_ID 1
-// tag: vaa emerald local_asset_browser [end]
+// tag: vaa phoenix local_asset_browser [end]
 
 static const S32 CLOSE_BTN_WIDTH = 100;
 const S32 PIPETTE_BTN_WIDTH = 32;
@@ -169,7 +169,7 @@ public:
 	static void		onSearchEdit(const std::string& search_string, void* user_data );
 	static void		onTextureSelect( const LLTextureEntry& te, void *data );
 
-	// tag: vaa emerald local_asset_browser [begin]
+	// tag: vaa phoenix local_asset_browser [begin]
 //	static void     onBtnLocal( void* userdata );
 //	static void     onBtnServer( void* userdata );
 //	static void     switchModes( bool localmode, void* userdata );
@@ -179,7 +179,7 @@ public:
 	static void     onBtnBrowser( void* userdata );
 
 	static void     onLocalScrollCommit ( LLUICtrl* ctrl, void *userdata );
-	// tag: vaa emerald local_asset_browser [end]
+	// tag: vaa phoenix local_asset_browser [end]
 
 protected:
 	LLPointer<LLViewerImage> mTexturep;
@@ -210,7 +210,7 @@ protected:
 	BOOL				mNoCopyTextureSelected;
 	F32					mContextConeOpacity;
 	LLSaveFolderState	mSavedFolderState;
-	LLScrollListCtrl*   mLocalScrollCtrl; // tag: vaa emerald local_asset_browser
+	LLScrollListCtrl*   mLocalScrollCtrl; // tag: vaa phoenix local_asset_browser
 };
 
 LLFloaterTexturePicker::LLFloaterTexturePicker(	
@@ -255,7 +255,7 @@ LLFloaterTexturePicker::LLFloaterTexturePicker(
 	childSetAction("Blank", LLFloaterTexturePicker::onBtnWhite,this);
 	childSetAction("Invisible", LLFloaterTexturePicker::onBtnInvisible,this);
 
-	// tag: vaa emerald local_asset_browser [begin]
+	// tag: vaa phoenix local_asset_browser [begin]
 //	childSetAction("Local", LLFloaterTexturePicker::onBtnLocal, this);  
 //	childSetAction("Server", LLFloaterTexturePicker::onBtnServer, this);
 	childSetAction("Add", LLFloaterTexturePicker::onBtnAdd, this);
@@ -266,7 +266,7 @@ LLFloaterTexturePicker::LLFloaterTexturePicker(
 	mLocalScrollCtrl->setCallbackUserData(this);                            
 	mLocalScrollCtrl->setCommitCallback(onLocalScrollCommit);
 	LocalAssetBrowser::UpdateTextureCtrlList( mLocalScrollCtrl );
-	// tag: vaa emerald local_asset_browser [end]	
+	// tag: vaa phoenix local_asset_browser [end]	
 		
 	childSetCommitCallback("show_folders_check", onShowFolders, this);
 	childSetVisible("show_folders_check", FALSE);
@@ -785,7 +785,7 @@ void LLFloaterTexturePicker::onBtnSelect(void* userdata)
 	LLFloaterTexturePicker* self = (LLFloaterTexturePicker*) userdata;
 	if (self->mOwner)
 	{
-		// tag: vaa emerald local_asset_browser ~
+		// tag: vaa phoenix local_asset_browser ~
 		if ( self->mInventoryPanel->getVisible() )
 			{ self->mOwner->onFloaterCommit(LLTextureCtrl::TEXTURE_SELECT); }
 		else if ( self->mLocalScrollCtrl->getVisible() && !self->mLocalScrollCtrl->isEmpty() )
@@ -798,7 +798,7 @@ void LLFloaterTexturePicker::onBtnSelect(void* userdata)
 	self->close();
 }
 
-// tag: vaa emerald local_asset_browser [begin]
+// tag: vaa phoenix local_asset_browser [begin]
 
 // static, switches between showing inventory instance for global bitmaps
 // to showing the scroll list for local ones and back.
@@ -860,7 +860,7 @@ void LLFloaterTexturePicker::onLocalScrollCommit(LLUICtrl *ctrl, void *userdata)
 	{ self->mOwner->onFloaterCommit(LLTextureCtrl::TEXTURE_CHANGE, id); } // calls an overridden function.
 }
 
-// tag: vaa emerald local_asset_browser [end]
+// tag: vaa phoenix local_asset_browser [end]
 
 // static
 void LLFloaterTexturePicker::onBtnPipette( void* userdata )
@@ -1377,7 +1377,7 @@ void LLTextureCtrl::onFloaterCommit(ETexturePickOp op)
 	}
 }
 
-// tag: vaa emerald local_asset_browser [begin]
+// tag: vaa phoenix local_asset_browser [begin]
 
 /*
    overriding onFloaterCommit to forcefeed it a uuid.
@@ -1409,7 +1409,7 @@ void LLTextureCtrl::onFloaterCommit(ETexturePickOp op, LLUUID id)
 	}
 }
 
-// tag: vaa emerald local_asset_browser [end]
+// tag: vaa phoenix local_asset_browser [end]
 
 void LLTextureCtrl::setImageAssetID( const LLUUID& asset_id )
 {

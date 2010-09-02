@@ -1,6 +1,6 @@
 /* Local Asset Browser: header 
 
-tag: vaa emerald local_asset_browser
+tag: vaa phoenix local_asset_browser
 
 */
 

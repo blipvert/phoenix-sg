@@ -153,7 +153,7 @@ void LLPanelNetwork::onClickClearCache(void*)
 }
 void LLPanelNetwork::onClickClearInvCache(void*)
 {
-	gSavedSettings.setString("EmeraldPurgeInvCache",gAgent.getID().asString());
+	gSavedSettings.setString("PhoenixPurgeInvCache",gAgent.getID().asString());
 	LLNotifications::instance().add("CacheWillClear");
 }
 
@@ -203,7 +203,7 @@ void LLPanelNetwork::onClickSetSoundCache(void* user_data)
 {
 	LLPanelNetwork* self = (LLPanelNetwork*)user_data;
 
-	std::string cur_name(gSavedSettings.getString("Emeraldmm_sndcacheloc"));
+	std::string cur_name(gSavedSettings.getString("Phoenixmm_sndcacheloc"));
 	std::string proposed_name(cur_name);
 	
 	LLDirPicker& picker = LLDirPicker::instance();
@@ -216,7 +216,7 @@ void LLPanelNetwork::onClickSetSoundCache(void* user_data)
 	if (!dir_name.empty() && dir_name != cur_name)
 	{
 		self->childSetText("sound_cache_location", dir_name);
-		gSavedSettings.setString("Emeraldmm_sndcacheloc", dir_name);
+		gSavedSettings.setString("Phoenixmm_sndcacheloc", dir_name);
 	}
 	else
 	{
@@ -228,7 +228,7 @@ void LLPanelNetwork::onClickSetSoundCache(void* user_data)
 void LLPanelNetwork::onClickResetSoundCache(void* user_data)
 {
 	LLPanelNetwork* self = (LLPanelNetwork*)user_data;
- 	gSavedSettings.setString("Emeraldmm_sndcacheloc","");
+ 	gSavedSettings.setString("Phoenixmm_sndcacheloc","");
 	self->childSetText("sound_cache_location",std::string("None"));
 }
 

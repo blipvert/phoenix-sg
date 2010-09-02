@@ -1228,7 +1228,7 @@ std::string LLViewerTextEditor::appendTime(bool prepend_newline)
 	timep = utc_to_pacific_time(utc_time, gPacificDaylightTime);
 	std::string text;
 	
-	if (gSavedSettings.getBOOL("EmeraldAddSecondsInHistory"))
+	if (gSavedSettings.getBOOL("PhoenixAddSecondsInHistory"))
 		text = llformat("[%02d:%02d:%02d]  ", timep->tm_hour, timep->tm_min, timep->tm_sec);
 	else
 		text = llformat("[%02d:%02d]  ", timep->tm_hour, timep->tm_min);

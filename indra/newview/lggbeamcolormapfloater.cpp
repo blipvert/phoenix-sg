@@ -49,7 +49,7 @@
 
 
 #include "llsdserialize.h"
-#include "llpanelemerald.h"
+#include "llpanelphoenix.h"
 #include "lggbeamscolors.h"
 #include "llsliderctrl.h"
 #include "llfocusmgr.h"
@@ -133,7 +133,7 @@ public:
 	
 protected:
 	F32 mContextConeOpacity;
-	LLPanelEmerald * empanel;
+	LLPanelPhoenix * empanel;
 	lggBeamsColors myData; 
 	LLSliderCtrl* mColorSlider;
 
@@ -374,7 +374,7 @@ void lggBeamColorMapFloater::fixOrder()
 
 void lggBeamColorMapFloater::setData(void* data)
 {
-	empanel = (LLPanelEmerald*)data;
+	empanel = (LLPanelPhoenix*)data;
 	if(empanel)
 	{
 		gFloaterView->getParentFloater(empanel)->addDependentFloater(this);
@@ -415,7 +415,7 @@ void lggBeamColorMapFloater::onClickSave(void* data)
 	LLSDSerialize::toPrettyXML(main, export_file);
 	export_file.close();
 
-	gSavedSettings.setString("EmeraldBeamColorFile",gDirUtilp->getBaseFileName(filename,true));
+	gSavedSettings.setString("PhoenixBeamColorFile",gDirUtilp->getBaseFileName(filename,true));
 
 	if(self->empanel != NULL)
 	{

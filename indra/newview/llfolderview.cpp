@@ -650,7 +650,7 @@ void LLFolderViewItem::preview( void )
 {
 	if (mListener)
 	{
-		if (mListener->getInventoryType() == LLInventoryType::IT_OBJECT && gSavedSettings.getBOOL("EmeraldDoubleClickWearInventoryObjects"))
+		if (mListener->getInventoryType() == LLInventoryType::IT_OBJECT && gSavedSettings.getBOOL("PhoenixDoubleClickWearInventoryObjects"))
 		{
 			LLVOAvatar* avatar = gAgent.getAvatarObject();
 			if(avatar->isWearingAttachment(mListener->getUUID()))
@@ -4598,7 +4598,7 @@ void LLFolderViewEventListener::arrangeAndSet(LLFolderViewItem* focus,
 											  BOOL set_selection,
 											  BOOL take_keyboard_focus)
 {
-	if(gSavedSettings.getBOOL("EmeraldFreezeInventoryArangement"))return;
+	if(gSavedSettings.getBOOL("PhoenixFreezeInventoryArangement"))return;
 	if(!focus) return;
 	LLFolderView* root = focus->getRoot();
 	focus->getParentFolder()->requestArrange();

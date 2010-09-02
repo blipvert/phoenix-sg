@@ -628,7 +628,7 @@ bool LLAppViewer::init()
 	// we run the "program crashed last time" error handler below.
 	//
 
-	if(gDebugInfo.has("EmeraldPortableMode"))
+	if(gDebugInfo.has("PhoenixPortableMode"))
 	{
 		gDirUtilp->initAppDirs("*Portable*"); // *HACK: Special magic string for portable mode
 		mPurgeOnExit = true;
@@ -706,7 +706,7 @@ bool LLAppViewer::init()
 		LLError::setPrintLocation(true);
 	}
 
-	//ZWAGOTH: This resolves a bunch of skin updating problems for us(Emerald) and makes skinning
+	//ZWAGOTH: This resolves a bunch of skin updating problems for us(Phoenix) and makes skinning
 	// SIGNIFICANLTLY easier. User colors > skin colors > default skin colors.
 	// This also will get rid of the Invalid control... spam when a skin doesn't have that color
 	// setting defined as long as we keep the default skin up to date. Maybe make invalid controls
@@ -920,22 +920,22 @@ bool LLAppViewer::init()
 
 	LLViewerJoystick::getInstance()->init(false);
 
-        gSavedSettings.getControl("EmeraldGeneralSpamEnabled")->getSignal()->connect(&gSpam);
-        generalSpamOn = gSavedSettings.getBOOL("EmeraldGeneralSpamEnabled");
-        gSavedSettings.getControl("EmeraldChatSpamEnabled")->getSignal()->connect(&chSpam);
-        chatSpamOn = gSavedSettings.getBOOL("EmeraldChatSpamEnabled");
-        gSavedSettings.getControl("EmeraldDialogSpamEnabled")->getSignal()->connect(&dSpam);
-        dialogSpamOn = gSavedSettings.getBOOL("EmeraldDialogSpamEnabled");
-        gSavedSettings.getControl("EmeraldCardSpamEnabled")->getSignal()->connect(&cSpam);
-        callingSpamOn = gSavedSettings.getBOOL("EmeraldCardSpamEnabled");
-        gSavedSettings.getControl("EmeraldSpamTime")->getSignal()->connect(&setSpamTime);
-        spamTime = gSavedSettings.getF32("EmeraldSpamTime");
-        gSavedSettings.getControl("EmeraldSpamCount")->getSignal()->connect(&setSpamCount);
-        spamCount = gSavedSettings.getF32("EmeraldSpamCount");
-        gSavedSettings.getControl("EmeraldChatSpamTime")->getSignal()->connect(&setChatSpamTime);
-        chatSpamTime = gSavedSettings.getF32("EmeraldChatSpamTime");
-        gSavedSettings.getControl("EmeraldChatSpamCount")->getSignal()->connect(&setChatSpamCount);
-        chatSpamCount = gSavedSettings.getF32("EmeraldChatSpamCount");
+        gSavedSettings.getControl("PhoenixGeneralSpamEnabled")->getSignal()->connect(&gSpam);
+        generalSpamOn = gSavedSettings.getBOOL("PhoenixGeneralSpamEnabled");
+        gSavedSettings.getControl("PhoenixChatSpamEnabled")->getSignal()->connect(&chSpam);
+        chatSpamOn = gSavedSettings.getBOOL("PhoenixChatSpamEnabled");
+        gSavedSettings.getControl("PhoenixDialogSpamEnabled")->getSignal()->connect(&dSpam);
+        dialogSpamOn = gSavedSettings.getBOOL("PhoenixDialogSpamEnabled");
+        gSavedSettings.getControl("PhoenixCardSpamEnabled")->getSignal()->connect(&cSpam);
+        callingSpamOn = gSavedSettings.getBOOL("PhoenixCardSpamEnabled");
+        gSavedSettings.getControl("PhoenixSpamTime")->getSignal()->connect(&setSpamTime);
+        spamTime = gSavedSettings.getF32("PhoenixSpamTime");
+        gSavedSettings.getControl("PhoenixSpamCount")->getSignal()->connect(&setSpamCount);
+        spamCount = gSavedSettings.getF32("PhoenixSpamCount");
+        gSavedSettings.getControl("PhoenixChatSpamTime")->getSignal()->connect(&setChatSpamTime);
+        chatSpamTime = gSavedSettings.getF32("PhoenixChatSpamTime");
+        gSavedSettings.getControl("PhoenixChatSpamCount")->getSignal()->connect(&setChatSpamCount);
+        chatSpamCount = gSavedSettings.getF32("PhoenixChatSpamCount");
 
 	return true;
 }
@@ -1025,8 +1025,8 @@ bool LLAppViewer::mainLoop()
 					&& !gFocusMgr.focusLocked())
 				{
 					joystick->scanJoystick();
-					if(gSavedSettings.getBOOL("EmeraldCrouchToggle"))
-						if(gSavedSettings.getBOOL("EmeraldCrouchToggleStatus"))
+					if(gSavedSettings.getBOOL("PhoenixCrouchToggle"))
+						if(gSavedSettings.getBOOL("PhoenixCrouchToggleStatus"))
 							gAgent.moveUp(-1);
 					gKeyboard->scanKeyboard();
 				}
@@ -1321,7 +1321,7 @@ bool LLAppViewer::cleanup()
 	llinfos << "Settings patched up" << llendflush;
 
 	// delete some of the files left around in the cache.
-	if (!gSavedSettings.getBOOL("EmeraldKeepUnpackedCacheFiles"))
+	if (!gSavedSettings.getBOOL("PhoenixKeepUnpackedCacheFiles"))
 	{
 		removeCacheFiles("*.wav");
 		removeCacheFiles("*.lso");
@@ -1633,12 +1633,12 @@ bool LLAppViewer::initLogging()
 
 	// Remove the last ".old" log file.
 	std::string old_log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-							     "EmeraldViewer.old");
+							     "PhoenixViewer.old");
 	LLFile::remove(old_log_file);
 
 	// Rename current log file to ".old"
 	std::string log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-							     "EmeraldViewer.log");
+							     "PhoenixViewer.log");
 	LLFile::rename(log_file, old_log_file);
 
 	// Set the log file to SecondLife.log
@@ -2089,7 +2089,7 @@ bool LLAppViewer::initConfiguration()
 
 	// XUI:translate
 
-	gSecondLife = "Emerald Viewer";
+	gSecondLife = "Phoenix Viewer";
 
 	// Read skin/branding settings if specified.
 	//if (! gDirUtilp->getSkinDir().empty() )
@@ -2271,7 +2271,7 @@ void LLAppViewer::checkForCrash(void)
             std::ostringstream msg;
             msg << gSecondLife
             << " appears to have frozen or crashed on the previous run.\n"
-			<< "Would you like to send a crash report to http://emeraldviewer.net/?";
+			<< "Would you like to send a crash report to http://phoenixviewer.com/?";
             std::string alert;
             alert = gSecondLife;
             alert += " Alert";
@@ -2378,7 +2378,7 @@ bool LLAppViewer::initWindow()
 
 void LLAppViewer::writeDebugInfo()
 {
-	std::string debug_filename = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"emerald_debug_info.log");
+	std::string debug_filename = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"phoenix_debug_info.log");
 	llinfos << "Opening debug file " << debug_filename << llendl;
 	llofstream out_file(debug_filename);
 	LLSDSerialize::toPrettyXML(gDebugInfo, out_file);
@@ -2627,7 +2627,7 @@ void LLAppViewer::handleViewerCrash()
 	if (gMessageSystem && gDirUtilp)
 	{
 		std::string filename;
-		filename = gDirUtilp->getExpandedFilename(LL_PATH_LOGS, "emerald_stats.log");
+		filename = gDirUtilp->getExpandedFilename(LL_PATH_LOGS, "phoenix_stats.log");
 		llofstream file(filename, llofstream::binary);
 		if(file.good())
 		{
@@ -2969,10 +2969,10 @@ bool LLAppViewer::initCache()
 			gSavedSettings.setS32("LocalCacheVersion", cache_version);
 		}
 	}
-	std::string invcache = gSavedSettings.getString("EmeraldPurgeInvCache");
+	std::string invcache = gSavedSettings.getString("PhoenixPurgeInvCache");
 	if(invcache != "")
 	{
-		gSavedSettings.setString("EmeraldPurgeInvCache","");
+		gSavedSettings.setString("PhoenixPurgeInvCache","");
 		std::string agent_id_str = invcache;
 		std::string inventory_filename;
 		std::string path(gDirUtilp->getExpandedFilename(LL_PATH_CACHE, agent_id_str));
@@ -2986,13 +2986,13 @@ bool LLAppViewer::initCache()
 	// We have moved the location of the cache directory over time.
 	migrateCacheDirectory();
 
-	if(!gSavedSettings.getBOOL("EmeraldPortableMode"))
+	if(!gSavedSettings.getBOOL("PhoenixPortableMode"))
 	{
 
 		// Setup and verify the cache location
 		std::string cache_location = gSavedSettings.getString("CacheLocation");
 		std::string new_cache_location = gSavedSettings.getString("NewCacheLocation");
-		gDirUtilp->mm_setsnddir(gSavedSettings.getString("Emeraldmm_sndcacheloc"));
+		gDirUtilp->mm_setsnddir(gSavedSettings.getString("Phoenixmm_sndcacheloc"));
 		if (new_cache_location != cache_location)
 		{
 			gDirUtilp->setCacheDir(gSavedSettings.getString("CacheLocation"));
@@ -3455,8 +3455,8 @@ void LLAppViewer::idle()
 	    F32 agent_update_time = agent_update_timer.getElapsedTimeF32();
 
 	    BOOL flags_changed = gAgent.controlFlagsDirty() || (last_control_flags != gAgent.getControlFlags());
-		static F32 *sEmeraldAgentUpdateFrequency = rebind_llcontrol<F32>("EmeraldAgentUpdatesPerSecond", &gSavedSettings, true);
-		if (flags_changed || (agent_update_time > (1.0f / llmax(*sEmeraldAgentUpdateFrequency , 0.0001f))))
+		static F32 *sPhoenixAgentUpdateFrequency = rebind_llcontrol<F32>("PhoenixAgentUpdatesPerSecond", &gSavedSettings, true);
+		if (flags_changed || (agent_update_time > (1.0f / llmax(*sPhoenixAgentUpdateFrequency , 0.0001f))))
 	    {
 		    // Send avatar and camera info
 		    last_control_flags = gAgent.getControlFlags();
@@ -3788,7 +3788,7 @@ void LLAppViewer::idleShutdown()
 		static S32 total_uploads = 0;
 		// Sometimes total upload count can change during logout.
 		total_uploads = llmax(total_uploads, pending_uploads);
-		gViewerWindow->setShowProgress(!gSavedSettings.getBOOL("EmeraldDisableLogoutScreens"));
+		gViewerWindow->setShowProgress(!gSavedSettings.getBOOL("PhoenixDisableLogoutScreens"));
 		S32 finished_uploads = total_uploads - pending_uploads;
 		F32 percent = 100.f * finished_uploads / total_uploads;
 		gViewerWindow->setProgressPercent(percent);
@@ -3802,7 +3802,7 @@ void LLAppViewer::idleShutdown()
 		sendLogoutRequest();
 
 		// Wait for a LogoutReply message
-		gViewerWindow->setShowProgress(!gSavedSettings.getBOOL("EmeraldDisableLogoutScreens"));
+		gViewerWindow->setShowProgress(!gSavedSettings.getBOOL("PhoenixDisableLogoutScreens"));
 		gViewerWindow->setProgressPercent(100.f);
 		gViewerWindow->setProgressString("Logging out...");
 		return;

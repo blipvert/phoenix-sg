@@ -94,7 +94,7 @@ void JCExportTracker::init()
 	asset_dir = "";
 	requested_textures.clear();
 	export_properties = TRUE;
-	export_inventory = gSavedSettings.getBOOL("EmeraldExportInventory");
+	export_inventory = gSavedSettings.getBOOL("PhoenixExportInventory");
 	export_textures = FALSE;
 	////cmdline_printchat("init()");
 	////cmdline_printchat(llformat("%d",export_properties));
@@ -809,7 +809,7 @@ BOOL JCExportTracker::mirror(LLInventoryObject* item, LLViewerObject* container,
 				//tree.insert(tree.begin(),objectname i guess fuck);
 				//wat
 			}
-			if(root == "")root = gSavedSettings.getString("EmeraldInvMirrorLocation");
+			if(root == "")root = gSavedSettings.getString("PhoenixInvMirrorLocation");
 			if(!LLFile::isdir(root))
 			{
 				//cmdline_printchat("Error: mirror root \""+root+"\" is nonexistant");

@@ -208,7 +208,7 @@ BOOL LLToolPie::pickAndShowMenu(BOOL always_show)
 			// touch behavior down below...
 			break;
 		case CLICK_ACTION_SIT:
-			if ((gAgent.getAvatarObject() != NULL) && (!gAgent.getAvatarObject()->mIsSitting) && !gSavedSettings.getBOOL("EmeraldBlockClickSit")) // agent not already sitting
+			if ((gAgent.getAvatarObject() != NULL) && (!gAgent.getAvatarObject()->mIsSitting) && !gSavedSettings.getBOOL("PhoenixBlockClickSit")) // agent not already sitting
 			{
 				handle_sit_or_stand();
 				// put focus in world when sitting on an object
@@ -760,7 +760,7 @@ BOOL LLToolPie::handleDoubleClick(S32 x, S32 y, MASK mask)
 		llinfos << "LLToolPie handleDoubleClick (becoming mouseDown)" << llendl;
 	}
 	/* code added to support double click teleports */
-	if (gSavedSettings.getBOOL("EmeraldDoubleClickTeleport"))
+	if (gSavedSettings.getBOOL("PhoenixDoubleClickTeleport"))
 	{
 		LLViewerObject* objp = mPick.getObject();
 //		LLViewerObject* parentp = objp ? objp->getRootEdit() : NULL;
@@ -776,11 +776,11 @@ BOOL LLToolPie::handleDoubleClick(S32 x, S32 y, MASK mask)
 			//handle_go_to();
 			//LLViewerRegion* regionp = gAgent.getRegion();
 			//bool isLocal = regionp->getHandle() == to_region_handle_global((F32)pos.mdV[VX], (F32)pos.mdV[VY]);
-			bool calc = gSavedSettings.getBOOL("EmeraldDoubleClickTeleportAvCalc");
-			bool vel = gSavedSettings.getBOOL("EmeraldVelocityDoubleClickTeleport");
+			bool calc = gSavedSettings.getBOOL("PhoenixDoubleClickTeleportAvCalc");
+			bool vel = gSavedSettings.getBOOL("PhoenixVelocityDoubleClickTeleport");
 
 
-			LLVector3 offset = LLVector3(0.f,0.f,gSavedSettings.getF32("EmeraldDoubleClickZOffset"));
+			LLVector3 offset = LLVector3(0.f,0.f,gSavedSettings.getF32("PhoenixDoubleClickZOffset"));
 			if(vel)offset += gAgent.getVelocity() * 0.25;
 			if(calc)offset += LLVector3(0.f,0.f,gAgent.getAvatarObject()->getPelvisToFoot());//LLVector3(0.f,0.f,gAgent.getAvatarObject()->getScale().mV[2] / 2);
 			pos.mdV[VX] += offset.mV[VX];

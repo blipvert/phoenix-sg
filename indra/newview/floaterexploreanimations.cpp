@@ -88,7 +88,7 @@ void LLFloaterExploreAnimations::update()
 	{
 		LLAnimHistoryItem* item = (*iter);
 
-		if (gSavedSettings.getBOOL("EmeraldFilterDefaultAnims") && isLindenDefaultAnim(item->mAssetID.asString().c_str()))
+		if (gSavedSettings.getBOOL("PhoenixFilterDefaultAnims") && isLindenDefaultAnim(item->mAssetID.asString().c_str()))
 		{
 			continue;
 		}
