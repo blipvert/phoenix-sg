@@ -70,6 +70,9 @@ make_disk_image()
                 OUTPUT_FILE="Phoenix_Viewer_1.5.0.${REVISION}_${1}_Beta.dmg"
         fi
 
+        # hdiutil convert won't overwrite an existing output file
+        rm -f "$OUTPUT_DIR/$OUTPUT_FILE"
+
         # We store the templates as compressed images, so decompress it now.
         hdiutil convert "$DEPENDENCY_DIR/$IMAGE" -format UDRW -o temp-image.dmg > /dev/null
         hdiutil attach -mountpoint "$DEPENDENCY_DIR/build-image" -nobrowse temp-image.dmg > /dev/null
