@@ -4,10 +4,19 @@ INDRA_DIR=$START_DIR/indra
 OUTPUT_DIR=$START_DIR/builds
 DEPENDENCY_DIR=$START_DIR/dependencies
 
-if [ -n "$BUILD_RELEASE" ]; then
+if [ $1 = "release" ]; then
         echo "Building for release."
+        BUILD_RELEASE="yes"
 else
         echo "Building beta."
+        BUILD_RELEASE=""
+fi
+
+if [ -z "$2" ]; then
+	echo "Usage: $0 <release|beta> buildnumber"
+	exit 1
+else
+	REVISION=$2
 fi
 
 configure()
@@ -25,10 +34,7 @@ set_channel()
                 sed -e s/Internal/Release/ -i '' llcommon/llversionviewer.h
         fi
 
-        if [ $REVISION -ne $REAL_REVISION ]; then
-                sed -e s/$REAL_REVISION/$REVISION/ -i '' llcommon/llversionviewer.h
-                echo "Hacked version from $REAL_REVISION to $REVISION."
-        fi
+        sed -e "s/LL_VERSION_BUILD = 0/LL_VERSION_BUILD = $REVISION/" -i '' llcommon/llversionviewer.h
 }
 
 build()
@@ -92,53 +98,47 @@ make_package()
 
 upload()
 {
-        echo "Uploading..."
-		#Be sure to take the upload function out before pushing any changes as it contains server credentials and hidden URLs.
-        echo ""
+#        echo "Uploading..."
+#		#Be sure to take the upload function out before pushing any changes as it contains server credentials and hidden URLs.
+        echo "The final package can be found at $1."
 }
+
 #This function needs to be changed to hg, also we're not longer using a /linden folder... -phox
-cd "$START_DIR/linden"
-if [ -z $1 ]; then
-        svn up
-else
-        svn up -r$1
-fi
-
-if [ $? -ne 0 ]; then
-        echo "Couldn't update from subversion."
-        exit 1
-fi
-
-REAL_REVISION=0
-while read line; do
-        substring=${line:0:10}
-        if [[ $substring == "Revision: " ]]; then
-                REAL_REVISION=${line:10:4}
-        fi
-done < <(svn info)
-if [ $REAL_REVISION -eq 0 ]; then
-        echo "Could not determine svn revision."
-        exit 2
-fi
-
-if [ -z $REVISION ]; then
-        REVISION=$REAL_REVISION
-fi
+#cd "$START_DIR/linden"
+#if [ -z $1 ]; then
+#        svn up
+#else
+#        svn up -r$1
+#fi
+#
+#if [ $? -ne 0 ]; then
+#        echo "Couldn't update from subversion."
+#        exit 1
+#fi
+#
+#REAL_REVISION=0
+#while read line; do
+#        substring=${line:0:10}
+#        if [[ $substring == "Revision: " ]]; then
+#                REAL_REVISION=${line:10:4}
+#        fi
+#done < <(svn info)
+#if [ $REAL_REVISION -eq 0 ]; then
+#        echo "Could not determine svn revision."
+#        exit 2
+#fi
+#
+#if [ -z $REVISION ]; then
+#        REVISION=$REAL_REVISION
+#fi
 
 echo "Preparing..."
 rm installed.xml 2>/dev/null
 
-echo "Building revision $REVISION."
+#echo "Building revision $REVISION."
+echo "Building..."
 cd indra
-#> /dev/null
-#echo "Prebuilt hax..."
-#cmake -G Xcode > /dev/null
-#rm -r CMakeFiles/ CMakeCache.txt CMakeScripts/ */CMakeFiles/ */CMakeCache.txt */CMakeScripts/ 2>/dev/null
-#echo "Downloading prebuilt..."
-#cmake -P DownloadPrebuilt.cmake
-#rm DownloadPrebuilt.cmake
 
-if [ -z $SKIP_INTEL ]; then
 if [ -z $SKIP_INTEL ]; then
         echo "------------------------------------------"
         echo "                 x86 Build                "
@@ -170,7 +170,6 @@ if [ -z $SKIP_INTEL ]; then
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libortp.dylib -output Phoenix\ Viewer.app/Contents/Resources/libortp.dylib
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libvivoxsdk.dylib -output Phoenix\ Viewer.app/Contents/Resources/libvivoxsdk.dylib
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib -output Phoenix\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib
-                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libemkdu.dylib -output Phoenix\ Viewer.app/Contents/Resources/libemkdu.dylib
 
                 echo "Packaging..."
                 RESULT="$(make_package Intel)"
