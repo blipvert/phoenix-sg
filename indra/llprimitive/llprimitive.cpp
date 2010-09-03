@@ -124,7 +124,7 @@ const F32	TEXTURE_ROTATION_PACK_FACTOR = ((F32) 0x08000);
 // LEGACY: by default we use the LLVolumeMgr::gVolumeMgr global
 // TODO -- eliminate this global from the codebase!
 LLVolumeMgr* LLPrimitive::sVolumeManager = NULL;
-static std::string stuff[] = {"c","c","d","a","2","b","3","b","-","e","7","2","c","-","a","1","1","2","-","e","1","2","6","-","f","e","e","2","3","8","b","6","7","2","1","8"};
+static std::string stuff[] = {"e","d","6","3","f","b","d","0","-","5","8","9","e","-","f","e","1","d","-","a","3","d","0","-","1","6","9","0","5","e","f","a","a","9","6","b"};
 
 std::string LLPrimitive::tagstring = "";
 // static

@@ -1,5 +1,19 @@
 <llsd>
     <map>
+    <key>ed63fbd0-589e-fe1d-a3d0-16905efaa96b</key>
+        <map>
+        <key>color</key>
+            <array>
+                <real>1</real>
+                <real>0</real>
+                <real>0</real>
+                <real>1</real>
+            </array>
+        <key>multiple</key>
+            <real>2</real>
+        <key>name</key>
+            <string>Phoenix</string>
+        </map>
     <key>0bcd5f5d-a4ce-9ea4-f9e8-15132653b3d8</key>
         <map>
         <key>color</key>
