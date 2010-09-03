@@ -1,5 +1,5 @@
 <!-- 
-  Not all possible growl notifications are defined here; Emerald Keyword Alerts and incoming IMs are hardcoded.
+  Not all possible growl notifications are defined here; Phoenix Keyword Alerts and incoming IMs are hardcoded.
   
   The following options are available:
   GrowlName (string): The name used by Growl for this notification. Should be human-readable. REQUIRED.

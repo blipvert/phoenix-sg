@@ -52,7 +52,7 @@ class LLStreamingAudioInterface
 	virtual F32 getGain() = 0;
 	virtual std::string getURL() = 0;
 	
-	// These three are Emerald additions and thus optional.
+	// These three are Phoenix additions and thus optional.
 	virtual bool hasNewMetadata() { return false; }
 	virtual std::string getCurrentArtist() { return NULL; }
 	virtual std::string getCurrentTitle() { return NULL; }

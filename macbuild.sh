@@ -41,14 +41,14 @@ copy_resources()
 {
         echo "Copying resources..."
 
-        cp -R $DEPENDENCY_DIR/cursors_mac Emerald\ Viewer.app/Contents/Resources/
+        cp -R $DEPENDENCY_DIR/cursors_mac Phoenix\ Viewer.app/Contents/Resources/
 
         if [ -n "$BUILD_RELEASE" ]; then
                 SETTINGS_FILE='settings_emerald.xml'
         else
                 SETTINGS_FILE='settings_emeraldviewerbeta.xml'
         fi
-        echo "--settings $SETTINGS_FILE" > Emerald\ Viewer.app/Contents/Resources/arguments.txt
+        echo "--settings $SETTINGS_FILE" > Phoenix\ Viewer.app/Contents/Resources/arguments.txt
 }
 
 # Sends output file to stdout
@@ -56,12 +56,12 @@ make_disk_image()
 {
         if [ -n "$BUILD_RELEASE" ]; then
                 IMAGE="release-template.dmg"
-                VOLUME_NAME="Emerald Viewer $REVISION"
-                OUTPUT_FILE="Emerald_Viewer_1.5.0.${REVISION}_${1}.dmg"
+                VOLUME_NAME="Phoenix Viewer $REVISION"
+                OUTPUT_FILE="Phoenix_Viewer_1.5.0.${REVISION}_${1}.dmg"
         else
                 IMAGE="beta-template.dmg"
-                VOLUME_NAME="Emerald Viewer $REVISION Beta"
-                OUTPUT_FILE="Emerald_Viewer_1.5.0.${REVISION}_${1}_Beta.dmg"
+                VOLUME_NAME="Phoenix Viewer $REVISION Beta"
+                OUTPUT_FILE="Phoenix_Viewer_1.5.0.${REVISION}_${1}_Beta.dmg"
         fi
 
         # We store the templates as compressed images, so decompress it now.
@@ -72,7 +72,7 @@ make_disk_image()
         diskutil renameVolume "$DEPENDENCY_DIR/build-image" "$VOLUME_NAME" > /dev/null
 
         # Copy the viewer in
-        cp -R Emerald\ Viewer*.app "$DEPENDENCY_DIR/build-image/" > /dev/null
+        cp -R Phoenix\ Viewer*.app "$DEPENDENCY_DIR/build-image/" > /dev/null
 
         # Compress/store the image and dispose of the temporary one.
         hdiutil detach "$DEPENDENCY_DIR/build-image" > /dev/null
@@ -85,7 +85,7 @@ make_disk_image()
 make_package()
 {
         if [ -z "$BUILD_RELEASE" ]; then
-                mv Emerald\ Viewer.app Emerald\ Viewer\ Beta.app
+                mv Phoenix\ Viewer.app Phoenix\ Viewer\ Beta.app
         fi
         echo $(make_disk_image $1)
 }
@@ -159,18 +159,18 @@ if [ -z $SKIP_INTEL ]; then
                 copy_resources
 
                 echo "Liposuction..."
-                lipo -thin i386 Emerald\ Viewer.app/Contents/MacOS/libhunspell-1.2.dylib -output Emerald\ Viewer.app/Contents/MacOS/libhunspell-1.2.dylib
-                lipo -thin i386 Emerald\ Viewer.app/Contents/MacOS/libndofdev.dylib -output Emerald\ Viewer.app/Contents/MacOS/libndofdev.dylib
-                lipo -thin i386 Emerald\ Viewer.app/Contents/MacOS/libotr.dylib -output Emerald\ Viewer.app/Contents/MacOS/libotr.dylib
-                lipo -thin i386 Emerald\ Viewer.app/Contents/MacOS/7za -output Emerald\ Viewer.app/Contents/MacOS/7za
+                lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/libhunspell-1.2.dylib -output Phoenix\ Viewer.app/Contents/MacOS/libhunspell-1.2.dylib
+                lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/libndofdev.dylib -output Phoenix\ Viewer.app/Contents/MacOS/libndofdev.dylib
+                lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/libotr.dylib -output Phoenix\ Viewer.app/Contents/MacOS/libotr.dylib
+                lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/7za -output Phoenix\ Viewer.app/Contents/MacOS/7za
 
-                lipo -thin i386 Emerald\ Viewer.app/Contents/Resources/SLVoice -output Emerald\ Viewer.app/Contents/Resources/SLVoice
-                lipo -thin i386 Emerald\ Viewer.app/Contents/Resources/libalut.dylib -output Emerald\ Viewer.app/Contents/Resources/libalut.dylib
-                lipo -thin i386 Emerald\ Viewer.app/Contents/Resources/libopenal.dylib -output Emerald\ Viewer.app/Contents/Resources/libopenal.dylib
-                lipo -thin i386 Emerald\ Viewer.app/Contents/Resources/libortp.dylib -output Emerald\ Viewer.app/Contents/Resources/libortp.dylib
-                lipo -thin i386 Emerald\ Viewer.app/Contents/Resources/libvivoxsdk.dylib -output Emerald\ Viewer.app/Contents/Resources/libvivoxsdk.dylib
-                lipo -thin i386 Emerald\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib -output Emerald\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib
-                lipo -thin i386 Emerald\ Viewer.app/Contents/Resources/libemkdu.dylib -output Emerald\ Viewer.app/Contents/Resources/libemkdu.dylib
+                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/SLVoice -output Phoenix\ Viewer.app/Contents/Resources/SLVoice
+                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libalut.dylib -output Phoenix\ Viewer.app/Contents/Resources/libalut.dylib
+                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libopenal.dylib -output Phoenix\ Viewer.app/Contents/Resources/libopenal.dylib
+                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libortp.dylib -output Phoenix\ Viewer.app/Contents/Resources/libortp.dylib
+                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libvivoxsdk.dylib -output Phoenix\ Viewer.app/Contents/Resources/libvivoxsdk.dylib
+                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib -output Phoenix\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib
+                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libemkdu.dylib -output Phoenix\ Viewer.app/Contents/Resources/libemkdu.dylib
 
                 echo "Packaging..."
                 RESULT="$(make_package Intel)"

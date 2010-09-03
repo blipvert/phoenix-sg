@@ -56,7 +56,7 @@ const char* Find_BMP_Resource(const char *basename)
 
 DesktopNotifierLinux::DesktopNotifierLinux()
 {
-	if (notify_init("Emerald Viewer")) {
+	if (notify_init("Phoenix Viewer")) {
 	    LL_INFOS("DesktopNotifierLinux") << "Linux desktop notifications initialized." << LL_ENDL;
 	    // Find the name of our notification server. I kinda don't expect it to change after the start of the program.
 	    gchar* name = NULL;
@@ -90,7 +90,7 @@ void DesktopNotifierLinux::showNotification(const std::string& notification_titl
     LL_INFOS("DesktopNotifierLinux") << "New notification type: " << notification_type << LL_ENDL;
     
     static NotifyNotification* notification = notify_notification_new(
-        "Emerald Viewer",//(gchar*)notification_title.c_str(),
+        "Phoenix Viewer",//(gchar*)notification_title.c_str(),
         NULL,//(gchar*)notification_message.c_str(),
         icon_wholename,
         NULL
