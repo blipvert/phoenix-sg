@@ -233,6 +233,7 @@ void LLViewerParcelMedia::play(LLParcel* parcel)
 		sMediaImpl = LLViewerMedia::newMediaImpl(media_url, placeholder_texture_id,
 			media_width, media_height, media_auto_scale,
 			media_loop, mime_type);
+		play(parcel);//ahhhh might cause infinate circles of hell on a bad day
 	}
 
 	
