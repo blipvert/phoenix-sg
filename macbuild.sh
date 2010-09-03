@@ -44,9 +44,9 @@ copy_resources()
         cp -R $DEPENDENCY_DIR/cursors_mac Phoenix\ Viewer.app/Contents/Resources/
 
         if [ -n "$BUILD_RELEASE" ]; then
-                SETTINGS_FILE='settings_emerald.xml'
+                SETTINGS_FILE='settings_phoenix.xml'
         else
-                SETTINGS_FILE='settings_emeraldviewerbeta.xml'
+                SETTINGS_FILE='settings_phoenixviewerbeta.xml'
         fi
         echo "--settings $SETTINGS_FILE" > Phoenix\ Viewer.app/Contents/Resources/arguments.txt
 }
