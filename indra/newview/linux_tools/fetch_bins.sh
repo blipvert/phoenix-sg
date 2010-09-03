@@ -12,9 +12,9 @@ fi
 
 #default to not downloading a package with emkdu for now, since LL has asked us not to use it.
 if [[ "$1" == "--emkdu" ]]; then
-	URL="http://emeraldviewer.net/box/fmod-vivox-kdu.tar.bz2"
+	URL="http://www.phoenixviewer.com/fmod-vivox-kdu.tar.bz2"
 else
-	URL="http://emeraldviewer.net/box/fmod-vivox.tar.bz2"
+	URL="http://www.phoenixviewer.com/fmod-vivox.tar.bz2"
 fi
 
 ARCHIVE="${URL##*/}"
