@@ -219,6 +219,7 @@
 #include "growlmanager.h"
 #include "streamtitledisplay.h"
 #include "lggautocorrect.h"
+#include "lggircgrouphandler.h"
 //
 // exported globals
 //
@@ -1053,6 +1054,11 @@ bool idle_startup()
 		gViewerWindow->getWindow()->setWindowTitle(gWindowTitle);
 
 		LLFloaterBlacklist::loadFromSave();
+
+		//guna make a ircgroups directior here too /lgg		
+		std::string lgg_ircgroups_path_name(gDirUtilp->getExpandedFilename( LL_PATH_PER_SL_ACCOUNT, "IRCGroups", ""));
+		LLFile::mkdir(lgg_ircgroups_path_name.c_str());
+
 
 		if (show_connect_box)
 		{
@@ -2755,10 +2761,15 @@ bool idle_startup()
 		set_startup_status(1.0, "", "");
 
 		LLVOAvatar::loadClientTags();
-		// Add login location to teleport history 'teleported-into'
-		LLVector3 agent_pos=gAgent.getPositionAgent();
-		LLViewerRegion* regionp = gAgent.getRegion();
-		gFloaterTeleportHistory->addEntry(regionp->getName(),(S16)agent_pos.mV[0],(S16)agent_pos.mV[1],(S16)agent_pos.mV[2],false);
+		// Now optional! --Liny
+		// TODO: Im turning to too many things into options to just hide them in debug settings. MAKE PREF PANEL!
+		if(gSavedSettings.getBOOL("DiamondLoginAddTPList"))
+		{
+			// Add login location to teleport history 'teleported-into'
+			LLVector3 agent_pos=gAgent.getPositionAgent();
+			LLViewerRegion* regionp = gAgent.getRegion();
+			gFloaterTeleportHistory->addEntry(regionp->getName(),(S16)agent_pos.mV[0],(S16)agent_pos.mV[1],(S16)agent_pos.mV[2],false);
+		}
 
 		// Let the map know about the inventory.
 		if(gFloaterWorldMap)
@@ -2777,6 +2788,10 @@ bool idle_startup()
 		// We're not away from keyboard, even though login might have taken
 		// a while. JC
 		gAgent.clearAFK();
+
+		//lgg starting up auto connect irc things here
+		//but that crashed.. so i duno
+		glggIrcGroupHandler.startUpAutoRunIRC();
 
 		// Have the agent start watching the friends list so we can update proxies
 		gAgent.observeFriends();
@@ -2904,17 +2919,6 @@ std::string LLStartUp::loadPasswordFromDisk()
 	}
 
 	std::string hashed_password("");
-
-	// Look for legacy "marker" password from settings.ini
-	hashed_password = gSavedSettings.getString("Marker");
-	if (!hashed_password.empty())
-	{
-		// Stomp the Marker entry.
-		gSavedSettings.setString("Marker", "");
-
-		// Return that password.
-		return hashed_password;
-	}
 
 	std::string filepath = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,
 													   "password.dat");

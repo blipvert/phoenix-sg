@@ -150,3 +150,8 @@ target_link_libraries(llui
     llcommon    # must be after llimage, llwindow, llrender
     llmath
     )
+
+add_dependencies(llui
+  prepare
+)
+	

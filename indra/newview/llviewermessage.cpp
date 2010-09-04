@@ -140,6 +140,7 @@
 #include "llkeythrottle.h"
 #include "lltranslate.h"
 
+#include "DiamondAoInt.h"
 #include "jc_lslviewerbridge.h"
 #include "mfdkeywordfloater.h"
 #include "growlmanager.h"
@@ -280,6 +281,9 @@ bool friendship_offer_callback(const LLSD& notification, const LLSD& response)
 		msg->nextBlockFast(_PREHASH_TransactionBlock);
 		msg->addUUIDFast(_PREHASH_TransactionID, payload["session_id"]);
 		msg->sendReliable(LLHost(payload["sender"].asString()));
+		break;
+	case 3:
+		LLURLDispatcher::dispatch(llformat("secondlife:///app/agent/%s/about",payload["from_id"].asString().c_str()), NULL, true);
 		break;
 	default:
 		// close button probably, possibly timed out
@@ -2557,7 +2561,16 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 			position,
 			true);
 
-		chat.mText = std::string("IM: ") + name + separator_string +  saved + message.substr(message_offset);
+		std::string group_name;
+		if (gAgent.isInGroup(session_id))
+		{
+			if(gSavedSettings.getBOOL("DiamondShowGroupNameInChatIM"))
+			{
+				group_name = std::string((char*)binary_bucket);
+				group_name += ": ";
+			}
+		}
+		chat.mText = std::string("IM: ") + group_name + name + separator_string +  saved + message.substr(message_offset);
 		LLFloaterChat::addChat(chat, TRUE, is_this_agent);
 
 		// Growl alert if a keyword is picked up.

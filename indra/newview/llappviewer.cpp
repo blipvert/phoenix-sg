@@ -2387,8 +2387,6 @@ void LLAppViewer::writeDebugInfo()
 
 void LLAppViewer::cleanupSavedSettings()
 {
-	gSavedSettings.setBOOL("MouseSun", FALSE);
-
 	gSavedSettings.setBOOL("FlyBtnState", FALSE);
 
 	//gSavedSettings.setBOOL("FirstPersonBtnState", FALSE);

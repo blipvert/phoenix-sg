@@ -416,7 +416,8 @@ void LLFloaterChat::updateSettings()
 // Put a line of chat in all the right places
 void LLFloaterChat::addChat(const LLChat& chat, 
 			  BOOL from_instant_message, 
-			  BOOL local_agent)
+			  BOOL local_agent,
+			  BOOL log_to_file)
 {
 	LLColor4 text_color = get_text_color(chat);
 
@@ -492,7 +493,7 @@ void LLFloaterChat::addChat(const LLChat& chat,
 	triggerAlerts(chat.mText);
 
 	if(!from_instant_message)
-		addChatHistory(chat);
+		addChatHistory(chat, log_to_file);
 }
 
 // Moved from lltextparser.cpp to break llui/llaudio library dependency.

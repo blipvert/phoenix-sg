@@ -543,7 +543,7 @@ void LLAgent::resetView(BOOL reset_camera, BOOL change_camera)
 
 	if (!gNoRender)
 	{
-		LLSelectMgr::getInstance()->unhighlightAll();
+		//LLSelectMgr::getInstance()->unhighlightAll();
 
 		// By popular request, keep land selection while walking around. JC
 		// LLViewerParcelMgr::getInstance()->deselectLand();
@@ -552,6 +552,7 @@ void LLAgent::resetView(BOOL reset_camera, BOOL change_camera)
 		// this is so people don't wig out when their avatar moves without animating
 		if (LLSelectMgr::getInstance()->getSelection()->isAttachment())
 		{
+			LLSelectMgr::getInstance()->unhighlightAll();
 			LLSelectMgr::getInstance()->deselectAll();
 		}
 
@@ -8394,7 +8395,7 @@ void LLAgent::onFoundLureDestination()
 	std::string sim_name;
 	LLWorldMap::getInstance()->simNameFromPosGlobal( LLAgent::lure_posglobal, sim_name );
 
-	if(siminfo)
+	if(siminfo && (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)))
 	{
 		llinfos << LLAgent::lure_name << " is offering a TP to " << sim_name.c_str() << " (" << LLAgent::lure_maturity << ")" << llendl;
 		std::string url = LLURLDispatcher::buildSLURL(sim_name.c_str(), S32(LLAgent::lure_x), S32(LLAgent::lure_y), S32(LLAgent::lure_z));

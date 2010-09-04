@@ -31,7 +31,6 @@ set(llimage_SOURCE_FILES
 
 set(llimage_HEADER_FILES
     CMakeLists.txt
-	emkdu.h
     llimage.h
     llimagebmp.h
     llimagedxt.h

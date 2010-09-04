@@ -376,51 +376,46 @@ void LLFloaterInspect::drawTextureEntry(const LLViewerImage* img, const U8 i)
 		mTex[i].blacklistbtn->setVisible(TRUE);
 		if (mTex[i].ctrl)
 		{
-			if(LLImageJ2C::useEMKDU)
+			std::string decodedComment = img->decodedComment;
+			if (!decodedComment.empty())
 			{
-			  std::string decodedComment = img->decodedComment;
-			  if (!decodedComment.empty())
-			  {
-				  S32 string_pos = decodedComment.find("a=");
-				  if (string_pos != std::string::npos) 
-				  {
-					  mTex[i].line2->setText(std::string("(waiting)"));
-					  mTex[i].uploaderkey = LLUUID(decodedComment.substr(string_pos+2,36));
-					  gCacheName->get(mTex[i].uploaderkey, FALSE, callbackLoadAvatarName, mTex[i].line2);
-				  }
+				S32 string_pos = decodedComment.find("a=");
+				if (string_pos != std::string::npos) 
+				{
+					//mTex[i].line2->setText(std::string("no upload info"));
+					mTex[i].uploaderkey = LLUUID(decodedComment.substr(string_pos+2,36));
+					gCacheName->get(mTex[i].uploaderkey, FALSE, callbackLoadAvatarName, mTex[i].line2);
+				}
 
-				  string_pos = decodedComment.find("z=");
-				  if (string_pos != std::string::npos) 
-				  {
-					  std::string strtime;
+				string_pos = decodedComment.find("z=");
+				if (string_pos != std::string::npos) 
+				{
+					std::string strtime;
 
-					  strtime = decodedComment.substr(string_pos+2,14);
-					  std::string year = strtime.substr(0,4);
-					  std::string month = strtime.substr(4,2);
-					  std::string day = strtime.substr(6,2);
-					  std::string hour = strtime.substr(8,2);
-					  std::string minute = strtime.substr(10,2);
-					  std::string second = strtime.substr(12,2);
-					  mTex[i].time = llformat("%s/%s/%s - %s:%s:%s",year.c_str(),month.c_str(),day.c_str(),hour.c_str(),minute.c_str(),second.c_str());
-  //					mTex[i].blacklistbtn->setVisible(TRUE);
-					  mTex[i].profilebtn->setVisible(TRUE);
-				  }
-				  else
-				  {
-					  mTex[i].time = std::string("");
-  //					mTex[i].blacklistbtn->setVisible(FALSE);
-					  mTex[i].profilebtn->setVisible(FALSE);
-				  }
-				  mTex[i].line3->setText(std::string(mTex[i].time));
-			  }
-			  else
-			  {
-  //				mTex[i].blacklistbtn->setVisible(FALSE);
-				  mTex[i].profilebtn->setVisible(FALSE);
-			  }
+					strtime = decodedComment.substr(string_pos+2,14);
+					std::string year = strtime.substr(0,4);
+					std::string month = strtime.substr(4,2);
+					std::string day = strtime.substr(6,2);
+					std::string hour = strtime.substr(8,2);
+					std::string minute = strtime.substr(10,2);
+					std::string second = strtime.substr(12,2);
+					mTex[i].time = llformat("%s/%s/%s - %s:%s:%s",year.c_str(),month.c_str(),day.c_str(),hour.c_str(),minute.c_str(),second.c_str());
+//					mTex[i].blacklistbtn->setVisible(TRUE);
+					mTex[i].profilebtn->setVisible(TRUE);
+				}
+				else
+				{
+					mTex[i].time = std::string("");
+//					mTex[i].blacklistbtn->setVisible(FALSE);
+					mTex[i].profilebtn->setVisible(FALSE);
+				}
+				mTex[i].line3->setText(std::string(mTex[i].time));
 			}
 			else
-			  mTex[i].profilebtn->setVisible(FALSE);
+			{
+//				mTex[i].blacklistbtn->setVisible(FALSE);
+				mTex[i].profilebtn->setVisible(FALSE);
+			}
 
 			mTex[i].ctrl->setImageAssetID(image_id);
 

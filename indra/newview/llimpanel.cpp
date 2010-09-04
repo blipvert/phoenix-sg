@@ -33,6 +33,7 @@
 #include "llviewerprecompiledheaders.h"
 
 #include "llimpanel.h"
+#include "lggircgrouphandler.h"
 
 #include "indra_constants.h"
 #include "llfocusmgr.h"
@@ -235,6 +236,10 @@ bool send_start_session_messages(
 	const LLDynamicArray<LLUUID>& ids,
 	EInstantMessage dialog)
 {
+	if ( dialog == IM_SESSION_IRC_START )
+	{
+		return false;
+	}
 	if ( dialog == IM_SESSION_GROUP_START )
 	{
 		session_starter_helper(
@@ -1171,6 +1176,12 @@ void LLFloaterIMPanel::init(const std::string& session_label)
 		xml_filename = "floater_instant_message_group.xml";
 		mVoiceChannel = new LLVoiceChannelGroup(mSessionUUID, mSessionLabel);
 		break;
+	case IM_SESSION_IRC_START:
+		setShortTitle(mSessionLabel);
+		mFactoryMap["active_speakers_panel"] = LLCallbackMap(createSpeakersPanel, this);
+		xml_filename =  "floater_instant_message_ad_hoc.xml";
+		mVoiceChannel = new LLVoiceChannelGroup(mSessionUUID, mSessionLabel);
+		break;
 	case IM_SESSION_INVITE:
 		mFactoryMap["active_speakers_panel"] = LLCallbackMap(createSpeakersPanel, this);
 		if (gAgent.isInGroup(mSessionUUID))
@@ -1200,6 +1211,16 @@ void LLFloaterIMPanel::init(const std::string& session_label)
 		mTextIMPossible = LLVoiceClient::getInstance()->isSessionTextIMPossible(mSessionUUID);
 		mProfileButtonEnabled = LLVoiceClient::getInstance()->isParticipantAvatar(mSessionUUID);
 		mCallBackEnabled = LLVoiceClient::getInstance()->isSessionCallBackPossible(mSessionUUID);
+		
+		mVoiceChannel = new LLVoiceChannelP2P(mSessionUUID, mSessionLabel, mOtherParticipantUUID);
+		break;
+	case IM_PRIVATE_IRC:
+		setShortTitle(mSessionLabel);
+		xml_filename = "floater_instant_message.xml";
+
+		mTextIMPossible = TRUE;
+		mProfileButtonEnabled = TRUE;
+		mCallBackEnabled = FALSE;
 
 		mVoiceChannel = new LLVoiceChannelP2P(mSessionUUID, mSessionLabel, mOtherParticipantUUID);
 		break;
@@ -1302,6 +1323,10 @@ LLFloaterIMPanel::~LLFloaterIMPanel()
 	{
 		mInputEditor->setFocusLostCallback( NULL );
 	}
+	if(mDialog == IM_SESSION_IRC_START)
+	{
+		glggIrcGroupHandler.endDownIRCListener(mSessionUUID);
+	}
 // [$PLOTR$]
     if (mOtrSmpDialog)   delete mOtrSmpDialog;
     if (mOtrSmpProgress) delete mOtrSmpProgress;
@@ -1347,7 +1372,30 @@ BOOL LLFloaterIMPanel::postBuild()
 		{
 			childSetEnabled("profile_btn", FALSE);
 		}
+		if(IM_SESSION_IRC_START == mDialog || IM_PRIVATE_IRC == mDialog)
+		{
+// 			childSetVisible("profile_btn", FALSE);
+// 			childSetVisible("profile_callee_btn", FALSE);
+// 			childSetVisible("start_call_btn",FALSE);
+// 			childSetVisible("profile_tele_btn",FALSE);
+// 			childSetVisible("password",FALSE);
+// 			childSetVisible("otr_combo",FALSE);
+		
+			childSetEnabled("profile_callee_btn", FALSE);
+			childSetEnabled("start_call_btn",FALSE);
+			childSetEnabled("profile_tele_btn",FALSE);
+			childSetVisible("otr_combo",FALSE);
+			if ( IM_SESSION_GROUP_START == mDialog )
+			{
+				childSetEnabled("profile_callee_btn", FALSE);
+			}
+			else if(IM_PRIVATE_IRC == mDialog)
+			{
+				childSetEnabled("profile_callee_btn",TRUE);
 
+			}
+		}
+		
 		if(!mProfileButtonEnabled)
 		{
 			childSetEnabled("profile_callee_btn", FALSE);
@@ -1443,11 +1491,14 @@ void LLFloaterIMPanel::draw()
 					  && mCallBackEnabled;
 
 	// hide/show start call and end call buttons
-	childSetVisible("end_call_btn", LLVoiceClient::voiceEnabled() && mVoiceChannel->getState() >= LLVoiceChannel::STATE_CALL_STARTED);
-	childSetVisible("start_call_btn", LLVoiceClient::voiceEnabled() && mVoiceChannel->getState() < LLVoiceChannel::STATE_CALL_STARTED);
-	childSetEnabled("start_call_btn", enable_connect);
-	childSetEnabled("send_btn", !childGetValue("chat_editor").asString().empty());
-
+	if(mDialog!=IM_SESSION_IRC_START && mDialog!=IM_PRIVATE_IRC)
+	{
+		childSetVisible("end_call_btn", LLVoiceClient::voiceEnabled() && mVoiceChannel->getState() >= LLVoiceChannel::STATE_CALL_STARTED);
+		childSetVisible("start_call_btn", LLVoiceClient::voiceEnabled() && mVoiceChannel->getState() < LLVoiceChannel::STATE_CALL_STARTED);
+		childSetEnabled("start_call_btn", enable_connect);
+		childSetEnabled("send_btn", !childGetValue("chat_editor").asString().empty());
+	}
+	
 	LLPointer<LLSpeaker> self_speaker = mSpeakers->findSpeaker(gAgent.getID());
 	if(!mTextIMPossible)
 	{
@@ -2022,7 +2073,11 @@ void deliver_message(const std::string& utf8_text,
 		// default to IM_SESSION_SEND unless it's nothing special - in
 		// which case it's probably an IM to everyone.
 		U8 new_dialog = dialog;
-
+		if ( dialog == IM_SESSION_IRC_START)
+		{
+			glggIrcGroupHandler.sendIrcChatByID(im_session_id,utf8_text);
+			return;
+		}
 		if ( dialog != IM_NOTHING_SPECIAL )
 		{
 			new_dialog = IM_SESSION_SEND;
@@ -3109,6 +3164,10 @@ void LLFloaterIMPanel::sendMsg()
 											mOtherParticipantUUID,
 											mDialog);
 						}
+						if( mDialog == IM_PRIVATE_IRC)
+						{
+							glggIrcGroupHandler.trySendPrivateImToID(utf8_text,mOtherParticipantUUID,false);
+						}
 // [$PLOTR$]
             		}
 				}
@@ -3219,6 +3278,10 @@ void LLFloaterIMPanel::processSessionUpdate(const LLSD& session_update)
 void LLFloaterIMPanel::setSpeakers(const LLSD& speaker_list)
 {
 	mSpeakers->setSpeakers(speaker_list);
+}
+void LLFloaterIMPanel::setIRCSpeakers(const LLSD& speaker_list)
+{
+	mSpeakers->setIrcSpeakers(speaker_list);
 }
 
 void LLFloaterIMPanel::sessionInitReplyReceived(const LLUUID& session_id)

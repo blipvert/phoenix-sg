@@ -84,6 +84,7 @@ set(viewer_SOURCE_FILES
 	lggbeammapfloater.cpp
 	lggbeamcolormapfloater.cpp
 	a_phoenixviewerlink.cpp
+	DiamondAoInt.cpp
 	phoenix.cpp
 	phoenixboobutils.cpp
 	exporttracker.cpp
@@ -97,6 +98,7 @@ set(viewer_SOURCE_FILES
 	hipporestrequest.cpp
 	hippopanelgrids.cpp
 	importtracker.cpp
+	irc.cpp
 	jclslpreproc.cpp
     hbfloatergrouptitles.cpp
 	jc_lslviewerbridge.cpp
@@ -110,7 +112,13 @@ set(viewer_SOURCE_FILES
 	growlmanager.cpp
 	growlnotifier.cpp
 	streamtitledisplay.cpp
+	lggircdata.cpp
+	lggircgrouphandler.cpp
+	lggircprofilefloater.cpp
+	lggfloaterircedit.cpp
+	lggfloaterirc.cpp
 	floaterskinfinder.cpp
+	lggircthread.cpp
     llagent.cpp
     llagentaccess.cpp
     llagentdata.cpp
@@ -538,6 +546,7 @@ set(viewer_HEADER_FILES
     ViewerInstall.cmake
     a_phoenixviewerlink.h
 	chatbar_as_cmdline.h
+	DiamondAoInt.h
     phoenix.h
 	phoenixboobutils.h
 	exporttracker.h
@@ -553,6 +562,7 @@ set(viewer_HEADER_FILES
 	jclslpreproc.h
 	hbfloatergrouptitles.h
 	jc_lslviewerbridge.h
+	irc.h
 	jcfloater_areasearch.h
 	lggautocorrectfloater.h
 	lggautocorrect.h
@@ -562,6 +572,12 @@ set(viewer_HEADER_FILES
 	lggbeammaps.h
 	lggdicdownload.h
 	lgghunspell_wrapper.h
+    lggfloaterircedit.h
+    lggfloaterirc.h
+    lggircgrouphandler.h
+	lggircprofilefloater.h
+    lggircthread.h
+    lggircdata.h
 	llfloatermessagelog.h
 	mfdkeywordfloater.h
 	otr_wrapper.h

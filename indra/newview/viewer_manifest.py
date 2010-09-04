@@ -482,9 +482,6 @@ class DarwinManifest(ViewerManifest):
 	    
 	    # 7zip (this is hackish, I guess)
 	    self.path("../../libraries/universal-darwin/lib_release/7za", "MacOS/7za");
-	    
-	    # emkdu
-	    #self.path("emkdu/universal-darwin/libemkdu.dylib", "Resources/libemkdu.dylib")
 
             # most everything goes in the Resources directory
             if self.prefix(src="", dst="Resources"):

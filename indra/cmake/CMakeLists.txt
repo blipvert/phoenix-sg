@@ -10,7 +10,6 @@ set(cmake_SOURCE_FILES
     00-Common.cmake
     APR.cmake
     Audio.cmake
-    EMKDU.cmake
     BerkeleyDB.cmake
     Boost.cmake
     BuildVersion.cmake

@@ -951,7 +951,7 @@ void JCLSLPreprocessor::start_process()
 	{
 	  settings = settings + " Lazy Lists";
 	} 
-	if (lazy_lists == TRUE)
+	if (use_switch == TRUE)
 	{
 	  settings = settings + " switches";
 	}

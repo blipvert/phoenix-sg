@@ -1,23 +1,11 @@
 #!/bin/bash
 
 # Necessary files
-if [[ "$1" == "--emkdu" ]]; then
 BINS="bin/SLVoice bin/libemkdu.so lib/libortp.so lib/libvivoxsdk.so lib/libfmod-3.75.so"
-else
-BINS="bin/SLVoice lib/libortp.so lib/libvivoxsdk.so lib/libfmod-3.75.so"
-fi
 
 # Locations of client to use
-#URL="http://download.cloud.secondlife.com/SecondLife-i686-1.23.5.136262.tar.bz2"
-
-#default to not downloading a package with emkdu for now, since LL has asked us not to use it.
-if [[ "$1" == "--emkdu" ]]; then
-	URL="http://www.phoenixviewer.com/fmod-vivox-kdu.tar.bz2"
-else
-	URL="http://www.phoenixviewer.com/fmod-vivox.tar.bz2"
-fi
-
-ARCHIVE="${URL##*/}"
+URL="http://www.phoenixviewer.com/fmod-vivox.tar.bz2"
+ARCHIVE="${URL##*=}"
 #FOLDER="${ARCHIVE%.*.*}"
 
 missing_bins() {

@@ -1061,14 +1061,6 @@ void init_client_menu(LLMenuGL* menu)
 
 void init_debug_world_menu(LLMenuGL* menu)
 {
-/* REMOVE mouse move sun from menu options
-	menu->append(new LLMenuItemCheckGL("Mouse Moves Sun", 
-									   &menu_toggle_control,
-									   NULL, 
-									   &menu_check_control,
-									   (void*)"MouseSun", 
-									   'M', MASK_CONTROL|MASK_ALT));
-*/
 	menu->append(new LLMenuItemCheckGL("Sim Sun Override", 
 									   &menu_toggle_control,
 									   NULL, 

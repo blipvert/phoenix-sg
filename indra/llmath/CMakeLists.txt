@@ -92,7 +92,7 @@ endif (NOT WINDOWS)
 list(APPEND llmath_SOURCE_FILES ${llmath_HEADER_FILES})
 
 add_library (llmath ${llmath_SOURCE_FILES})
-
+add_dependencies(llmath prepare)
 target_link_libraries(
     llmath
     llcommon)

@@ -69,6 +69,8 @@
 #include "llviewerregion.h"
 
 #include "llfirstuse.h"
+#include "lggircgrouphandler.h"
+#include "llgroupmgr.h"
 
 // [RLVa:KB]
 #include "rlvhandler.h"
@@ -202,6 +204,10 @@ LLUUID LLIMMgr::computeSessionID(
 	const LLUUID& other_participant_id)
 {
 	LLUUID session_id;
+	if( IM_SESSION_IRC_START == dialog)
+	{
+		session_id = other_participant_id;
+	}else
 	if (IM_SESSION_GROUP_START == dialog)
 	{
 		// slam group session_id to the group_id (other_participant_id)
@@ -979,7 +985,28 @@ void LLIMMgr::inviteToSession(
 		{
 			LLSD args;
 			args["NAME"] = caller_name;
-			args["GROUP"] = session_name;
+			//args["GROUP"] = session_name;
+			LLGroupMgrGroupData* temp = LLGroupMgr::getInstance()->getGroupData(session_id);
+			bool waiting = false;
+			if(temp)
+			{
+				if (temp->isGroupPropertiesDataComplete())
+				{
+					args["GROUP"] = temp->mName;
+				}
+				else
+				{
+					waiting = true;
+				}
+			}
+			else
+			{
+				waiting = true;
+			}
+			if(waiting)
+			{
+				LLGroupMgr::getInstance()->sendGroupPropertiesRequest(session_id);
+			}
 
 			LLNotifications::instance().add(notify_box_type, 
 					     args, 
@@ -1184,6 +1211,10 @@ LLFloaterIMPanel* LLIMMgr::createFloater(
 	{
 		llwarns << "Creating LLFloaterIMPanel with null session ID" << llendl;
 	}
+	if(glggIrcGroupHandler.trySendPrivateImToID("",other_participant_id,true))
+	{
+		dialog = IM_PRIVATE_IRC;
+	}
 
 	llinfos << "LLIMMgr::createFloater: from " << other_participant_id 
 			<< " in session " << session_id << llendl;
@@ -1209,7 +1240,10 @@ LLFloaterIMPanel* LLIMMgr::createFloater(
 	{
 		llwarns << "Creating LLFloaterIMPanel with null session ID" << llendl;
 	}
-
+	if(glggIrcGroupHandler.trySendPrivateImToID("",other_participant_id,true))
+	{
+		dialog = IM_PRIVATE_IRC;
+	}
 	llinfos << "LLIMMgr::createFloater: from " << other_participant_id 
 			<< " in session " << session_id << llendl;
 	LLFloaterIMPanel* floater = new LLFloaterIMPanel(session_label,

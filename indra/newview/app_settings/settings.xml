@@ -1,241 +1,263 @@
 <?xml version="1.0" ?>
 <llsd>
 	<map>
-	    <key>DefaultGrid</key>
-	    <map>
-	      <key>Comment</key>
-	      <string>Nickname of the default grid</string>
-	      <key>Persist</key>
-	      <integer>1</integer>
-	      <key>Type</key>
-	      <string>String</string>
-	      <key>Value</key>
-	      <string>secondlife</string>
-	    </map>
-	    <key>CheckForGridUpdates</key>
-	    <map>
-	      <key>Comment</key>
-	      <string>Check for grid info updates on the web server</string>
-	      <key>Persist</key>
-	      <integer>1</integer>
-	      <key>Type</key>
-	      <string>Boolean</string>
-	      <key>Value</key>
-	      <integer>0</integer>
-	    </map>
-	    <key>UIImgInvisibleUUID</key>
-	    <map>
-	      <key>Comment</key>
-	      <string />
-	      <key>Persist</key>
-	      <integer>0</integer>
-	      <key>Type</key>
-	      <string>String</string>
-	      <key>Value</key>
-	      <string>f54a0c32-3cd1-d49a-5b4f-7b792bebc204</string>
-	    </map>
-    <key>ZwagothSculptSAThresh</key>
-    <map>
-      <key>Comment</key>
-      <string>Surface area at which sculpts are considered for not being rendered.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <integer>1750.0</integer>
-    </map>
-    <key>ZwagothSculptSAMax</key>
-    <map>
-      <key>Comment</key>
-      <string>The maximum combined surface area of sculpts(per frame) that are above the threshold before they stop being rendered.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <integer>50000.0</integer>
-    </map>
-    <key>PhoenixMuteGestures</key>
-    <map>
-      <key>Comment</key>
-      <string>Enable to mute gestures</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixAssetBlacklist</key>
-    <map>
-      <key>Comment</key>
-      <string>List for blacklisting assets</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>LLSD</string>
-      <key>Value</key>
-      <array>
-        <string />
-      </array>
-    </map>
-    <key>PhoenixAssetBlacklistVersion</key>
-    <map>
-      <key>Comment</key>
-      <string>Do not edit this value.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>0</string>
-    </map>
-    <key>PhoenixSpecialBlacklist</key>
-    <map>
-      <key>Comment</key>
-      <string>List for blacklisting dangerous assets</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>LLSD</string>
-      <key>Value</key>
-      <array>
-        <string />
-      </array>
-    </map>
-    <key>PhoenixAllowScriptedMedia</key>
-    <map>
-      <key>Comment</key>
-      <string>Allow any script to press your play button</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    <key>PhoenixAlertOnSnapshot</key>
-    <map>
-      <key>Comment</key>
-      <string>show a message when someone takes a detectable snapshot nearby</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixTemporaryUpload</key>
-    <map>
-      <key>Comment</key>
-      <string>Whether or not a upload is temp</string>
-      <key>Persist</key>
-      <integer>0</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixFreezeInventoryArangement</key>
-    <map>
-      <key>Comment</key>
-      <string>If true, prevents the inventory folders from changing on new items</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixEnableInvMirror</key>
-    <map>
-      <key>Comment</key>
-      <string>lolu</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixEnableAutoCorrect</key>
-    <map>
-      <key>Comment</key>
-      <string>whether to enable autocorrect or not</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixInvMirrorLocation</key>
-    <map>
-      <key>Comment</key>
-      <string>toast</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string></string>
-    </map>
-    <key>PhoenixEnableHDDInclude</key>
-    <map>
-      <key>Comment</key>
-      <string>orly</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixHDDIncludeLocation</key>
-    <map>
-      <key>Comment</key>
-      <string>toast</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string></string>
-    </map>
-    <key>PhoenixInvMirrorGestures</key>
-    <map>
-      <key>Comment</key>
-      <string>lolu</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixInvMirrorNotecards</key>
-    <map>
-      <key>Comment</key>
-      <string>lolu</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixInvMirrorScripts</key>
-    <map>
-      <key>Comment</key>
-      <string>lolu</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
+		<key>DiamondShowGroupNameInChatIM</key>
+		<map>
+			<key>Comment</key>
+			<string>Show group name next to IM when printed in chat history.</string>
+			<key>Persist</key>
+			<integer>0</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<string>0</string>
+		</map>
+		<key>DiamondLoginAddTPList</key>
+		<map>
+			<key>Comment</key>
+			<string>Add login sim to the list of sims that have been TPed into.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>DefaultGrid</key>
+		<map>
+			<key>Comment</key>
+			<string>Nickname of the default grid</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>secondlife</string>
+		</map>
+		<key>CheckForGridUpdates</key>
+		<map>
+			<key>Comment</key>
+			<string>Check for grid info updates on the web server</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>UIImgInvisibleUUID</key>
+		<map>
+			<key>Comment</key>
+			<string />
+			<key>Persist</key>
+			<integer>0</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>f54a0c32-3cd1-d49a-5b4f-7b792bebc204</string>
+		</map>
+		<key>ZwagothSculptSAThresh</key>
+		<map>
+			<key>Comment</key>
+			<string>Surface area at which sculpts are considered for not being rendered.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<integer>1750.0</integer>
+		</map>
+		<key>ZwagothSculptSAMax</key>
+		<map>
+			<key>Comment</key>
+			<string>The maximum combined surface area of sculpts(per frame) that are above the threshold before they stop being rendered.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<integer>50000.0</integer>
+		</map>
+		<key>PhoenixMuteGestures</key>
+		<map>
+			<key>Comment</key>
+			<string>Enable to mute gestures</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixAssetBlacklist</key>
+		<map>
+			<key>Comment</key>
+			<string>List for blacklisting assets</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>LLSD</string>
+			<key>Value</key>
+			<array>
+				<string />
+			</array>
+		</map>
+		<key>PhoenixAssetBlacklistVersion</key>
+		<map>
+			<key>Comment</key>
+			<string>Do not edit this value.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>0</string>
+		</map>
+		<key>PhoenixSpecialBlacklist</key>
+		<map>
+			<key>Comment</key>
+			<string>List for blacklisting dangerous assets</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>LLSD</string>
+			<key>Value</key>
+			<array>
+				<string />
+			</array>
+		</map>
+		<key>PhoenixAllowScriptedMedia</key>
+		<map>
+			<key>Comment</key>
+			<string>Allow any script to press your play button</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixAlertOnSnapshot</key>
+		<map>
+			<key>Comment</key>
+			<string>show a message when someone takes a detectable snapshot nearby</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixTemporaryUpload</key>
+		<map>
+			<key>Comment</key>
+			<string>Whether or not a upload is temp</string>
+			<key>Persist</key>
+			<integer>0</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixFreezeInventoryArangement</key>
+		<map>
+			<key>Comment</key>
+			<string>If true, prevents the inventory folders from changing on new items</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixEnableInvMirror</key>
+		<map>
+			<key>Comment</key>
+			<string>lolu</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixEnableAutoCorrect</key>
+		<map>
+			<key>Comment</key>
+			<string>whether to enable autocorrect or not</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixInvMirrorLocation</key>
+		<map>
+			<key>Comment</key>
+			<string>toast</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string></string>
+		</map>
+		<key>PhoenixEnableHDDInclude</key>
+		<map>
+			<key>Comment</key>
+			<string>orly</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixHDDIncludeLocation</key>
+		<map>
+			<key>Comment</key>
+			<string>toast</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string></string>
+		</map>
+		<key>PhoenixInvMirrorGestures</key>
+		<map>
+			<key>Comment</key>
+			<string>lolu</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixInvMirrorNotecards</key>
+		<map>
+			<key>Comment</key>
+			<string>lolu</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixInvMirrorScripts</key>
+		<map>
+			<key>Comment</key>
+			<string>lolu</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>PhoenixExportProperties</key>
 		<map>
 			<key>Comment</key>
@@ -258,18 +280,18 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-    <key>PhoenixTranslateReplace</key>
-    <map>
-      <key>Comment</key>
-      <string>Whether or not right click tranlate replaces the selected text or adds to it.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixUseChatBar</key>
+		<key>PhoenixTranslateReplace</key>
+		<map>
+			<key>Comment</key>
+			<string>Whether or not right click tranlate replaces the selected text or adds to it.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixUseChatBar</key>
 		<map>
 			<key>Comment</key>
 			<string>Set to FALSE to disable the chat bar and chat display in the bottom left. All chat will go to the Communicate window.</string>
@@ -346,602 +368,600 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-    <key>PhoenixAppearanceAnimate</key>
-    <map>
-      <key>Comment</key>
-      <string>Play appearance anim when entering appearance mode?</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    <key>PhoenixAutoCorrectCount</key>
-    <map>
-      <key>Comment</key>
-      <string>How many words have been auto replaced.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>S32</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixAppearanceForceStand</key>
-    <map>
-      <key>Comment</key>
-      <string>Unsit avatar when entering appearance mode?</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    <key>PhoenixBeamShape</key>
-    <map>
-      <key>Comment</key>
-      <string>Beam file for the shape of your beam</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>Phoenix</string>
-    </map>
-    <key>PhoenixBeamColorFile</key>
-    <map>
-      <key>Comment</key>
-      <string>Beam file for the shape of your beam</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>===OFF===</string>
-    </map>
-    <key>PhoenixBeamShapeScale</key>
-    <map>
-      <key>Comment</key>
-      <string>How Big You Want to let the beam be</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>1.0</real>
-    </map>
-    <key>PhoenixBlockMapTps</key>
-    <map>
-      <key>Comment</key>
-      <string>Whether or not to block all script map tps</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixBlockSpam</key>
-    <map>
-      <key>Comment</key>
-      <string>Drop/kill all dialogs?</string>
-      <key>Persist</key>
-      <integer>0</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixBuildPrefs_Xsize</key>
-    <map>
-      <key>Comment</key>
-      <string>Default Size For New Objects to be created X</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>0.5</real>
-    </map>
-    <key>PhoenixBuildPrefs_Ysize</key>
-    <map>
-      <key>Comment</key>
-      <string>Default Size For New Objects to be created Y</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>0.5</real>
-    </map>
-    <key>PhoenixBuildPrefs_Zsize</key>
-    <map>
-      <key>Comment</key>
-      <string>Default Size For New Objects to be created Z</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>0.5</real>
-    </map>
-    <key>PhoenixBuildPrefs_Phantom</key>
-    <map>
-      <key>Comment</key>
-      <string>Default Setting For New Objects to be created, phantom flag</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixBuildPrefs_Temporary</key>
-    <map>
-      <key>Comment</key>
-      <string>Default Setting For New Objects to be created, temp flag</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixBuildPrefs_Physical</key>
-    <map>
-      <key>Comment</key>
-      <string>Default Setting For New Objects to be created, physical flag</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixBuildPrefs_EmbedItem</key>
-    <map>
-      <key>Comment</key>
-      <string>Whether to add item to objects</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixBuildPrefs_Material</key>
-    <map>
-      <key>Comment</key>
-      <string>Default Setting For New Objects to be created, physical flag</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>Wood</string>
-    </map>
-    <key>PhoenixBuildPrefs_Color</key>
-    <map>
-      <key>Comment</key>
-      <string>Color of new objects textures</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Color4</string>
-      <key>Value</key>
-      <array>
-        <real>1.0</real>
-        <real>1.0</real>
-        <real>1.0</real>
-        <real>1.0</real>
-      </array>
-    </map>
-    <key>PhoenixBuildPrefs_Texture</key>
-    <map>
-      <key>Comment</key>
-      <string>Texture used as 'Default' for new object created</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>89556747-24cb-43ed-920b-47caed15465f</string>
-    </map>
-    <key>PhoenixBuildPrefs_Item</key>
-    <map>
-      <key>Comment</key>
-      <string>item added to new object created</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string></string>
-    </map>
-    <key>PhoenixBuildPrefs_Alpha</key>
-    <map>
-      <key>Comment</key>
-      <string>Default Alpha For New Objects to be created</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>0.0</real>
-    </map>
-    <key>PhoenixBuildPrefs_Glow</key>
-    <map>
-      <key>Comment</key>
-      <string>Default Glow For New Objects to be created</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>0.0</real>
-    </map>
-    <key>PhoenixBuildPrefs_FullBright</key>
-    <map>
-      <key>Comment</key>
-      <string>Default Setting For New Objects to be created, whether textures are full bright</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixBuildPrefs_Shiny</key>
-    <map>
-      <key>Comment</key>
-      <string>Shiny level used as 'Default' for new objects created</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>None</string>
-    </map>
-    <key>PhoenixBuildPrefs_PivotX</key>
-    <map>
-      <key>Comment</key>
-      <string>Pivot point on the X axis</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>50</real>
-    </map>
-    <key>PhoenixBuildPrefs_PivotY</key>
-    <map>
-      <key>Comment</key>
-      <string>Pivot point on the Y axis</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>50</real>
-    </map>
-    <key>PhoenixBuildPrefs_PivotZ</key>
-    <map>
-      <key>Comment</key>
-      <string>Pivot point on the Z axis</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>50</real>
-    </map>
-    <key>PhoenixBuildPrefs_PivotIsPercent</key>
-    <map>
-      <key>Comment</key>
-      <string>Consider the Pivot points values as a percentage</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    <key>PhoenixBuildPrefs_ActualRoot</key>
-    <map>
-      <key>Comment</key>
-      <string>Show the axis on the actual root of a linkset instead of mass center</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixDisableMinZoomDist</key>
-    <map>
-      <key>Comment</key>
-      <string>Disable the constraint on the closest distance the camera is allowed to get to an object.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixDisableMaxZoomDist</key>
-    <map>
-      <key>Comment</key>
-      <string>Disable the constraint on the farthest distance the camera is allowed to zoom out.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixEnableGrowl</key>
-    <map>
-      <key>Comment</key>
-      <string>Enables Growl notifications</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    <key>PhoenixGrowlWhenActive</key>
-    <map>
-      <key>Comment</key>
-      <string>If Growl notifications are active, show them even when the window is active.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixEnableHDDInclude</key>
-    <map>
-      <key>Comment</key>
-      <string>orly</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixGeneralSpamEnabled</key>
-    <map>
-      <key>Comment</key>
-      <string>Enables General Spam Prevention</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixChatSpamEnabled</key>
-    <map>
-      <key>Comment</key>
-      <string>Enables Chat Spam Prevention</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixCardSpamEnabled</key>
-    <map>
-      <key>Comment</key>
-      <string>Enables CallingCard Spam Prevention</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    <key>PhoenixCrouchToggle</key>
-    <map>
-      <key>Comment</key>
-      <string>Enables using the crouch key as a toggle</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-
-    <key>PhoenixCrouchToggleStatus</key>
-    <map>
-      <key>Comment</key>
-      <string>Status of crouch toggle</string>
-      <key>Persist</key>
-      <integer>0</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-
-    <key>PhoenixDialogSpamEnabled</key>
-    <map>
-      <key>Comment</key>
-      <string>Enables Dialog Spam Prevention</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    <key>PhoenixHDDIncludeLocation</key>
-    <map>
-      <key>Comment</key>
-      <string>toast</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string/>
-    </map>
-    <key>PhoenixLoadURL</key>
-    <map>
-      <key>Comment</key>
-      <string>Disable to prevent Load URL dialogs. (Enabled by default)</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    <key>PhoenixMaxBeamsPerSecond</key>
-    <map>
-      <key>Comment</key>
-      <string>How many selection beam updates to send in a second</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>40</real>
-    </map>
-    <key>PhoenixParticleChat</key>
-    <map>
-      <key>Comment</key>
-      <string>Speak Particle Info on channel 9000</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixPlayTpSound</key>
-    <map>
-      <key>Comment</key>
-      <string>Whether or not to hear the teleport sound</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-	</map>
-    <key>PhoenixChatSpamTime</key>
-    <map>
-      <key>Comment</key>
-          <string>ADVANCED SETTINGS: Time of Evalulating spam. RECOMMENDED NUMBER IS 1.000</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>1.0</real>
-    </map>
-        <key>PhoenixChatSpamCount</key>
-    <map>
-      <key>Comment</key>
-      <string>ADVANCED SETTINGS: Number of items spammed per time set in PhoenixSpamTime. RECOMMENDED IS 10.000</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>10.0</real>
-    </map>
-    <key>PhoenixSkinBrowserRect</key>
-    <map>
-        <key>Comment</key>
-        <string>Rectangle for skin browser</string>
-        <key>Persist</key>
-        <integer>1</integer>
-        <key>Type</key>
-        <string>Rect</string>
-        <key>Value</key>
-        <array>
-            <integer>0</integer>
-            <integer>440</integer>
-            <integer>820</integer>
-            <integer>0</integer>
-        </array>
-    </map>
-    <key>PhoenixSpamTime</key>
-    <map>
-      <key>Comment</key>
-          <string>ADVANCED SETTINGS: Time of Evalulating spam. RECOMMENDED NUMBER IS 1.000</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>1.0</real>
-    </map>
-        <key>PhoenixSpamCount</key>
-    <map>
-      <key>Comment</key>
-      <string>ADVANCED SETTINGS: Number of items spammed per time set in PhoenixSpamTime. RECOMMENDED IS 4.000</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>4.0</real>
-    </map>
-    <key>PhoenixSpellDisplay</key>
-    <map>
-      <key>Comment</key>
-      <string>Turn on to show mispelled text in red</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixSpellInstalled</key>
-    <map>
-      <key>Comment</key>
-      <string>The list of installed dictionaries</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>EN_SL</string>
-    </map>
-    <key>PhoenixSpellBase</key>
-    <map>
-      <key>Comment</key>
-      <string>The base dictionary to spell check with</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>English (United States of America)</string>
-    </map>
-    <key>PhoenixTagColor</key>
-    <map>
-      <key>Comment</key>
-      <string>Default Setting For Client Tag Color</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>Green</string>
-    </map>
-   <key>PhoenixAvatarAgeAlert</key>
+		<key>PhoenixAppearanceAnimate</key>
+		<map>
+			<key>Comment</key>
+			<string>Play appearance anim when entering appearance mode?</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixAutoCorrectCount</key>
+		<map>
+			<key>Comment</key>
+			<string>How many words have been auto replaced.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>S32</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixAppearanceForceStand</key>
+		<map>
+			<key>Comment</key>
+			<string>Unsit avatar when entering appearance mode?</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixBeamShape</key>
+		<map>
+			<key>Comment</key>
+			<string>Beam file for the shape of your beam</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>Phoenix</string>
+		</map>
+		<key>PhoenixBeamColorFile</key>
+		<map>
+			<key>Comment</key>
+			<string>Beam file for the shape of your beam</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>===OFF===</string>
+		</map>
+		<key>PhoenixBeamShapeScale</key>
+		<map>
+			<key>Comment</key>
+			<string>How Big You Want to let the beam be</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>1.0</real>
+		</map>
+		<key>PhoenixBlockMapTps</key>
+		<map>
+			<key>Comment</key>
+			<string>Whether or not to block all script map tps</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixBlockSpam</key>
+		<map>
+			<key>Comment</key>
+			<string>Drop/kill all dialogs?</string>
+			<key>Persist</key>
+			<integer>0</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixBuildPrefs_Xsize</key>
+		<map>
+			<key>Comment</key>
+			<string>Default Size For New Objects to be created X</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>0.5</real>
+		</map>
+		<key>PhoenixBuildPrefs_Ysize</key>
+		<map>
+			<key>Comment</key>
+			<string>Default Size For New Objects to be created Y</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>0.5</real>
+		</map>
+		<key>PhoenixBuildPrefs_Zsize</key>
+		<map>
+			<key>Comment</key>
+			<string>Default Size For New Objects to be created Z</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>0.5</real>
+		</map>
+		<key>PhoenixBuildPrefs_Phantom</key>
+		<map>
+			<key>Comment</key>
+			<string>Default Setting For New Objects to be created, phantom flag</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixBuildPrefs_Temporary</key>
+		<map>
+			<key>Comment</key>
+			<string>Default Setting For New Objects to be created, temp flag</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixBuildPrefs_Physical</key>
+		<map>
+			<key>Comment</key>
+			<string>Default Setting For New Objects to be created, physical flag</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixBuildPrefs_EmbedItem</key>
+		<map>
+			<key>Comment</key>
+			<string>Whether to add item to objects</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixBuildPrefs_Material</key>
+		<map>
+			<key>Comment</key>
+			<string>Default Setting For New Objects to be created, physical flag</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>Wood</string>
+		</map>
+		<key>PhoenixBuildPrefs_Color</key>
+		<map>
+			<key>Comment</key>
+			<string>Color of new objects textures</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Color4</string>
+			<key>Value</key>
+			<array>
+				<real>1.0</real>
+				<real>1.0</real>
+				<real>1.0</real>
+				<real>1.0</real>
+			</array>
+		</map>
+		<key>PhoenixBuildPrefs_Texture</key>
+		<map>
+			<key>Comment</key>
+			<string>Texture used as 'Default' for new object created</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>89556747-24cb-43ed-920b-47caed15465f</string>
+		</map>
+		<key>PhoenixBuildPrefs_Item</key>
+		<map>
+			<key>Comment</key>
+			<string>item added to new object created</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string></string>
+		</map>
+		<key>PhoenixBuildPrefs_Alpha</key>
+		<map>
+			<key>Comment</key>
+			<string>Default Alpha For New Objects to be created</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>0.0</real>
+		</map>
+		<key>PhoenixBuildPrefs_Glow</key>
+		<map>
+			<key>Comment</key>
+			<string>Default Glow For New Objects to be created</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>0.0</real>
+		</map>
+		<key>PhoenixBuildPrefs_FullBright</key>
+		<map>
+			<key>Comment</key>
+			<string>Default Setting For New Objects to be created, whether textures are full bright</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixBuildPrefs_Shiny</key>
+		<map>
+			<key>Comment</key>
+			<string>Shiny level used as 'Default' for new objects created</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>None</string>
+		</map>
+		<key>PhoenixBuildPrefs_PivotX</key>
+		<map>
+			<key>Comment</key>
+			<string>Pivot point on the X axis</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>50</real>
+		</map>
+		<key>PhoenixBuildPrefs_PivotY</key>
+		<map>
+			<key>Comment</key>
+			<string>Pivot point on the Y axis</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>50</real>
+		</map>
+		<key>PhoenixBuildPrefs_PivotZ</key>
+		<map>
+			<key>Comment</key>
+			<string>Pivot point on the Z axis</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>50</real>
+		</map>
+		<key>PhoenixBuildPrefs_PivotIsPercent</key>
+		<map>
+			<key>Comment</key>
+			<string>Consider the Pivot points values as a percentage</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixBuildPrefs_ActualRoot</key>
+		<map>
+			<key>Comment</key>
+			<string>Show the axis on the actual root of a linkset instead of mass center</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixDisableMinZoomDist</key>
+		<map>
+			<key>Comment</key>
+			<string>Disable the constraint on the closest distance the camera is allowed to get to an object.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixDisableMaxZoomDist</key>
+		<map>
+			<key>Comment</key>
+			<string>Disable the constraint on the farthest distance the camera is allowed to zoom out.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixEnableGrowl</key>
+		<map>
+			<key>Comment</key>
+			<string>Enables Growl notifications</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixGrowlWhenActive</key>
+		<map>
+			<key>Comment</key>
+			<string>If Growl notifications are active, show them even when the window is active.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixEnableHDDInclude</key>
+		<map>
+			<key>Comment</key>
+			<string>orly</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixGeneralSpamEnabled</key>
+		<map>
+			<key>Comment</key>
+			<string>Enables General Spam Prevention</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixChatSpamEnabled</key>
+		<map>
+			<key>Comment</key>
+			<string>Enables Chat Spam Prevention</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixCardSpamEnabled</key>
+		<map>
+			<key>Comment</key>
+			<string>Enables CallingCard Spam Prevention</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixCrouchToggle</key>
+		<map>
+			<key>Comment</key>
+			<string>Enables using the crouch key as a toggle</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixCrouchToggleStatus</key>
+		<map>
+			<key>Comment</key>
+			<string>Status of crouch toggle</string>
+			<key>Persist</key>
+			<integer>0</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixDialogSpamEnabled</key>
+		<map>
+			<key>Comment</key>
+			<string>Enables Dialog Spam Prevention</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixHDDIncludeLocation</key>
+		<map>
+			<key>Comment</key>
+			<string>toast</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string/>
+		</map>
+		<key>PhoenixLoadURL</key>
+		<map>
+			<key>Comment</key>
+			<string>Disable to prevent Load URL dialogs. (Enabled by default)</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixMaxBeamsPerSecond</key>
+		<map>
+			<key>Comment</key>
+			<string>How many selection beam updates to send in a second</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>40</real>
+		</map>
+		<key>PhoenixParticleChat</key>
+		<map>
+			<key>Comment</key>
+			<string>Speak Particle Info on channel 9000</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixPlayTpSound</key>
+		<map>
+			<key>Comment</key>
+			<string>Whether or not to hear the teleport sound</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixChatSpamTime</key>
+		<map>
+			<key>Comment</key>
+			<string>ADVANCED SETTINGS: Time of Evalulating spam. RECOMMENDED NUMBER IS 1.000</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>1.0</real>
+		</map>
+		<key>PhoenixChatSpamCount</key>
+		<map>
+			<key>Comment</key>
+			<string>ADVANCED SETTINGS: Number of items spammed per time set in PhoenixSpamTime. RECOMMENDED IS 10.000</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>10.0</real>
+		</map>
+		<key>PhoenixSkinBrowserRect</key>
+		<map>
+			<key>Comment</key>
+			<string>Rectangle for skin browser</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Rect</string>
+			<key>Value</key>
+			<array>
+				<integer>0</integer>
+				<integer>440</integer>
+				<integer>820</integer>
+				<integer>0</integer>
+			</array>
+		</map>
+		<key>PhoenixSpamTime</key>
+		<map>
+			<key>Comment</key>
+			<string>ADVANCED SETTINGS: Time of Evalulating spam. RECOMMENDED NUMBER IS 1.000</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>1.0</real>
+		</map>
+		<key>PhoenixSpamCount</key>
+		<map>
+			<key>Comment</key>
+			<string>ADVANCED SETTINGS: Number of items spammed per time set in PhoenixSpamTime. RECOMMENDED IS 4.000</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>4.0</real>
+		</map>
+		<key>PhoenixSpellDisplay</key>
+		<map>
+			<key>Comment</key>
+			<string>Turn on to show mispelled text in red</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixSpellInstalled</key>
+		<map>
+			<key>Comment</key>
+			<string>The list of installed dictionaries</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>EN_SL</string>
+		</map>
+		<key>PhoenixSpellBase</key>
+		<map>
+			<key>Comment</key>
+			<string>The base dictionary to spell check with</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>English (United States of America)</string>
+		</map>
+		<key>PhoenixTagColor</key>
+		<map>
+			<key>Comment</key>
+			<string>Default Setting For Client Tag Color</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>Green</string>
+		</map>
+		<key>PhoenixAvatarAgeAlert</key>
 		<map>
 			<key>Comment</key>
 			<string>Enables the avatar age alert</string>
@@ -974,28 +994,28 @@
 			<key>Value</key>
 			<string>5fcbee19-8dd4-2888-d6bf-14310d2f7c9f</string>
 		</map>
-    <key>PhoenixAvatarListKeepOpen</key>
-    <map>
-      <key>Comment</key>
-      <string>Keeps Avatar List updates running in background</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixAvatarListColorEntries</key>
-    <map>
-      <key>Comment</key>
-      <string>Display names of friends and muted people in different colors in the list</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
+		<key>PhoenixAvatarListKeepOpen</key>
+		<map>
+			<key>Comment</key>
+			<string>Keeps Avatar List updates running in background</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixAvatarListColorEntries</key>
+		<map>
+			<key>Comment</key>
+			<string>Display names of friends and muted people in different colors in the list</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>PhoenixBoobFriction</key>
 		<map>
 			<key>Comment</key>
@@ -1309,17 +1329,17 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-    <key>PhoenixShowStatusBarInMouselook</key>
-    <map>
-      <key>Comment</key>
-      <string>Makes it so that the statistics bar stays visable when entering mouselook if it was open already.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
+		<key>PhoenixShowStatusBarInMouselook</key>
+		<map>
+			<key>Comment</key>
+			<string>Makes it so that the statistics bar stays visable when entering mouselook if it was open already.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>PhoenixShowStreamMetadata</key>
 		<map>
 			<key>Comment</key>
@@ -1386,7 +1406,6 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-
 		<key>PhoenixUseOTR</key>
 		<map>
 			<key>Comment</key>
@@ -1497,99 +1516,99 @@
 			<key>Value</key>
 			<string />
 		</map>
-    <key>PhoenixMuteGroupWhenNoticesDisabled</key>
-    <map>
-      <key>Comment</key>
-      <string>When "Receive group notices" is disabled, mute also the group chat. (Muting means that it won't open new windows.)</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixMuteAllGroups</key>
-    <map>
-      <key>Comment</key>
-      <string>Mute all groups at a time. (Muting means that it won't open new windows.)</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-	<key>PhoenixDisplayTotalScriptJumps</key>
-	<map>
-		<key>Comment</key>
-		<string>Display significant changes to the sim's total script count</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<integer>0</integer>
-	</map>
-	<key>PhoenixNumScriptDiff</key>
-	<map>
-		<key>Comment</key>
-		<string>The delta to spam you the script jump difference</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>F32</string>
-		<key>Value</key>
-		<real>100.0</real>
-	</map>
-	<key>PhoenixNumScripts</key>
-	<map>
-		<key>Comment</key>
-		<string>Temporary; used to hold the current number of scripts (see PhoenixDisplayTotalScriptJumps)</string>
-		<key>Persist</key>
-		<integer>0</integer>
-		<key>Type</key>
-		<string>F32</string>
-		<key>Value</key>
-		<real>0.0</real>
-	</map>
-    <key>PhoenixIgnoreSimulatorCameraConstraints</key>
-    <map>
-      <key>Comment</key>
-      <string>Ignores the 'push' the simulator applies to your camera to keep it out of objects.(Requires restart to work correctly)</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    <key>ResetFocusOnSelfClick</key>
-    <map>
-      <key>Comment</key>
-      <string>Setting this to FALSE stops the cammera from reseting its view when your zoomed in on something and acedently left click your avatar.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-	  <key>FloaterGroupTitlesRect</key>
-	    <map>
-	      <key>Comment</key>
-	      <string>Rectangle for group titles window</string>
-	      <key>Persist</key>
-	      <integer>1</integer>
-	      <key>Type</key>
-	      <string>Rect</string>
-	      <key>Value</key>
-	      <array>
-	        <integer>0</integer>
-	        <integer>400</integer>
-	        <integer>500</integer>
-	        <integer>0</integer>
-	    </array>
-	  </map>
+		<key>PhoenixMuteGroupWhenNoticesDisabled</key>
+		<map>
+			<key>Comment</key>
+			<string>When "Receive group notices" is disabled, mute also the group chat. (Muting means that it won't open new windows.)</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixMuteAllGroups</key>
+		<map>
+			<key>Comment</key>
+			<string>Mute all groups at a time. (Muting means that it won't open new windows.)</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixDisplayTotalScriptJumps</key>
+		<map>
+			<key>Comment</key>
+			<string>Display significant changes to the sim's total script count</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixNumScriptDiff</key>
+		<map>
+			<key>Comment</key>
+			<string>The delta to spam you the script jump difference</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>100.0</real>
+		</map>
+		<key>PhoenixNumScripts</key>
+		<map>
+			<key>Comment</key>
+			<string>Temporary; used to hold the current number of scripts (see PhoenixDisplayTotalScriptJumps)</string>
+			<key>Persist</key>
+			<integer>0</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>0.0</real>
+		</map>
+		<key>PhoenixIgnoreSimulatorCameraConstraints</key>
+		<map>
+			<key>Comment</key>
+			<string>Ignores the 'push' the simulator applies to your camera to keep it out of objects.(Requires restart to work correctly)</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>ResetFocusOnSelfClick</key>
+		<map>
+			<key>Comment</key>
+			<string>Setting this to FALSE stops the cammera from reseting its view when your zoomed in on something and acedently left click your avatar.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>FloaterGroupTitlesRect</key>
+		<map>
+			<key>Comment</key>
+			<string>Rectangle for group titles window</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Rect</string>
+			<key>Value</key>
+			<array>
+				<integer>0</integer>
+				<integer>400</integer>
+				<integer>500</integer>
+				<integer>0</integer>
+			</array>
+		</map>
 		<key>FloaterAvatarListRect</key>
 		<map>
 			<key>Comment</key>
@@ -1683,17 +1702,17 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-    <key>PhoenixPortableMode</key>
-    <map>
-      <key>Comment</key>
-      <string>Client is running in portable mode</string>
-      <key>Persist</key>
-      <integer>0</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
+		<key>PhoenixPortableMode</key>
+		<map>
+			<key>Comment</key>
+			<string>Client is running in portable mode</string>
+			<key>Persist</key>
+			<integer>0</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>ShowAvatarList</key>
 		<map>
 			<key>Comment</key>
@@ -1767,179 +1786,179 @@
 		</map>
 		<key>RestrainedLove</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Toggles the RestrainedLove features (BDSM lockable toys support). Needs a restart of the viewer.</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>0</integer>
+			<key>Comment</key>
+			<string>Toggles the RestrainedLove features (BDSM lockable toys support). Needs a restart of the viewer.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
 		</map>
 		<key>RestrainedLoveDebug</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Toggles the RestrainedLove debug mode (displays the commands when in debug mode).</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>0</integer>
+			<key>Comment</key>
+			<string>Toggles the RestrainedLove debug mode (displays the commands when in debug mode).</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
 		</map>
 		<key>RestrainedLoveNoSetEnv</key>
 		<map>
-		  <key>Comment</key>
-		  <string>When TRUE, forbids to set the environment (time of day and Windlight settings) via RestrainedLove. Needs a restart of the viewer.</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>0</integer>
+			<key>Comment</key>
+			<string>When TRUE, forbids to set the environment (time of day and Windlight settings) via RestrainedLove. Needs a restart of the viewer.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
 		</map>
 		<key>RestrainedLoveForbidGiveToRLV</key>
 		<map>
-		  <key>Comment</key>
-		  <string>When FALSE, allows to give sub-folders to the #RLV RestrainedLove folder.</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>1</integer>
+			<key>Comment</key>
+			<string>When FALSE, allows to give sub-folders to the #RLV RestrainedLove folder.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
 		</map>
 		<key>RLVaEnableCompositeFolders</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Enables composite folders for shared inventory</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>0</integer>
+			<key>Comment</key>
+			<string>Enables composite folders for shared inventory</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
 		</map>
 		<key>RLVaEnableLegacyNaming</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Enables legacy naming convention for folders</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>1</integer>
+			<key>Comment</key>
+			<string>Enables legacy naming convention for folders</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
 		</map>
 		<key>RLVaEnableWear</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Enables the "Wear" option on the inventory item context menu for attachments</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>1</integer>
+			<key>Comment</key>
+			<string>Enables the "Wear" option on the inventory item context menu for attachments</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
 		</map>
 		<key>RLVaEnableSharedWear</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Attachments in the shared #RLV folder can be force-attached without needing to specify an attachment point (as long as no attachment is non-detachable)</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>0</integer>
+			<key>Comment</key>
+			<string>Attachments in the shared #RLV folder can be force-attached without needing to specify an attachment point (as long as no attachment is non-detachable)</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
 		</map>
 		<key>RLVaHideLockedLayers</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Hides "remove outfit" restricted worn clothing layers from @getoufit</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>0</integer>
+			<key>Comment</key>
+			<string>Hides "remove outfit" restricted worn clothing layers from @getoufit</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
 		</map>
 		<key>RLVaHideLockedAttachments</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Hides non-detachable worn attachments from @getattach</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>0</integer>
+			<key>Comment</key>
+			<string>Hides non-detachable worn attachments from @getattach</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
 		</map>
 		<key>RLVaSharedInvAutoRename</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Automatically renames shared inventory items when worn</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>1</integer>
+			<key>Comment</key>
+			<string>Automatically renames shared inventory items when worn</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
 		</map>
 		<key>RLVaShowNameTags</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Display of names above avatars is subject to the general "Show Names" setting when @shownames=n restricted</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>0</integer>
+			<key>Comment</key>
+			<string>Display of names above avatars is subject to the general "Show Names" setting when @shownames=n restricted</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
 		</map>
 		<key>WarnFirstRLVDetach</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Enables FirstRLVDetach warning dialog</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>1</integer>
+			<key>Comment</key>
+			<string>Enables FirstRLVDetach warning dialog</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
 		</map>
 		<key>WarnFirstRLVEnableWear</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Enables RLVEnableWear warning dialog</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>1</integer>
+			<key>Comment</key>
+			<string>Enables RLVEnableWear warning dialog</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
 		</map>
 		<key>WarnFirstRLVFartouch</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Enables FirstRLVFartouch warning dialog</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>1</integer>
+			<key>Comment</key>
+			<string>Enables FirstRLVFartouch warning dialog</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
 		</map>
 		<key>WarnFirstRLVGiveToRLV</key>
 		<map>
-		  <key>Comment</key>
-		  <string>Enables FirstRLVGiveToRLV warning dialog</string>
-		  <key>Persist</key>
-		  <integer>1</integer>
-		  <key>Type</key>
-		  <string>Boolean</string>
-		  <key>Value</key>
-		  <integer>1</integer>
+			<key>Comment</key>
+			<string>Enables FirstRLVGiveToRLV warning dialog</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
 		</map>
 		<key>AFKTimeout</key>
 		<map>
@@ -2270,28 +2289,28 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-    <key>AutoAcceptNewInventory</key>
-    <map>
-      <key>Comment</key>
-      <string>Automatically accept new notecards/textures/landmarks</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>AutoAcceptNewObjects</key>
-    <map>
-      <key>Comment</key>
-      <string>Automatically accept new objects</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
+		<key>AutoAcceptNewInventory</key>
+		<map>
+			<key>Comment</key>
+			<string>Automatically accept new notecards/textures/landmarks</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>AutoAcceptNewObjects</key>
+		<map>
+			<key>Comment</key>
+			<string>Automatically accept new objects</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>AutoLeveling</key>
 		<map>
 			<key>Comment</key>
@@ -2659,17 +2678,6 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>BrowserProxyExclusions</key>
-		<map>
-			<key>Comment</key>
-			<string>[NOT USED]</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>String</string>
-			<key>Value</key>
-			<string />
-		</map>
 		<key>BrowserProxyPort</key>
 		<map>
 			<key>Comment</key>
@@ -2680,17 +2688,6 @@
 			<string>S32</string>
 			<key>Value</key>
 			<integer>3128</integer>
-		</map>
-		<key>BrowserProxySocks45</key>
-		<map>
-			<key>Comment</key>
-			<string>[NOT USED]</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>S32</string>
-			<key>Value</key>
-			<integer>5</integer>
 		</map>
 		<key>Socks5ProxyEnabled</key>
 		<map>
@@ -2741,7 +2738,7 @@
 			<key>Comment</key>
 			<string>Socks 5 Username</string>
 			<key>Persist</key>
-		    <integer>1</integer>
+			<integer>1</integer>
 			<key>Type</key>
 			<string>String</string>
 			<key>Value</key>
@@ -2752,7 +2749,7 @@
 			<key>Comment</key>
 			<string>Socks 5 Password</string>
 			<key>Persist</key>
-		    <integer>1</integer>
+			<integer>1</integer>
 			<key>Type</key>
 			<string>String</string>
 			<key>Value</key>
@@ -2763,7 +2760,7 @@
 			<key>Comment</key>
 			<string>Selected Auth mechanism for Socks5</string>
 			<key>Persist</key>
-            <integer>1</integer>
+			<integer>1</integer>
 			<key>Type</key>
 			<string>String</string>
 			<key>Value</key>
@@ -3408,17 +3405,17 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-    <key>ChatSpacing</key>
-    <map>
-      <key>Comment</key>
-      <string>Add extra vertical spacing between local chat lines</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>S32</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
+		<key>ChatSpacing</key>
+		<map>
+			<key>Comment</key>
+			<string>Add extra vertical spacing between local chat lines</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>S32</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>ChatVisible</key>
 		<map>
 			<key>Comment</key>
@@ -5331,59 +5328,59 @@
 		</map>
 		<key>PhoenixDoubleClickZOffset</key>
 		<map>
-	      		<key>Comment</key>
-		        <string>Sets the Z offset for double click teleport.</string>
-	  	        <key>Persist</key>
-	  	        <integer>1</integer>
-	                <key>Type</key>
-	                <string>F32</string>
-	                <key>Value</key>
-                	<real>0.0</real>
-                </map>
-    <key>PhoenixFlyAfterTeleport</key>
-    <map>
-      <key>Comment</key>
-      <string>Fly after teleports</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixRevokePerms</key>
-    <map>
-      <key>Comment</key>
-      <string>Setting this option to 1 will revoke perms when you sit on an object, 2 will revoke perms when you get off an object, 3 will revoke perms when you sit and stand.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>U32</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixRotateCamAfterLocalTP</key>
-    <map>
-      <key>Comment</key>
-      <string>Setting this flag to TRUE, rotates your camera behind the avatar after using double-click teleport.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>PhoenixVelocityDoubleClickTeleport</key>
-    <map>
-      <key>Comment</key>
-      <string>Interpolate double click teleportation</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
+			<key>Comment</key>
+			<string>Sets the Z offset for double click teleport.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>0.0</real>
+		</map>
+		<key>PhoenixFlyAfterTeleport</key>
+		<map>
+			<key>Comment</key>
+			<string>Fly after teleports</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixRevokePerms</key>
+		<map>
+			<key>Comment</key>
+			<string>Setting this option to 1 will revoke perms when you sit on an object, 2 will revoke perms when you get off an object, 3 will revoke perms when you sit and stand.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>U32</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixRotateCamAfterLocalTP</key>
+		<map>
+			<key>Comment</key>
+			<string>Setting this flag to TRUE, rotates your camera behind the avatar after using double-click teleport.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixVelocityDoubleClickTeleport</key>
+		<map>
+			<key>Comment</key>
+			<string>Interpolate double click teleportation</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>EditCameraMovement</key>
 		<map>
 			<key>Comment</key>
@@ -6128,87 +6125,87 @@
 				<integer>0</integer>
 			</array>
 		</map>
-    <key>FloaterBlacklistRect</key>
-    <map>
-      <key>Comment</key>
-      <string>LOLRectangle</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Rect</string>
-      <key>Value</key>
-      <array>
-        <integer>0</integer>
-        <integer>400</integer>
-        <integer>400</integer>
-        <integer>0</integer>
-      </array>
-    </map>
-    <key>FloaterMessagelogRect</key>
-    <map>
-      <key>Comment</key>
-      <string>LOLRectangle</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Rect</string>
-      <key>Value</key>
-      <array>
-        <integer>0</integer>
-        <integer>400</integer>
-        <integer>400</integer>
-        <integer>0</integer>
-      </array>
-    </map>
-    <key>FloaterLocalbitmapbrowserRect</key>
-    <map>
-      <key>Comment</key>
-      <string>LOLRectangle</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Rect</string>
-      <key>Value</key>
-      <array>
-        <integer>0</integer>
-        <integer>400</integer>
-        <integer>400</integer>
-        <integer>0</integer>
-      </array>
-    </map>
-    <key>FloaterAnimExplorerRect</key>
-    <map>
-      <key>Comment</key>
-      <string>LOLRectangle</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Rect</string>
-      <key>Value</key>
-      <array>
-        <integer>0</integer>
-        <integer>400</integer>
-        <integer>400</integer>
-        <integer>0</integer>
-      </array>
-    </map>
-    <key>FloaterDebugsettingsRect</key>
-    <map>
-      <key>Comment</key>
-      <string>LOLRectangle</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Rect</string>
-      <key>Value</key>
-      <array>
-        <integer>0</integer>
-        <integer>400</integer>
-        <integer>400</integer>
-        <integer>0</integer>
-      </array>
-    </map>
-    <key>FloaterInventoryRect</key>
+		<key>FloaterBlacklistRect</key>
+		<map>
+			<key>Comment</key>
+			<string>LOLRectangle</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Rect</string>
+			<key>Value</key>
+			<array>
+				<integer>0</integer>
+				<integer>400</integer>
+				<integer>400</integer>
+				<integer>0</integer>
+			</array>
+		</map>
+		<key>FloaterMessagelogRect</key>
+		<map>
+			<key>Comment</key>
+			<string>LOLRectangle</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Rect</string>
+			<key>Value</key>
+			<array>
+				<integer>0</integer>
+				<integer>400</integer>
+				<integer>400</integer>
+				<integer>0</integer>
+			</array>
+		</map>
+		<key>FloaterLocalbitmapbrowserRect</key>
+		<map>
+			<key>Comment</key>
+			<string>LOLRectangle</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Rect</string>
+			<key>Value</key>
+			<array>
+				<integer>0</integer>
+				<integer>400</integer>
+				<integer>400</integer>
+				<integer>0</integer>
+			</array>
+		</map>
+		<key>FloaterAnimExplorerRect</key>
+		<map>
+			<key>Comment</key>
+			<string>LOLRectangle</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Rect</string>
+			<key>Value</key>
+			<array>
+				<integer>0</integer>
+				<integer>400</integer>
+				<integer>400</integer>
+				<integer>0</integer>
+			</array>
+		</map>
+		<key>FloaterDebugsettingsRect</key>
+		<map>
+			<key>Comment</key>
+			<string>LOLRectangle</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Rect</string>
+			<key>Value</key>
+			<array>
+				<integer>0</integer>
+				<integer>400</integer>
+				<integer>400</integer>
+				<integer>0</integer>
+			</array>
+		</map>
+		<key>FloaterInventoryRect</key>
 		<map>
 			<key>Comment</key>
 			<string>Rectangle for inventory window</string>
@@ -6464,66 +6461,66 @@
 				<integer>400</integer>
 			</array>
 		</map>
-	<key>FloaterSoundsRect</key>
-	<map>
-		<key>Comment</key>
-		<string>Rectangle for sounds log floater.</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Rect</string>
-		<key>Value</key>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>0</integer>
-		</array>
-	</map>
-	<key>FloaterSoundsLogAvatars</key>
-	<map>
-		<key>Comment</key>
-		<string>Show SoundTriggers/gestures played by agents in the log. Also includes collision sounds if enabled</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<integer>1</integer>
-	</map>
-	<key>FloaterSoundsLogObjects</key>
-	<map>
-		<key>Comment</key>
-		<string>Show sounds played by objects in the log. Also includes collision sounds if enabled</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<integer>1</integer>
-	</map>
-	<key>FloaterSoundsLogCollisions</key>
-	<map>
-		<key>Comment</key>
-		<string>Don't filter out default collision sounds in the log</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<integer>1</integer>
-	</map>
-	<key>FloaterSoundsLogRepeats</key>
-	<map>
-		<key>Comment</key>
-		<string>Only show one entry for each unique asset ID in the log</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<integer>1</integer>
-	</map>
+		<key>FloaterSoundsRect</key>
+		<map>
+			<key>Comment</key>
+			<string>Rectangle for sounds log floater.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Rect</string>
+			<key>Value</key>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+			</array>
+		</map>
+		<key>FloaterSoundsLogAvatars</key>
+		<map>
+			<key>Comment</key>
+			<string>Show SoundTriggers/gestures played by agents in the log. Also includes collision sounds if enabled</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>FloaterSoundsLogObjects</key>
+		<map>
+			<key>Comment</key>
+			<string>Show sounds played by objects in the log. Also includes collision sounds if enabled</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>FloaterSoundsLogCollisions</key>
+		<map>
+			<key>Comment</key>
+			<string>Don't filter out default collision sounds in the log</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>FloaterSoundsLogRepeats</key>
+		<map>
+			<key>Comment</key>
+			<string>Only show one entry for each unique asset ID in the log</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
 		<key>FloaterStatisticsRect</key>
 		<map>
 			<key>Comment</key>
@@ -7119,17 +7116,17 @@
 			<key>Value</key>
 			<real>0.5</real>
 		</map>
-    <key>GridProtractorSize</key>
-    <map>
-      <key>Comment</key>
-      <string>Size of rotation grid (degrees)</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>5.0</real>
-    </map>
+		<key>GridProtractorSize</key>
+		<map>
+			<key>Comment</key>
+			<string>Size of rotation grid (degrees)</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>F32</string>
+			<key>Value</key>
+			<real>5.0</real>
+		</map>
 		<key>GridSubUnit</key>
 		<map>
 			<key>Comment</key>
@@ -7985,27 +7982,16 @@
 			<key>Value</key>
 			<real>20.0</real>
 		</map>
-    <key>MapServerURL</key>
-    <map>
-      <key>Comment</key>
-      <string>World map URL template for locating map tiles</string>
-      <key>Persist</key>
-      <integer>0</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>http://map.secondlife.com.s3.amazonaws.com/</string>
-    </map>
-		<key>MapOverlayIndex</key>
+		<key>MapServerURL</key>
 		<map>
 			<key>Comment</key>
-			<string>Currently selected world map type</string>
+			<string>World map URL template for locating map tiles</string>
 			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>S32</string>
-			<key>Value</key>
 			<integer>0</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>http://map.secondlife.com.s3.amazonaws.com/</string>
 		</map>
 		<key>MapScale</key>
 		<map>
@@ -8072,17 +8058,6 @@
 			<string>Boolean</string>
 			<key>Value</key>
 			<integer>1</integer>
-		</map>
-		<key>Marker</key>
-		<map>
-			<key>Comment</key>
-			<string>[NOT USED]</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>String</string>
-			<key>Value</key>
-			<string />
 		</map>
 		<key>MaxDragDistance</key>
 		<map>
@@ -8310,17 +8285,6 @@
 			<string>Smooths out motion of mouse when in mouselook mode.</string>
 			<key>Persist</key>
 			<integer>1</integer>
-			<key>Type</key>
-			<string>Boolean</string>
-			<key>Value</key>
-			<integer>0</integer>
-		</map>
-		<key>MouseSun</key>
-		<map>
-			<key>Comment</key>
-			<string />
-			<key>Persist</key>
-			<integer>0</integer>
 			<key>Type</key>
 			<string>Boolean</string>
 			<key>Value</key>
@@ -8857,17 +8821,17 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-    <key>PhoenixStopMusicOnParcelChange</key>
-    <map>
-      <key>Comment</key>
-      <string>Turns off your mmedia when you change parcels</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
+		<key>PhoenixStopMusicOnParcelChange</key>
+		<map>
+			<key>Comment</key>
+			<string>Turns off your mmedia when you change parcels</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>PerAccountSettingsFile</key>
 		<map>
 			<key>Comment</key>
@@ -9258,29 +9222,29 @@
 			<key>Value</key>
 			<string>/addac</string>
 		</map>
-    <key>PhoenixCmdLineMedia</key>
-    <map>
-      <key>Comment</key>
-      <string>Chat command for setting a media url</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>/media</string>
-    </map>
-    <key>PhoenixCmdLineMusic</key>
-    <map>
-      <key>Comment</key>
-      <string>Chat command for setting a music url</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>/music</string>
-    </map>
-    <key>PhoenixCmdLineClearChat</key>
+		<key>PhoenixCmdLineMedia</key>
+		<map>
+			<key>Comment</key>
+			<string>Chat command for setting a media url</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>/media</string>
+		</map>
+		<key>PhoenixCmdLineMusic</key>
+		<map>
+			<key>Comment</key>
+			<string>Chat command for setting a music url</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>/music</string>
+		</map>
+		<key>PhoenixCmdLineClearChat</key>
 		<map>
 			<key>Comment</key>
 			<string>Clear chat hsitory to stop lag from chat spam</string>
@@ -10090,17 +10054,6 @@
 		<map>
 			<key>Comment</key>
 			<string>Use lossy alpha rendering optimization (opaque/nonexistent small alpha faces).</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>Boolean</string>
-			<key>Value</key>
-			<integer>0</integer>
-		</map>
-		<key>RenderFastUI</key>
-		<map>
-			<key>Comment</key>
-			<string>[NOT USED]</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -12236,17 +12189,6 @@
 			<key>Value</key>
 			<real>0.699999988079</real>
 		</map>
-		<key>ToolboxAutoMove</key>
-		<map>
-			<key>Comment</key>
-			<string>[NOT USED]</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>Boolean</string>
-			<key>Value</key>
-			<integer>0</integer>
-		</map>
 		<key>ToolboxRect</key>
 		<map>
 			<key>Comment</key>
@@ -13879,17 +13821,6 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>UseWebPagesOnPrims</key>
-		<map>
-			<key>Comment</key>
-			<string>[NOT USED]</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>Boolean</string>
-			<key>Value</key>
-			<integer>0</integer>
-		</map>
 		<key>UserConnectionPort</key>
 		<map>
 			<key>Comment</key>
@@ -14885,33 +14816,33 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-    <key>PhoenixLeaveMouselookOnFocus</key>
-    <map>
-      <key>Comment</key>
-      <string>Leave mouselook when the application gains focus</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-	    <key>FloaterTeleportHistoryRect</key>
-	    <map>
-	      <key>Comment</key>
-	      <string>Rectangle for teleport history window</string>
-	      <key>Persist</key>
-	      <integer>1</integer>
-	      <key>Type</key>
-	      <string>Rect</string>
-	      <key>Value</key>
-	      <array>
-	        <integer>20</integer>
-	        <integer>20</integer>
-	        <integer>470</integer>
-	        <integer>200</integer>
-	      </array>
-	    </map>
+		<key>PhoenixLeaveMouselookOnFocus</key>
+		<map>
+			<key>Comment</key>
+			<string>Leave mouselook when the application gains focus</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>FloaterTeleportHistoryRect</key>
+		<map>
+			<key>Comment</key>
+			<string>Rectangle for teleport history window</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Rect</string>
+			<key>Value</key>
+			<array>
+				<integer>20</integer>
+				<integer>20</integer>
+				<integer>470</integer>
+				<integer>200</integer>
+			</array>
+		</map>
 		<key>PhoenixFilterDefaultAnims</key>
 		<map>
 			<key>Comment</key>
@@ -14923,17 +14854,281 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-
-	    <key>FloaterAreaSearchRect</key>
-	    <map>
-	      <key>Comment</key>
-	      <string>Rectangle for teleport history window</string>
-	      <key>Persist</key>
-	      <integer>1</integer>
-	      <key>Type</key>
-	      <string>Rect</string>
-	      <key>Value</key>
-	      <undef />
-	    </map>
+		<key>FloaterAreaSearchRect</key>
+		<map>
+			<key>Comment</key>
+			<string>Rectangle for teleport history window</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Rect</string>
+			<key>Value</key>
+			<undef />
+		</map>
+		<key>EmeraldIRC_ColorChannel</key>
+		<map>
+			<key>Comment</key>
+			<string>IRC_ColorChannel</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Color4</string>
+			<key>Value</key>
+			<array>
+				<real>1.0</real>
+				<real>1.0</real>
+				<real>0.8</real>
+				<real>1.0</real>
+			</array>
+		</map>
+		<key>EmeraldIRC_ColorAction</key>
+		<map>
+			<key>Comment</key>
+			<string>EmeraldIRC_ColorAction</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Color4</string>
+			<key>Value</key>
+			<array>
+				<real>1.0</real>
+				<real>0.8</real>
+				<real>1.0</real>
+				<real>1.0</real>
+			</array>
+		</map>
+		<key>EmeraldIRC_ColorPrivate</key>
+		<map>
+			<key>Comment</key>
+			<string>Color of new objects textures</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Color4</string>
+			<key>Value</key>
+			<array>
+				<real>0.8</real>
+				<real>1.0</real>
+				<real>1.0</real>
+				<real>1.0</real>
+			</array>
+		</map>
+		<key>EmeraldIRC_ColorNotice</key>
+		<map>
+			<key>Comment</key>
+			<string>Color of new objects textures</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Color4</string>
+			<key>Value</key>
+			<array>
+				<real>0.9</real>
+				<real>0.9</real>
+				<real>1.0</real>
+				<real>1.0</real>
+			</array>
+		</map>
+		<key>EmeraldIRC_ColorJoin</key>
+		<map>
+			<key>Comment</key>
+			<string>Color of new objects textures</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Color4</string>
+			<key>Value</key>
+			<array>
+				<real>1.0</real>
+				<real>0.9</real>
+				<real>0.9</real>
+				<real>1.0</real>
+			</array>
+		</map>
+		<key>EmeraldIRC_ColorQuit</key>
+		<map>
+			<key>Comment</key>
+			<string>Color of new objects textures</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Color4</string>
+			<key>Value</key>
+			<array>
+				<real>1.0</real>
+				<real>0.5</real>
+				<real>0.5</real>
+				<real>1.0</real>
+			</array>
+		</map>
+		<key>EmeraldIRC_ColorKick</key>
+		<map>
+			<key>Comment</key>
+			<string>Color of new objects textures</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Color4</string>
+			<key>Value</key>
+			<array>
+				<real>1.0</real>
+				<real>0.4</real>
+				<real>0.4</real>
+				<real>1.0</real>
+			</array>
+		</map>
+		<key>EmeraldIRC_ColorNick</key>
+		<map>
+			<key>Comment</key>
+			<string>Color of new objects textures</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Color4</string>
+			<key>Value</key>
+			<array>
+				<real>1.0</real>
+				<real>0.7</real>
+				<real>0.9</real>
+				<real>1.0</real>
+			</array>
+		</map>
+		<key>EmeraldIRC_ColorSystem</key>
+		<map>
+			<key>Comment</key>
+			<string>Color of new objects textures</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Color4</string>
+			<key>Value</key>
+			<array>
+				<real>0.7</real>
+				<real>1.0</real>
+				<real>0.7</real>
+				<real>1.0</real>
+			</array>
+		</map>
+		<key>EmeraldIRC_ShowChannel</key>
+		<map>
+			<key>Comment</key>
+			<string>Show the related IRC messages in the chat window.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>EmeraldIRC_ShowAction</key>
+		<map>
+			<key>Comment</key>
+			<string>Show the related IRC messages in the chat window.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>EmeraldIRC_ShowPrivate</key>
+		<map>
+			<key>Comment</key>
+			<string>Show the related IRC messages in the chat window.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>EmeraldIRC_ShowNotice</key>
+		<map>
+			<key>Comment</key>
+			<string>Show the related IRC messages in the chat window.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>EmeraldIRC_ShowJoin</key>
+		<map>
+			<key>Comment</key>
+			<string>Show the related IRC messages in the chat window.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>EmeraldIRC_ShowQuit</key>
+		<map>
+			<key>Comment</key>
+			<string>Show the related IRC messages in the chat window.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>EmeraldIRC_ShowKick</key>
+		<map>
+			<key>Comment</key>
+			<string>Show the related IRC messages in the chat window.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>EmeraldIRC_ShowNick</key>
+		<map>
+			<key>Comment</key>
+			<string>Show the related IRC messages in the chat window.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>EmeraldIRC_ShowSystem</key>
+		<map>
+			<key>Comment</key>
+			<string>Show the related IRC messages in the chat window.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>EmeraldIRC_AutoReJoin</key>
+		<map>
+			<key>Comment</key>
+			<string>Automaticly accempt to reconnect to the channel you were just in if kicked. Some networks dont like this and may ban you for doing so, be carefull.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>EmeraldIRC_AutoConnect</key>
+		<map>
+			<key>Comment</key>
+			<string>Automaticly connect to any IRC networks that you have set to auto connect to upon startup.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 	</map>
 </llsd>
