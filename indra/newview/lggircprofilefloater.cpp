@@ -49,7 +49,7 @@
 
 
 #include "llsdserialize.h"
-#include "llpanelemerald.h"
+#include "llpanelphoenix.h"
 #include "lggbeamscolors.h"
 #include "llsliderctrl.h"
 #include "llfocusmgr.h"
