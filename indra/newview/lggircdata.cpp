@@ -107,19 +107,19 @@ lggIrcData::lggIrcData(std::string iserver, std::string iname, std::string iport
 }
 
 lggIrcData::lggIrcData()
-  : server("modularsystems.sl"),
-  name("Emerald Chat"),
-  port("8888"),
-  channel("#emerald"),
+  : server("irc.freenode.org"),
+  name("Phoenix Chat"),
+  port("6667"),
+  channel("#phoenixviewer"),
   serverPassword(""),
   channelPassword(""),
   nickPassword(""),
   autoLogin(TRUE),
   id(LLUUID::generateNewID())
 {
-	std::string first("Diamond");
+	std::string first("Phoenix");
 	// Prevents crash at startup where viewer object and NVPair may not exist yet.
-	// In the event that either of these happen. Name is replaced with "Emerald"
+	// In the event that either of these happen. Name is replaced with "Phoenix"
 	if(gAgent.getAvatarObject())
 	{
 		LLNameValue* first_name = gAgent.getAvatarObject()->getNVPair("FirstName");
