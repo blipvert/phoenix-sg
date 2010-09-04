@@ -14865,7 +14865,7 @@
 			<key>Value</key>
 			<undef />
 		</map>
-		<key>EmeraldIRC_ColorChannel</key>
+		<key>PhoenixIRC_ColorChannel</key>
 		<map>
 			<key>Comment</key>
 			<string>IRC_ColorChannel</string>
@@ -14881,10 +14881,10 @@
 				<real>1.0</real>
 			</array>
 		</map>
-		<key>EmeraldIRC_ColorAction</key>
+		<key>PhoenixIRC_ColorAction</key>
 		<map>
 			<key>Comment</key>
-			<string>EmeraldIRC_ColorAction</string>
+			<string>PhoenixIRC_ColorAction</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -14897,7 +14897,7 @@
 				<real>1.0</real>
 			</array>
 		</map>
-		<key>EmeraldIRC_ColorPrivate</key>
+		<key>PhoenixIRC_ColorPrivate</key>
 		<map>
 			<key>Comment</key>
 			<string>Color of new objects textures</string>
@@ -14913,7 +14913,7 @@
 				<real>1.0</real>
 			</array>
 		</map>
-		<key>EmeraldIRC_ColorNotice</key>
+		<key>PhoenixIRC_ColorNotice</key>
 		<map>
 			<key>Comment</key>
 			<string>Color of new objects textures</string>
@@ -14929,7 +14929,7 @@
 				<real>1.0</real>
 			</array>
 		</map>
-		<key>EmeraldIRC_ColorJoin</key>
+		<key>PhoenixIRC_ColorJoin</key>
 		<map>
 			<key>Comment</key>
 			<string>Color of new objects textures</string>
@@ -14945,7 +14945,7 @@
 				<real>1.0</real>
 			</array>
 		</map>
-		<key>EmeraldIRC_ColorQuit</key>
+		<key>PhoenixIRC_ColorQuit</key>
 		<map>
 			<key>Comment</key>
 			<string>Color of new objects textures</string>
@@ -14961,7 +14961,7 @@
 				<real>1.0</real>
 			</array>
 		</map>
-		<key>EmeraldIRC_ColorKick</key>
+		<key>PhoenixIRC_ColorKick</key>
 		<map>
 			<key>Comment</key>
 			<string>Color of new objects textures</string>
@@ -14977,7 +14977,7 @@
 				<real>1.0</real>
 			</array>
 		</map>
-		<key>EmeraldIRC_ColorNick</key>
+		<key>PhoenixIRC_ColorNick</key>
 		<map>
 			<key>Comment</key>
 			<string>Color of new objects textures</string>
@@ -14993,7 +14993,7 @@
 				<real>1.0</real>
 			</array>
 		</map>
-		<key>EmeraldIRC_ColorSystem</key>
+		<key>PhoenixIRC_ColorSystem</key>
 		<map>
 			<key>Comment</key>
 			<string>Color of new objects textures</string>
@@ -15009,7 +15009,7 @@
 				<real>1.0</real>
 			</array>
 		</map>
-		<key>EmeraldIRC_ShowChannel</key>
+		<key>PhoenixIRC_ShowChannel</key>
 		<map>
 			<key>Comment</key>
 			<string>Show the related IRC messages in the chat window.</string>
@@ -15020,7 +15020,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldIRC_ShowAction</key>
+		<key>PhoenixIRC_ShowAction</key>
 		<map>
 			<key>Comment</key>
 			<string>Show the related IRC messages in the chat window.</string>
@@ -15031,7 +15031,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldIRC_ShowPrivate</key>
+		<key>PhoenixIRC_ShowPrivate</key>
 		<map>
 			<key>Comment</key>
 			<string>Show the related IRC messages in the chat window.</string>
@@ -15042,7 +15042,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldIRC_ShowNotice</key>
+		<key>PhoenixIRC_ShowNotice</key>
 		<map>
 			<key>Comment</key>
 			<string>Show the related IRC messages in the chat window.</string>
@@ -15053,7 +15053,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldIRC_ShowJoin</key>
+		<key>PhoenixIRC_ShowJoin</key>
 		<map>
 			<key>Comment</key>
 			<string>Show the related IRC messages in the chat window.</string>
@@ -15064,7 +15064,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldIRC_ShowQuit</key>
+		<key>PhoenixIRC_ShowQuit</key>
 		<map>
 			<key>Comment</key>
 			<string>Show the related IRC messages in the chat window.</string>
@@ -15075,7 +15075,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldIRC_ShowKick</key>
+		<key>PhoenixIRC_ShowKick</key>
 		<map>
 			<key>Comment</key>
 			<string>Show the related IRC messages in the chat window.</string>
@@ -15086,7 +15086,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldIRC_ShowNick</key>
+		<key>PhoenixIRC_ShowNick</key>
 		<map>
 			<key>Comment</key>
 			<string>Show the related IRC messages in the chat window.</string>
@@ -15097,7 +15097,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldIRC_ShowSystem</key>
+		<key>PhoenixIRC_ShowSystem</key>
 		<map>
 			<key>Comment</key>
 			<string>Show the related IRC messages in the chat window.</string>
@@ -15108,7 +15108,7 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>EmeraldIRC_AutoReJoin</key>
+		<key>PhoenixIRC_AutoReJoin</key>
 		<map>
 			<key>Comment</key>
 			<string>Automaticly accempt to reconnect to the channel you were just in if kicked. Some networks dont like this and may ban you for doing so, be carefull.</string>
@@ -15119,7 +15119,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>EmeraldIRC_AutoConnect</key>
+		<key>PhoenixIRC_AutoConnect</key>
 		<map>
 			<key>Comment</key>
 			<string>Automaticly connect to any IRC networks that you have set to auto connect to upon startup.</string>
