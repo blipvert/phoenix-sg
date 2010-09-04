@@ -11,7 +11,7 @@ else (STANDALONE)
   set(Boost_INCLUDE_DIRS ${LIBS_PREBUILT_DIR}/include)
 
   if (WINDOWS)
-    set(BOOST_VERSION 1_39)
+    set(BOOST_VERSION 1_43)
     if (MSVC80)
       set(Boost_PROGRAM_OPTIONS_LIBRARY 
           optimized libboost_program_options-vc80-mt-${BOOST_VERSION}
@@ -22,6 +22,9 @@ else (STANDALONE)
       set(Boost_SIGNALS_LIBRARY 
           optimized libboost_signals-vc80-mt-${BOOST_VERSION}
           debug libboost_signals-vc80-mt-gd-${BOOST_VERSION})
+      set(Boost_WAVE_LIBRARY 
+          optimized libboost_wave-vc80-mt-${BOOST_VERSION}
+          debug libboost_wave-vc80-mt-gd-${BOOST_VERSION})
     else (MSVC90)
       set(Boost_PROGRAM_OPTIONS_LIBRARY 
           optimized libboost_program_options-vc90-mt-${BOOST_VERSION}
@@ -32,6 +35,9 @@ else (STANDALONE)
       set(Boost_SIGNALS_LIBRARY 
           optimized libboost_signals-vc90-mt-${BOOST_VERSION}
           debug libboost_signals-vc90-mt-gd-${BOOST_VERSION})
+      set(Boost_WAVE_LIBRARY 
+          optimized libboost_wave-vc90-mt-${BOOST_VERSION}
+          debug libboost_wave-vc90-mt-gd-${BOOST_VERSION})
     endif (MSVC80)
   elseif (LINUX)
   	set(Boost_PROGRAM_OPTIONS_LIBRARY boost_program_options-mt)  	
