@@ -2,77 +2,54 @@
 #
 # Utility macros for getting info from the version control system.
 
-FIND_PACKAGE(Subversion)
-
-if (WINDOWS AND NOT Subversion_FOUND)
-  # The official subversion client is not available, so fall back to
-  # tortoise if it is installed.
-  find_program(TORTOISE_WCREV_EXECUTABLE 
-    NAMES SubWCRev.exe
-    PATHS "[HKEY_LOCAL_MACHINE\\SOFTWARE\\TortoiseSVN;Directory]/bin"
-    )
-
-    if (NOT TORTOISE_WCREV_EXECUTABLE)
-      message(INFO "TortoiseSVN was not found.")
-    endif (NOT TORTOISE_WCREV_EXECUTABLE)
-endif (WINDOWS AND NOT Subversion_FOUND)
-
-# Use this macro on all platforms to set _output_variable to the current SVN
-# revision.
+# @return the rev number ie from the change set
 macro(vcs_get_revision _output_variable)
-  if (Subversion_FOUND)
-    # The included Subversion macros performs operations that require auth,
-    # which breaks when building under fakeroot. Replacing with a custom 
-    # command. --Ambroff
-    # Subversion_WC_INFO(${PROJECT_SOURCE_DIR} _Indra)
-    # set(${_output_variable} ${_Indra_WC_LAST_CHANGED_REV})
-
-    execute_process(
-      COMMAND ${Subversion_SVN_EXECUTABLE} info .
-      WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/..
-      OUTPUT_VARIABLE _svn_info_output
-      ERROR_VARIABLE _svn_info_error
-      RESULT_VARIABLE _svn_info_result
-      OUTPUT_STRIP_TRAILING_WHITESPACE
-      ERROR_STRIP_TRAILING_WHITESPACE
-      )
-
-    if (NOT ${_svn_info_result} EQUAL 0)
-      message(STATUS "svn info failed: ${_svn_info_error}")
-      set(${_output_variable} 0)
-    else (NOT ${_svn_info_result} EQUAL 0)
-      string(REGEX REPLACE 
-        "(.*)?Last Changed Rev: ([0-9]+).*$"
-        "\\2"
-        ${_output_variable}
-        ${_svn_info_output})
-    endif (NOT ${_svn_info_result} EQUAL 0)
-  else (Subversion_FOUND)
-    if (WINDOWS AND TORTOISE_WCREV_EXECUTABLE)
-      # try to find TortoisSVN if we are on windows.
-      execute_process(
-        COMMAND ${TORTOISE_WCREV_EXECUTABLE} .
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/..
-        OUTPUT_VARIABLE _tortoise_rev_info
-        ERROR_VARIABLE _tortoise_rev_info_error
-        RESULT_VARIABLE _tortoise_rev_info_result
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-        ERROR_STRIP_TRAILING_WHITESPACE
-        )
-      if (NOT ${_tortoise_rev_info_result} EQUAL 0)
-        message(STATUS "Command '${_tortoise_rev_info_error} ${PROJECT_SOURCE_DIR}' failed: ${_tortoise_rev_info_error}")
-        set(${_output_variable} 0)
-      else (NOT ${_tortoise_rev_info_result} EQUAL 0)
-        string(REGEX REPLACE 
-          "(.*\n)?Last committed at revision ([0-9]+).*$"
-          "\\2"
-          ${_output_variable} "${_tortoise_rev_info}")
-      endif (NOT ${_tortoise_rev_info_result} EQUAL 0)
-    else (WINDOWS AND TORTOISE_WCREV_EXECUTABLE)
-      # Ruh-roh... we can't get the revision, so set it to '0'
-      message(STATUS
-              "No subversion client is installed. Setting build number to 0.")
-      set(${_output_variable} 0)
-    endif (WINDOWS AND TORTOISE_WCREV_EXECUTABLE)
-  endif (Subversion_FOUND)
+	MESSAGE("-- Checking for HG repo ${PROJECT_SOURCE_DIR}")
+	
+	# Check for the hg directory to see if this is a hg repo
+	IF(IS_DIRECTORY "${PROJECT_SOURCE_DIR}/../.hg")
+		# Find the hg executable for mac by bundle or by path and system path look everywhere!
+		FIND_PROGRAM(_hg hg [PATH CMAKE_SYSTEM_PROGRAM_PATH CMAKE_SYSTEM_APPBUNDLE_PATH])
+		
+		# Test the return status make sure its found
+		IF(NOT ${_hg} MATCHES "-NOTFOUND")
+			# Output HG success
+			MESSAGE("-- Found HG!")
+			
+			# Grab the revision number
+			EXECUTE_PROCESS(COMMAND ${_hg} summary WORKING_DIRECTORY 
+			"${PROJECT_SOURCE_DIR}" OUTPUT_VARIABLE _release 
+			OUTPUT_STRIP_TRAILING_WHITESPACE
+			ERROR_STRIP_TRAILING_WHITESPACE)
+			
+			# So some regex magic
+			foreach(_v_l ${_release})
+			if(_v_l MATCHES "^parent: *[^0-9]*\([0-9]+\):\([a-z0-9]+\)")
+				# not using CPACK yet for installing. This is prep work for CPACK
+				#set(CPACK_PACKAGE_VERSION_PATCH ${CMAKE_MATCH_1})
+	
+				# set Rev number.
+				set(PHOENIX_WC_REVISION ${CMAKE_MATCH_1})
+			endif()
+			endforeach()
+		ELSE()
+			# give feedback and set the rev to 0
+			MESSAGE("-- Could not Parse HG version. Newer version of HG?")
+			SET(PHOENIX_WC_REVISION 0)
+		ENDIF()
+	ELSE()
+		# give feedback and set the rev to 0 as teh dirs not found
+		MESSAGE("-- HG not used..")
+		SET(PHOENIX_WC_REVISION 0)
+	ENDIF()
+	 
+	# CPACK framework
+	#SET(PHOENIX_PACKAGE_VERSION ${V_MAJOR}.${V_MINOR}.${V_PATCH})
+	
+	# Dev build number framework.
+	#SET(PHOENIX_DEVELOPMENT_VERSION 1)
+	
+	# Show the version number and complete / return to utility script.
+	MESSAGE("-- Current HG revision is ${PHOENIX_WC_REVISION}")
+	set(${_output_variable} ${PHOENIX_WC_REVISION})
 endmacro(vcs_get_revision)
