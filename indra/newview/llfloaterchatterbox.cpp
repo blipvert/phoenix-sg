@@ -104,7 +104,7 @@ LLFloaterChatterBox::LLFloaterChatterBox(const LLSD& seed) :
 	mAutoResize = FALSE;
 
 std::string chatterbox_layout;
-	if(gSavedSettings.getBOOL("EmeraldVerticalIMTabs"))
+	if(gSavedSettings.getBOOL("PhoenixVerticalIMTabs"))
 	{ chatterbox_layout = "floater_chatterbox_emerald.xml"; }
 	else chatterbox_layout = "floater_chatterbox.xml";
 
