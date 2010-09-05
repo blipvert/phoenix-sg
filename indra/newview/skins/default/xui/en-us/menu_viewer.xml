@@ -164,8 +164,8 @@
 			<on_click function="ShowFloater" userdata="friends" />
 			<on_check function="FloaterVisible" userdata="friends" />
 		</menu_item_check>
-		<menu_item_call bottom="-408" enabled="true" height="19" label="Groups..." left="0" mouse_opaque="true" name="Groups..." width="153">
-			<on_click function="ShowAgentGroups" userdata="agent" />
+		<menu_item_call bottom="-408" enabled="true" height="19" label="Groups..." left="0" mouse_opaque="true" name="Groups..." shortcut="control|shift|G" width="153">
+			<on_click function="ShowAgentGroups" userdata="agent"/>
 		</menu_item_call>
 		<menu_item_separator bottom="-416" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator8" width="153" />
 		<menu_item_call bottom="-435" enabled="true" height="19" label="Preferences..." left="0" mouse_opaque="true" name="Preferences..." shortcut="control|P" width="153">
@@ -346,10 +346,10 @@
 		<menu_item_call bottom="-281" enabled="false" height="19" label="Stop Animating My Avatar" left="0" mouse_opaque="true" name="Stop Animating My Avatar" width="250">
 			<on_click function="Tools.StopAllAnimations" userdata="" />
 		</menu_item_call>
-	    <menu_item_check bottom="-281" enabled="false" height="19" label="Animation Explorer" left="0" mouse_opaque="true" name="Animation List" width="250">
-	      <on_click function="ShowFloater" userdata="animationexplorer" />
-	      <on_check function="FloaterVisible" userdata="animationexplorer" />
-	    </menu_item_check>
+		<menu_item_check bottom="-281" enabled="false" height="19" label="Animation Explorer" left="0" mouse_opaque="true" name="Animation List" width="250">
+			<on_click function="ShowFloater" userdata="animationexplorer" />
+			<on_check function="FloaterVisible" userdata="animationexplorer" />
+		</menu_item_check>
 		<menu_item_call bottom="-213" enabled="false" height="19" label="Release Keys" left="0" mouse_opaque="true" name="Release Keys" width="250">
 			<on_click function="Tools.ReleaseKeys" userdata="" />
 			<on_enable function="Tools.EnableReleaseKeys" userdata="" />
@@ -402,12 +402,12 @@
 			<menu_item_call bottom="-151" enabled="false" height="19" label="Sky Settings" left="0" mouse_opaque="true" name="Sky Settings" width="169">
 				<on_click function="World.SkySettings" />
 			</menu_item_call>
-      <menu_item_call bottom="-170" enabled="false" height="19" label="Water Settings" left="0" mouse_opaque="true" name="Water Settings" width="169">
-        <on_click function="World.WaterSettings" />
-      </menu_item_call>
-      <menu_item_call bottom="-170" enabled="false" height="19" label="Postprocessing" left="0" mouse_opaque="true" name="Postprocessing" width="169">
-        <on_click function="World.PostProcess" />
-      </menu_item_call>
+			<menu_item_call bottom="-170" enabled="false" height="19" label="Water Settings" left="0" mouse_opaque="true" name="Water Settings" width="169">
+				<on_click function="World.WaterSettings" />
+			</menu_item_call>
+			<menu_item_call bottom="-170" enabled="false" height="19" label="Postprocessing" left="0" mouse_opaque="true" name="Postprocessing" width="169">
+				<on_click function="World.PostProcess" />
+			</menu_item_call>
 			<menu_item_call bottom="-189" enabled="false" height="19" label="Day Cycle" left="0" mouse_opaque="true" name="Day Cycle" width="169">
 				<on_click function="World.DayCycle" />
 			</menu_item_call>
@@ -562,11 +562,11 @@
 			<on_click function="Tools.SelectedScriptAction" userdata="stop" />
 			<on_enable function="EditableSelected" />
 		</menu_item_call>
-    <menu_item_call bottom="-525" enabled="false" height="19" label="Count Scripts in Selection" left="0" mouse_opaque="true" name="Count Scripts in Selection" width="250">
-      <on_click function="Object.ScriptCount" />
-      <on_enable function="Object.VisibleScriptCount" />
-    </menu_item_call>
-    <menu_item_call bottom="-525" enabled="false" height="19" label="Remove Scripts in Selection" left="0" mouse_opaque="true" name="Remove Scripts in Selection" width="250">
+		<menu_item_call bottom="-525" enabled="false" height="19" label="Count Scripts in Selection" left="0" mouse_opaque="true" name="Count Scripts in Selection" width="250">
+			<on_click function="Object.ScriptCount" />
+			<on_enable function="Object.VisibleScriptCount" />
+		</menu_item_call>
+		<menu_item_call bottom="-525" enabled="false" height="19" label="Remove Scripts in Selection" left="0" mouse_opaque="true" name="Remove Scripts in Selection" width="250">
 			<on_click function="Tools.ScriptDelete" />
 			<on_enable function="Tools.EnableScriptDelete" />
 		</menu_item_call>
@@ -578,31 +578,30 @@
 		<menu_item_call bottom="-48" enabled="true" height="19" label="Tutorial" left="0" mouse_opaque="true" name="Tutorial" width="166">
 			<on_click function="ShowFloater" userdata="help tutorial" />
 		</menu_item_call>
-    <menu_item_separator bottom="-102" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator2" width="166" />
-    <menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Blog..." left="0" mouse_opaque="true" name="Phoenix Viewer Blog..." width="166">
-      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://phoenixviewer.com/index.shtml" />
-    </menu_item_call>
-    <menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Wiki..." left="0" mouse_opaque="true" name="Phoenix Viewer Wiki..." width="166">
-      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://phoenixviewer.com/wiki.shtml" />
-    </menu_item_call>
-    <menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Support..." left="0" mouse_opaque="true" name="Phoenix Viewer Support..." width="166">
-      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://phoenixviewer.com/support.shtml" />
-    </menu_item_call>
-    <menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Bug Reports..." left="0" mouse_opaque="true" name="Phoenix Viewer Bug Reports..." width="166">
-      <on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://jira.phoenixviewer.com" />
-    </menu_item_call>
-
+		<menu_item_separator bottom="-102" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator2" width="166" />
+		<menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Blog..." left="0" mouse_opaque="true" name="Phoenix Viewer Blog..." width="166">
+			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://phoenixviewer.com/index.shtml" />
+		</menu_item_call>
+		<menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Wiki..." left="0" mouse_opaque="true" name="Phoenix Viewer Wiki..." width="166">
+			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://phoenixviewer.com/wiki.shtml" />
+		</menu_item_call>
+		<menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Support..." left="0" mouse_opaque="true" name="Phoenix Viewer Support..." width="166">
+			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://phoenixviewer.com/support.shtml" />
+		</menu_item_call>
+		<menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Bug Reports..." left="0" mouse_opaque="true" name="Phoenix Viewer Bug Reports..." width="166">
+			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://jira.phoenixviewer.com" />
+		</menu_item_call>
 		<menu_item_separator bottom="-411" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator7" width="250" />
 		<menu bottom="-554" create_jump_keys="true" drop_shadow="true" enabled="true" height="109" label="Linden Resources" left="0" mouse_opaque="false" name="LL" opaque="true" tear_off="true" width="118">
-      <menu_item_separator bottom="-75" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator" width="166" />
-      <menu_item_call bottom="-94" enabled="true" height="19" label="Official Linden Blog..." left="0" mouse_opaque="true" name="Official Linden Blog..." width="166">
-        <on_click function="PromptShowURL" name="OfficialLindenBlog_url" userdata="WebLaunchSupportWiki,http://blog.secondlife.com/" />
-      </menu_item_call>
-      <menu_item_separator bottom="-102" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator2" width="166" />
-      <menu_item_call bottom="-140" enabled="true" height="19" label="Scripting Portal..." left="0" mouse_opaque="true" name="Scripting Portal..." width="166">
-        <on_click function="PromptShowURL" name="ScriptingPortal_url" userdata="WebLaunchLSLWiki,http://wiki.secondlife.com/wiki/LSL_Portal" />
-      </menu_item_call>
-      <menu_item_call bottom="-94" enabled="true" height="19" label="Public Issue Tracker..." left="0" mouse_opaque="true" name="Public Issue Tracker..." width="166">
+			<menu_item_separator bottom="-75" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator" width="166" />
+			<menu_item_call bottom="-94" enabled="true" height="19" label="Official Linden Blog..." left="0" mouse_opaque="true" name="Official Linden Blog..." width="166">
+				<on_click function="PromptShowURL" name="OfficialLindenBlog_url" userdata="WebLaunchSupportWiki,http://blog.secondlife.com/" />
+			</menu_item_call>
+			<menu_item_separator bottom="-102" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator2" width="166" />
+			<menu_item_call bottom="-140" enabled="true" height="19" label="Scripting Portal..." left="0" mouse_opaque="true" name="Scripting Portal..." width="166">
+				<on_click function="PromptShowURL" name="ScriptingPortal_url" userdata="WebLaunchLSLWiki,http://wiki.secondlife.com/wiki/LSL_Portal" />
+			</menu_item_call>
+			<menu_item_call bottom="-94" enabled="true" height="19" label="Public Issue Tracker..." left="0" mouse_opaque="true" name="Public Issue Tracker..." width="166">
 				<on_click function="PromptShowURL" name="PublicIssueTracker_url" userdata="WebLaunchPublicIssue,http://jira.secondlife.com" />
 			</menu_item_call>
 			<menu_item_call bottom="-94" enabled="true" height="19" label="Public Issue Tracker Help..." left="0" mouse_opaque="true" name="Publc Issue Tracker Help..." width="166">
@@ -623,17 +622,17 @@
 				<on_click function="PromptShowURL" name="ReportBug_url" userdata="WebLaunchPublicIssue,http://jira.secondlife.com" />
 			</menu_item_call>
 		</menu>
-    <menu_item_separator bottom="-148" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator3" width="166" />
-    <menu_item_call bottom="-194" enabled="true" height="19" label="Report Abuse..." left="0" mouse_opaque="true" name="Report Abuse..." width="166">
-      <on_click function="ShowFloater" userdata="complaint reporter" />
-    </menu_item_call>
-    <menu_item_call bottom="-213" enabled="true" height="19" label="Bumps, Pushes &amp; Hits..." left="0" mouse_opaque="true" name="Bumps, Pushes &amp;amp; Hits..." width="166">
-      <on_click function="ShowFloater" userdata="mean events" />
-    </menu_item_call>
-    <menu_item_call label="Lag Meter" name="Lag Meter">
-      <on_click function="ShowFloater" userdata="lag meter" />
-    </menu_item_call>
-    <menu_item_separator bottom="-148" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator3" width="166" />
+		<menu_item_separator bottom="-148" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator3" width="166" />
+		<menu_item_call bottom="-194" enabled="true" height="19" label="Report Abuse..." left="0" mouse_opaque="true" name="Report Abuse..." width="166">
+			<on_click function="ShowFloater" userdata="complaint reporter" />
+		</menu_item_call>
+		<menu_item_call bottom="-213" enabled="true" height="19" label="Bumps, Pushes &amp; Hits..." left="0" mouse_opaque="true" name="Bumps, Pushes &amp;amp; Hits..." width="166">
+			<on_click function="ShowFloater" userdata="mean events" />
+		</menu_item_call>
+		<menu_item_call label="Lag Meter" name="Lag Meter">
+			<on_click function="ShowFloater" userdata="lag meter" />
+		</menu_item_call>
+		<menu_item_separator bottom="-148" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator3" width="166" />
 		<menu_item_call bottom="-313" enabled="true" height="19" label="About Phoenix Viewer..." left="0" mouse_opaque="true" name="About Second Life..." width="166">
 			<on_click function="ShowFloater" userdata="about" />
 		</menu_item_call>
@@ -648,11 +647,10 @@
 			<on_click function="Phoenix.ToggleSit" userdata="" />
 			<on_Check function="Phoenix.CheckSit" userdata="" />
 		</menu_item_check>
-    <menu_item_check bottom="-67" enabled="true" height="19" label="Block Spam" left="0" mouse_opaque="true" name="BlockSpam" shortcut="alt|shift|s" width="185">
-      <on_click function="Phoenix.ToggleBlockSpam" userdata="" />
-      <on_check function="Phoenix.CheckBlockSpam" userdata="" />
-    </menu_item_check>
-    
+		<menu_item_check bottom="-67" enabled="true" height="19" label="Block Spam" left="0" mouse_opaque="true" name="BlockSpam" shortcut="alt|shift|s" width="185">
+			<on_click function="Phoenix.ToggleBlockSpam" userdata="" />
+			<on_check function="Phoenix.CheckBlockSpam" userdata="" />
+		</menu_item_check>
 		<menu_item_separator bottom="-58" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator1" width="155" />
 		<menu_item_check enabled="true" label="Double-Click Auto-Pilot" name="Double-Click Auto-Pilot">
 			<on_click function="ToggleControl" userdata="DoubleClickAutoPilot" />
@@ -662,62 +660,58 @@
 			<on_click function="Phoenix.ToggleDoubleClickTeleport" userdata="" />
 			<on_check function="Phoenix.CheckDoubleClickTeleport" userdata="" />
 		</menu_item_check>
-    <menu_item_check enabled="true" label="Enable Autoresponse">
-      <on_click function="Phoenix.ToggleAutoResponse" userdata="" />
-      <on_check function="Phoenix.CheckAutoResponse" userdata="" />
-    </menu_item_check>
+		<menu_item_check enabled="true" label="Enable Autoresponse">
+			<on_click function="Phoenix.ToggleAutoResponse" userdata="" />
+			<on_check function="Phoenix.CheckAutoResponse" userdata="" />
+		</menu_item_check>
 		<menu_item_check enabled="true" label="Show LookAt" left="0" mouse_opaque="true" name="show LookAt" width="155">
 			<on_click function="ToggleControl" userdata="PersistShowLookAt" />
 			<on_check control="PersistShowLookAt" />
 		</menu_item_check>
-    <menu_item_check enabled="true" label="Broadcast viewer effects" left="0" mouse_opaque="true" name="SL Particle Chat" width="155">
-      <on_click function="ToggleControl" userdata="PhoenixBroadcastEffects" />
-      <on_check control="PhoenixBroadcastEffects" />
-    </menu_item_check>
+		<menu_item_check enabled="true" label="Broadcast viewer effects" left="0" mouse_opaque="true" name="SL Particle Chat" width="155">
+			<on_click function="ToggleControl" userdata="PhoenixBroadcastEffects" />
+			<on_check control="PhoenixBroadcastEffects" />
+		</menu_item_check>
 		<menu_item_check enabled="false" label="Clear Effects" name="cleareffects" shortcut="control|shift|v" width="155">
 			<on_click function="Phoenix.ClearEffects" userdata="" />
 		</menu_item_check>
-    
-	  <menu_item_separator enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator2" width="155" />
-    <menu_item_call enabled="false" label="Animation Explorer">
-      <on_click function="ShowFloater" userdata="animationexplorer" />
-    </menu_item_call>
-    <menu_item_call enabled="false" label="Sound Explorer" >
-      <on_click function="ShowFloater" userdata="soundexplorer" />
-    </menu_item_call>
-    <menu_item_call enabled="false" label="Media Browser" shortcut="control|n">
-      <on_click function="ShowFloater" userdata="mediabrowser" />
-    </menu_item_call>
-    <menu_item_call enabled="false" label="Asset Blacklist">
-      <on_click function="ShowFloater" userdata="assetblacklist" />
-    </menu_item_call>
-    <menu_item_call enabled="false" label="Local Bitmap Browser">
-      <on_click function="ShowFloater" userdata="localassetbrowser" />
-    </menu_item_call>
-    <menu_item_call enabled="false" label="Area Search">
-		  <on_click function="ShowFloater" userdata="areasearch" />
-	  </menu_item_call>
-    <menu_item_call enabled="false" label="Avatar List" shortcut="control|shift|a">
-		  <on_click function="Phoenix.ToggleAvatarList" userdata="avatars" />
-		  <on_check control="ShowAvatarList" />
-		  <on_enable function="RLV.EnableIfNot" userdata="shownames" />
-	  </menu_item_call>
-    <menu_item_call enabled="false" label="Teleport History" shortcut="alt|H">
-		  <on_click function="ShowFloater" userdata="teleport history" />
-	  </menu_item_call>
-    <menu_item_call enabled="false" label="Message Log">
-		  <on_click function="ShowFloater" userdata="message log" />
-	  </menu_item_call>
-    <menu_item_call enabled="false" label="AO" shortcut="control|shift|o">
-      <on_click function="ShowFloater" userdata="ao" />
-	  </menu_item_call>
-
-    <menu_item_separator bottom="-58" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator1" width="155" />
-
-    <menu_item_check enabled="true" label="Show Advanced" left="0" name="Show Advanced">
-      <on_click function="ToggleDebugMenus" userdata="" />
-      <on_check control="UseDebugMenus" />
-    </menu_item_check>
-    
+		<menu_item_separator enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator2" width="155" />
+		<menu_item_call enabled="false" label="Animation Explorer">
+			<on_click function="ShowFloater" userdata="animationexplorer" />
+		</menu_item_call>
+		<menu_item_call enabled="false" label="Sound Explorer" >
+			<on_click function="ShowFloater" userdata="soundexplorer" />
+		</menu_item_call>
+		<menu_item_call enabled="false" label="Media Browser" shortcut="control|n">
+			<on_click function="ShowFloater" userdata="mediabrowser" />
+		</menu_item_call>
+		<menu_item_call enabled="false" label="Asset Blacklist">
+			<on_click function="ShowFloater" userdata="assetblacklist" />
+		</menu_item_call>
+		<menu_item_call enabled="false" label="Local Bitmap Browser">
+			<on_click function="ShowFloater" userdata="localassetbrowser" />
+		</menu_item_call>
+		<menu_item_call enabled="false" label="Area Search">
+			<on_click function="ShowFloater" userdata="areasearch" />
+		</menu_item_call>
+		<menu_item_call enabled="false" label="Avatar List" shortcut="control|shift|a">
+			<on_click function="Phoenix.ToggleAvatarList" userdata="avatars" />
+			<on_check control="ShowAvatarList" />
+			<on_enable function="RLV.EnableIfNot" userdata="shownames" />
+		</menu_item_call>
+		<menu_item_call enabled="false" label="Teleport History" shortcut="alt|H">
+			<on_click function="ShowFloater" userdata="teleport history" />
+		</menu_item_call>
+		<menu_item_call enabled="false" label="Message Log">
+			<on_click function="ShowFloater" userdata="message log" />
+		</menu_item_call>
+		<menu_item_call enabled="false" label="AO" shortcut="control|shift|o">
+			<on_click function="ShowFloater" userdata="ao" />
+		</menu_item_call>
+		<menu_item_separator bottom="-58" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator1" width="155" />
+		<menu_item_check enabled="true" label="Show Advanced" left="0" name="Show Advanced">
+			<on_click function="ToggleDebugMenus" userdata="" />
+			<on_check control="UseDebugMenus" />
+		</menu_item_check>
 	</menu>
 </menu_bar>
