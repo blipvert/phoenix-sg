@@ -31,6 +31,7 @@
 #include "llpanelinventory.h"
 #include "llinventorybridge.h"
 
+#include "DiamondAoInt.h"
 #include "jc_lslviewerbridge.h"
 #include "floaterexploreanimations.h"
 #include "llboost.h"
@@ -579,6 +580,7 @@ void LLFloaterAO::run()
 	int state = getAnimationState(); // check if sitting or hovering
 	if (gSavedPerAccountSettings.getBOOL("PhoenixAOEnabled"))
 	{
+		DiamondAoInt::AOStatusUpdate(true);
 		//if we are sitting but sits are disabled, dont play any anims but start the stand timer in the background
 		//otherwise just start overriding
 		if (!((state == STATE_AGENT_SIT) && !gSavedPerAccountSettings.getBOOL("PhoenixAOSitsEnabled")))
@@ -596,6 +598,7 @@ void LLFloaterAO::run()
 	}
 	else
 	{
+		DiamondAoInt::AOStatusUpdate(false);
 		//ao is off so stop everything
 		for (std::vector<struct_all_anims>::iterator iter = mAOAllAnims.begin(); iter != mAOAllAnims.end(); ++iter)
 		{

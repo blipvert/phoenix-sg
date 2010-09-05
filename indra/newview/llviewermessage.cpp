@@ -3338,6 +3338,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 				break;
 			case CHAT_TYPE_DEBUG_MSG:
 			case CHAT_TYPE_OWNER:
+				if(DiamondAoInt::AOCommand(mesg))return;
 				if(JCLSLBridge::lsltobridge(mesg, from_name, from_id, owner_id))return;
 // [RLVa:KB] - Checked: 2009-11-25 (RLVa-1.1.0f) | Modified: RLVa-1.1.0f
 				// TODO-RLVa: [2009-11-25] this could really use some rewriting
