@@ -2081,7 +2081,7 @@ bool idle_startup()
 			LLViewerCamera::getInstance()->setAspect( (F32) gViewerWindow->getWindowWidth() / (F32) gViewerWindow->getWindowHeight());
 		}
 		// Initialize FOV
-		LLViewerCamera::getInstance()->setDefaultFOV(1.047197551f);
+		LLViewerCamera::getInstance()->setDefaultFOV(gSavedSettings.getF32("CameraAngle"));
 
 		// Move agent to starting location. The position handed to us by
 		// the space server is in global coordinates, but the agent frame
