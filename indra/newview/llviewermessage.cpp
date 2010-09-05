@@ -1850,7 +1850,7 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 					computed_session_id,
 					from_id,
 					name,
-					llformat("You sense a disturbance in the force...  (%s is typing)",name.c_str()),
+					llformat("Incoming message from (%s)",name.c_str()),
 					name,
 					IM_NOTHING_SPECIAL,
 					parent_estate_id,
