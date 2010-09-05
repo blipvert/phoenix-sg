@@ -31,12 +31,14 @@ DiamondAoInt::~DiamondAoInt()
 
 bool DiamondAoInt::AOCommand(std::string message)
 {
-	std::string clip = message.substr(0,8);
-	if(clip == "dmdAoInt")
-	{
-		std::string rest = message.substr(8);
+	std::string clip = message.substr(0,3);
+	if(clip == "~`~")
+		std::string rest = message.substr(3);
 		LLSD args = JCLSLBridge::parse_string_to_list(rest, '|');
 		std::string cmd = args[0].asString();
+	if(clip == "dmdAoInt")
+	{
+		cmd = args[1].asString();
 		if(cmd == "on")
 		{
 			gSavedPerAccountSettings.setBOOL("EmeraldAOEnabled",TRUE);
@@ -49,14 +51,14 @@ bool DiamondAoInt::AOCommand(std::string message)
 		}
 		else if(cmd == "status")
 		{
-			S32 chan = atoi(args[1].asString().c_str());
+			S32 chan = atoi(args[2].asString().c_str());
 			std::string tmp="off";
 			if(gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled"))tmp="on";
 			send_chat_to_object(tmp,chan,gAgent.getID());
 		}
 		else if(cmd == "regchan")
 		{
-			regchan = atoi(args[1].asString().c_str());
+			regchan = atoi(args[2].asString().c_str());
 			send_chat_to_object(std::string("Channel registerd"),regchan,gAgent.getID());
 		}
 		return true;
