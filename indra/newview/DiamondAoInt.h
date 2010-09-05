@@ -3,6 +3,8 @@
 
 #include "llviewerprecompiledheaders.h"
 
+void send_chat_to_object(std::string chat, S32 channel, LLUUID target)
+
 class DiamondAoInt
 {
 public:

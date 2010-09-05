@@ -4,6 +4,22 @@
 #include "floaterao.h"
 #include "jc_lslviewerbridge.h"
 
+void send_chat_to_object(std::string chat, S32 channel, LLUUID target)
+{
+	if(target.isNull())target = gAgent.getID();
+	LLMessageSystem* msg = gMessageSystem;
+	msg->newMessage(_PREHASH_ScriptDialogReply);
+	msg->nextBlock(_PREHASH_AgentData);
+	msg->addUUID(_PREHASH_AgentID, gAgent.getID());
+	msg->addUUID(_PREHASH_SessionID, gAgent.getSessionID());
+	msg->nextBlock(_PREHASH_Data);
+	msg->addUUID(_PREHASH_ObjectID, target);
+	msg->addS32(_PREHASH_ChatChannel, channel);
+	msg->addS32(_PREHASH_ButtonIndex, 0);
+	msg->addString(_PREHASH_ButtonLabel, chat);
+	gAgent.sendReliableMessage();
+}
+
 S32 DiamondAoInt::regchan;
 DiamondAoInt::DiamondAoInt()
 {
@@ -36,12 +52,12 @@ bool DiamondAoInt::AOCommand(std::string message)
 			S32 chan = atoi(args[1].asString().c_str());
 			std::string tmp="off";
 			if(gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled"))tmp="on";
-			JCLSLBridge::send_chat_to_object(tmp,chan,gAgent.getID());
+			send_chat_to_object(tmp,chan,gAgent.getID());
 		}
 		else if(cmd == "regchan")
 		{
 			regchan = atoi(args[1].asString().c_str());
-			JCLSLBridge::send_chat_to_object(std::string("Channel registerd"),regchan,gAgent.getID());
+			send_chat_to_object(std::string("Channel registerd"),regchan,gAgent.getID());
 		}
 		return true;
 	}
@@ -54,6 +70,6 @@ void DiamondAoInt::AOStatusUpdate(bool status)
 	{
 		std::string tmp="off";
 		if(gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled"))tmp="on";
-		JCLSLBridge::send_chat_to_object(tmp,regchan,gAgent.getID());
+		send_chat_to_object(tmp,regchan,gAgent.getID());
 	}
 }
