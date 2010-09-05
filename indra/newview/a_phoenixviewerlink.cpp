@@ -100,9 +100,15 @@ void PhoenixViewerLink::start_download()
 	LL_INFOS("MSBlacklist") << "Checking for blacklist updates..." << LL_ENDL;
 	LLHTTPClient::get(url,new ModularSystemsDownloader( PhoenixViewerLink::msblacklistquery ),headers);
 
-	url = "http://phoenixviewer.com/app/client_tags/client_list.xml";
-	LLHTTPClient::get(url,new ModularSystemsDownloader( PhoenixViewerLink::updateClientTags ),headers);
-	
+	if(gSavedSettings.getBOOL("PhoenixDownloadClientTags"))
+	{
+	  url = "http://phoenixviewer.com/app/client_tags/client_list.xml";
+	  LLHTTPClient::get(url,new ModularSystemsDownloader( PhoenixViewerLink::updateClientTags ),headers);	
+	}
+	else
+	{
+	  updateClientTagsLocal();
+	}
 }
 void PhoenixViewerLink::msblacklistquery(U32 status,std::string body)
 {
@@ -168,11 +174,33 @@ void PhoenixViewerLink::msblacklist(U32 status,std::string body)
 
 void PhoenixViewerLink::updateClientTags(U32 status,std::string body)
 {
+        std::string client_list_filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "client_list.xml");
+
+        std::istringstream istr(body);
+        LLSD data;
+        if(LLSDSerialize::fromXML(data, istr) >= 1)
+        {
+                if(data.has("phoenixTags"))
+                {
+                        phoenix_tags = data["phoenixTags"];
+                        LLPrimitive::tagstring = PhoenixViewerLink::phoenix_tags[gSavedSettings.getString("PhoenixTagColor")].asString();
+                }
+
+                llofstream export_file;
+                export_file.open(client_list_filename);
+                LLSDSerialize::toPrettyXML(data, export_file);
+                export_file.close();
+        }
+}
+
+void PhoenixViewerLink::updateClientTagsLocal()
+{
 	std::string client_list_filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "client_list.xml");
 
-	std::istringstream istr(body);
+	llifstream xml_file(client_list_filename);
 	LLSD data;
-	if(LLSDSerialize::fromXML(data, istr) >= 1)
+	if(!xml_file.is_open()) return;
+	if(LLSDSerialize::fromXML(data, xml_file) >= 1)
 	{
 		if(data.has("phoenixTags"))
 		{
@@ -180,10 +208,7 @@ void PhoenixViewerLink::updateClientTags(U32 status,std::string body)
 			LLPrimitive::tagstring = PhoenixViewerLink::phoenix_tags[gSavedSettings.getString("PhoenixTagColor")].asString();
 		}
 
-		llofstream export_file;
-		export_file.open(client_list_filename);
-		LLSDSerialize::toPrettyXML(data, export_file);
-		export_file.close();
+		xml_file.close();
 	}
 }
 

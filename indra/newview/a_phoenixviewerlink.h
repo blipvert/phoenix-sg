@@ -45,6 +45,7 @@ public:
 	static void msblacklistquery(U32 status, std::string body);
 	static void msblacklist(U32 status, std::string body);
 	static void updateClientTags(U32 status,std::string body);
+	static void updateClientTagsLocal();
 	static const U8 EM_SUPPORT		= 0x01;
 	static const U8 EM_DEVELOPER	= 0x02;
 	//static const U8 x = 0x04;
