@@ -33,9 +33,11 @@ bool DiamondAoInt::AOCommand(std::string message)
 {
 	std::string clip = message.substr(0,3);
 	if(clip == "~`~")
+	{
 		std::string rest = message.substr(3);
 		LLSD args = JCLSLBridge::parse_string_to_list(rest, '|');
 		std::string cmd = args[0].asString();
+	}
 	if(clip == "dmdAoInt")
 	{
 		cmd = args[1].asString();
