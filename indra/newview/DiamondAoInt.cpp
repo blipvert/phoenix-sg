@@ -73,7 +73,7 @@ void DiamondAoInt::AOStatusUpdate(bool status)
 	if(regchan != 0)
 	{
 		std::string tmp="off";
-		if(gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled"))tmp="on";
+		if(gSavedPerAccountSettings.getBOOL("PhoenixAOEnabled"))tmp="on";
 		send_chat_to_object(tmp,regchan,gAgent.getID());
 	}
 }
