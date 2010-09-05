@@ -37,31 +37,31 @@ bool DiamondAoInt::AOCommand(std::string message)
 		std::string rest = message.substr(3);
 		LLSD args = JCLSLBridge::parse_string_to_list(rest, '|');
 		std::string cmd = args[0].asString();
-	}
-	if(clip == "dmdAoInt")
-	{
-		cmd = args[1].asString();
-		if(cmd == "on")
+		if(clip == "dmdAoInt")
 		{
-			gSavedPerAccountSettings.setBOOL("EmeraldAOEnabled",TRUE);
-			LLFloaterAO::run();
-		}
-		else if(cmd == "off")
-		{
-			gSavedPerAccountSettings.setBOOL("EmeraldAOEnabled",FALSE);
-			LLFloaterAO::run();
-		}
-		else if(cmd == "status")
-		{
-			S32 chan = atoi(args[2].asString().c_str());
-			std::string tmp="off";
-			if(gSavedPerAccountSettings.getBOOL("EmeraldAOEnabled"))tmp="on";
-			send_chat_to_object(tmp,chan,gAgent.getID());
-		}
-		else if(cmd == "regchan")
-		{
-			regchan = atoi(args[2].asString().c_str());
-			send_chat_to_object(std::string("Channel registerd"),regchan,gAgent.getID());
+			cmd = args[1].asString();
+			if(cmd == "on")
+			{
+				gSavedPerAccountSettings.setBOOL("EmeraldAOEnabled",TRUE);
+				LLFloaterAO::run();
+			}
+			else if(cmd == "off")
+			{
+				gSavedPerAccountSettings.setBOOL("PhoenixAOEnabled",FALSE);
+				LLFloaterAO::run();
+			}
+			else if(cmd == "status")
+			{
+				S32 chan = atoi(args[2].asString().c_str());
+				std::string tmp="off";
+				if(gSavedPerAccountSettings.getBOOL("PhoenixAOEnabled"))tmp="on";
+				send_chat_to_object(tmp,chan,gAgent.getID());
+			}
+			else if(cmd == "regchan")
+			{
+				regchan = atoi(args[2].asString().c_str());
+				send_chat_to_object(std::string("Channel registerd"),regchan,gAgent.getID());
+			}
 		}
 		return true;
 	}
