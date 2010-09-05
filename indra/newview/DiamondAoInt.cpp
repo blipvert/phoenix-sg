@@ -37,7 +37,7 @@ bool DiamondAoInt::AOCommand(std::string message)
 		std::string rest = message.substr(3);
 		LLSD args = JCLSLBridge::parse_string_to_list(rest, '|');
 		std::string cmd = args[0].asString();
-		if(clip == "dmdAoInt")
+		if(cmd == "dmdAoInt")
 		{
 			cmd = args[1].asString();
 			if(cmd == "on")
