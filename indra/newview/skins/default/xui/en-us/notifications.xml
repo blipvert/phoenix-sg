@@ -6968,20 +6968,20 @@ No
    label="Phoenix Help"
    name="PhoenixHelp_Shields"
    type="alertmodal">
-    Clothing Layer Protection - Masks your individual texture layers to prevent theft
-    (Note: Leaving this on is also what allows people to see what client you are using)
-    Stealth Mode and Full Features Mode - Click the buttons for more info
-    Dialog Spam Prevention - Puts a cap on how many LLDialog's a user may prompt you with
-    This prevents a spam attack that can end up crashing you.
+    Spam Protection - These options add caps to the number of times another user can send you items / requests.
+    This helps prevent any spam attacks that can end up crashing you.
+	
     Revoke Permissions - Removes a objects permission to animate or control your input
     If this is not done, the object retains the right to your permissions indefinitely.
+	
+	Phoenix Tag Colour - Choose a colour for your client tag (seen by others).
+	
     Show Load URL Dialogs - You may disable these if you are being spammed with them.
-    Disallow LLMapDestination - Prevent scripts from being able to open your map window
+    Disallow LLMapDestination - Prevent scripts from being able to open your map window.
     Broadcast Viewer Effects - Allows normal behavior of the client letting other know where
     you are pointing and looking.  (You need this on if you don't want your beam going to your hip)
-    Broadcast Camera Points - Allows other to see where you are looking with ShowLookAt
-    Enable Active Cryolife Detection - Sends silent invisible pings to avatars to detect if they
-    are using a viewer made to copybot.
+    Broadcast Camera Focus Point - Allows other to see where you are looking with ShowLookAt.
+	Broadcast Pointer Target - Allows client to know where your mouse is pointing, eg for edit beams.
   </notification>
   <notification
    icon="alertmodal.tga"
@@ -7038,12 +7038,8 @@ No
    type="alertmodal">
     X,Y,and Z Modifiers - Allow you to slightly adjust you avatars bounding box.
     This is useful (Z Modifier) to raise or lower where your avatars feet hit the ground.
-    Agents Updates Per Second - How many updates you send the sim each second.
-    Make this slightly higher for better performance (NEVER above 20)
-    Make this lower to help lower sim lag.
-    Phoenix Clothing Mode - Allows mode for infinite layers of clothing
-
-    Selection Beam Particles
+    
+	Selection Beam Particles
     These are the particles that come from your hand when you right click and select objects.
     Left Side:
     Choose a Color rotation Pattern if you wish your beams to not stay a constant color.
