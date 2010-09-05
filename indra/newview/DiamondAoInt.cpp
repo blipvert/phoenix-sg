@@ -42,7 +42,7 @@ bool DiamondAoInt::AOCommand(std::string message)
 			cmd = args[1].asString();
 			if(cmd == "on")
 			{
-				gSavedPerAccountSettings.setBOOL("EmeraldAOEnabled",TRUE);
+				gSavedPerAccountSettings.setBOOL("PhoenixAOEnabled",TRUE);
 				LLFloaterAO::run();
 			}
 			else if(cmd == "off")
