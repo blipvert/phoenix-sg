@@ -565,7 +565,10 @@ LLFloaterStats::LLFloaterStats(const LLSD& val)
 {
 	LLUICtrlFactory::getInstance()->buildFloater(this, "floater_statistics.xml", NULL, FALSE);
 
-	setIsChrome(TRUE);
+	if(gSavedSettings.getBOOL("PhoenixStatsBarChrome"))
+	{
+		setIsChrome(TRUE);
+	}
 	
 	LLRect stats_rect(0, getRect().getHeight() - LLFLOATER_HEADER_SIZE,
 					  getRect().getWidth() - LLFLOATER_CLOSE_BOX_SIZE, 0);
