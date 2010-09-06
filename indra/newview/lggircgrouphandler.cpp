@@ -306,7 +306,7 @@ void lggIrcGroupHandler::startUpIRCListener(lggIrcData dat)
 	LLSD args;
 	gIMMgr->addMessage(dat.id,dat.id,std::string("Emerald"),
 		//gIMMgr->addSystemMessage(idat.id,
-		llformat("IRC Session Initiated on server: %s:%s \nYour nick is %s and you are on the channel: %s\nWARNING: THIS IS A IRC CHAT WINDOW, Chat can not be verified by Linden Labs or Modular Systems, people may or may not have the same nick name as their second life avatar, or may not even be human at all"
+		llformat("IRC Session Initiated on server: %s:%s \nYour nick is %s and you are on the channel: %s\nWARNING: THIS IS A IRC CHAT WINDOW, Chat can not be verified by Linden Labs or Phoenix Viewer Support, people may or may not have the same nick name as their second life avatar, or may not even be human at all"
 		, dat.server.c_str(), dat.port.c_str(),dat.nick.c_str(),dat.channel.c_str()));
 	
 	lggIrcThread* mThreadIRC = new lggIrcThread(dat);
