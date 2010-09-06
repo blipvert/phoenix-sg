@@ -262,7 +262,7 @@ class another_rebind
 std::map<std::string, int> get_gsaved_calls();
 #endif
 
-bool cmd_line_chat(std::string revised_text, EChatType type)
+bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 {
 	static BOOL *sPhoenixCmdLine = rebind_llcontrol<BOOL>("PhoenixCmdLine", &gSavedSettings, true);
 	static std::string *sPhoenixCmdLinePos = rebind_llcontrol<std::string>("PhoenixCmdLinePos", &gSavedSettings, true);
@@ -318,6 +318,11 @@ bool cmd_line_chat(std::string revised_text, EChatType type)
 			}
 			else if(command == *sPhoenixCmdLineDrawDistance)
 			{
+				if(from_gesture)
+				{
+					cmdline_printchat("Sorry but changing of draw distance from a gesture is no longer allowed");
+					return false;
+				}
                 int drawDist;
                 if(i >> drawDist)
                 {
