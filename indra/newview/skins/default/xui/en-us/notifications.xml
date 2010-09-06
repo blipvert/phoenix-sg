@@ -6030,10 +6030,10 @@ An object named [OBJECTFROMNAME] owned by (an unknown user) has given you a [OBJ
   </notification>
 
   <notification
-   icon="notifytip.tga"
+   icon="notify.tga"
    name="FriendshipDissolved"
-   type="notifytip">
-[NAME] dissolved friendship.
+   type="notify">
+    [NAME] dissolved your friendship.
   </notification>
 
   <notification
