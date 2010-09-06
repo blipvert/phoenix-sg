@@ -101,7 +101,11 @@
       Reference
     </combo_item>
   </combo_box>
-  <check_box bottom="-70" control_name="ScaleUniform" follows="left|top"
+    <button bottom="-51" follows="left|top" font="SansSerifSmall"
+       halign="center" valign="center"
+	     height="20" label="Options" label_selected="Options" left="190"
+	     mouse_opaque="true" name="Options..." scale_image="TRUE" width="60" />
+    <check_box bottom_delta="-17" control_name="ScaleUniform" follows="left|top"
 	     font="SansSerifSmall" height="16" initial_value="false"
 	     label="Stretch Both Sides" left="143" mouse_opaque="true"
 	     name="checkbox uniform" width="134" />
@@ -112,10 +116,12 @@
   <check_box bottom_delta="-17" control_name="SnapEnabled" follows="left|top"
 	     font="SansSerifSmall" height="16" initial_value="true" label="Use Grid"
 	     left_delta="0" mouse_opaque="true" name="checkbox snap to grid" width="134" />
-  <button bottom_delta="-19" follows="left|top" font="SansSerifSmall"
-       halign="center" valign="center"
-	     height="20" label="Options..." label_selected="Options..." left_delta="20"
-	     mouse_opaque="true" name="Options..." scale_image="TRUE" width="80" />
+  <check_box bottom_delta="-17" control_name="PhoenixBuildPrefs_ActualRoot" follows="left|top"
+    font="SansSerifSmall" height="16" initial_value="true" label="C.Mass @ root"
+    left_delta="0" mouse_opaque="true" name="checkbox actual root" width="134" />
+  <check_box bottom_delta="-17" control_name="PhoenixRenderHighlightSelections" follows="left|top"
+      font="SansSerifSmall" height="16" initial_value="true" label="Show Highlight"
+      left_delta="0" mouse_opaque="true" name="checkbox show highlight" width="134" />
 
   <!-- Help text -->
 
@@ -294,6 +300,14 @@
   <volume_slider bottom_delta="-4" follows="left|top" height="16" hidden="false"
 	     increment="0.1" initial_val="0.00" left="178" max_val="2.0" min_val="-1.0"
 	     mouse_opaque="true" name="slider force" width="80" />
+    <button bottom="-163" follows="left|top" font="SansSerifSmall" halign="center"
+	     height="20" label="&gt;&gt;" left="136" mouse_opaque="true"
+	     name="button more" scale_image="TRUE" tool_tip="Advanced Options"
+	     width="25" />
+  	<button bottom_delta="0" follows="left|top" font="SansSerifSmall" halign="center"
+	     height="20" label="&lt;&lt;" left_delta="0" mouse_opaque="true"
+	     name="button less" scale_image="TRUE" tool_tip="Advanced Options"
+	     width="25" />
   <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
          bottom="-151" left="118" drop_shadow_visible="true" follows="left|top"
          font="SansSerifSmall" h_pad="0" halign="right" height="16"
