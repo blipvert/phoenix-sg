@@ -4563,7 +4563,18 @@ void LLSelectMgr::processForceObjectSelect(LLMessageSystem* msg, void**)
 	// Don't select, just highlight
 	LLSelectMgr::getInstance()->highlightObjectAndFamily(objects);
 }
-
+//Banana:KC - I'll just put this back so it will work again
+void LLSelectMgr::enableSilhouette(BOOL enable)
+{
+	if(gSavedSettings.getBOOL("PhoenixRenderHighlightSelections"))
+	{
+		mRenderSilhouettes = enable;
+	}
+	else
+	{
+		mRenderSilhouettes = false;
+	}
+}
 
 extern LLGLdouble	gGLModelView[16];
 
