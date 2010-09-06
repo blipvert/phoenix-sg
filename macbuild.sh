@@ -33,7 +33,7 @@ copy_resources()
 {
         echo "Copying resources..."
 
-        cp -R $DEPENDENCY_DIR/cursors_mac Phoenix\ Viewer.app/Contents/Resources/
+#        cp -R $DEPENDENCY_DIR/cursors_mac Phoenix\ Viewer.app/Contents/Resources/
 
         if [ -n "$BUILD_RELEASE" ]; then
                 SETTINGS_FILE='settings_phoenix.xml'
@@ -46,7 +46,6 @@ copy_resources()
 # Sends output file to stdout
 make_disk_image()
 {
-	echo "Building disk image..."
         if [ -n "$BUILD_RELEASE" ]; then
                 IMAGE="release-template.dmg"
                 VOLUME_NAME="Phoenix Viewer $REVISION"
@@ -80,7 +79,6 @@ make_disk_image()
 # Sends output file to stdout
 make_package()
 {
-	echo "Making final package file..."
         if [ -z "$BUILD_RELEASE" ]; then
                 mv Phoenix\ Viewer.app Phoenix\ Viewer\ Beta.app
         fi
@@ -124,10 +122,10 @@ fi
 if [ $REVISION -eq 0 ]; then
 	while read line; do
         	if [[ ${line:0:8} == "parent: " ]]; then
-                	REVISION=$(echo ${line:8}|sed -e s':.*//')
+                	REVISION=$(echo ${line:8}|sed -e s'/:.*//')
 	        fi
 	done < <(hg summary)
-	if [ REVISION -eq 0 ]; then
+	if [ $REVISION -eq 0 ]; then
 	        echo "Could not determine Mercurial revision."
 	        exit 3
 	fi
