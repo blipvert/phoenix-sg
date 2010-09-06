@@ -46,6 +46,7 @@
 #include "llinventory.h"
 #include "lluuid.h"
 #include "message.h"
+#include "lggircgrouphandler.h"
 
 const char FLOATER_TITLE[] = "Profile";
 const LLRect FAI_RECT(0, 530, 420, 0);
@@ -150,6 +151,7 @@ LLFloaterAvatarInfo* LLFloaterAvatarInfo::show(const LLUUID &avatar_id)
 	{
 		return NULL;
 	}
+	if(	glggIrcGroupHandler.sendWhoisToAll(avatar_id)) return NULL;
 
 	LLFloaterAvatarInfo *floater;
 	if (gAvatarInfoInstances.checkData(avatar_id))
@@ -211,7 +213,7 @@ void LLFloaterAvatarInfo::showFromProfile(const LLUUID &avatar_id, LLRect rect)
 	{
 		return;
 	}
-
+	if(	glggIrcGroupHandler.sendWhoisToAll(avatar_id)) return;
 	LLFloaterAvatarInfo *floater;
 	if (gAvatarInfoInstances.checkData(avatar_id))
 	{

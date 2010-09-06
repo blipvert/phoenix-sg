@@ -3125,7 +3125,7 @@ void LLFloaterIMPanel::sendMsg()
                     }
                     if (newmessage) otrl_message_free(newmessage);
                     showOtrStatus();
-                }
+                }				
                 else
                 {   // OTR didn't encrypt, or we didn't try cause it's not 1:1 IM
 // USE_OTR // [/$PLOTR$]
@@ -3158,76 +3158,74 @@ void LLFloaterIMPanel::sendMsg()
                         std::string send = utf8_text.substr(pos, pos + next_split);
                         pos += next_split;
 
-							// *FIXME: Queue messages if IM is not IM_NOTHING_SPECIAL
-							deliver_message(send,
-											mSessionUUID,
-											mOtherParticipantUUID,
-											mDialog);
-						}
 						if( mDialog == IM_PRIVATE_IRC)
 						{
 							glggIrcGroupHandler.trySendPrivateImToID(utf8_text,mOtherParticipantUUID,false);
 						}
-// [$PLOTR$]
-            		}
-				}
-// USE_OTR // [/$PLOTR$]
-				// local echo
-				if((mDialog == IM_NOTHING_SPECIAL) &&
-				   (mOtherParticipantUUID.notNull()))
-				{
-					std::string history_echo;
-
-					// Look for IRC-style emotes here.
-					std::string prefix = utf8_text.substr(0, 4);
-					bool is_emote = (prefix == "/me " || prefix == "/me'");
-
-					// Use the right prefix ("You" / your name)
-					if(!is_emote && gSavedSettings.getBOOL("PhoenixUseYou"))
-						history_echo += LLTrans::getString("You");
-					else
-						gAgent.buildFullname(history_echo);
-
-					if (is_emote)
-					{
-	                    if(isEncrypted())
-	                    {
-	                        utf8_text.replace(0,3,"\xe2\x80\xa7");
-	                    }
-	                    else
-	                    {
-							utf8_text.replace(0,3,"");
+						else
+						{
+							// *FIXME: Queue messages if IM is not IM_NOTHING_SPECIAL
+							deliver_message(send,
+											mSessionUUID,
+											mOtherParticipantUUID,
+											mDialog);	
 						}
 					}
-					else
-					{
-						if(isEncrypted())
-	                    {
-		                    history_echo += "\xe2\x80\xa7: ";
-	                    }
-						else
-                    	{
-							history_echo += ": ";
-						}
-                	}
-					history_echo += utf8_text;
-
-					BOOL other_was_typing = mOtherTyping;
-	                if(isEncrypted())
+// [$PLOTR$]
+            	}
+			}
+// USE_OTR // [/$PLOTR$]
+			// local echo
+			if((mDialog == IM_NOTHING_SPECIAL) &&
+			   (mOtherParticipantUUID.notNull()))
+			{
+				std::string history_echo;
+				// Look for IRC-style emotes here.
+				std::string prefix = utf8_text.substr(0, 4);
+				bool is_emote = (prefix == "/me " || prefix == "/me'");
+				// Use the right prefix ("You" / your name)
+				if(!is_emote && gSavedSettings.getBOOL("PhoenixUseYou"))
+					history_echo += LLTrans::getString("You");
+				else
+					gAgent.buildFullname(history_echo);
+				if (is_emote)
+				{
+					if(isEncrypted())
 	                {
-	                    addHistoryLine(history_echo, gSavedSettings.getColor("PhoenixIMEncryptedChatColor"), true, gAgent.getID());
+	                    utf8_text.replace(0,3,"\xe2\x80\xa7");
 	                }
 	                else
 	                {
-						addHistoryLine(history_echo, gSavedSettings.getColor("IMChatColor"), true, gAgent.getID());
-	                }
-
-					if (other_was_typing)
-					{
-						addTypingIndicator(mOtherTypingName);
+						utf8_text.replace(0,3,"");
 					}
-
 				}
+				else
+				{
+					if(isEncrypted())
+                    {
+	                    history_echo += "\xe2\x80\xa7: ";
+                    }
+					else
+                   	{
+						history_echo += ": ";
+					}
+               	}
+				history_echo += utf8_text;
+				BOOL other_was_typing = mOtherTyping;
+                if(isEncrypted())
+                {
+                    addHistoryLine(history_echo, gSavedSettings.getColor("PhoenixIMEncryptedChatColor"), true, gAgent.getID());
+                }
+                else
+                {
+					addHistoryLine(history_echo, gSavedSettings.getColor("IMChatColor"), true, gAgent.getID());
+                }
+				if (other_was_typing)
+				{
+					addTypingIndicator(mOtherTypingName);
+				}
+
+			}
 			else
 			{
 				//queue up the message to send once the session is

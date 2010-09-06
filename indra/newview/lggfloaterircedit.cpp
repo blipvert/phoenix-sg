@@ -115,10 +115,10 @@ void lggFloaterIrcEdit::onClickHelp(void* data)
 BOOL lggFloaterIrcEdit::postBuild(void)
 {
 	//setCanMinimize(false);
-	childSetAction("EmeraldIRC_save",onClickSave,this);
-	childSetAction("EmeraldIRC_cancel",onClickCancel,this);
+	childSetAction("PhoenixIRC_save",onClickSave,this);
+	childSetAction("PhoenixIRC_cancel",onClickCancel,this);
 
-	initHelpBtn("EmeraldIRC_Help",	"EmeraldHelp_IRCSettings");
+	initHelpBtn("PhoenixIRC_Help",	"PhoenixHelp_IRCSettings");
 
 	
 	return true;
@@ -126,16 +126,16 @@ BOOL lggFloaterIrcEdit::postBuild(void)
 void lggFloaterIrcEdit::update(lggIrcData dat, void* data)
 {
 	caller = (lggPanelIRC*)data;
-	childSetValue("EmeraldIRC_nick",dat.nick);
-	childSetValue("EmeraldIRC_server",dat.server);
-	childSetValue("EmeraldIRC_password",dat.nickPassword);
-	childSetValue("EmeraldIRC_ServerPassword",dat.serverPassword);
-	childSetValue("EmeraldIRC_ChanPassword",dat.channelPassword);
-	childSetValue("EmeraldIRC_channel",dat.channel);
-	childSetValue("EmeraldIRC_tag",dat.name);
-	childSetValue("EmeraldIRC_port",dat.port);
+	childSetValue("PhoenixIRC_nick",dat.nick);
+	childSetValue("PhoenixIRC_server",dat.server);
+	childSetValue("PhoenixIRC_password",dat.nickPassword);
+	childSetValue("PhoenixIRC_ServerPassword",dat.serverPassword);
+	childSetValue("PhoenixIRC_ChanPassword",dat.channelPassword);
+	childSetValue("PhoenixIRC_channel",dat.channel);
+	childSetValue("PhoenixIRC_tag",dat.name);
+	childSetValue("PhoenixIRC_port",dat.port);
 
-	childSetValue("EmeraldIRC_AutoConnect",dat.autoLogin);
+	childSetValue("PhoenixIRC_AutoConnect",dat.autoLogin);
 
 }
 void lggFloaterIrcEdit::onClickSave(void* data)
@@ -145,15 +145,15 @@ void lggFloaterIrcEdit::onClickSave(void* data)
 	lggFloaterIrcEdit* self = (lggFloaterIrcEdit*)data;
 	//LLFilePicker& picker = LLFilePicker::instance();
 	lggIrcData dat(
-	self->childGetValue("EmeraldIRC_server"),	
-	self->childGetValue("EmeraldIRC_tag"),
-	self->childGetValue("EmeraldIRC_port"),
-	self->childGetValue("EmeraldIRC_nick"),	
-	self->childGetValue("EmeraldIRC_channel"),
-	self->childGetValue("EmeraldIRC_password"),
-	self->childGetValue("EmeraldIRC_ChanPassword"),
-	self->childGetValue("EmeraldIRC_ServerPassword"),
-	self->childGetValue("EmeraldIRC_AutoConnect").asBoolean(),
+	self->childGetValue("PhoenixIRC_server"),	
+	self->childGetValue("PhoenixIRC_tag"),
+	self->childGetValue("PhoenixIRC_port"),
+	self->childGetValue("PhoenixIRC_nick"),	
+	self->childGetValue("PhoenixIRC_channel"),
+	self->childGetValue("PhoenixIRC_password"),
+	self->childGetValue("PhoenixIRC_ChanPassword"),
+	self->childGetValue("PhoenixIRC_ServerPassword"),
+	self->childGetValue("PhoenixIRC_AutoConnect").asBoolean(),
 	LLUUID::generateNewID());
 
 	std::string path_name2(gDirUtilp->getExpandedFilename( LL_PATH_PER_SL_ACCOUNT , "IRCGroups", ""));
@@ -169,7 +169,7 @@ void lggFloaterIrcEdit::onClickSave(void* data)
 	export_file.close();
 	//lggPanelIRC* instance = (lggPanelIRC*)caller;	if(instance)	instance.refresh();
 	
-	//gSavedSettings.setString("EmeraldBeamShape",gDirUtilp->getBaseFileName(filename,true));
+	//gSavedSettings.setString("PhoenixBeamShape",gDirUtilp->getBaseFileName(filename,true));
 	if(self->caller)
 	{
 		self->caller->newList();

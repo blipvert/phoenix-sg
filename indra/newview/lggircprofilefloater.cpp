@@ -84,16 +84,16 @@ void lggIrcProfileFloater::setData(LLSD idata)
 {
 	myLLSDdata=idata;
 
-	getChild<LLLineEditor>("EmIRCProfile_WhoNick")->setValue(myLLSDdata["NICK"].asString());
-	getChild<LLLineEditor>("EmIRCProfile_WhoUser")->setValue(myLLSDdata["USER"].asString());
-	getChild<LLLineEditor>("EmIRCProfile_WhoHost")->setValue(myLLSDdata["HOST"].asString());
-	//childSetValue("EmIRCtxt_name",myLLSDdata["REALNAME"].asString());
-	//childSetText("EmIRCtxt_channels",myLLSDdata["CHANNELS"].asString());
-	getChild<LLLineEditor>("EmIRCProfile_WhoName")->setValue(myLLSDdata["REALNAME"].asString());
+	getChild<LLLineEditor>("PhIRCProfile_WhoNick")->setValue(myLLSDdata["NICK"].asString());
+	getChild<LLLineEditor>("PhIRCProfile_WhoUser")->setValue(myLLSDdata["USER"].asString());
+	getChild<LLLineEditor>("PhIRCProfile_WhoHost")->setValue(myLLSDdata["HOST"].asString());
+	//childSetValue("PhIRCtxt_name",myLLSDdata["REALNAME"].asString());
+	//childSetText("PhIRCtxt_channels",myLLSDdata["CHANNELS"].asString());
+	getChild<LLLineEditor>("PhIRCProfile_WhoName")->setValue(myLLSDdata["REALNAME"].asString());
 
-	getChild<LLLineEditor>("EmIRCProfile_WhoChanel")->setValue(myLLSDdata["CHANNELS"].asString());
-	getChild<LLLineEditor>("EmIRCProfile_WhoServer")->setValue(myLLSDdata["SERVERS"].asString());
-	getChild<LLLineEditor>("EmIRCProfile_WhoIdle")->setValue(myLLSDdata["IDLE"].asString());
+	getChild<LLLineEditor>("PhIRCProfile_WhoChanel")->setValue(myLLSDdata["CHANNELS"].asString());
+	getChild<LLLineEditor>("PhIRCProfile_WhoServer")->setValue(myLLSDdata["SERVERS"].asString());
+	getChild<LLLineEditor>("PhIRCProfile_WhoIdle")->setValue(myLLSDdata["IDLE"].asString());
 
 	setTitle("IRC Profile - "+myLLSDdata["NICK"].asString());
 }
@@ -112,18 +112,18 @@ lggIrcProfileFloater::lggIrcProfileFloater(const LLSD& seed)
 BOOL lggIrcProfileFloater::postBuild(void)
 {
 	//setCanMinimize(false);
-	childSetAction("EmeraldIRC_Profile_IM",onClickIM,this);
-	childSetAction("EmeraldIRC_Profile_Close",onClickClose,this);
+	childSetAction("PhoenixIRC_Profile_IM",onClickIM,this);
+	childSetAction("PhoenixIRC_Profile_Close",onClickClose,this);
 	
 	
 
-// 	childSetValue("EmIRCtxt_nick",myLLSDdata["NICK"]);
-// 	childSetValue("EmIRCtxt_user",myLLSDdata["USER"]);
-// 	childSetValue("EmIRCtxt_host",myLLSDdata["HOST"]);
-// 	childSetValue("EmIRCtxt_name",myLLSDdata["REALNAME"]);
-// 	childSetValue("EmIRCtxt_channels",myLLSDdata["CHANNELS"]);
-// 	childSetValue("EmIRCtxt_server",myLLSDdata["SERVERS"]);
-// 	childSetValue("EmIRCtxt_idle",myLLSDdata["IDLE"]);
+// 	childSetValue("PhIRCtxt_nick",myLLSDdata["NICK"]);
+// 	childSetValue("PhIRCtxt_user",myLLSDdata["USER"]);
+// 	childSetValue("PhIRCtxt_host",myLLSDdata["HOST"]);
+// 	childSetValue("PhIRCtxt_name",myLLSDdata["REALNAME"]);
+// 	childSetValue("PhIRCtxt_channels",myLLSDdata["CHANNELS"]);
+// 	childSetValue("PhIRCtxt_server",myLLSDdata["SERVERS"]);
+// 	childSetValue("PhIRCtxt_idle",myLLSDdata["IDLE"]);
 	// 
 	// 	args["NICK"] = nick;
 	// 	args["USER"] = user;
