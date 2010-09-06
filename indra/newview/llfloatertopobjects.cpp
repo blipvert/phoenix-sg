@@ -477,7 +477,7 @@ void LLFloaterTopObjects::onLagWarning(void* data)
 
 	std::string message = llformat(
 		"Hello %s, you are receiving this automated message because you are wearing heavily scripted attachments/HUDs, "
-		"causing excessive script lag (%5.2f ms, that's ca. %5.2f%% of the region's ressources.)\n\n"
+		"causing excessive script lag (%5.2f ms, that's ca. %5.2f%% of the region's resources.)\n\n"
 		"Please remove resizer scripts or attachments to reduce your script time, thank you.",
 		name.c_str(),
 		(F32)f_score,
