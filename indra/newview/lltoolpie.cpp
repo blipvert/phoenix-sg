@@ -166,10 +166,7 @@ BOOL LLToolPie::pickAndShowMenu(BOOL always_show)
 
 	if (mPick.mPickType != LLPickInfo::PICK_LAND)
 	{
-		if (!LLFloaterLand::isOpen())
-		{
-			LLViewerParcelMgr::getInstance()->deselectLand();
-		}
+		LLViewerParcelMgr::getInstance()->deselectLand();
 	}
 	
 	if (object)

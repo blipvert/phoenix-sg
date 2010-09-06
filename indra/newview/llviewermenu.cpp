@@ -8367,10 +8367,7 @@ BOOL LLViewerMenuHolderGL::hideMenus()
 	BOOL handled = LLMenuHolderGL::hideMenus();
 
 	// drop pie menu selection
-	if (!LLFloaterLand::isOpen())
-	{
-		mParcelSelection = NULL;
-	}
+	mParcelSelection = NULL;
 	mObjectSelection = NULL;
 
 	gMenuBarView->clearHoverItem();
