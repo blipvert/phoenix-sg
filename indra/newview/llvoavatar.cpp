@@ -3207,60 +3207,67 @@ void LLVOAvatar::resolveClient(LLColor4& avatar_name_color, std::string& client,
 	}else
 	{
 		//legacy code
-		if(idx == LLUUID("ccda2b3b-e72c-a112-e126-fee238b67218"))//green
+		if(idx == LLUUID("5d9581af-d615-bc16-2667-2f04f8eeefe4"))//green
 		{
 			avatar_name_color += LLColor4::green;//phoenix
 			avatar_name_color += LLColor4::green;
 			avatar_name_color = avatar_name_color * (F32)0.333333333333;
-			client = "Emerald";
+			client = "Phoenix";
 		}
-		else if(idx == LLUUID("1e0948ab-706a-b309-434c-a694436a79be"))//white
+		else if(idx == LLUUID("e35f7d40-6071-4b29-9727-5647bdafb5d5"))//white
 		{
 			avatar_name_color += LLColor4::white;//phoenix
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
 		}
-		else if(idx == LLUUID("072343d0-1ce9-0952-4106-5312af4a789a"))//pink
+		else if(idx == LLUUID("ae4e92fb-023d-23ba-d060-3403f953ab1a"))//pink
 		{
 			avatar_name_color += LLColor4::pink;//phoenix
 			avatar_name_color += LLColor4::pink;
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
 		}
-		else if(idx == LLUUID("1da8eb54-a70f-bd4a-77e5-c7b815c3b2a2"))//red
+		else if(idx == LLUUID("e71b780e-1a57-400d-4649-959f69ec7d51"))//red
 		{
 			avatar_name_color += LLColor4::red;//phoenix
 			avatar_name_color += LLColor4::red;
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
 		}
-		else if(idx == LLUUID("e741e2bf-cf8c-191c-97f2-b2709a843dfc"))//orange
+		else if(idx == LLUUID("c1c189f5-6dab-fc03-ea5a-f9f68f90b018"))//orange
 		{
 			avatar_name_color += LLColor4::orange;//phoenix
 			avatar_name_color += LLColor4::orange;
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
 		}
-		else if(idx == LLUUID("0ae2f973-98c1-a4e8-9f4b-9db2044ab079")) //purple
+		else if(idx == LLUUID("8cf0577c-22d3-6a73-523c-15c0a90d6c27")) //purple
 		{
 			avatar_name_color += LLColor4::purple;//phoenix
 			avatar_name_color += LLColor4::purple;
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
 		}
-		else if(idx == LLUUID("8078ffb3-840c-d037-caf3-5cd02c2e7040"))//yellow
+		else if(idx == LLUUID("5f0e7c32-38c3-9214-01f0-fb16a5b40128"))//yellow
 		{
 			avatar_name_color += LLColor4::yellow;//phoenix
 			avatar_name_color += LLColor4::yellow;
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
 		}
-		else if(idx == LLUUID("4eb67510-0924-ebb1-50ca-8af5694cd267"))//blue
+		else if(idx == LLUUID("5bb6e4a6-8e24-7c92-be2e-91419bb0ebcb"))//blue
 		{
 			avatar_name_color += LLColor4::blue;//phoenix
 			avatar_name_color += LLColor4::blue;
 			avatar_name_color = avatar_name_color * (F32)0.5;
-			client = "Emerald";
+			client = "Phoenix";
+		}
+		else if(idx == LLUUID("ed63fbd0-589e-fe1d-a3d0-16905efaa96b"))//default (red)
+		{
+			avatar_name_color += LLColor4::red;//phoenix
+			avatar_name_color += LLColor4::red;
+			avatar_name_color = avatar_name_color * (F32)0.5;
+			client = "Phoenix";
 		}
 	}
 	if(avatar->getTE(5)->getID() != avatar->getTE(6)->getID() && client != "" && avatar->isReallyFullyLoaded())

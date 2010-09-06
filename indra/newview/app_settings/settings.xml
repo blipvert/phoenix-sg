@@ -4,7 +4,7 @@
     <key>PhoenixShowOwnClientColor</key>
     <map>
       <key>Comment</key>
-      <string>Enable to mute gestures</string>
+      <string>Show your Clienttag Color to yourself</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
