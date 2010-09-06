@@ -5,9 +5,9 @@
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>.99</real>
+                    <real>.18</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
@@ -20,24 +20,24 @@
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>.99</real>
+                    <real>.18</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
                 <array>
                     <real>0</real>
-                    <real>22</real>
+                    <real>26</real>
                     <real>-27</real>
                 </array>
             </map>
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>.99</real>
+                    <real>.05</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
@@ -50,39 +50,39 @@
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
-                    <real>0</real>
-                    <real>3.1292438507080078e-007</real>
+                    <real>.99</real>
+                    <real>.05</real>
+                    <real></real>
                     <real>1</real>
                 </array>
             <key>offset</key>
                 <array>
                     <real>0</real>
-                    <real>22</real>
-                    <real>-83</real>
+                    <real>24</real>
+                    <real>-80</real>
                 </array>
             </map>
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>.99</real>
+                    <real>.12</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
                 <array>
                     <real>0</real>
-                    <real>-3</real>
+                    <real>0</real>
                     <real>-51</real>
                 </array>
             </map>
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>.99</real>
+                    <real>.51</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
@@ -95,24 +95,24 @@
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>.99</real>
+                    <real>.51</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
                 <array>
                     <real>0</real>
-                    <real>36</real>
-                    <real>106</real>
+                    <real>37</real>
+                    <real>107</real>
                 </array>
             </map>
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>.99</real>
+                    <real>.34</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
@@ -125,24 +125,24 @@
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>.99</real>
+                    <real>.34</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
                 <array>
                     <real>0</real>
-                    <real>-81</real>
-                    <real>43</real>
+                    <real>-78</real>
+                    <real>38</real>
                 </array>
             </map>
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>.99</real>
+                    <real>.25</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
@@ -155,9 +155,9 @@
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>.99</real>
+                    <real>.44</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
@@ -170,76 +170,76 @@
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>.99</real>
+                    <real>.44</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
                 <array>
                     <real>0</real>
                     <real>58</real>
-                    <real>75</real>
+                    <real>76</real>
                 </array>
             </map>
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>.99</real>
+                    <real>.25</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
                 <array>
                     <real>0</real>
-                    <real>61</real>
-                    <real>-1</real>
+                    <real>62</real>
+                    <real>4</real>
                 </array>
             </map>
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>0.8359375</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
+                    <real>2.989545464515686e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
                 <array>
                     <real>0</real>
-                    <real>-13</real>
-                    <real>25</real>
+                    <real>0</real>
+                    <real>-11</real>
                 </array>
             </map>
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>0.8359375</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
+                    <real>2.989545464515686e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
                 <array>
                     <real>0</real>
                     <real>10</real>
-                    <real>16</real>
+                    <real>14</real>
                 </array>
             </map>
             <map>
             <key>color</key>
                 <array>
-                    <real>0.875</real>
+                    <real>0.8359375</real>
                     <real>0</real>
-                    <real>3.1292438507080078e-007</real>
+                    <real>2.989545464515686e-007</real>
                     <real>1</real>
                 </array>
             <key>offset</key>
                 <array>
                     <real>0</real>
-                    <real>-12</real>
-                    <real>-17</real>
+                    <real>-8</real>
+                    <real>21</real>
                 </array>
             </map>
         </array>
