@@ -4607,9 +4607,19 @@ U32 LLVOAvatar::renderSkinned(EAvatarRenderPass pass)
 
 	if (pass == AVATAR_RENDER_PASS_SINGLE)
 	{
-		const bool should_alpha_mask = mSupportsAlphaLayers && mHasBakedHair
-									    && !LLDrawPoolAlpha::sShowDebugAlpha // Don't alpha mask if "Highlight Transparent" checked
-										&& !LLDrawPoolAvatar::sSkipTransparent;
+		static LLCachedControl<BOOL> PhoenixShowTransparentHidesAlpha("PhoenixShowTransparentHidesAlpha", 0);
+		bool should_alpha_mask;
+		if(PhoenixShowTransparentHidesAlpha)
+		{
+		    should_alpha_mask = mSupportsAlphaLayers && mHasBakedHair
+										    && !LLDrawPoolAvatar::sSkipTransparent;
+		}
+		else
+		{
+		    should_alpha_mask = mSupportsAlphaLayers && mHasBakedHair
+										&& !LLDrawPoolAlpha::sShowDebugAlpha // Don't alpha mask if "Highlight Transparent" checked
+										    && !LLDrawPoolAvatar::sSkipTransparent;
+		}
 
 		LLGLState test(GL_ALPHA_TEST, should_alpha_mask);
 
