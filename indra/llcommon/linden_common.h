@@ -66,12 +66,6 @@
 #include <vector>
 #include <string>
 
-#ifdef LL_WINDOWS
-// Reenable warnings we disabled above
-#pragma warning (3 : 4702) // unreachable code, we like level 3, not 4
-// moved msvc warnings to llpreprocessor.h  *TODO - delete this comment after merge conflicts are unlikely -brad
-#endif	//	LL_WINDOWS
-
 // Linden only libs in alpha-order other than stdtypes.h
 // *NOTE: Please keep includes here to a minimum, see above.
 #include "stdtypes.h"
