@@ -4,21 +4,6 @@ INDRA_DIR=$START_DIR/indra
 OUTPUT_DIR=$START_DIR/builds
 DEPENDENCY_DIR=$START_DIR/dependencies
 
-if [ $1 = "release" ]; then
-        echo "Building for release."
-        BUILD_RELEASE="yes"
-else
-        echo "Building beta."
-        BUILD_RELEASE=""
-fi
-
-if [ -z "$2" ]; then
-	echo "Usage: $0 <release|beta> buildnumber"
-	exit 1
-else
-	REVISION=$2
-fi
-
 configure()
 {
         echo "Configuring (for real)..."
@@ -30,10 +15,11 @@ set_channel()
 {
         if [ -z "$BUILD_RELEASE" ]; then
                 sed -e s/Internal/Beta/ -i '' llcommon/llversionviewer.h
+                echo "Setting beta channel..."
         else
                 sed -e s/Internal/Release/ -i '' llcommon/llversionviewer.h
+                echo "Setting release channel..."
         fi
-
         sed -e "s/LL_VERSION_BUILD = 0/LL_VERSION_BUILD = $REVISION/" -i '' llcommon/llversionviewer.h
 }
 
@@ -47,7 +33,7 @@ copy_resources()
 {
         echo "Copying resources..."
 
-        cp -R $DEPENDENCY_DIR/cursors_mac Phoenix\ Viewer.app/Contents/Resources/
+#        cp -R $DEPENDENCY_DIR/cursors_mac Phoenix\ Viewer.app/Contents/Resources/
 
         if [ -n "$BUILD_RELEASE" ]; then
                 SETTINGS_FILE='settings_phoenix.xml'
@@ -106,41 +92,48 @@ upload()
         echo "The final package can be found at $1."
 }
 
-#This function needs to be changed to hg, also we're not longer using a /linden folder... -phox
-#cd "$START_DIR/linden"
-#if [ -z $1 ]; then
-#        svn up
-#else
-#        svn up -r$1
-#fi
-#
-#if [ $? -ne 0 ]; then
-#        echo "Couldn't update from subversion."
-#        exit 1
-#fi
-#
-#REAL_REVISION=0
-#while read line; do
-#        substring=${line:0:10}
-#        if [[ $substring == "Revision: " ]]; then
-#                REAL_REVISION=${line:10:4}
-#        fi
-#done < <(svn info)
-#if [ $REAL_REVISION -eq 0 ]; then
-#        echo "Could not determine svn revision."
-#        exit 2
-#fi
-#
-#if [ -z $REVISION ]; then
-#        REVISION=$REAL_REVISION
-#fi
+case "$1" in
+	release)
+	        echo "Building for release."
+        	BUILD_RELEASE="yes"
+        	;;
+	beta)
+	        echo "Building beta."
+        	BUILD_RELEASE=""
+        	;;
+        *)
+		echo "Usage: $0 {beta|release} [revision]"
+		exit 1
+		;;
+esac
+
+if [ -z "$2" ]; then
+	REVISION=0
+	hg update
+else
+	REVISION=$2
+	hg update -r $REVISION
+fi
+
+if [ $? -ne 0 ]; then
+        echo "Couldn't update from Mercurial."
+        exit 2
+fi
+if [ $REVISION -eq 0 ]; then
+	while read line; do
+        	if [[ ${line:0:8} == "parent: " ]]; then
+                	REVISION=$(echo ${line:8}|sed -e s'/:.*//')
+	        fi
+	done < <(hg summary)
+	if [ $REVISION -eq 0 ]; then
+	        echo "Could not determine Mercurial revision."
+	        exit 3
+	fi
+fi
+echo "Retrieved Mercurial revision $REVISION."
 
 echo "Preparing..."
 rm installed.xml 2>/dev/null
-
-#echo "Building revision $REVISION."
-echo "Building..."
-cd indra
 
 if [ -z $SKIP_INTEL ]; then
         echo "------------------------------------------"
@@ -156,8 +149,7 @@ if [ -z $SKIP_INTEL ]; then
         cd build-darwin-i386
         set_channel
         build
-        BUILD_SUCCESS=$?
-        if [ $BUILD_SUCCESS -eq 0 ]; then
+        if [ $? -eq 0 ]; then
                 cd newview/Release
                 copy_resources
 
@@ -177,12 +169,12 @@ if [ -z $SKIP_INTEL ]; then
                 echo "Packaging..."
                 RESULT="$(make_package Intel)"
                 upload "$RESULT"
-                echo "Done Intel."
+                echo "Intel build succeeded."
         else
-                echo "Intel build failed :<"
+                echo "Intel build failed."
         fi
 else
-        echo "Skipped intel build."
+        echo "Intel build skipped."
 fi
 
 # Some cleanup.
