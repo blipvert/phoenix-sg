@@ -7114,7 +7114,7 @@ Instruct everyone else you wish to connect to to type in the same information as
 Settings Tag: This is the name of the group chat, it will appear under the irc tab for you to identify by
 Nick: This is like a user name, choose one that is not already picked by someone else
 Nick Password: This is not your sl password.  Some servers allow you to keep a nick, even after you log off (look at /msg nickserv help for more information)
-Server: This is the server you would like to connect to.  You are free to use the modular systems server, or anyone you want here.
+Server: This is the server you would like to connect to.  You are free to use the Phoenix Viewer server, or anyone you want here.
 Server Password: Some servers require a password (most don't) to connect, put that here
 Channel: This is like the chat room name you wish to join.
 Channel Password: You can set up a channel to have a password by (/msg ChanServ), if you have, place it here.
