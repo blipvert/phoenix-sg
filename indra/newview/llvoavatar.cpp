@@ -4627,7 +4627,7 @@ U32 LLVOAvatar::renderSkinned(EAvatarRenderPass pass)
 
 	if (pass == AVATAR_RENDER_PASS_SINGLE)
 	{
-		static bool PhoenixShowTransparentHidesAlpha = gSavedSettings.getBOOL("PhoenixShowTransparentHidesAlpha");
+		static LLCachedControl<BOOL> PhoenixShowTransparentHidesAlpha("PhoenixShowTransparentHidesAlpha", 0);
 		bool should_alpha_mask;
 		if(PhoenixShowTransparentHidesAlpha)
 		{
