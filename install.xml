@@ -23,16 +23,16 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>gewrgwerge</string>
+						<string>406d74f98a40a4c63dcf2611acda5b96</string>
 						<key>url</key>
-						<uri>gwergerg</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/hunspell-1.2-linux-20100503.tar.bz2</uri>
 					</map>
 					<key>darwin</key>
 					<map>
 						<key>md5sum</key>
-						<string>9gwergfwerg</string>
+						<string>9b970abfc9df40ad6d183a4b1f732fb2</string>
 						<key>url</key>
-						<uri>khrfijerw</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/hunspell-1.2-darwin.tar.gz</uri>
 					</map>
 				</map>
 			</map>
@@ -49,16 +49,16 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>egferff</string>
+						<string>f51e2295cc1f88700d79f618be4b5c22</string>
 						<key>url</key>
-						<uri>ferwfgerf</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/libotr-2.2.0-linux-20100522.tar.bz2</uri>
 					</map>
 					<key>darwin</key>
 					<map>
 						<key>md5sum</key>
-						<string>ferwferfers</string>
+						<string>6e68314811d65a2e0ef3e338e1084f39</string>
 						<key>url</key>
-						<uri>ferwgferafs</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/libotr-darwin.tar.bz2</uri>
 					</map>
 				</map>
 			</map>
@@ -75,23 +75,23 @@
 					<key>darwin</key>
 					<map>
 						<key>md5sum</key>
-						<string>ferfsdfer</string>
+						<string>333023a47a79b6b70f28f2cb98bc7b53</string>
 						<key>url</key>
-						<uri>fsergferdcce</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/growl-1.2.1-darwin.bz2</uri>
 					</map>
 					<key>windows</key>
 					<map>
 						<key>md5sum</key>
-						<string>ewferdwareg</string>
+						<string>b017cc5f759eaeb862a8b94d43a39c04</string>
 						<key>url</key>
-						<uri>edfcsderg</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/lggemwingrowllibraries.tar.bz2</uri>
 					</map>
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>dwerdgdegcfse</string>
+						<string>dc389633048895349aea262cacf02e0a</string>
 						<key>url</key>
-						<uri>rtesrergers</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/libnotify-1.1.2-linux-20100522.tar.bz2</uri>
 					</map>
 				</map>
 			</map>
@@ -108,16 +108,16 @@
 					<key>darwin</key>
 					<map>
 						<key>md5sum</key>
-						<string>gersfdrsgfs</string>
+						<string>aa767999e0d405bdaed01fe3f7442dd9</string>
 						<key>url</key>
-						<uri>gdressdgfdgs</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/7zip-4.57-20100630.tar.bz2</uri>
 					</map>
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>fesfrdgfds</string>
+						<string>01a9b00d2052deae0c5914f1dfede38a</string>
 						<key>url</key>
-						<uri>gerssferdgfsz</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/p7zip-standalone-linux.tar.bz2</uri>
 					</map>
 				</map>
 			</map>
@@ -325,16 +325,16 @@
 					<key>darwin</key>
 					<map>
 						<key>md5sum</key>
-						<string>fdersfdsdd</string>
+						<string>51c98844053b718c40456bbe90d4fc51</string>
 						<key>url</key>
-						<uri>gdsererdgf/uri>
+						<uri>http://dev.phoenixviewer.com/libraries/boost-1.41.0-darwin-20091229.tar.bz2</uri>
 					</map>
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>grsefdfegf</string>
+						<string>74ac724e8197d85928604757c4a28ca1</string>
 						<key>url</key>
-						<uri>dfgftrdg</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/boost-1.39.0-linux-20100405.tar.bz2</uri>
 					</map>
 					<key>windows</key>
 					<map>
@@ -417,10 +417,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>gerfdgdtretrsdrf</string>
+						<string>c2e2c2aa40bbd92f4d3b939ebd963aa2</string>
 						<key>url</key>
-						<uri>gfdrtasdrfgh</uri>
-						<uri>gfdrtasdrfgh</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/dbus-glib-2.1.0-linux-20100523.tar.bz2</uri>
 					</map>
 				</map>
 			</map>
@@ -725,9 +724,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>ersfrges</string>
+						<string>5286e04c3fbc7c11b5e9390131e63a46</string>
 						<key>url</key>
-						<uri>grdsdgtrsewwaesrd</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/gtk-build-libs-linux-20100523.tar.bz2</uri>
 					</map>
 					<key>windows</key>
 					<map>
