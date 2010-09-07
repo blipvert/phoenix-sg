@@ -31,6 +31,21 @@
 
 #include <map>
 
+class ModularSystemsDownloader : public LLHTTPClient::Responder
+{
+public:
+	ModularSystemsDownloader(void (*callback)(U32, std::string));
+	~ModularSystemsDownloader();
+	virtual void error(U32 status, const std::string& reason);
+	virtual void completedRaw(
+		U32 status,
+		const std::string& reason,
+		const LLChannelDescriptors& channels,
+		const LLIOPipe::buffer_ptr_t& buffer);
+private:
+	void	(*mCallback)(U32, std::string);
+};
+
 class PhoenixViewerLink
 {
 	PhoenixViewerLink();
@@ -40,6 +55,7 @@ public:
 	static PhoenixViewerLink* getInstance();
 
 	void start_download();
+	void downloadClientTags();
 
 	static void msdata(U32 status, std::string body);
 	static void msblacklistquery(U32 status, std::string body);
@@ -74,17 +90,4 @@ private:
 
 };
 
-class ModularSystemsDownloader : public LLHTTPClient::Responder
-{
-public:
-	ModularSystemsDownloader(void (*callback)(U32, std::string));
-	~ModularSystemsDownloader();
-	virtual void error(U32 status, const std::string& reason);
-	virtual void completedRaw(
-			U32 status,
-			const std::string& reason,
-			const LLChannelDescriptors& channels,
-			const LLIOPipe::buffer_ptr_t& buffer);
-private:
-	void	(*mCallback)(U32, std::string);
-};
+

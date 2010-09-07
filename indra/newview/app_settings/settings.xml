@@ -12,6 +12,17 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
+    <key>PhoenixDontUseMultipleColorTags</key>
+    <map>
+      <key>Comment</key>
+      <string>All viewers only show as the default color</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
 		<key>DiamondShowGroupNameInChatIM</key>
 		<map>
 			<key>Comment</key>

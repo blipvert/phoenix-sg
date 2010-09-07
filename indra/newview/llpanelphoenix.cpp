@@ -209,6 +209,8 @@ BOOL LLPanelPhoenix::postBuild()
 
 	getChild<LLComboBox>("PhoenixSpellBase")->setCommitCallback(onSpellBaseComboBoxCommit);
 
+	getChild<LLCheckBoxCtrl>("ColorTagsClient_toggle")->setCommitCallback(onTagsBoxCommit);
+
 		
 	//childSetCommitCallback("material",onComboBoxCommit);
 	//childSetCommitCallback("combobox shininess",onComboBoxCommit);
@@ -602,12 +604,16 @@ void LLPanelPhoenix::onTagComboBoxCommit(LLUICtrl* ctrl, void* userdata)
 }
 void LLPanelPhoenix::onComboBoxCommit(LLUICtrl* ctrl, void* userdata)
 {
-	
+
 	LLComboBox* box = (LLComboBox*)ctrl;
 	if(box)
 	{
 		gSavedSettings.setString(box->getControlName(),box->getValue().asString());
 	}	
+}
+void LLPanelPhoenix::onTagsBoxCommit(LLUICtrl* ctrl, void* userdata)
+{
+	PhoenixViewerLink::getInstance()->downloadClientTags();
 }
 void LLPanelPhoenix::onSpellBaseComboBoxCommit(LLUICtrl* ctrl, void* userdata)
 {
