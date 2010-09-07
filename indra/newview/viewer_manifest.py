@@ -795,6 +795,10 @@ class LinuxManifest(ViewerManifest):
             else:
                 installer_name += '_' + self.channel_oneword().upper()
 
+        if self.args['buildtype'].lower() == 'release':
+            print "* Going strip-crazy on the packaged binaries, since this is a RELEASE build"
+            self.run_command("find %(d)r/bin %(d)r/lib -type f | xargs --no-run-if-empty strip -S" % {'d': self.get_dst_prefix()} ) # makes some small assumptions about our packaged dir structure
+
         # Fix access permissions
         self.run_command("""
                 find '%(dst)s' -type d -print0 | xargs -0 --no-run-if-empty chmod 755;
