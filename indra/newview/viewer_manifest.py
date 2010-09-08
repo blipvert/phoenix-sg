@@ -180,49 +180,147 @@ class WindowsManifest(ViewerManifest):
         else:
             return ''.join(self.channel().split()) + '.exe'
 
+    def test_msvcrt_and_copy_action(self, src, dst):
+        # This is used to test a dll manifest.
+        # It is used as a temporary override during the construct method
+        from test_win32_manifest import test_assembly_binding
+        if src and (os.path.exists(src) or os.path.islink(src)):
+            # ensure that destination path exists
+            self.cmakedirs(os.path.dirname(dst))
+            self.created_paths.append(dst)
+            if not os.path.isdir(src):
+                if(self.args['configuration'].lower() == 'debug'):
+                    test_assembly_binding(src, "Microsoft.VC80.DebugCRT", "8.0.50727.4053")
+                else:
+                    test_assembly_binding(src, "Microsoft.VC80.CRT", "8.0.50727.4053")
+                self.ccopy(src,dst)
+            else:
+                raise Exception("Directories are not supported by test_CRT_and_copy_action()")
+        else:
+            print "Doesn't exist:", src
+
+    def test_for_no_msvcrt_manifest_and_copy_action(self, src, dst):
+        # This is used to test that no manifest for the msvcrt exists.
+        # It is used as a temporary override during the construct method
+        from test_win32_manifest import test_assembly_binding
+        from test_win32_manifest import NoManifestException, NoMatchingAssemblyException
+        if src and (os.path.exists(src) or os.path.islink(src)):
+            # ensure that destination path exists
+            self.cmakedirs(os.path.dirname(dst))
+            self.created_paths.append(dst)
+            if not os.path.isdir(src):
+                try:
+                    if(self.args['configuration'].lower() == 'debug'):
+                        test_assembly_binding(src, "Microsoft.VC80.DebugCRT", "")
+                    else:
+                        test_assembly_binding(src, "Microsoft.VC80.CRT", "")
+                    raise Exception("Unknown condition")
+                except NoManifestException, err:
+                    pass
+                except NoMatchingAssemblyException, err:
+                    pass
+                    
+                self.ccopy(src,dst)
+            else:
+                raise Exception("Directories are not supported by test_CRT_and_copy_action()")
+        else:
+            print "Doesn't exist:", src
+        
+    def enable_crt_manifest_check(self):
+        if self.is_packaging_viewer():
+           WindowsManifest.copy_action = WindowsManifest.test_msvcrt_and_copy_action
+
+    def enable_no_crt_manifest_check(self):
+        if self.is_packaging_viewer():
+            WindowsManifest.copy_action = WindowsManifest.test_for_no_msvcrt_manifest_and_copy_action
+
+    def disable_manifest_check(self):
+        if self.is_packaging_viewer():
+            del WindowsManifest.copy_action
 
     def construct(self):
         super(WindowsManifest, self).construct()
-        # the final exe is complicated because we're not sure where it's coming from,
-        # nor do we have a fixed name for the executable
-        self.path(self.find_existing_file('debug/secondlife-bin.exe', 'release/secondlife-bin.exe', 'relwithdebinfo/secondlife-bin.exe'), dst=self.final_exe())
+        
+        self.enable_crt_manifest_check()
 
         # Plugin host application
         self.path(os.path.join(os.pardir,
                                'llplugin', 'slplugin', self.args['configuration'], "SLPlugin.exe"),
                   "SLPlugin.exe")
         
-      	# need to get the kdu dll from any of the build directories as well
-        try:
-            self.path(self.find_existing_file('../llkdu/%s/llkdu.dll' % self.args['configuration'],
-                '../../libraries/i686-win32/lib/release/llkdu.dll'), 
-                  dst='llkdu.dll')
-            pass
-        except:
-            print "Skipping llkdu.dll"
-            pass
-        self.path(src="licenses-win32.txt", dst="licenses.txt")
+        self.disable_manifest_check()
 
+        # Get shared libs from the shared libs staging directory
+        if self.prefix(src=os.path.join(os.pardir, 'sharedlibs', self.args['configuration']),
+                       dst=""):
+
+            self.enable_crt_manifest_check()
+
+            # Get llcommon and deps. If missing assume static linkage and continue.
+            try:
+                self.path('llcommon.dll')
+                self.path('libapr-1.dll')
+                self.path('libaprutil-1.dll')
+                self.path('libapriconv-1.dll')
+            except RuntimeError, err:
+                print err.message
+                print "Skipping llcommon.dll (assuming llcommon was linked statically)"
+
+            self.disable_manifest_check()
+
+            # For textures
+            if self.args['configuration'].lower() == 'debug':
+                self.path("openjpegd.dll")
+            else:
+                self.path("openjpeg.dll")
+
+            try:
+                # These need to be installed as a SxS assembly, currently a 'private' assembly.
+                # See http://msdn.microsoft.com/en-us/library/ms235291(VS.80).aspx
+                if self.args['configuration'].lower() == 'debug':
+                    self.path("msvcr80d.dll")
+                    self.path("msvcp80d.dll")
+                    self.path("Microsoft.VC80.DebugCRT.manifest")
+                else:
+                    self.path("msvcr80.dll")
+                    self.path("msvcp80.dll")
+                    self.path("Microsoft.VC80.CRT.manifest")
+            except RuntimeError:
+                print "WARNING: not copying VC runtimes to staging area, this will fail if you make an installer from this staging"
+
+            # For google-perftools tcmalloc allocator.
+            try:
+                if self.args['configuration'].lower() == 'debug':
+                    self.path('libtcmalloc_minimal-debug.dll')
+                else:
+                    self.path('libtcmalloc_minimal.dll')
+            except:
+                print "Skipping libtcmalloc_minimal.dll"
+
+            self.end_prefix()
+
+        self.path(src="licenses-win32.txt", dst="licenses.txt")
         self.path("featuretable.txt")
 
         # For use in crash reporting (generates minidumps)
         self.path("dbghelp.dll")
 
-        # For using FMOD for sound... DJS
-        self.path("fmod.dll")
-
-        # Get llcommon and deps.
-        if self.prefix(src=self.args['configuration'], dst=""):
-            self.path('libapr-1.dll')
-            self.path('libaprutil-1.dll')
-            self.path('libapriconv-1.dll')
-            self.path('llcommon.dll')
+        try:
+            # For using FMOD for sound... DJS
+            self.path("fmod.dll")
+        except:
+            print("Skipping FMOD not found")
+        
+        # Vivox runtimes
+        if self.prefix(src="vivox-runtime/i686-win32", dst=""):
+            self.path("SLVoice.exe")
+            self.path("alut.dll")
+            self.path("vivoxsdk.dll")
+            self.path("ortp.dll")
+            self.path("wrap_oal.dll")
             self.end_prefix()
 
-        # For textures
-        if self.prefix(src="../../libraries/i686-win32/lib/release", dst=""):
-            self.path("openjpeg.dll")
-            self.end_prefix()
+        self.enable_no_crt_manifest_check()
 
         # Media plugins - QuickTime
         if self.prefix(src='../media_plugins/quicktime/%s' % self.args['configuration'], dst="llplugin"):
@@ -234,72 +332,83 @@ class WindowsManifest(ViewerManifest):
             self.path("media_plugin_webkit.dll")
             self.end_prefix()
             
-        # For WebKit/Qt plugin runtimes
-        if self.prefix(src="../../libraries/i686-win32/lib/release", dst="llplugin"):
-            self.path("libeay32.dll")
-            self.path("qtcore4.dll")
-            self.path("qtgui4.dll")
-            self.path("qtnetwork4.dll")
-            self.path("qtopengl4.dll")
-            self.path("qtwebkit4.dll")
-            self.path("ssleay32.dll")
-            self.end_prefix()
+        if self.args['configuration'].lower() == 'debug':
+            if self.prefix(src=os.path.join(os.pardir, os.pardir, 'libraries', 'i686-win32', 'lib', 'debug'),
+                           dst="llplugin"):
+                self.path("libeay32.dll")
+                self.path("qtcored4.dll")
+                self.path("qtguid4.dll")
+                self.path("qtnetworkd4.dll")
+                self.path("qtopengld4.dll")
+                self.path("qtwebkitd4.dll")
+                self.path("qtxmlpatternsd4.dll")
+                self.path("ssleay32.dll")
 
-        # For WebKit/Qt plugin runtimes (image format plugins)
-        if self.prefix(src="../../libraries/i686-win32/lib/release/imageformats", dst="llplugin/imageformats"):
-            self.path("qgif4.dll")
-            self.path("qico4.dll")
-            self.path("qjpeg4.dll")
-            self.path("qmng4.dll")
-            self.path("qsvg4.dll")
-            self.path("qtiff4.dll")
-            self.end_prefix()
+                # For WebKit/Qt plugin runtimes (image format plugins)
+                if self.prefix(src="imageformats", dst="imageformats"):
+                    self.path("qgifd4.dll")
+                    self.path("qicod4.dll")
+                    self.path("qjpegd4.dll")
+                    self.path("qmngd4.dll")
+                    self.path("qsvgd4.dll")
+                    self.path("qtiffd4.dll")
+                    self.end_prefix()
+
+                # For WebKit/Qt plugin runtimes (codec/character encoding plugins)
+                if self.prefix(src="codecs", dst="codecs"):
+                    self.path("qcncodecsd4.dll")
+                    self.path("qjpcodecsd4.dll")
+                    self.path("qkrcodecsd4.dll")
+                    self.path("qtwcodecsd4.dll")
+                    self.end_prefix()
+
+                self.end_prefix()
+        else:
+            if self.prefix(src=os.path.join(os.pardir, os.pardir, 'libraries', 'i686-win32', 'lib', 'release'),
+                           dst="llplugin"):
+                self.path("libeay32.dll")
+                self.path("qtcore4.dll")
+                self.path("qtgui4.dll")
+                self.path("qtnetwork4.dll")
+                self.path("qtopengl4.dll")
+                self.path("qtwebkit4.dll")
+                self.path("qtxmlpatterns4.dll")
+                self.path("ssleay32.dll")
+
+                # For WebKit/Qt plugin runtimes (image format plugins)
+                if self.prefix(src="imageformats", dst="imageformats"):
+                    self.path("qgif4.dll")
+                    self.path("qico4.dll")
+                    self.path("qjpeg4.dll")
+                    self.path("qmng4.dll")
+                    self.path("qsvg4.dll")
+                    self.path("qtiff4.dll")
+                    self.end_prefix()
+
+                # For WebKit/Qt plugin runtimes (codec/character encoding plugins)
+                if self.prefix(src="codecs", dst="codecs"):
+                    self.path("qcncodecs4.dll")
+                    self.path("qjpcodecs4.dll")
+                    self.path("qkrcodecs4.dll")
+                    self.path("qtwcodecs4.dll")
+                    self.end_prefix()
+
+                self.end_prefix()
+
+        self.disable_manifest_check()
 
         # Per platform MIME config on the cheap.  See SNOW-307 / DEV-41388
         self.path("skins/default/xui/en-us/mime_types_windows.xml", "skins/default/xui/en-us/mime_types.xml")
 
-        # These need to be installed as a SxS assembly, currently a 'private' assembly.
-        # See http://msdn.microsoft.com/en-us/library/ms235291(VS.80).aspx
-        if self.prefix(src=self.args['configuration'], dst=""):
-            if self.args['configuration'] == 'Debug':
-                self.path("msvcr80d.dll")
-                self.path("msvcp80d.dll")
-                self.path("Microsoft.VC80.DebugCRT.manifest")
-            else:
-                self.path("msvcr80.dll")
-                self.path("msvcp80.dll")
-                self.path("Microsoft.VC80.CRT.manifest")
-            self.end_prefix()
-
         # The config file name needs to match the exe's name.
         self.path(src="%s/secondlife-bin.exe.config" % self.args['configuration'], dst=self.final_exe() + ".config")
 
-        # Vivox runtimes
-        if self.prefix(src="vivox-runtime/i686-win32", dst=""):
-            self.path("SLVoice.exe")
-            self.path("alut.dll")
-            self.path("vivoxsdk.dll")
-            self.path("ortp.dll")
-            self.path("wrap_oal.dll")
-            self.end_prefix()
-
         # pull in the crash logger and updater from other projects
-        self.path(src=self.find_existing_file( # tag:"crash-logger" here as a cue to the exporter
-                "../win_crash_logger/debug/windows-crash-logger.exe",
-                "../win_crash_logger/release/windows-crash-logger.exe",
-                "../win_crash_logger/relwithdebinfo/windows-crash-logger.exe"),
+        # tag:"crash-logger" here as a cue to the exporter
+        self.path(src='../win_crash_logger/%s/windows-crash-logger.exe' % self.args['configuration'],
                   dst="win_crash_logger.exe")
-        self.path(src=self.find_existing_file(
-                "../win_updater/debug/windows-updater.exe",
-                "../win_updater/release/windows-updater.exe",
-                "../win_updater/relwithdebinfo/windows-updater.exe"),
+        self.path(src='../win_updater/%s/windows-updater.exe' % self.args['configuration'],
                   dst="updater.exe")
-
-        # For google-perftools tcmalloc allocator.
-        #if self.prefix(src="../../libraries/i686-win32/lib/release", dst=""):
-        #        self.path("libtcmalloc_minimal.dll")
-        #        self.end_prefix()
-
 
     def nsi_file_commands(self, install=True):
         def wpath(path):
@@ -439,15 +548,24 @@ class WindowsManifest(ViewerManifest):
 
         # We use the Unicode version of NSIS, available from
         # http://www.scratchpaper.com/
-        NSIS_path = 'C:\\Program Files\\NSIS\\Unicode\\makensis.exe'
+        # Check two paths, one for Program Files, and one for Program Files (x86).
+        # Yay 64bit windows.
+        NSIS_path = os.path.expandvars('${ProgramFiles}\\NSIS\\Unicode\\makensis.exe')
+        if not os.path.exists(NSIS_path):
+            NSIS_path = os.path.expandvars('${ProgramFiles(x86)}\\NSIS\\Unicode\\makensis.exe')
         self.run_command('"' + proper_windows_path(NSIS_path) + '" ' + self.dst_path_of(tempfile))
         # self.remove(self.dst_path_of(tempfile))
         # If we're on a build machine, sign the code using our Authenticode certificate. JC
-        sign_py = os.path.expandvars("{SIGN_PY}")
-        if sign_py == "" or sign_py == "{SIGN_PY}":
+        sign_py = os.path.expandvars("${SIGN}")
+        if not sign_py or sign_py == "${SIGN}":
             sign_py = 'C:\\buildscripts\\code-signing\\sign.py'
+        else:
+            sign_py = sign_py.replace('\\', '\\\\\\\\')
+        python = os.path.expandvars("${PYTHON}")
+        if not python or python == "${PYTHON}":
+            python = 'python'
         if os.path.exists(sign_py):
-            self.run_command('python ' + sign_py + ' ' + self.dst_path_of(installer_file))
+            self.run_command("%s %s %s" % (python, sign_py, self.dst_path_of(installer_file).replace('\\', '\\\\\\\\')))
         else:
             print "Skipping code signing,", sign_py, "does not exist"
         self.created_path(self.dst_path_of(installer_file))
