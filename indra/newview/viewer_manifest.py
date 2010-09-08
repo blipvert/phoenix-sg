@@ -885,8 +885,8 @@ class LinuxManifest(ViewerManifest):
 
         self.path("featuretable_linux.txt")
 
-	# Standalone 7zip binary
-	self.path("linux_tools/7za", "bin/7za")
+        # Standalone 7zip binary
+        self.path("linux_tools/7za", "bin/7za")
 
     def wrapper_name(self):
         mapping={"secondlife":"secondlife",
