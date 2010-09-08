@@ -51,14 +51,7 @@ lggIrcData lggIrcData::fromLLSD(LLSD inputData)
 	if(inputData.has("ircnickpassword")) toReturn.nickPassword = inputData["ircnickpassword"].asString();
 	if(inputData.has("ircchannelpassword")) toReturn.channelPassword = inputData["ircchannelpassword"].asString();
 	if(inputData.has("ircserverpassword")) toReturn.serverPassword = inputData["ircserverpassword"].asString();
-	if(inputData.has("ircautologin"))
-	{
-		toReturn.autoLogin = inputData["ircautologin"].asBoolean();
-	}
-	else
-	{
-		toReturn.autoLogin = false;
-	}
+	if(inputData.has("ircautologin")) toReturn.autoLogin = inputData["ircautologin"].asBoolean();
 	if(inputData.has("ircid")) toReturn.id = LLUUID(inputData["ircid"].asString());
 	//support for legacy format
 	if(inputData.has("ircpassword")) toReturn.nickPassword = inputData["ircpassword"].asString();

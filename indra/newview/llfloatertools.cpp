@@ -185,7 +185,7 @@ BOOL	LLFloaterTools::postBuild()
 	// make sounds on visibility changes.
 	setSoundFlags(LLView::SILENT);
 
-	getDragHandle()->setEnabled( !gSavedSettings.getBOOL("ToolboxAutoMove") );
+	getDragHandle()->setEnabled( true );
 
 	LLRect rect;
 	mBtnFocus = getChild<LLButton>("button focus");//btn;

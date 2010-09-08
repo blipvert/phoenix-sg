@@ -36,6 +36,7 @@
 #include "llagent.h"
 #include "llsdserialize.h"
 #include "llimview.h"
+#include "llviewercontrol.h"
 using namespace std;
 
 lggIrcGroupHandler glggIrcGroupHandler;
@@ -161,7 +162,7 @@ void lggIrcGroupHandler::startUpAutoRunIRC()
 		{
 
 			toReturn = getIrcGroupInfo(name.erase(name.length()-4));
-			if(toReturn.autoLogin)
+			if(toReturn.autoLogin && (gSavedSettings.getBOOL("PhoenixIRC_AutoConnect")))
 			{
 				startUpIRCListener(toReturn);
 			}
@@ -175,7 +176,7 @@ void lggIrcGroupHandler::startUpAutoRunIRC()
 		if(found)
 		{
 			toReturn = getIrcGroupInfo(name.erase(name.length()-4));
-			if(toReturn.autoLogin)
+			if(toReturn.autoLogin && (gSavedSettings.getBOOL("PhoenixIRC_AutoConnect")))
 			{
 				startUpIRCListener(toReturn);
 			}

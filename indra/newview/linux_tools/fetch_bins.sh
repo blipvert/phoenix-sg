@@ -5,7 +5,7 @@ BINS="bin/SLVoice bin/libemkdu.so lib/libortp.so lib/libvivoxsdk.so lib/libfmod-
 
 # Locations of client to use
 URL="http://www.phoenixviewer.com/fmod-vivox.tar.bz2"
-ARCHIVE="${URL##*=}"
+ARCHIVE="${URL##*/}"
 #FOLDER="${ARCHIVE%.*.*}"
 
 missing_bins() {
