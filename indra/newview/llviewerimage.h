@@ -247,6 +247,11 @@ public:
 						   S32 discard_level, BOOL keep_imageraw, BOOL needs_aux,
 						   void* userdata);
 
+	void setLoadedCallbackNoAux(loaded_callback_func cb,
+								S32 discard_level, BOOL keep_imageraw, BOOL needs_aux,
+								void* userdata);
+
+
 	 // ONLY call from LLViewerImageList
 	BOOL createTexture(S32 usename = 0);
 	void destroyTexture() ;
@@ -365,7 +370,7 @@ public:
 	LLFrameTimer mLastPacketTimer;		// Time since last packet.
 	LLFrameTimer mLastReferencedTimer;
 
-	std::string decodedComment;
+	std::map<std::string,std::string> decodedComment;
 
 private:
 	LLUUID mID;

@@ -61,6 +61,9 @@
 #include "llappviewer.h"
 #include "llface.h"
 #include "llviewercamera.h"
+
+#include "llimagemetadatareader.h"
+#include "lltexturecache.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 // statics
@@ -95,6 +98,64 @@ S32 LLViewerImage::sMaxSmallImageSize = MAX_CACHED_RAW_IMAGE_AREA ;
 BOOL LLViewerImage::sFreezeImageScalingDown = FALSE ;
 //debug use
 S32 LLViewerImage::sLLViewerImageCount = 0 ;
+
+// <edit>
+class CommentCacheReadResponder : public LLTextureCache::ReadResponder
+{
+public:
+CommentCacheReadResponder(LLPointer<LLViewerImage> image)
+: mViewerImage(image)
+{
+	mID = image->getID();
+	mFormattedImage = new LLImageJ2C;
+	setImage(mFormattedImage);
+}
+void setData(U8* data, S32 datasize, S32 imagesize, S32 imageformat, BOOL imagelocal)
+{
+	if(imageformat==IMG_CODEC_TGA && mFormattedImage->getCodec()==IMG_CODEC_J2C)
+	{
+		//llwarns<<"Bleh its a tga not saving"<<llendl;
+		mFormattedImage=NULL;
+		mImageSize=0;
+		return;
+	}
+
+	if (mFormattedImage.notNull())
+	{
+		llassert_always(mFormattedImage->getCodec() == imageformat);
+		mFormattedImage->appendData(data, datasize);
+	}
+	else
+	{
+		mFormattedImage = LLImageFormatted::createFromType(imageformat);
+		mFormattedImage->setData(data,datasize);
+	}
+	mImageSize = imagesize;
+	mImageLocal = imagelocal;
+}
+
+virtual void completed(bool success)
+{
+	if(success && (mFormattedImage.notNull()) && mImageSize>0 && mViewerImage.notNull())
+	{
+		//llinfos << "SUCCESS getting texture "<<mID<< llendl;
+		mViewerImage->decodedComment = LLImageMetaDataReader::ExtractKDUUploadComment(
+				mFormattedImage->getData(),
+				mFormattedImage->getDataSize());
+		
+	}
+	else
+	{
+		//if(!success)
+		//	llwarns << "FAIL NOT SUCCESSFUL getting texture "<<mID<< llendl;
+	}
+}
+private:
+	LLPointer<LLImageFormatted> mFormattedImage;
+	LLPointer<LLViewerImage> mViewerImage;
+	LLUUID mID;
+};
+// </edit>
 
 // static
 void LLViewerImage::initClass()
@@ -548,6 +609,11 @@ BOOL LLViewerImage::createTexture(S32 usename/*= 0*/)
 			return FALSE;
 		}
 		
+		// <edit>
+		CommentCacheReadResponder* responder = new CommentCacheReadResponder(this);
+		LLAppViewer::getTextureCache()->readFromCache(getID(),LLWorkerThread::PRIORITY_HIGH,0,999999,responder);
+		// </edit>
+
 		res = LLImageGL::createGLTexture(mRawDiscardLevel, mRawImage, usename);
 	}
 
@@ -1324,6 +1390,31 @@ void LLViewerImage::setLoadedCallback( loaded_callback_func loaded_callback,
 		llwarns << "No aux data available for callback for image:" << getID() << llendl;
 	}
 }
+
+// this method is stupid, remove it if at all possible -Day
+void LLViewerImage::setLoadedCallbackNoAux( loaded_callback_func loaded_callback,
+            S32 discard_level, BOOL keep_imageraw, BOOL needs_aux, void* userdata)
+{
+	//
+	// Don't do ANYTHING here, just add it to the global callback list
+	//
+	if (mLoadedCallbackList.empty())
+	{
+		// Put in list to call this->doLoadedCallbacks() periodically
+		gImageList.mCallbackList.insert(this);
+	}
+	
+	LLLoadedCallbackEntry* entryp = new LLLoadedCallbackEntry(loaded_callback, discard_level, keep_imageraw, userdata);
+	mLoadedCallbackList.push_back(entryp);
+	mNeedsAux = needs_aux;
+	
+	if (mNeedsAux && mAuxRawImage.isNull() && getDiscardLevel() >= 0)
+	{
+		// We need aux data, but we've already loaded the image, and it didn't have any
+		llwarns << "No aux data available for callback for image:" << getID() << llendl;
+	}
+}
+// </edit>
 
 bool LLViewerImage::doLoadedCallbacks()
 {
