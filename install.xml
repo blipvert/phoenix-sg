@@ -30,7 +30,7 @@
 					<key>darwin</key>
 					<map>
 						<key>md5sum</key>
-						<string>5865352b657a79d30fe850df309845d7</string>
+						<string>d41d8cd98f00b204e9800998ecf8427e</string>
 						<key>url</key>
 						<uri>http://dev.phoenixviewer.com/libraries/hunspell-1.2-11-darwin.tar.gz</uri>
 					</map>
