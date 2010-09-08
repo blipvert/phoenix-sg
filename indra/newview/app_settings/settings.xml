@@ -5477,7 +5477,7 @@
 		<key>PhoenixLSLPreprocessor</key>
 		<map>
 			<key>Comment</key>
-			<string>now you fucked up</string>
+			<string>Phoenix LSL Preprocessor</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -5488,7 +5488,7 @@
 		<key>PhoenixLSLOptimizer</key>
 		<map>
 			<key>Comment</key>
-			<string>now you fucked up</string>
+			<string>Phoenix LSL Optimizer</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -5499,7 +5499,7 @@
 		<key>PhoenixLSLTextCompress</key>
 		<map>
 			<key>Comment</key>
-			<string>now you fucked up</string>
+			<string>Phoenix LSL Text Compress</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -5510,7 +5510,7 @@
 		<key>PhoenixLSLLazyLists</key>
 		<map>
 			<key>Comment</key>
-			<string>now you fucked up</string>
+			<string>Phoenix LSL Lazy Lists</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -5521,7 +5521,7 @@
 		<key>PhoenixLSLSwitch</key>
 		<map>
 			<key>Comment</key>
-			<string>now you fucked up</string>
+			<string>Phoenix LSL Switch</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
