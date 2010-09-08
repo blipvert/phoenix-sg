@@ -61,6 +61,9 @@ const char* fallbackEngineInfoLLImageJ2CImpl();
 //Loads the required "create", "destroy" and "engineinfo" functions needed
 void LLImageJ2C::openDSO()
 {
+	// Do not attempt to load any j2cdecoder/j2cencoder library
+	// use openjpeg all the time.
+	return;
 	//attempt to load a DSO and get some functions from it
 	std::string dso_name;
 	std::string dso_path;
