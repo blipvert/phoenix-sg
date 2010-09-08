@@ -30,9 +30,9 @@
 					<key>darwin</key>
 					<map>
 						<key>md5sum</key>
-						<string>9b970abfc9df40ad6d183a4b1f732fb2</string>
+						<string>5865352b657a79d30fe850df309845d7</string>
 						<key>url</key>
-						<uri>http://dev.phoenixviewer.com/libraries/hunspell-1.2-darwin.tar.gz</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/hunspell-1.2-11-darwin.tar.gz</uri>
 					</map>
 				</map>
 			</map>
@@ -75,9 +75,9 @@
 					<key>darwin</key>
 					<map>
 						<key>md5sum</key>
-						<string>333023a47a79b6b70f28f2cb98bc7b53</string>
+						<string>f075e96d8e1bfdd1f518829f0d7b74af</string>
 						<key>url</key>
-						<uri>http://dev.phoenixviewer.com/libraries/growl-1.2.1-darwin.bz2</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/growl-1.2.1-darwin.tar.gz</uri>
 					</map>
 					<key>windows</key>
 					<map>
