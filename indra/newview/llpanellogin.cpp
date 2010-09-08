@@ -949,17 +949,15 @@ void LLPanelLogin::loadLoginPage()
 
 	char* curl_channel = curl_escape(LL_CHANNEL, 0);
 	char* curl_version = curl_escape(version.c_str(), 0);
-	char* curl_t = curl_escape(LLAppViewer::instance()->getWindowTitle().c_str(), 0);
-
+	
 	oStr << "&channel=" << curl_channel;
 	oStr << "&version=" << curl_version;
-	oStr << "&t=" << curl_t;
+	
 	if(LL_CHANNEL != PHOENIX_RELEASE_CHANNEL)
 		oStr << "&unsupported=1";
 
 	curl_free(curl_channel);
 	curl_free(curl_version);
-	curl_free(curl_t);
 
 	// grid=blah code was here. Due to the implementation of the Phoenix login manager, sending
 	// this information is a very bad idea. Don't do it.
