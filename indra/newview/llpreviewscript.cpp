@@ -724,7 +724,7 @@ void LLScriptEdCore::xedLaunch()
 	{
 		exe = "\""+exe+"\"";
 	}
-	std::string theCMD("cmd.exe /c START \"External Editor\" " + exe + " " + mXfname + " & exit");
+	std::string theCMD("%COMSPEC% /c START \"External Editor\" " + exe + " " + mXfname + " & exit");
 	llinfos << "FINAL COMMAND IS :"<<
 		theCMD.c_str() << llendl;	
 

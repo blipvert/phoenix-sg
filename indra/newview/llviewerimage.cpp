@@ -1387,7 +1387,7 @@ void LLViewerImage::setLoadedCallback( loaded_callback_func loaded_callback,
 	if (mNeedsAux && mAuxRawImage.isNull() && getDiscardLevel() >= 0)
 	{
 		// We need aux data, but we've already loaded the image, and it didn't have any
-		llwarns << "No aux data available for callback for image:" << getID() << llendl;
+		//llwarns << "No aux data available for callback for image:" << getID() << llendl;
 	}
 }
 
