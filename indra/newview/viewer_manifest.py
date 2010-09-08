@@ -885,6 +885,9 @@ class LinuxManifest(ViewerManifest):
 
         self.path("featuretable_linux.txt")
 
+	# Standalone 7zip binary
+	self.path("linux_tools/7za", "bin/7za")
+
     def wrapper_name(self):
         mapping={"secondlife":"secondlife",
                  "snowglobe":"snowglobe"}
@@ -1000,9 +1003,6 @@ class Linux_i686Manifest(LinuxManifest):
             self.path("libfusion-1.0.so.0.1.0", "libfusion-1.0.so.0")
             
             self.end_prefix("lib")
-
-	    # Standalone 7zip binary
-	    self.path("linux_tools/7za", "bin/7za")
 
             # Vivox runtimes
 #            if self.prefix(src="vivox-runtime/i686-linux", dst="bin"):
