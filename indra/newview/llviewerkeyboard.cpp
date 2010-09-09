@@ -44,6 +44,7 @@
 #include "lltoolfocus.h"
 #include "llviewerwindow.h"
 #include "llvoavatar.h"
+#include "lllslconstants.h"
 
 //
 // Constants
@@ -85,7 +86,7 @@ void agent_push_down( EKeystate s )
 	if( KEYSTATE_UP == s ) return;
 	else if(KEYSTATE_DOWN == s)
 	{
-		if(gSavedSettings.getBOOL("PhoenixCrouchToggle"))
+		if(gSavedSettings.getBOOL("PhoenixCrouchToggle") && !(gAgent.getControlFlags() & AGENT_SITTING))
 		{
 			if(gSavedSettings.getBOOL("PhoenixCrouchToggleStatus"))
 				gSavedSettings.setBOOL("PhoenixCrouchToggleStatus",false);
