@@ -10,7 +10,7 @@
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
-      <integer>0</integer>
+      <integer>1</integer>
     </map>
     <key>PhoenixDontUseMultipleColorTags</key>
     <map>
@@ -454,7 +454,7 @@
 			<key>Type</key>
 			<string>F32</string>
 			<key>Value</key>
-			<real>1.0</real>
+			<real>1.3</real>
 		</map>
 		<key>PhoenixBlockMapTps</key>
 		<map>
