@@ -791,7 +791,18 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>PhoenixCrouchToggle</key>
+    <key>PhoenixCopyObjKeySeparator</key>
+    <map>
+      <key>Comment</key>
+      <string>This chunk of text goes between keys when you use the Copy Key button with multiple objects selected.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>,</string>
+    </map>
+    <key>PhoenixCrouchToggle</key>
 		<map>
 			<key>Comment</key>
 			<string>Enables using the crouch key as a toggle</string>
