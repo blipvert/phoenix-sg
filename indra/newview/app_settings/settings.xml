@@ -5540,8 +5540,8 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-    <key>BananaToolboxShowMore</key>
-    <map>
+		<key>BananaToolboxShowMore</key>
+		<map>
 			<key>Comment</key>
 			<string>Whether to show additional build tool controls</string>
 			<key>Persist</key>
@@ -5550,7 +5550,18 @@
 			<string>Boolean</string>
 			<key>Value</key>
 			<integer>1</integer>
-    </map>
+		</map>
+		<key>BananaKillTheClouds</key>
+		<map>
+			<key>Comment</key>
+			<string>When enabled, it turns the rendering of clouds off after login</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>EnableRippleWater</key>
 		<map>
 			<key>Comment</key>
