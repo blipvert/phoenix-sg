@@ -343,9 +343,11 @@ Joghert LeSabre
 Kage Pixel
 	VWR-11
 Kadah Coba
+	PHOE-54
 	PHOE-319
 	PHOE-320
-	PHOE-54 
+	PHOE-394
+	PHOE-392 
 Ken March
 	CT-245
 Kerutsen Sellery
