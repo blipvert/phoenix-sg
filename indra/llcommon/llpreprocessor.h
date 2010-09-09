@@ -105,7 +105,6 @@
 #if LL_MSVC
 #pragma warning( 3	     : 4701 )	// "local variable used without being initialized"  Treat this as level 3, not level 4.
 #pragma warning( 3	     : 4189 )	// "local variable initialized but not referenced"  Treat this as level 3, not level 4.
-//#pragma warning( 3	: 4018 )	// "signed/unsigned mismatch"  Treat this as level 3, not level 4.
 #pragma warning( 3      :  4263 )	// 'function' : member function does not override any base class virtual member function
 #pragma warning( 3      :  4264 )	// "'virtual_function' : no override available for virtual member function from base 'class'; function is hidden"
 #pragma warning( 3      :  4266 )	// 'function' : no override available for virtual member function from base 'type'; function is hidden
@@ -118,6 +117,7 @@
 #pragma warning( disable : 4005 )
 #pragma warning( disable : 4273 )
 #pragma warning( disable : 4305 )
+#pragma warning( disable : 4018 )	// "signed/unsigned mismatch"
 
 // Linker optimization with "extern template" generates these warnings
 #pragma warning( disable : 4231 )	// nonstandard extension used : 'extern' before template explicit instantiation

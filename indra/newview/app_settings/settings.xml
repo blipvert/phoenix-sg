@@ -28,7 +28,7 @@
 			<key>Comment</key>
 			<string>Show group name next to IM when printed in chat history.</string>
 			<key>Persist</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>Type</key>
 			<string>Boolean</string>
 			<key>Value</key>
