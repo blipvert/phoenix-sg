@@ -672,10 +672,29 @@ void LLIMMgr::addMessage(
 	// now add message to floater
 	bool is_from_system = target_id.isNull() || (from == SYSTEM_FROM);
 	bool is_encrypted = (msg.substr(0, 3) == "\xe2\x80\xa7");
-	LLColor4 color = ( is_from_system ? 
-							  gSavedSettings.getColor4("SystemChatColor") : 
-							  ( is_encrypted ? gSavedSettings.getColor("PhoenixIMEncryptedChatColor") :
-		                        gSavedSettings.getColor("IMChatColor") ) );
+	LLColor4 color;
+	//Phoenix:KC - color chat from friends. taking care not to color when RLV hide names is in effect, lol
+	static BOOL* sPhoenixColorFriendsChat = rebind_llcontrol<BOOL>("PhoenixColorFriendsChat", &gSavedSettings, true);
+	if (is_from_system)
+	{
+		color = gSavedSettings.getColor4("SystemChatColor");
+	}
+	else if (is_encrypted)
+	{
+		color = gSavedSettings.getColor4("PhoenixIMEncryptedChatColor");
+	}
+	else if (*sPhoenixColorFriendsChat
+	&& LLAvatarTracker::instance().isBuddy(other_participant_id)
+	&& (!rlv_handler_t::isEnabled()
+	|| !gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)))
+	{
+		color = gSavedSettings.getColor4("PhoenixFriendChatColor");
+	} 
+	else
+	{
+		color = gSavedSettings.getColor4("IMChatColor");
+	}
+	
 	if ( !link_name )
 	{
 		floater->addHistoryLine(msg,color); // No name to prepend, so just add the message normally
