@@ -71,9 +71,6 @@ std::vector<U8> LLJ2cParser::GetNextComment()
 std::map<std::string,std::string> LLImageMetaDataReader::ExtractKDUUploadComment(U8* data,int data_size)
 {
 	LLJ2cParser parser = LLJ2cParser(data,data_size);
-
-	std::string decodedComment;
-
 	std::map<std::string,std::string>  result;
 	while(1)
 	{
