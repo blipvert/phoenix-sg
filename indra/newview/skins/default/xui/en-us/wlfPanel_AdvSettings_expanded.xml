@@ -33,6 +33,10 @@
        increment="0.1" label="LOD Factor:" can_edit_text="true"
        label_width="66" max_val="8" min_val="0" mouse_opaque="true"
        name="RenderVolumeLODFactor" show_text="true" width="195" tool_tip="Controls level of detail of primitives (multiplier for current screen area when calculated level of detail) [Default 2.00]"/>
+<slider name="progressive_draw_distance_interval" control_name="RenderFarClipSteppingInterval" 
+       decimal_digits="0" enabled="true" left_delta="-0" bottom_delta="-20" label="PDDIntvl:"
+	   follows="left|bottom" label_width="66" height="20" increment="1" initial_val="20" max_val="30" can_edit_text="true"
+	   min_val="5" mouse_opaque="true" show_text="true" width="195" auto_resize="false" tool_tip="Interval in seconds between each draw distance increment"/>
 
 
   <combo_box name="WLPresetsCombo" bottom="5" left="40" follows="left|top" height="18" width="150" max_chars="20" mouse_opaque="true" allow_text_entry="false"

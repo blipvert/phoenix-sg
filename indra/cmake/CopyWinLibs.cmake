@@ -29,7 +29,6 @@ set(debug_files
     libapr-1.dll
     libaprutil-1.dll
     libapriconv-1.dll
-    openjpegd.dll
     libhunspell.dll
     lgggrowl++.dll
     lgggrowl.dll
@@ -217,7 +216,6 @@ set(release_files
     libapr-1.dll
     libaprutil-1.dll
     libapriconv-1.dll
-    openjpeg.dll
     libhunspell.dll
     lgggrowl++.dll
     lgggrowl.dll

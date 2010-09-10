@@ -376,14 +376,23 @@ void LLFloaterInspect::drawTextureEntry(const LLViewerImage* img, const U8 i)
 		mTex[i].blacklistbtn->setVisible(TRUE);
 		if (mTex[i].ctrl)
 		{
-			std::map<std::string,std::string> decodedComment = img->decodedComment;
-			if (decodedComment.find("a")!=decodedComment.end())
+			std::string decodedComment = img->decodedComment;
+			if (!decodedComment.empty())
 			{
-				mTex[i].uploaderkey = LLUUID(decodedComment["a"]);
-				gCacheName->get(mTex[i].uploaderkey, FALSE, callbackLoadAvatarName, mTex[i].line2);
-				if (decodedComment.find("z")!=decodedComment.end()) 
+				S32 string_pos = decodedComment.find("a=");
+				if (string_pos != std::string::npos) 
 				{
-					std::string strtime= decodedComment["z"];
+					//mTex[i].line2->setText(std::string("no upload info"));
+					mTex[i].uploaderkey = LLUUID(decodedComment.substr(string_pos+2,36));
+					gCacheName->get(mTex[i].uploaderkey, FALSE, callbackLoadAvatarName, mTex[i].line2);
+				}
+
+				string_pos = decodedComment.find("z=");
+				if (string_pos != std::string::npos) 
+				{
+					std::string strtime;
+
+					strtime = decodedComment.substr(string_pos+2,14);
 					std::string year = strtime.substr(0,4);
 					std::string month = strtime.substr(4,2);
 					std::string day = strtime.substr(6,2);

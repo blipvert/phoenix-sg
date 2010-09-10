@@ -268,12 +268,6 @@ class WindowsManifest(ViewerManifest):
 
             self.disable_manifest_check()
 
-            # For textures
-            if self.args['configuration'].lower() == 'debug':
-                self.path("openjpegd.dll")
-            else:
-                self.path("openjpeg.dll")
-
             try:
                 # These need to be installed as a SxS assembly, currently a 'private' assembly.
                 # See http://msdn.microsoft.com/en-us/library/ms235291(VS.80).aspx
@@ -990,7 +984,6 @@ class Linux_i686Manifest(LinuxManifest):
             self.path("libuuid.so.1")
             self.path("libSDL-1.2.so.0")
             self.path("libELFIO.so")
-            self.path("libopenjpeg.so.1.3.0", "libopenjpeg.so.1.3")
             self.path("libalut.so")
             self.path("libopenal.so", "libopenal.so.1")
             

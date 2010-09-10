@@ -24,7 +24,6 @@ set(llimage_SOURCE_FILES
     llimagedxt.cpp
     llimagej2c.cpp
     llimagejpeg.cpp
-    llimagemetadatareader.cpp
     llimagepng.cpp
     llimagetga.cpp
     llimageworker.cpp
@@ -39,7 +38,6 @@ set(llimage_HEADER_FILES
     llimagedxt.h
     llimagej2c.h
     llimagejpeg.h
-    llimagemetadatareader.h
     llimagepng.h
     llimagetga.h
     llimageworker.h
