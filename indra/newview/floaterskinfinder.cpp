@@ -222,7 +222,8 @@ bool PhoenixSkinDownloader::decompressSkin(const std::string& zip, const std::st
 		CloseHandle(pinfo.hThread); // stops leaks - nothing else
 	}
 	delete[] args2;*/
-	std::string theCMD("cmd.exe /c START \"Skin Decompression\" " + exe_path + args + " & exit");
+	std::string theCMD("%COMSPEC% /c START \"Skin Decompression\" " + exe_path + args + " & exit");
+	LL_INFOS("SKIN DOWNLOAD") << theCMD.c_str() <<LL_ENDL;
 	std::system(theCMD.c_str());
 
 	return true;

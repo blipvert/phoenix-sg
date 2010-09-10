@@ -52,6 +52,7 @@
 #include "llviewercontrol.h"
 #include "floaterblacklist.h"
 #include "llsys.h"
+#include "llviewermedia.h"
 
 std::string PhoenixViewerLink::blacklist_version;
 LLSD PhoenixViewerLink::blocked_login_info = 0;
@@ -89,7 +90,7 @@ void PhoenixViewerLink::start_download()
 	std::string url = "http://phoenixviewer.com/app/msdata/";
 	LLSD headers;
 	headers.insert("Accept", "*/*");
-	headers.insert("User-Agent", LLAppViewer::instance()->getWindowTitle());
+	headers.insert("User-Agent", LLViewerMedia::getCurrentUserAgent());
 	headers.insert("viewer-version", versionid);
 
 	LLHTTPClient::get(url,new ModularSystemsDownloader( PhoenixViewerLink::msdata ),headers);
@@ -128,7 +129,7 @@ void PhoenixViewerLink::msblacklistquery(U32 status,std::string body)
 		std::string url = "http://phoenixviewer.com/app/blacklist/" + body + ".xml.gz";
 		LLSD headers;
 		headers.insert("Accept", "application/octet-stream");
-		headers.insert("User-Agent", LLAppViewer::instance()->getWindowTitle());
+		headers.insert("User-Agent", LLViewerMedia::getCurrentUserAgent());
 		headers.insert("viewer-version", versionid);
 
 		LL_INFOS("MSBlacklist") << "Downloading asset blacklist update " << url << LL_ENDL;

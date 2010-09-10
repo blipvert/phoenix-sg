@@ -70,7 +70,7 @@
 
 
 #define phoenix_point (LLAssetType::EType)127
-#define phoenix_bridge_name "#LSL<->Client Bridge v0.06"
+#define phoenix_bridge_name "#LSL<->Client Bridge v0.08"
 
 void cmdline_printchat(std::string message);
 
@@ -709,7 +709,7 @@ BOOL JCLSLBridge::tick()
 			{
 				{
 					//cmdline_printchat("sending rechannel cmd");
-					send_chat_from_viewer(LLAppViewer::instance()->getWindowTitle()+std::string("|l2c"), CHAT_TYPE_WHISPER, JCLSLBridge::bridge_channel(gAgent.getID()));
+					send_chat_from_viewer(std::string("|l2c"), CHAT_TYPE_WHISPER, JCLSLBridge::bridge_channel(gAgent.getID()));
 					sBridgeStatus = ACTIVE;
 				}
 			}

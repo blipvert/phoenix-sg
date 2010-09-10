@@ -320,7 +320,8 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 			{
 				if(from_gesture)
 				{
-					cmdline_printchat("Sorry but changing of draw distance from a gesture is no longer allowed");
+					cmdline_printchat("Due to the changes in code, it is no longer necessary to use this gesture.");
+					gSavedSettings.setBOOL("RenderFarClipStepping",TRUE);
 					return false;
 				}
                 int drawDist;

@@ -260,7 +260,7 @@ std::string LLViewerMedia::getCurrentUserAgent()
 	std::ostringstream codec;
 	codec << "SecondLife/";
 	codec << LL_VERSION_MAJOR << "." << LL_VERSION_MINOR << "." << LL_VERSION_PATCH << "." << LL_VERSION_BUILD;
-	codec << " (" << std::string(LL_CHANNEL) << "; " << gSavedSettings.getString("SkinCurrent") << " skin)";
+	codec << " (" << "Snowglobe Test Build" << "; " << gSavedSettings.getString("SkinCurrent") << " skin)";
 	llinfos << codec.str() << llendl;
 	
 	return codec.str();

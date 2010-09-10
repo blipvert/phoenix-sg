@@ -10,7 +10,7 @@
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
-      <integer>0</integer>
+      <integer>1</integer>
     </map>
     <key>PhoenixDontUseMultipleColorTags</key>
     <map>
@@ -28,7 +28,7 @@
 			<key>Comment</key>
 			<string>Show group name next to IM when printed in chat history.</string>
 			<key>Persist</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>Type</key>
 			<string>Boolean</string>
 			<key>Value</key>
@@ -454,7 +454,7 @@
 			<key>Type</key>
 			<string>F32</string>
 			<key>Value</key>
-			<real>1.0</real>
+			<real>1.3</real>
 		</map>
 		<key>PhoenixBlockMapTps</key>
 		<map>
@@ -791,7 +791,18 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>PhoenixCrouchToggle</key>
+    <key>PhoenixCopyObjKeySeparator</key>
+    <map>
+      <key>Comment</key>
+      <string>This chunk of text goes between keys when you use the Copy Key button with multiple objects selected.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>,</string>
+    </map>
+    <key>PhoenixCrouchToggle</key>
 		<map>
 			<key>Comment</key>
 			<string>Enables using the crouch key as a toggle</string>
@@ -5477,7 +5488,7 @@
 		<key>PhoenixLSLPreprocessor</key>
 		<map>
 			<key>Comment</key>
-			<string>now you fucked up</string>
+			<string>Phoenix LSL Preprocessor</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -5488,7 +5499,7 @@
 		<key>PhoenixLSLOptimizer</key>
 		<map>
 			<key>Comment</key>
-			<string>now you fucked up</string>
+			<string>Phoenix LSL Optimizer</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -5499,7 +5510,7 @@
 		<key>PhoenixLSLTextCompress</key>
 		<map>
 			<key>Comment</key>
-			<string>now you fucked up</string>
+			<string>Phoenix LSL Text Compress</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -5510,7 +5521,7 @@
 		<key>PhoenixLSLLazyLists</key>
 		<map>
 			<key>Comment</key>
-			<string>now you fucked up</string>
+			<string>Phoenix LSL Lazy Lists</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -5521,7 +5532,7 @@
 		<key>PhoenixLSLSwitch</key>
 		<map>
 			<key>Comment</key>
-			<string>now you fucked up</string>
+			<string>Phoenix LSL Switch</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -15217,6 +15228,33 @@
 			<string>Boolean</string>
 			<key>Value</key>
 			<integer>1</integer>
+		</map>
+		<key>PhoenixColorFriendsChat</key>
+		<map>
+			<key>Comment</key>
+			<string>Highlightd chat from friends in a different color</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixFriendChatColor</key>
+		<map>
+			<key>Comment</key>
+			<string>Color of chat messages from friends</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Color4</string>
+			<key>Value</key>
+			<array>
+				<real>0.447</real>
+				<real>0.784</real>
+				<real>0.663</real>
+				<real>1.0</real>
+			</array>
 		</map>
 	</map>
 </llsd>

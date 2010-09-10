@@ -59,7 +59,10 @@ BOOL LLPanelNetwork::postBuild()
 	std::string cache_location = gDirUtilp->getExpandedFilename(LL_PATH_CACHE, "");
 	childSetText("cache_location", cache_location);
 	std::string sound_cache_location = gDirUtilp->getExpandedFilename(MM_SNDLOC, "");
+	if(sound_cache_location=="")sound_cache_location="Not Set Yet.";
 	childSetText("sound_cache_location", sound_cache_location);
+	std::string logs_location = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"");
+	childSetText("logs_location",logs_location);
 		
 	childSetAction("clear_cache", onClickClearCache, this);
 	childSetAction("clear_inv_cache", onClickClearInvCache, this);
@@ -68,6 +71,10 @@ BOOL LLPanelNetwork::postBuild()
 	childSetAction("reset_cache", onClickResetCache, this);
 	childSetAction("set_sound_cache", onClickSetSoundCache, this);
 	childSetAction("reset_sound_cache", onClickResetSoundCache, this);
+
+	childSetAction("em_open_logs_loc",onClickBrowseLogs,this);
+	childSetAction("em_open_soundcache_loc",onClickBrowseSoundCache,this);
+	childSetAction("em_open_cache_loc",onClickBrowseCache,this);
 	
 	childSetEnabled("connection_port", gSavedSettings.getBOOL("ConnectionPortEnabled"));
 	childSetCommitCallback("connection_port_enabled", onCommitPort, this);
@@ -230,6 +237,23 @@ void LLPanelNetwork::onClickResetSoundCache(void* user_data)
 	LLPanelNetwork* self = (LLPanelNetwork*)user_data;
  	gSavedSettings.setString("Phoenixmm_sndcacheloc","");
 	self->childSetText("sound_cache_location",std::string("None"));
+}
+
+//static
+void LLPanelNetwork::onClickBrowseLogs(void* user_data)
+{
+	gViewerWindow->getWindow()->openFile(gDirUtilp->getExpandedFilename(LL_PATH_LOGS,""));
+}
+//static
+void LLPanelNetwork::onClickBrowseCache(void* user_data)
+{
+	gViewerWindow->getWindow()->openFile(gDirUtilp->getExpandedFilename(LL_PATH_CACHE,""));
+}
+//static
+void LLPanelNetwork::onClickBrowseSoundCache(void* user_data)
+{
+	std::string path = gDirUtilp->getExpandedFilename(MM_SNDLOC, "");
+	if(path!="")gViewerWindow->getWindow()->openFile(path);
 }
 
 // static

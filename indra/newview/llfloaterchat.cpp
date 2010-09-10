@@ -474,7 +474,13 @@ void LLFloaterChat::addChat(const LLChat& chat,
 		}
 		else if(from_instant_message)
 		{
-			text_color = gSavedSettings.getColor("IMChatColor");
+			//Phoenix:KC - color chat from friends. taking care not to color when RLV hide names is in effect, lol
+			static BOOL* sPhoenixColorFriendsChat = rebind_llcontrol<BOOL>("PhoenixColorFriendsChat", &gSavedSettings, true);
+			if (!*sPhoenixColorFriendsChat
+			|| !LLAvatarTracker::instance().isBuddy(chat.mFromID))
+			{
+				text_color = gSavedSettings.getColor("IMChatColor");
+			}
 		}
 		// We display anything if it's not an IM. If it's an IM, check pref...
 		if	( !from_instant_message || gSavedSettings.getBOOL("IMInChatConsole") ) 
@@ -560,7 +566,16 @@ LLColor4 get_text_color(const LLChat& chat)
 			}
 			else
 			{
-				if(gAgent.getID() == chat.mFromID)
+				//Phoenix:KC - color chat from friends. taking care not to color when RLV hide names is in effect, lol
+				static BOOL* sPhoenixColorFriendsChat = rebind_llcontrol<BOOL>("PhoenixColorFriendsChat", &gSavedSettings, true);
+				if (*sPhoenixColorFriendsChat
+				&& LLAvatarTracker::instance().isBuddy(chat.mFromID)
+				&& (!rlv_handler_t::isEnabled()
+				|| !gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)))
+				{
+					text_color = gSavedSettings.getColor4("PhoenixFriendChatColor");
+				}
+				else if(gAgent.getID() == chat.mFromID)
 				{
 					text_color = gSavedSettings.getColor4("UserChatColor");
 				}

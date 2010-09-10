@@ -110,11 +110,11 @@
 		tool_tip="Browse to this path."/>
 	<button bottom_delta="-0" enabled="true" follows="left|top|right" font="SansSerif"
 	     halign="center" height="22" label="Set" label_selected="Set" left_delta="30"
-	     mouse_opaque="true" name="set_logs" scale_image="true" width="100" />
+	     mouse_opaque="true" name="set_logs" scale_image="true" width="100" visible="false"/>
 	<button bottom_delta="0" enabled="true" follows="left|top|right"
 	     font="SansSerif" halign="center" height="22" label="Reset"
 	     label_selected="Set" left_delta="85" mouse_opaque="true"
-	     name="reset_logs" scale_image="true" width="100" />
+	     name="reset_logs" scale_image="true" width="100" visible="false"/>
 	<check_box bottom="-173" bottom_delta="-35"
 	     enabled="true" follows="left|top" font="SansSerifSmall" height="16"
 	     initial_value="false" label="Custom Port Connection" left="12"

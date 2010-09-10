@@ -58,6 +58,7 @@ private:
 	LLColor4 mSystemChatColor;
 	LLColor4 mUserChatColor;
 	LLColor4 mAgentChatColor;
+	LLColor4 mFriendChatColor; //Phoenix:KC
 	LLColor4 mIMChatColor;
 	LLColor4 mObjectChatColor;
 	LLColor4 mOwnerSayChatColor;
@@ -93,6 +94,7 @@ LLPrefsChatImpl::LLPrefsChatImpl()
 	getChild<LLColorSwatchCtrl>("system")->set(gSavedSettings.getColor4("SystemChatColor"));
 	getChild<LLColorSwatchCtrl>("user")->set(gSavedSettings.getColor4("UserChatColor"));
 	getChild<LLColorSwatchCtrl>("agent")->set(gSavedSettings.getColor4("AgentChatColor"));
+	getChild<LLColorSwatchCtrl>("friend")->set(gSavedSettings.getColor4("PhoenixFriendChatColor")); //Phoenix:KC
 	getChild<LLColorSwatchCtrl>("im")->set(gSavedSettings.getColor4("IMChatColor"));
 	getChild<LLColorSwatchCtrl>("script_error")->set(gSavedSettings.getColor4("ScriptErrorColor"));
 	getChild<LLColorSwatchCtrl>("objects")->set(gSavedSettings.getColor4("ObjectChatColor"));
@@ -124,6 +126,7 @@ void LLPrefsChatImpl::refreshValues()
 	mSystemChatColor = gSavedSettings.getColor4("SystemChatColor");
 	mUserChatColor = gSavedSettings.getColor4("UserChatColor");
 	mAgentChatColor = gSavedSettings.getColor4("AgentChatColor");
+	mFriendChatColor = gSavedSettings.getColor4("PhoenixFriendChatColor"); //Phoenix:KC
 	mIMChatColor = gSavedSettings.getColor4("IMChatColor");
 	mObjectChatColor = gSavedSettings.getColor4("ObjectChatColor");
 	mOwnerSayChatColor = gSavedSettings.getColor4("llOwnerSayChatColor");
@@ -155,6 +158,7 @@ void LLPrefsChatImpl::cancel()
 	gSavedSettings.setColor4("SystemChatColor", mSystemChatColor);
 	gSavedSettings.setColor4("UserChatColor", mUserChatColor);
 	gSavedSettings.setColor4("AgentChatColor", mAgentChatColor);
+	gSavedSettings.setColor4("PhoenixFriendChatColor", mFriendChatColor); //Phoenix:KC
 	gSavedSettings.setColor4("IMChatColor", mIMChatColor);
 	gSavedSettings.setColor4("ObjectChatColor", mObjectChatColor);
 	gSavedSettings.setColor4("llOwnerSayChatColor", mOwnerSayChatColor);
@@ -184,6 +188,7 @@ void LLPrefsChatImpl::apply()
 	gSavedSettings.setColor4("SystemChatColor", childGetValue("system"));
 	gSavedSettings.setColor4("UserChatColor", childGetValue("user"));
 	gSavedSettings.setColor4("AgentChatColor", childGetValue("agent"));
+	gSavedSettings.setColor4("PhoenixFriendChatColor", childGetValue("friend")); //Phoenix:KC
 	gSavedSettings.setColor4("IMChatColor", childGetValue("im"));
 	gSavedSettings.setColor4("ScriptErrorColor", childGetValue("script_error"));
 	gSavedSettings.setColor4("ObjectChatColor", childGetValue("objects"));
