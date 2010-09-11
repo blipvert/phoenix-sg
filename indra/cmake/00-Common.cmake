@@ -31,9 +31,13 @@ if (WINDOWS)
       "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Od /Zi /MD"
       CACHE STRING "C++ compiler release-with-debug options" FORCE)
   set(CMAKE_CXX_FLAGS_RELEASE
+	#sse
       "${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /O2 /Zi /MD /arch:SSE2 /MP"
+    #nonsse
+    #"${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /O2 /Zi /MD /MP"
       CACHE STRING "C++ compiler release options" FORCE)
-
+  #disable for non sse
+  ADD_DEFINITIONS(-DLL_VECTORIZE=1)
   set(CMAKE_CXX_STANDARD_LIBRARIES "")
   set(CMAKE_C_STANDARD_LIBRARIES "")
 
