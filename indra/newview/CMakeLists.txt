@@ -1272,14 +1272,14 @@ if(ARTWORK_EXISTS)
 endif(ARTWORK_EXISTS)
 
 if (WINDOWS)
-  file(GLOB viewer_INSTALLER_FILES installers/windows/*.nsi)
+  #file(GLOB viewer_INSTALLER_FILES installers/windows/*.nsi)
 
-  source_group("Installer Files" FILES ${viewer_INSTALLER_FILES})
+  #source_group("Installer Files" FILES ${viewer_INSTALLER_FILES})
 
-  set_source_files_properties(${viewer_INSTALLER_FILES}
-                              PROPERTIES HEADER_FILE_ONLY TRUE)
+  #set_source_files_properties(${viewer_INSTALLER_FILES}
+  #                            PROPERTIES HEADER_FILE_ONLY TRUE)
 
-  list(APPEND viewer_SOURCE_FILES ${viewer_INSTALLER_FILES})
+  #list(APPEND viewer_SOURCE_FILES ${viewer_INSTALLER_FILES})
 endif (WINDOWS)
 
 if (OPENAL)
@@ -1597,7 +1597,7 @@ if (DARWIN)
 endif (DARWIN)
 
 if (INSTALL)
-  include(${CMAKE_CURRENT_SOURCE_DIR}/ViewerInstall.cmake)
+ # include(${CMAKE_CURRENT_SOURCE_DIR}/ViewerInstall.cmake)
 endif (INSTALL)
 
 # Add tests

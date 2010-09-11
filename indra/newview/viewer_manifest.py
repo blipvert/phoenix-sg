@@ -412,48 +412,9 @@ class WindowsManifest(ViewerManifest):
         self.path(src='../win_updater/%s/windows-updater.exe' % self.args['configuration'],
                   dst="updater.exe")
 
-    def nsi_file_commands(self, install=True):
-        def wpath(path):
-            if path.endswith('/') or path.endswith(os.path.sep):
-                path = path[:-1]
-            path = path.replace('/', '\\')
-            return path
-
-        result = ""
-        dest_files = [pair[1] for pair in self.file_list if pair[0] and os.path.isfile(pair[1])]
-        # sort deepest hierarchy first
-        dest_files.sort(lambda a,b: cmp(a.count(os.path.sep),b.count(os.path.sep)) or cmp(a,b))
-        dest_files.reverse()
-        out_path = None
-        for pkg_file in dest_files:
-            rel_file = os.path.normpath(pkg_file.replace(self.get_dst_prefix()+os.path.sep,''))
-            installed_dir = wpath(os.path.join('$INSTDIR', os.path.dirname(rel_file)))
-            pkg_file = wpath(os.path.normpath(pkg_file))
-            if installed_dir != out_path:
-                if install:
-                    out_path = installed_dir
-                    result += 'SetOutPath ' + out_path + '\n'
-            if install:
-                result += 'File ' + pkg_file + '\n'
-            else:
-                result += 'Delete ' + wpath(os.path.join('$INSTDIR', rel_file)) + '\n'
-        # at the end of a delete, just rmdir all the directories
-        if not install:
-            deleted_file_dirs = [os.path.dirname(pair[1].replace(self.get_dst_prefix()+os.path.sep,'')) for pair in self.file_list]
-            # find all ancestors so that we don't skip any dirs that happened to have no non-dir children
-            deleted_dirs = []
-            for d in deleted_file_dirs:
-                deleted_dirs.extend(path_ancestors(d))
-            # sort deepest hierarchy first
-            deleted_dirs.sort(lambda a,b: cmp(a.count(os.path.sep),b.count(os.path.sep)) or cmp(a,b))
-            deleted_dirs.reverse()
-            prev = None
-            for d in deleted_dirs:
-                if d != prev:   # skip duplicates
-                    result += 'RMDir ' + wpath(os.path.join('$INSTDIR', os.path.normpath(d))) + '\n'
-                prev = d
-
-        return result
+    def nsi_file_commands(self, install=False):
+        
+        return ""
 
     def package_finish(self):
         # a standard map of strings for replacing in the templates
@@ -556,7 +517,7 @@ class WindowsManifest(ViewerManifest):
         if not os.path.exists(NSIS_path):
             NSIS_path = os.path.expandvars('${ProgramFiles(x86)}\\NSIS\\Unicode\\makensis.exe')
         self.run_command('"' + proper_windows_path(NSIS_path) + '" ' + self.dst_path_of(tempfile))
-        # self.remove(self.dst_path_of(tempfile))
+        self.remove(self.dst_path_of(tempfile))
         # If we're on a build machine, sign the code using our Authenticode certificate. JC
         sign_py = os.path.expandvars("${SIGN}")
         if not sign_py or sign_py == "${SIGN}":
