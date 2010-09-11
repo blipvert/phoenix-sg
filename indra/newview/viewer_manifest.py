@@ -43,6 +43,14 @@ from indra.util.llmanifest import proper_windows_path
 from indra.util.llmanifest import path_ancestors
 
 class ViewerManifest(LLManifest):
+    def is_packaging_viewer(self):
+        # Some commands, files will only be included
+        # if we are packaging the viewer on windows.
+        # This manifest is also used to copy
+        # files during the build (see copy_w_viewer_manifest
+        # and copy_l_viewer_manifest targets)
+        return 'package' in self.args['actions']
+
     def construct(self):
         super(ViewerManifest, self).construct()
         self.exclude("*.svn*")
