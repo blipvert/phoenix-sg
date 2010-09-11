@@ -2655,7 +2655,7 @@ ERlvCmdRet RlvHandler::onGetOutfit(const LLUUID& idObj, const RlvCommand& rlvCmd
 	const EWearableType layerTypes[] =
 		{ 
 			WT_GLOVES, WT_JACKET, WT_PANTS, WT_SHIRT, WT_SHOES, WT_SKIRT, WT_SOCKS, 
-			WT_UNDERPANTS, WT_UNDERSHIRT, WT_SKIN, WT_EYES, WT_HAIR, WT_SHAPE
+			WT_UNDERPANTS, WT_UNDERSHIRT, WT_SKIN, WT_EYES, WT_HAIR, WT_SHAPE, WT_ALPHA, WT_TATTOO
 		};
 
 	for (int idx = 0, cnt = sizeof(layerTypes) / sizeof(EWearableType); idx < cnt; idx++)
