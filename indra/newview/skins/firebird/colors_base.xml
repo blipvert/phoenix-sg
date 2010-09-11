@@ -48,7 +48,7 @@
 <SliderTrackColor value="255, 255, 255, 255" />
 
 <!-- TEXTFIELDS -->
-<TextBgFocusColor value="217, 210, 205, 255" />		<!-- Text field background when receiving input (focused) -->
+<TextBgFocusColor value="33, 33, 33, 255" />		<!-- Text field background when receiving input (focused) -->
 <TextBgReadOnlyColor value="202, 187, 178, 160" />	        <!-- Text field background when read-only -->
 <TextBgWriteableColor value="202, 187, 178, 150" />	<!-- Text field background when not receiving input (unfocused) -->
 <TextCursorColor value="128, 128, 128, 200" />
