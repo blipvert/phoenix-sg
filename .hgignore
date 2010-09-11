@@ -1,0 +1,7 @@
+syntax: glob
+*.pyc
+indra/build-vc[0-9]*
+indra/test_apps/terrain_mule/*.dll
+libraries
+LICENSES
+installed.xml
