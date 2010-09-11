@@ -34,11 +34,13 @@ import sys
 import os.path
 import re
 import tarfile
-import time
 viewer_dir = os.path.dirname(__file__)
 # add llmanifest library to our path so we don't have to muck with PYTHONPATH
-sys.path.append(os.path.join(viewer_dir, '../lib/python/indra/util'))
-from llmanifest import LLManifest, main, proper_windows_path, path_ancestors
+sys.path.append(os.path.join(viewer_dir, '../lib/python'))
+from indra.util.llmanifest import LLManifest
+from indra.util.llmanifest import main
+from indra.util.llmanifest import proper_windows_path
+from indra.util.llmanifest import path_ancestors
 
 class ViewerManifest(LLManifest):
     def is_packaging_viewer(self):
@@ -189,7 +191,7 @@ class WindowsManifest(ViewerManifest):
     def test_msvcrt_and_copy_action(self, src, dst):
         # This is used to test a dll manifest.
         # It is used as a temporary override during the construct method
-        from test_win32_manifest import test_assembly_binding
+        from indra.util.test_win32_manifest import test_assembly_binding
         if src and (os.path.exists(src) or os.path.islink(src)):
             # ensure that destination path exists
             self.cmakedirs(os.path.dirname(dst))
@@ -208,8 +210,8 @@ class WindowsManifest(ViewerManifest):
     def test_for_no_msvcrt_manifest_and_copy_action(self, src, dst):
         # This is used to test that no manifest for the msvcrt exists.
         # It is used as a temporary override during the construct method
-        from test_win32_manifest import test_assembly_binding
-        from test_win32_manifest import NoManifestException, NoMatchingAssemblyException
+        from indra.util.test_win32_manifest import test_assembly_binding
+        from indra.util.test_win32_manifest import NoManifestException, NoMatchingAssemblyException
         if src and (os.path.exists(src) or os.path.islink(src)):
             # ensure that destination path exists
             self.cmakedirs(os.path.dirname(dst))
