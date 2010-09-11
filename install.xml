@@ -23,9 +23,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>406d74f98a40a4c63dcf2611acda5b96</string>
+						<string>d70357289f8dd4a17bf9820f3c0f2a20</string>
 						<key>url</key>
-						<uri>http://dev.phoenixviewer.com/libraries/hunspell-1.2-linux-20100503.tar.bz2</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/hunspell-1.2.11-linux-20100910.tar.bz2</uri>
 					</map>
 					<key>darwin</key>
 					<map>
@@ -49,9 +49,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>f51e2295cc1f88700d79f618be4b5c22</string>
+						<string>37966f20fde607c52513334d00e0bbbc</string>
 						<key>url</key>
-						<uri>http://dev.phoenixviewer.com/libraries/libotr-2.2.0-linux-20100522.tar.bz2</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/libotr-2.2.0-linux-20100911.tar.bz2</uri>
 					</map>
 					<key>darwin</key>
 					<map>
@@ -89,9 +89,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>dc389633048895349aea262cacf02e0a</string>
+						<string>0d9bc8f051135799f86df230801f33c3</string>
 						<key>url</key>
-						<uri>http://dev.phoenixviewer.com/libraries/libnotify-1.1.2-linux-20100522.tar.bz2</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/libnotify-0.5.0-linux-20100910.tar.bz2</uri>
 					</map>
 				</map>
 			</map>
@@ -115,9 +115,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>01a9b00d2052deae0c5914f1dfede38a</string>
+						<string>a5a3c5f5d451a2bcaa8975dd349abf5a</string>
 						<key>url</key>
-						<uri>http://dev.phoenixviewer.com/libraries/p7zip-standalone-linux.tar.bz2</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/p7zip-standalone-linux-20100911.tar.bz2</uri>
 					</map>
 				</map>
 			</map>
@@ -332,9 +332,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>74ac724e8197d85928604757c4a28ca1</string>
+						<string>fff58f38257077f5668f9953145c0392</string>
 						<key>url</key>
-						<uri>http://dev.phoenixviewer.com/libraries/boost-1.39.0-linux-20100405.tar.bz2</uri>
+						<uri>http://dev.phoenixviewer.com/libraries/boost-1.42.0-linux-20100911.tar.bz2</uri>
 					</map>
 					<key>windows</key>
 					<map>
@@ -417,9 +417,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>c2e2c2aa40bbd92f4d3b939ebd963aa2</string>
+						<string>eb25444142d4102b0ce1b7ffaadb071e</string>
 						<key>url</key>
-						<uri>http://dev.phoenixviewer.com/libraries/dbus-glib-2.1.0-linux-20100523.tar.bz2</uri>
+						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/dbusglib-linux-20080707.tar.bz2</uri>
 					</map>
 				</map>
 			</map>
@@ -724,9 +724,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>5286e04c3fbc7c11b5e9390131e63a46</string>
+						<string>21c16a74f8fc9a62e3ab944a6eb7403d</string>
 						<key>url</key>
-						<uri>http://dev.phoenixviewer.com/libraries/gtk-build-libs-linux-20100523.tar.bz2</uri>
+						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/gtk-atk-pango-glib-linux-20080616.tar.bz</uri>
 					</map>
 					<key>windows</key>
 					<map>
