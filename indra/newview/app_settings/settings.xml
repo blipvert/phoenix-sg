@@ -181,7 +181,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>PhoenixFreezeInventoryArangement</key>
+		<key>PhoenixFreezeInventoryArrangement</key>
 		<map>
 			<key>Comment</key>
 			<string>If true, prevents the inventory folders from changing on new items</string>

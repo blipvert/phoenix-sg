@@ -951,37 +951,32 @@ void open_offer(const std::vector<LLUUID>& items, const std::string& from_name)
 				break;
 			}
 		}
-		//highlight item, if it's not in the trash or lost+found
 
-		// Don't auto-open the inventory floater if we don't want to.
+		if (gSavedSettings.getBOOL("PhoenixFreezeInventoryArrangement"))
+			continue;
+
+		//highlight item, if it's not in the trash or lost+found
+		
+		// Don't auto-open the inventory floater
 		LLInventoryView* view = LLInventoryView::getActiveInventory();
-		// No point opening an inventory window if we're then not going to actually do anything with it.
-		bool show_inventory = gSavedSettings.getBOOL("ShowInInventory") && !gSavedSettings.getBOOL("PhoenixFreezeInventoryArangement");
 		// Phoenix RLVa check, don't show inventory if we're not supposed to be
 		show_inventory = show_inventory && !gRlvHandler.hasBehaviour(RLV_BHVR_SHOWINV);
 		if(!view)
 		{
-			if(show_inventory)
-			{
-				view = LLInventoryView::showAgentInventory(TRUE);
-				if(!view)
-				{
-					// Give up.
-					LL_WARNS("Messaging") << "Unable to open inventory panel." << LL_ENDL;
-					return;
-				}
-			}
-			else
-			{
-				return;
-			}
+			return;
 		}
-		else if(show_inventory)
+
+		if(gSavedSettings.getBOOL("ShowInInventory") &&
+		   asset_type != LLAssetType::AT_CALLINGCARD &&
+		   item->getInventoryType() != LLInventoryType::IT_ATTACHMENT &&
+		   !from_name.empty())
 		{
-			view->open();
-			view->setFrontmost(TRUE);
+			LLInventoryView::showAgentInventory(TRUE);
 		}
-	
+		else
+		{
+			continue;
+		}
 		//Trash Check
 		LLUUID trash_id;
 		trash_id = gInventory.findCategoryUUIDForType(LLAssetType::AT_TRASH);
