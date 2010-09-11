@@ -71,8 +71,8 @@
 
 // Version of the specifcation we support
 const S32 RLV_VERSION_MAJOR = 1;
-const S32 RLV_VERSION_MINOR = 22;
-const S32 RLV_VERSION_PATCH = 1;
+const S32 RLV_VERSION_MINOR = 23;
+const S32 RLV_VERSION_PATCH = 0;
 const S32 RLV_VERSION_BUILD = 0;
 
 // Implementation version
