@@ -66,6 +66,15 @@ IF(CMAKE_COMPILER_IS_GNUCC)
   SET(CMAKE_C_FLAGS_RELEASE "-ffast-math ${CMAKE_C_FLAGS_RELEASE}")
 ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
+# Pass proper definition to preprocessor to generate shared lib
+IF(WIN32)
+  IF(BUILD_SHARED_LIBS)
+    ADD_DEFINITIONS(-DOPJ_EXPORTS)
+  ELSE(BUILD_SHARED_LIBS)
+    ADD_DEFINITIONS(-DOPJ_STATIC)
+  ENDIF(BUILD_SHARED_LIBS)
+ENDIF(WIN32)
+
 # Defines the source code for the library
 SET(OPENJPEG_SRCS
   bio.c
