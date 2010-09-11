@@ -206,6 +206,10 @@ if (DARWIN)
   # NOTE: it's critical to have both CXX_FLAGS and C_FLAGS covered.
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O0 ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
   set(CMAKE_C_FLAGS_RELWITHDEBINFO "-O0 ${CMAKE_C_FLAGS_RELWITHDEBINFO}")
+  # SSE2 enabled, since all Intel Macs are capable of it
+  set(CMAKE_CXX_FLAGS_RELEASE "-msse2 ${CMAKE_CXX_FLAGS_RELEASE}")
+  set(CMAKE_C_FLAGS_RELEASE "-msse2 ${CMAKE_C_FLAGS_RELEASE}")
+  add_definitions(-DLL_VECTORIZE=1)
 endif (DARWIN)
 
 
