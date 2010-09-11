@@ -40,13 +40,28 @@ RequestExecutionLevel admin	; on Vista we must be admin because we write to Prog
 ;; (these files are in the same place as the nsi template but the python script generates a new nsi file in the 
 ;; application directory so we have to add a path to these include files)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+!include "%%SOURCE%%\installers\windows\lang_de.nsi"
 !include "%%SOURCE%%\installers\windows\lang_en-us.nsi"
-
+!include "%%SOURCE%%\installers\windows\lang_es.nsi"
+!include "%%SOURCE%%\installers\windows\lang_fr.nsi"
+!include "%%SOURCE%%\installers\windows\lang_ja.nsi"
+!include "%%SOURCE%%\installers\windows\lang_it.nsi"
+!include "%%SOURCE%%\installers\windows\lang_ko.nsi"
+!include "%%SOURCE%%\installers\windows\lang_nl.nsi"
+!include "%%SOURCE%%\installers\windows\lang_pt-br.nsi"
+!include "%%SOURCE%%\installers\windows\lang_zh.nsi"
 
 # *TODO: Move these into the language files themselves
-
+LangString LanguageCode ${LANG_GERMAN}   "de"
 LangString LanguageCode ${LANG_ENGLISH}  "en"
+LangString LanguageCode ${LANG_SPANISH}  "es"
+LangString LanguageCode ${LANG_FRENCH}   "fr"
+LangString LanguageCode ${LANG_JAPANESE} "ja"
+LangString LanguageCode ${LANG_ITALIAN}  "it"
+LangString LanguageCode ${LANG_KOREAN}   "ko"
+LangString LanguageCode ${LANG_DUTCH}    "nl"
+LangString LanguageCode ${LANG_PORTUGUESEBR} "pt"
+LangString LanguageCode ${LANG_SIMPCHINESE}  "zh"
 
 Name ${INSTNAME}
 
@@ -461,7 +476,7 @@ Function un.ProgramFiles
 Delete "$INSTDIR\app_settings\mozilla\components"
 
 ;; This placeholder is replaced by the complete list of files to uninstall by viewer_manifest.py
-;%%DELETE_FILES%%
+%%DELETE_FILES%%
 
 ;; Optional/obsolete files.  Delete won't fail if they don't exist.
 Delete "$INSTDIR\dronesettings.ini"
@@ -741,7 +756,7 @@ Call RemoveOldAboutLandSilver
 ;;; Files
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; This placeholder is replaced by the complete list of all the files in the installer, by viewer_manifest.py
-;%%INSTALL_FILES%%
+%%INSTALL_FILES%%
 
 # Pass the installer's language to the client to use as a default
 StrCpy $SHORTCUT_LANG_PARAM "--set InstallLanguage $(LanguageCode)"

@@ -1,14 +1,14 @@
 <llsd>
     <map>
     <key>skin_name</key>
-        <string>Firebird</string>
+        <string>Default</string>
     <key>author_name</key>
-        <string>Miss Wright</string>
-    <key>additional_author_names</key>
         <string>Linden Lab</string>
+    <key>additional_author_names</key>
+        <string></string>
     <key>skin_info</key>
-        <string>The first skin customized for the Phoenix Viewer.</string>
+        <string>This is the default skin for nearly every Second Life viewer.</string>
     <key>folder_name</key>
-        <string>firebird</string>
+        <string>default</string>
     </map>
 </llsd>
