@@ -957,6 +957,8 @@ void open_offer(const std::vector<LLUUID>& items, const std::string& from_name)
 		LLInventoryView* view = LLInventoryView::getActiveInventory();
 		// No point opening an inventory window if we're then not going to actually do anything with it.
 		bool show_inventory = gSavedSettings.getBOOL("ShowInInventory") && !gSavedSettings.getBOOL("PhoenixFreezeInventoryArangement");
+		// Phoenix RLVa check, don't show inventory if we're not supposed to be
+		show_inventory = show_inventory && !gRlvHandler.hasBehaviour(RLV_BHVR_SHOWINV);
 		if(!view)
 		{
 			if(show_inventory)
