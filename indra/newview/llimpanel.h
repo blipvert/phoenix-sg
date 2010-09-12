@@ -295,6 +295,7 @@ public:
 	static bool onConfirmForceCloseError(const LLSD& notification, const LLSD& response);
 
 	bool isEncrypted();
+	const bool IsModerator(const LLUUID& avatar_id); //Kadah
 private:
 	// called by constructors
 	void init(const std::string& session_label);

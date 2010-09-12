@@ -1685,7 +1685,21 @@ void LLFloaterIMPanel::addHistoryLine(const std::string &utf8msg, LLColor4 incol
 		}
 		prepend_newline = false;
 	}
-	mHistoryEditor->appendColoredText(utf8msg, false, prepend_newline, color);
+	
+	//Kadah - Boldify group mods chat. Doesnt work on the first msg of the session, dont have speakers list yet?
+	if (IsModerator(source))
+	{
+		LLStyleSP style(new LLStyle);
+		style->setVisible(true);
+		style->setColor(color);
+		style->setFontName(LLStringUtil::null);
+		style->mBold = TRUE;
+		mHistoryEditor->appendStyledText(utf8msg, false, prepend_newline, style);
+	}
+	else
+	{
+		mHistoryEditor->appendColoredText(utf8msg, false, prepend_newline, color);
+	}
 
 	if (log_to_file
 		&& gSavedPerAccountSettings.getBOOL("LogInstantMessages") )
@@ -3218,7 +3232,8 @@ void LLFloaterIMPanel::sendMsg()
                 }
                 else
                 {
-					addHistoryLine(history_echo, gSavedSettings.getColor("IMChatColor"), true, gAgent.getID());
+					//addHistoryLine(history_echo, gSavedSettings.getColor("IMChatColor"), true, gAgent.getID());
+					addHistoryLine(history_echo, gSavedSettings.getColor("UserChatColor"), true, gAgent.getID());
                 }
 				if (other_was_typing)
 				{
@@ -3548,4 +3563,13 @@ bool LLFloaterIMPanel::isEncrypted()
 }
 // USE_OTR // [/$PLOTR$]
 
-
+//Kadah
+const bool LLFloaterIMPanel::IsModerator(const LLUUID& speaker_id)
+{
+	if (mSpeakers)
+	{
+		LLPointer<LLSpeaker> speakerp = mSpeakers->findSpeaker(speaker_id);
+		return speakerp && speakerp->mIsModerator;
+	}
+	return FALSE;
+}
