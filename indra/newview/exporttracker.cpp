@@ -833,7 +833,32 @@ BOOL JCExportTracker::mirror(LLInventoryObject* item, LLViewerObject* container,
 			if(iname == "")
 			{
 				iname = item->getName();
-				iname = curl_escape(iname.c_str(), iname.size());
+				//iname = curl_escape(iname.c_str(), iname.size()); // Will build ugly filenames
+				LLStringUtil::replaceString(iname,":","");
+				LLStringUtil::replaceString(iname,"<","");
+				LLStringUtil::replaceString(iname,">","");
+				LLStringUtil::replaceString(iname,"\"","");
+				LLStringUtil::replaceString(iname,"\\","");
+				LLStringUtil::replaceString(iname,"/","");
+				LLStringUtil::replaceString(iname,"|","");
+				LLStringUtil::replaceString(iname,"?","");
+				LLStringUtil::replaceString(iname,"*","");
+
+				/*
+						Wolfspirit:
+						The following characters are reserved by windows:
+
+						< (less than)
+						> (greater than)
+						: (colon)
+						" (double quote)
+						/ (forward slash)
+						\ (backslash)
+						| (vertical bar or pipe)
+						? (question mark)
+						* (asterisk)
+
+				*/
 			}
 			root = root + iname + "." + LLAssetType::lookup(item->getType());
 			//cmdline_printchat(root);

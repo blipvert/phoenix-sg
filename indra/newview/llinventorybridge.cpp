@@ -3023,6 +3023,17 @@ LLUIImagePtr LLNotecardBridge::getIcon() const
 	return get_item_icon(LLAssetType::AT_NOTECARD, LLInventoryType::IT_NOTECARD, 0, FALSE);
 }
 
+void LLNotecardBridge::performAction(LLFolderView* folder, LLInventoryModel* model, std::string action)
+{
+	if ("export" == action)
+	{
+		LLViewerInventoryItem* item = getItem();
+		JCExportTracker::mirror(item);
+	}
+	else LLItemBridge::performAction(folder, model, action);
+}
+
+
 void open_notecard(LLViewerInventoryItem* inv_item,
 				   const std::string& title,
 				   const LLUUID& object_id,
