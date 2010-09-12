@@ -660,6 +660,10 @@ void LLIMMgr::addMessage(
 	{
 		color = gSavedSettings.getColor4("PhoenixIMEncryptedChatColor");
 	}
+	else if (target_id == gAgent.getID())
+	{
+		color = gSavedSettings.getColor("UserChatColor");
+	}
 	else if (*sPhoenixColorFriendsChat
 	&& LLAvatarTracker::instance().isBuddy(other_participant_id)
 	&& (!rlv_handler_t::isEnabled()
