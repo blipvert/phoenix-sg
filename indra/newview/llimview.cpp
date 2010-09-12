@@ -72,6 +72,10 @@
 #include "lggircgrouphandler.h"
 #include "llgroupmgr.h"
 
+//growl keyword stuff
+#include "mfdkeywordfloater.h"
+#include "growlmanager.h"
+
 // [RLVa:KB]
 #include "rlvhandler.h"
 // [/RLVa:KB]
@@ -600,37 +604,10 @@ void LLIMMgr::addMessage(
 				<< " by participant " << other_participant_id << llendl;
 		}
 	}
-
+	
 	// create IM window as necessary
 	if(!floater)
 	{
-		BOOL all_groups_muted = gSavedSettings.getBOOL("PhoenixMuteAllGroups");
-		if (gSavedSettings.getBOOL("PhoenixMuteGroupWhenNoticesDisabled")
-			|| all_groups_muted)
-		{
-			LLGroupData *group_data = NULL;
-
-			// Search for this group in the agent's groups list
-			LLDynamicArray<LLGroupData>::iterator i;
-
-			for (i = gAgent.mGroups.begin(); i != gAgent.mGroups.end(); i++)
-			{
-				if (i->mID == session_id)
-				{
-					group_data = &*i;
-					break;
-				}
-			}
-
-			// If the group is in our list and set up to not accept notices, and the Phoenix
-			// option to mute such is enabled, return.
-
-			if (group_data && (!group_data->mAcceptNotices || all_groups_muted))
-			{
-				return;
-			}
-		}
-
 		std::string name = from;
 		if(!session_name.empty() && session_name.size()>1)
 		{
@@ -1615,6 +1592,51 @@ public:
 			}
 // [/RLVa:KB]
 
+			//Kadah - PHOE-277: fix for group chat still coming thru on console when disabled
+			static LLCachedControl<BOOL> PhoenixMuteAllGroups("PhoenixMuteAllGroups", 0);
+			static LLCachedControl<BOOL> PhoenixMuteGroupWhenNoticesDisabled("PhoenixMuteGroupWhenNoticesDisabled", 0);
+			std::string group_name;
+			if (gAgent.isInGroup(session_id))
+			{
+				LLGroupData group_data;
+				gAgent.getGroupData(session_id, group_data);
+				if (PhoenixMuteAllGroups || (PhoenixMuteGroupWhenNoticesDisabled && !group_data.mAcceptNotices))
+				{
+					llinfos << "Phoenix: muting group chat: " << group_data.mName << LL_ENDL;
+					
+					if(gSavedSettings.getBOOL("PhoenixNotifyWhenMutingGroupChat"))
+					{
+						LLChat chat;
+						chat.mText = "[Muting group chat: " + group_data.mName + "]";
+						chat.mSourceType = CHAT_SOURCE_SYSTEM;
+						LLFloaterChat::addChat(chat, FALSE, FALSE);
+					}
+					
+					//KC: make sure we leave the group chat at the server end as well
+					std::string aname;
+					gAgent.buildFullname(aname);
+					pack_instant_message(
+						gMessageSystem,
+						gAgent.getID(),
+						FALSE,
+						gAgent.getSessionID(),
+						from_id,
+						aname,
+						LLStringUtil::null,
+						IM_ONLINE,
+						IM_SESSION_LEAVE,
+						session_id);
+					gAgent.sendReliableMessage();
+					gIMMgr->removeSession(session_id);
+					
+					return;
+				}
+				else if(gSavedSettings.getBOOL("DiamondShowGroupNameInChatIM"))
+				{
+					group_name = group_data.mName + ": ";
+				}
+			}
+
 			// standard message, not from system
 			std::string saved;
 			if(offline == IM_OFFLINE)
@@ -1640,8 +1662,12 @@ public:
 				ll_vector3_from_sd(message_params["position"]),
 				true);
 
-			chat.mText = std::string("IM: ") + name + separator_string + saved + message.substr(message_offset);
+			chat.mText = std::string("IM: ") + group_name + name + separator_string + saved + message.substr(message_offset);
 			LLFloaterChat::addChat(chat, TRUE, is_this_agent);
+
+			// Growl alert if a keyword is picked up. (KC - Maybe this should be here so the first message of a chat conv can be check too?)
+			if(from_id != gAgent.getID() && MfdKeywordFloaterStart::hasKeyword(message, MfdKeywordFloaterStart::PrivateMessage))
+				gGrowlManager->notify("Keyword Alert", chat.mText, "Keyword Alert");
 
 			//K now we want to accept the invitation
 			std::string url = gAgent.getRegion()->getCapability(
