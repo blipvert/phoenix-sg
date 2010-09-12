@@ -1375,15 +1375,16 @@ void LLFloaterAvatarList::refreshAvatarList()
 			if ( is_agent_friend(av_id)) av_color = friend_color;
 			else if (LLMuteList::getInstance()->isMuted(av_id)) av_color = muted_color;
 			else av_color = (*sDefaultListText).getValue();
-
-			if ( ent->isMarked() )
-			{
-				av_color = marked_color;
-			}
 		}
 		else
 		{
 			av_color = (*sDefaultListText).getValue();
+		}
+		
+		// Marked avatars should always show up coloured
+		if ( ent->isMarked() )
+		{
+			av_color = marked_color;
 		}
 
 		element["columns"][LIST_AVATAR_NAME]["color"] = av_color.getValue();
