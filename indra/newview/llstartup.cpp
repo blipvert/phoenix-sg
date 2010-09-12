@@ -2770,6 +2770,12 @@ bool idle_startup()
 			LLViewerRegion* regionp = gAgent.getRegion();
 			gFloaterTeleportHistory->addEntry(regionp->getName(),(S16)agent_pos.mV[0],(S16)agent_pos.mV[1],(S16)agent_pos.mV[2],false);
 		}
+		
+		//KadahCoba - disable the rendering of clouds
+		if(gSavedSettings.getBOOL("PhoenixKillTheClouds"))
+		{
+			gPipeline.toggleRenderType(LLPipeline::RENDER_TYPE_CLOUDS);
+		}
 
 		// Let the map know about the inventory.
 		if(gFloaterWorldMap)
