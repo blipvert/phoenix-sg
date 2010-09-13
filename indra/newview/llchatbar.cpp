@@ -482,22 +482,24 @@ void LLChatBar::sendChat( EChatType type )
 							utf8text += " ";
 						utf8text += "]]";
 					}
-					needsClosingType = 0;
-					if (utf8text.find("((") == -1 && utf8text.find("))") == (utf8text.length() - 2)) // have )) missing ((
-						needsClosingType = 1;
-					else if (utf8text.find("[[") == -1 && utf8text.find("]]") == (utf8text.length() - 2)) // have ]] missing [[
-						needsClosingType = 2;
-					if(needsClosingType == 1)
-					{
-						if(utf8text.at(0) == '(')
-							utf8text.insert(0, " ");
-						utf8text.insert(0, "((");
-					}
-					else if(needsClosingType == 2)
-					{
-						if(utf8text.at(0) == '[')
-							utf8text.insert(0, " ");
-						utf8text.insert(0, "[[");
+					if (utf8text.length() >= 2) { // Don't add brackets on the start of 1 character lines
+						needsClosingType = 0;
+						if (utf8text.find("((") == -1 && utf8text.find("))") == (utf8text.length() - 2)) // have )) missing ((
+							needsClosingType = 1;
+						else if (utf8text.find("[[") == -1 && utf8text.find("]]") == (utf8text.length() - 2)) // have ]] missing [[
+							needsClosingType = 2;
+						if(needsClosingType == 1)
+						{
+							if(utf8text.at(0) == '(')
+								utf8text.insert(0, " ");
+							utf8text.insert(0, "((");
+						}
+						else if(needsClosingType == 2)
+						{
+							if(utf8text.at(0) == '[')
+								utf8text.insert(0, " ");
+							utf8text.insert(0, "[[");
+						}
 					}
 				}
 				// Convert MU*s style poses into IRC emotes here.
