@@ -76,10 +76,10 @@
   <button bottom="-40" follows="left|top" halign="center" height="20" label="Teleport" left_delta="50"
 		 name="profile_tele_btn" width="57" />
   <button bottom="-40" follows="left|top" halign="right" height="20" label="History" left_delta="57"
-          name="history_btn" pad_right="10" visible="true" width="53" />
+          name="history_btn" pad_right="10" visible="true" width="56" />
   <button bottom="-40" follows="left|top" halign="right" height="20"
 	     image_overlay="icn_voice-call-start.tga" image_overlay_alignment="left"
-	     label="Call" left_delta="53" name="start_call_btn" width="53" />
+	     label="Call" left_delta="56" name="start_call_btn" width="53" />
   <button bottom="-40" follows="left|top" halign="right" height="20"
 	     image_overlay="icn_voice-call-end.tga" image_overlay_alignment="left"
 	     label="End" left_delta="0" name="end_call_btn" pad_right="10"
