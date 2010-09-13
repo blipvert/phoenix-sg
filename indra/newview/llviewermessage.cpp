@@ -2568,8 +2568,9 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 		{
 			if(gSavedSettings.getBOOL("DiamondShowGroupNameInChatIM"))
 			{
-				group_name = std::string((char*)binary_bucket);
-				group_name += ": ";
+				group_name = "[";
+				group_name += std::string((char*)binary_bucket);
+				group_name += "] ";
 			}
 		}
 		chat.mText = std::string("IM: ") + group_name + name + separator_string +  saved + message.substr(message_offset);
