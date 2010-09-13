@@ -12,6 +12,12 @@ vector  moveToTarget;
 
 integer tid2;
 integer l2c;
+int()
+{
+    recieve_channel = channel(llGetOwner());
+    //llOwnerSay((string) recieve_channel);
+    connect();
+}
 connect()
 {
     llListenRemove(tid);
@@ -89,11 +95,14 @@ default
 {
     state_entry()
     {
-        recieve_channel = channel(llGetOwner());
-        //llOwnerSay((string) recieve_channel);
-        connect();
+        init()
     }
 
+	on_rez(integer p)
+	{
+		init();
+	}
+	
     listen(integer channel, string name, key id, string message)
     {
         if(channel == recieve_channel || channel == l2c)

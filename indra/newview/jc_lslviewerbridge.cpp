@@ -70,7 +70,7 @@
 
 
 #define phoenix_point (LLAssetType::EType)127
-#define phoenix_bridge_name "#LSL<->Client Bridge v0.08"
+#define phoenix_bridge_name "#LSL<->Client Bridge v0.09"
 
 void cmdline_printchat(std::string message);
 
