@@ -30,10 +30,13 @@
 			Referenz
 		</combo_item>
 	</combo_box>
+	<button label="Optionen" label_selected="Optionen" name="Options..."/>
 	<check_box label="Beide Seiten dehnen" name="checkbox uniform"/>
 	<check_box label="Texturen dehnen" name="checkbox stretch textures"/>
 	<check_box label="Raster verwenden" name="checkbox snap to grid"/>
-	<button label="Optionen..." label_selected="Optionen..." name="Options..."/>
+	<check_box label="Achse an der wurzel" name="checkbox actual root" />
+	<check_box label="Show Highlight" left_delta="20" name="checkbox show highlight" />
+	
 	<text name="text status">
 		Zum Verschieben ziehen, zum Kopieren Umschalttaste-Ziehen
 	</text>
