@@ -365,7 +365,7 @@ public:
 	LLFrameTimer mLastPacketTimer;		// Time since last packet.
 	LLFrameTimer mLastReferencedTimer;
 
-	std::string decodedComment;
+	std::map<std::string,std::string> decodedComment;
 
 private:
 	LLUUID mID;
