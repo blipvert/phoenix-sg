@@ -12,7 +12,7 @@ vector  moveToTarget;
 
 integer tid2;
 integer l2c;
-int()
+init()
 {
     recieve_channel = channel(llGetOwner());
     //llOwnerSay((string) recieve_channel);
@@ -95,7 +95,7 @@ default
 {
     state_entry()
     {
-        init()
+        init();
     }
 
 	on_rez(integer p)
