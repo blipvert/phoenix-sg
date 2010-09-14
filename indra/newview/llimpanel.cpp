@@ -1686,8 +1686,8 @@ void LLFloaterIMPanel::addHistoryLine(const std::string &utf8msg, LLColor4 incol
 		prepend_newline = false;
 	}
 	
-	//Kadah - Boldify group mods chat. Doesnt work on the first msg of the session, dont have speakers list yet?
-	if (gSavedSettings.getBOOL("PhoenixBoldifyGroupMods") && IsModerator(source))
+	//Kadah - Bold group mods chat. Doesnt work on the first msg of the session, dont have speakers list yet?
+	if (gSavedSettings.getBOOL("PhoenixBoldGroupMods") && IsModerator(source))
 	{
 		LLStyleSP style(new LLStyle);
 		style->setVisible(true);
