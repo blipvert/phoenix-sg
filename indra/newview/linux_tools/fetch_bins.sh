@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Necessary files
-BINS="bin/SLVoice bin/libemkdu.so lib/libortp.so lib/libvivoxsdk.so lib/libfmod-3.75.so"
+BINS="bin/SLVoice lib/libortp.so lib/libvivoxsdk.so lib/libfmod-3.75.so"
 
 # Locations of client to use
 URL="http://www.phoenixviewer.com/fmod-vivox.tar.bz2"
