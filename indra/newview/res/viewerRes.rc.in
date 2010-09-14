@@ -138,8 +138,8 @@ TOOLMEDIAOPEN           CURSOR                  "toolmediaopen.cur"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,5,0,167
- PRODUCTVERSION 1,5,0,167
+ FILEVERSION @VERSION_VIEWER_MAJOR@,@VERSION_VIEWER_MINOR@,@VERSION_VIEWER_PATCH@,@VERSION_BUILD@
+ PRODUCTVERSION @VERSION_VIEWER_MAJOR@,@VERSION_VIEWER_MINOR@,@VERSION_VIEWER_PATCH@,@VERSION_BUILD@
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -156,12 +156,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Phoenix Viewer"
             VALUE "FileDescription", "Phoenix Viewer"
-            VALUE "FileVersion", "1.5.0.167"
+            VALUE "FileVersion", "@VERSION_VIEWER@"
             VALUE "InternalName", "Phoenix Viewer"
             VALUE "LegalCopyright", "Copyright © 2010 Phoenix Viewer"
             VALUE "OriginalFilename", "Phoenix Viewer.exe"
             VALUE "ProductName", "Phoenix Viewer"
-            VALUE "ProductVersion", "1.5.0.167"
+            VALUE "ProductVersion", "@VERSION_VIEWER@"
         END
     END
     BLOCK "VarFileInfo"
