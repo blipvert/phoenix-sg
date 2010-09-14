@@ -1687,7 +1687,7 @@ void LLFloaterIMPanel::addHistoryLine(const std::string &utf8msg, LLColor4 incol
 	}
 	
 	//Kadah - Boldify group mods chat. Doesnt work on the first msg of the session, dont have speakers list yet?
-	if (IsModerator(source))
+	if (gSavedSettings.getBOOL("PhoenixBoldifyGroupMods") && IsModerator(source))
 	{
 		LLStyleSP style(new LLStyle);
 		style->setVisible(true);

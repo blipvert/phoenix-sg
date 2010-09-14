@@ -15254,7 +15254,7 @@
 		<key>PhoenixColorFriendsChat</key>
 		<map>
 			<key>Comment</key>
-			<string>Highlightd chat from friends in a different color</string>
+			<string>Highlight chat from friends in a different color</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -15277,6 +15277,17 @@
 				<real>0.663</real>
 				<real>1.0</real>
 			</array>
+		</map>
+		<key>PhoenixBoldGroupMods</key>
+		<map>
+			<key>Comment</key>
+			<string>Boldify moderators' text in group chat</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
 		</map>
 	</map>
 </llsd>
