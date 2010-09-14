@@ -683,6 +683,18 @@ void LLScriptEdCore::updateDynamicHelp(BOOL immediate)
 void LLScriptEdCore::xedLaunch()
 {
 	//llinfos << "LLScriptEdCore::autoSave()" << llendl;
+	
+	std::string editor = gSavedSettings.getString("PhoenixLSLExternalEditor");
+	if (!gDirUtilp->fileExists(editor))
+	{
+		llwarns << "External editor " + editor + " not found" << llendl;
+
+		LLSD row;
+		row["columns"][0]["value"] = "Couldn't open external editor '" + editor + "'. File not found.";
+		row["columns"][0]["font"] = "SANSSERIF_SMALL";
+		mErrorList->addElement(row);
+		return;
+	}
 
 	//std::string filepath = gDirUtilp->getExpandedFilename(gDirUtilp->getTempDir(),asset_id.asString());
 	if( mXfname.empty() ) {
@@ -764,43 +776,40 @@ void LLScriptEdCore::xedLaunch()
 
 void LLScriptEdCore::XedUpd()
 {
-   struct stat stbuf;
-   stat(this->mXfname.c_str() , &stbuf);
-   if (this->mXstbuf.st_mtime != stbuf.st_mtime)
-   {
-	   this->mErrorList->addCommentText(std::string("Change Detected... Updating"));
+	struct stat stbuf;
+	stat(this->mXfname.c_str() , &stbuf);
+	if (this->mXstbuf.st_mtime != stbuf.st_mtime)
+	{
+		this->mErrorList->addCommentText(std::string("Change Detected... Updating"));
 
-	this->mXstbuf = stbuf;  
-	  
-	  LLFILE* file = LLFile::fopen(this->mXfname, "rb");		/*Flawfinder: ignore*/
- 	if(file)
- 	{
- 		// read in the whole file
- 		fseek(file, 0L, SEEK_END);
- 		long file_length = ftell(file);
- 		fseek(file, 0L, SEEK_SET);
- 		char* buffer = new char[file_length+1];
- 		size_t nread = fread(buffer, 1, file_length, file);
- 		if (nread < (size_t) file_length)
- 		{
- 			llwarns << "Short read" << llendl;
- 		}
- 		buffer[nread] = '\0';
- 		fclose(file);
-		std::string ttext = LLStringExplicit(buffer);
-		LLStringUtil::replaceTabsWithSpaces(ttext, 4);
-		mEditor->setText(ttext);
-		LLScriptEdCore::doSave( this, FALSE );
- 		//mEditor->makePristine();
- 		delete[] buffer;
- 	}
- 	else
- 	{
- 		llwarns << "Error opening " << this->mXfname << llendl;
- 	}
-
-
-   }					 
+		this->mXstbuf = stbuf;
+		LLFILE* file = LLFile::fopen(this->mXfname, "rb");		/*Flawfinder: ignore*/
+	 	if(file)
+	 	{
+			// read in the whole file
+			fseek(file, 0L, SEEK_END);
+			long file_length = ftell(file);
+			fseek(file, 0L, SEEK_SET);
+			char* buffer = new char[file_length+1];
+			size_t nread = fread(buffer, 1, file_length, file);
+			if (nread < (size_t) file_length)
+			{
+				llwarns << "Short read" << llendl;
+			}
+			buffer[nread] = '\0';
+			fclose(file);
+			std::string ttext = LLStringExplicit(buffer);
+			LLStringUtil::replaceTabsWithSpaces(ttext, 4);
+			mEditor->setText(ttext);
+			LLScriptEdCore::doSave( this, FALSE );
+			//mEditor->makePristine();
+			delete[] buffer;
+		}
+		else
+		{
+			llwarns << "Error opening " << this->mXfname << llendl;
+		}
+	}					 
 }
 //end dim
 void LLScriptEdCore::autoSave()
