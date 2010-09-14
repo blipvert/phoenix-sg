@@ -1599,11 +1599,9 @@ public:
 			//Kadah - PHOE-277: fix for group chat still coming thru on console when disabled
 			static LLCachedControl<BOOL> PhoenixMuteAllGroups("PhoenixMuteAllGroups", 0);
 			static LLCachedControl<BOOL> PhoenixMuteGroupWhenNoticesDisabled("PhoenixMuteGroupWhenNoticesDisabled", 0);
-			std::string group_name;
-			if (gAgent.isInGroup(session_id))
+			LLGroupData group_data;
+			if (gAgent.getGroupData(session_id, group_data))
 			{
-				LLGroupData group_data;
-				gAgent.getGroupData(session_id, group_data);
 				if (PhoenixMuteAllGroups || (PhoenixMuteGroupWhenNoticesDisabled && !group_data.mAcceptNotices))
 				{
 					llinfos << "Phoenix: muting group chat: " << group_data.mName << LL_ENDL;
@@ -1635,12 +1633,8 @@ public:
 					
 					return;
 				}
-				else if(gSavedSettings.getBOOL("DiamondShowGroupNameInChatIM"))
-				{
-					group_name = group_data.mName + ": ";
-				}
 			}
-
+			
 			// standard message, not from system
 			std::string saved;
 			if(offline == IM_OFFLINE)
@@ -1666,7 +1660,18 @@ public:
 				ll_vector3_from_sd(message_params["position"]),
 				true);
 
-			chat.mText = std::string("IM: ") + group_name + name + separator_string + saved + message.substr(message_offset);
+			std::string prepend_msg;
+			if (gAgent.isInGroup(session_id)&& gSavedSettings.getBOOL("DiamondShowGroupNameInChatIM"))
+			{
+				prepend_msg = "[";
+				prepend_msg += group_data.mName;
+				prepend_msg += "] ";
+			}
+			else
+			{
+				prepend_msg = std::string("IM: ");
+			}
+			chat.mText = prepend_msg + name + separator_string + saved + message.substr(message_offset);
 			LLFloaterChat::addChat(chat, TRUE, is_this_agent);
 
 			// Growl alert if a keyword is picked up. (KC - Maybe this should be here so the first message of a chat conv can be check too?)

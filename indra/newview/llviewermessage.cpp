@@ -2563,17 +2563,18 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 			position,
 			true);
 
-		std::string group_name;
-		if (gAgent.isInGroup(session_id))
+		std::string prepend_msg;
+		if (gAgent.isInGroup(session_id)&& gSavedSettings.getBOOL("DiamondShowGroupNameInChatIM"))
 		{
-			if(gSavedSettings.getBOOL("DiamondShowGroupNameInChatIM"))
-			{
-				group_name = "[";
-				group_name += std::string((char*)binary_bucket);
-				group_name += "] ";
-			}
+			prepend_msg = "[";
+			prepend_msg += std::string((char*)binary_bucket);
+			prepend_msg += "] ";
 		}
-		chat.mText = std::string("IM: ") + group_name + name + separator_string +  saved + message.substr(message_offset);
+		else
+		{
+			prepend_msg = std::string("IM: ");
+		}
+		chat.mText = prepend_msg + name + separator_string +  saved + message.substr(message_offset);
 		LLFloaterChat::addChat(chat, TRUE, is_this_agent);
 
 		// Growl alert if a keyword is picked up.
