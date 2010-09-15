@@ -123,7 +123,6 @@ std::map<std::string,std::string> LLImageMetaDataReader::ExtractKDUUploadComment
 				if(pos==(int)std::string::npos)pos=fullComment.length();
 				pos++;
 				std::string info = fullComment.substr(equalsPos+1,pos-2-equalsPos);
-				llinfos << "full comment was "<<fullComment.c_str()<<" and info is " << info.c_str() <<" and type is "<<infoType.c_str()<<" and pos is"<<pos<<llendl;
 				result[infoType]=info;
 			}
 		}
