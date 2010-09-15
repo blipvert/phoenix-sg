@@ -959,8 +959,6 @@ void open_offer(const std::vector<LLUUID>& items, const std::string& from_name)
 		
 		// Don't auto-open the inventory floater
 		LLInventoryView* view = LLInventoryView::getActiveInventory();
-		// Phoenix RLVa check, don't show inventory if we're not supposed to be
-		show_inventory = show_inventory && !gRlvHandler.hasBehaviour(RLV_BHVR_SHOWINV);
 		if(!view)
 		{
 			return;
