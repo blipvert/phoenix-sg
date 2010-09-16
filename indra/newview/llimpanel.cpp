@@ -1689,12 +1689,13 @@ void LLFloaterIMPanel::addHistoryLine(const std::string &utf8msg, LLColor4 incol
 	//Kadah - Bold group mods chat. Doesnt work on the first msg of the session, dont have speakers list yet?
 	if (gSavedSettings.getBOOL("PhoenixBoldGroupMods") && IsModerator(source))
 	{
+		mHistoryEditor->appendColoredText(utf8msg.substr(0,1), false, prepend_newline, color);
 		LLStyleSP style(new LLStyle);
 		style->setVisible(true);
 		style->setColor(color);
 		style->setFontName(LLStringUtil::null);
 		style->mBold = TRUE;
-		mHistoryEditor->appendStyledText(utf8msg, false, prepend_newline, style);
+		mHistoryEditor->appendStyledText(utf8msg.substr(1), false, prepend_newline, style);
 	}
 	else
 	{
