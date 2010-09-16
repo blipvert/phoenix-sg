@@ -910,14 +910,7 @@ void LLFolderViewItem::draw()
 	{
 		possibly_has_children = true;
 	}
-	if(/*mControlLabel[0] != '\0' && */possibly_has_children)
-	{
-		if (sArrowImage)
-		{
-			gl_draw_scaled_rotated_image(mIndentation, getRect().getHeight() - ARROW_SIZE - TEXT_PAD,
-				ARROW_SIZE, ARROW_SIZE, mControlLabelRotation, sArrowImage->getImage(), sFgColor);
-		}
-	}
+
 
 	F32 text_left = (F32)(ARROW_SIZE + TEXT_PAD + ICON_WIDTH + ICON_PAD + mIndentation);
 
@@ -979,6 +972,14 @@ void LLFolderViewItem::draw()
 					getRect().getWidth() - 2,
 					2,
 					sHighlightBgColor, TRUE);
+			}
+		}
+		if(/*mControlLabel[0] != '\0' && */possibly_has_children)
+		{
+			if (sArrowImage)
+			{
+				gl_draw_scaled_rotated_image(mIndentation, getRect().getHeight() - ARROW_SIZE - TEXT_PAD,
+											 ARROW_SIZE, ARROW_SIZE, mControlLabelRotation, sArrowImage->getImage(), sFgColor);
 			}
 		}
 	}
@@ -4598,6 +4599,7 @@ void LLFolderViewEventListener::arrangeAndSet(LLFolderViewItem* focus,
 											  BOOL set_selection,
 											  BOOL take_keyboard_focus)
 {
+	if(gSavedSettings.getBOOL("PhoenixFreezeInventoryArangement"))return;
 	if(!focus) return;
 	LLFolderView* root = focus->getRoot();
 	focus->getParentFolder()->requestArrange();
