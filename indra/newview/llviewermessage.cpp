@@ -283,6 +283,7 @@ bool friendship_offer_callback(const LLSD& notification, const LLSD& response)
 		msg->sendReliable(LLHost(payload["sender"].asString()));
 		break;
 	case 3:
+		LLNotifications::instance().add("OfferFriendship", notification["substitutions"], notification["payload"]); // Push another notification
 		LLURLDispatcher::dispatch(llformat("secondlife:///app/agent/%s/about",payload["from_id"].asString().c_str()), NULL, true);
 		break;
 	default:
