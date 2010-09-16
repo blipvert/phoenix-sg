@@ -39,10 +39,10 @@
 	   min_val="5" mouse_opaque="true" show_text="true" width="195" auto_resize="false" tool_tip="Interval in seconds between each draw distance increment"/>
 
 
-  <combo_box name="WLPresetsCombo" bottom="5" left="40" follows="left|top" height="18" width="150" max_chars="20" mouse_opaque="true" allow_text_entry="false"
+  <combo_box name="WLPresetsCombo" bottom="5" left="10" follows="left|top" height="18" width="150" max_chars="20" mouse_opaque="true" allow_text_entry="false"
            tool_tip="WindLight Presets for your Sky." />
 
 <button bottom="1" height="22" label=""
-	     left="5" name="expand" scale_image="true" toggle="true"
+	     left="173" name="expand" scale_image="true" toggle="true"
 	     tool_tip="Hide the Settings Panel" width="22"/>
 </panel>
