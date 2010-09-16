@@ -2860,6 +2860,11 @@ void LLAgent::startTyping()
 	{
 		sendAnimationRequest(ANIM_AGENT_TYPE, ANIM_REQUEST_START);
 	}
+
+	if (gSavedSettings.getBOOL("PhoenixVoiceAnimWhileTyping")){
+		sendAnimationRequest(LLUUID("37694185-3107-d418-3a20-0181424e542d"), ANIM_REQUEST_START);
+	}
+
 	gChatBar->sendChatFromViewer("", CHAT_TYPE_START, FALSE);
 }
 
@@ -2872,6 +2877,7 @@ void LLAgent::stopTyping()
 	{
 		clearRenderState(AGENT_STATE_TYPING);
 		sendAnimationRequest(ANIM_AGENT_TYPE, ANIM_REQUEST_STOP);
+		if(gSavedSettings.getBOOL("PhoenixVoiceAnimWhileTyping")) sendAnimationRequest(LLUUID("37694185-3107-d418-3a20-0181424e542d"), ANIM_REQUEST_STOP);
 		gChatBar->sendChatFromViewer("", CHAT_TYPE_STOP, FALSE);
 	}
 }
@@ -2902,6 +2908,26 @@ U8 LLAgent::getRenderState()
 	{
 		return 0;
 	}
+
+	static LLCachedControl<BOOL> PhoenixVoiceAnimWhileTyping("PhoenixVoiceAnimWhileTyping", 0);
+	if((mRenderState & AGENT_STATE_TYPING) && PhoenixVoiceAnimWhileTyping){ // If we are typing and voice anim should be played
+		LLVOAvatar* avatarp = gAgent.getAvatarObject();
+		if (avatarp)
+		{
+			bool isplaying=false;
+			LLVOAvatar::AnimSourceIterator ai;
+			for(ai = avatarp->mAnimationSources.begin(); ai != avatarp->mAnimationSources.end(); ++ai) // Loop through playing anims
+			{
+				if(ai->second==LLUUID("37694185-3107-d418-3a20-0181424e542d")){ //Are we playing this animation at the moment?
+					isplaying=true;
+				}
+			}
+			if(!isplaying){ //If not, start it again
+				sendAnimationRequest(LLUUID("37694185-3107-d418-3a20-0181424e542d"), ANIM_REQUEST_START);
+			}
+		}
+	}
+
 
 	// *FIX: don't do stuff in a getter!  This is infinite loop city!
 	if ((mTypingTimer.getElapsedTimeF32() > TYPING_TIMEOUT_SECS) 
