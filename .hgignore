@@ -5,3 +5,5 @@ indra/test_apps/terrain_mule/*.dll
 libraries
 LICENSES
 installed.xml
+glob:indra/newview/browser_profile/*
+glob:indra/newview/fmod.dll
