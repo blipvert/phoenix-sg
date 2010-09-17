@@ -972,17 +972,19 @@ void LLFolderViewItem::draw()
 					getRect().getWidth() - 2,
 					2,
 					sHighlightBgColor, TRUE);
-			}
-		}
-		if(/*mControlLabel[0] != '\0' && */possibly_has_children)
-		{
-			if (sArrowImage)
-			{
-				gl_draw_scaled_rotated_image(mIndentation, getRect().getHeight() - ARROW_SIZE - TEXT_PAD,
-											 ARROW_SIZE, ARROW_SIZE, mControlLabelRotation, sArrowImage->getImage(), sFgColor);
-			}
+			}	
 		}
 	}
+
+	if(/*mControlLabel[0] != '\0' && */possibly_has_children)
+	{
+		if (sArrowImage)
+		{
+			gl_draw_scaled_rotated_image(mIndentation, getRect().getHeight() - ARROW_SIZE - TEXT_PAD,
+				ARROW_SIZE, ARROW_SIZE, mControlLabelRotation, sArrowImage->getImage(), sFgColor);
+		}
+	}
+
 	if (mDragAndDropTarget)
 	{
 		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
