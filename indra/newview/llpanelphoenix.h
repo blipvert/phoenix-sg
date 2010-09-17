@@ -108,6 +108,7 @@ private:
 	//static void onCommitVoiceDebugServerName(LLUICtrl* caller, void* user_data);
 	//static void onCommitAvatarEffectsChange(LLUICtrl* caller, void* user_data);
 	//static void onCommitAutoResponse(LLUICtrl* caller, void* user_data);
+	static void onPhoenixInstantMessageAnnounceIncoming(LLUICtrl* ctrl, void* userdata);
 
 private:
 	std::string mSkin;

@@ -351,10 +351,14 @@ BOOL LLPanelPhoenix::postBuild()
 	childSetValue("PhoenixInstantMessageResponseMuted", gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseMuted"));
 	childSetValue("PhoenixInstantMessageResponseAnyone", gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseAnyone"));
 	childSetValue("PhoenixInstantMessageShowResponded", gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageShowResponded"));
-	childSetValue("PhoenixInstantMessageShowOnTyping", gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageShowOnTyping"));
+	//Kadah - Force IMShowOnTyping to resolve a bug were if AnnounceIncoming was on, autoreply would not be sent
+	const bool AnnounceIncoming = gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageAnnounceIncoming");
+	childSetValue("PhoenixInstantMessageShowOnTyping", AnnounceIncoming || gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageShowOnTyping"));
+	getChild<LLCheckBoxCtrl>("PhoenixInstantMessageShowOnTyping")->setEnabled(!AnnounceIncoming);
 	childSetValue("PhoenixInstantMessageResponseRepeat", gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseRepeat" ));
 	childSetValue("PhoenixInstantMessageResponseItem", gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseItem"));
-	childSetValue("PhoenixInstantMessageAnnounceIncoming", gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageAnnounceIncoming"));
+	childSetValue("PhoenixInstantMessageAnnounceIncoming", AnnounceIncoming);
+	getChild<LLCheckBoxCtrl>("PhoenixInstantMessageAnnounceIncoming")->setCommitCallback(onPhoenixInstantMessageAnnounceIncoming);
 	childSetValue("PhoenixInstantMessageAnnounceStealFocus", gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageAnnounceStealFocus"));
 	childSetValue("PhoenixShadowsON", gSavedSettings.getBOOL("PhoenixShadowsToggle"));
 
@@ -792,6 +796,21 @@ void LLPanelPhoenix::onClickSetXed(void* user_data)
 	} else {
 		//self->childSetText("xed_location", " ");
 	  gSavedSettings.setString("PhoenixLSLExternalEditor", " ");
+	}
+}
+
+//Kadah - Force IMShowOnTyping to resolve a bug were if AnnounceIncoming was on, autoreply would not be sent
+void LLPanelPhoenix::onPhoenixInstantMessageAnnounceIncoming(LLUICtrl* ctrl, void* userdata)
+{
+	LLPanelPhoenix* self = (LLPanelPhoenix*)ctrl->getParent();
+	const bool AnnounceIncoming = self->childGetValue("PhoenixInstantMessageAnnounceIncoming").asBoolean();
+	LLCheckBoxCtrl* ShowOnTyping = self->getChild<LLCheckBoxCtrl>("PhoenixInstantMessageShowOnTyping");
+	ShowOnTyping->setEnabled(!AnnounceIncoming);
+	if (AnnounceIncoming)
+	{
+		ShowOnTyping->setValue(true);
+	} else {
+		ShowOnTyping->setValue(gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageShowOnTyping")); //restore to last value
 	}
 }
 

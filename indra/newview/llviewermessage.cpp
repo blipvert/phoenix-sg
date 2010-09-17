@@ -1892,26 +1892,25 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 	if ( (do_auto_response) && ( (!gRlvHandler.hasBehaviour(RLV_BHVR_SENDIM)) || (gRlvHandler.isException(RLV_BHVR_SENDIM, from_id)) ) )
 // [/RLVa:KB]
 	{
-		if((dialog == IM_NOTHING_SPECIAL && !is_auto_response) ||
-			(dialog == IM_TYPING_START && gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageShowOnTyping"))
+		if((dialog == IM_NOTHING_SPECIAL && !is_auto_response)
+			|| (dialog == IM_TYPING_START 
+				//Kadah - if AnnounceIncoming is on, it will break autorespond if we don't have InstantMessageShowOnTyping too x.x
+				&& ( gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageAnnounceIncoming") 
+				|| gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageShowOnTyping")))
 			)
 		{
-			BOOL has = gIMMgr->hasSession(computed_session_id);
+			const bool has = gIMMgr->hasSession(computed_session_id);
 			if(!has || gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseRepeat") || typing_init)
 			{
-				BOOL show = !gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageShowResponded");
-				if(!has && show)
-				{
-					gIMMgr->addSession(name, IM_NOTHING_SPECIAL, from_id);
-				}
+				const bool show = !gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageShowResponded");
 				if(show)
 				{
 					gIMMgr->addMessage(
 							computed_session_id,
 							from_id,
-							SYSTEM_FROM,
+							name,
 							llformat("Autoresponse sent to %s.",name.c_str()),
-							LLStringUtil::null,
+							name,
 							IM_NOTHING_SPECIAL,
 							parent_estate_id,
 							region_id,
