@@ -105,7 +105,7 @@
        halign="center" valign="center"
 	     height="20" label="Options" label_selected="Options" left="190"
 	     mouse_opaque="true" name="Options..." scale_image="TRUE" width="60" />
-    <check_box bottom_delta="-70" control_name="ScaleUniform" follows="left|top"
+    <check_box bottom="-70" control_name="ScaleUniform" follows="left|top"
 	     font="SansSerifSmall" height="16" initial_value="false"
 	     label="Stretch Both Sides" left="143" mouse_opaque="true"
 	     name="checkbox uniform" width="134" />
