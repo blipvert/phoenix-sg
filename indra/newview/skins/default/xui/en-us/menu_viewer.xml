@@ -589,7 +589,7 @@
 			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://phoenixviewer.com/support.shtml" />
 		</menu_item_call>
 		<menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Bug Reports..." left="0" mouse_opaque="true" name="Phoenix Viewer Bug Reports..." width="166">
-			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://dev.phoenixviewer.com:8080" />
+			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://jira.phoenixviewer.com" />
 		</menu_item_call>
 		<menu_item_separator bottom="-411" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator7" width="250" />
 		<menu bottom="-554" create_jump_keys="true" drop_shadow="true" enabled="true" height="109" label="Linden Resources" left="0" mouse_opaque="false" name="LL" opaque="true" tear_off="true" width="118">

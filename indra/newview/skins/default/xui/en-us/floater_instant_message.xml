@@ -116,6 +116,6 @@ If your answer is not there, please enter your question to begin, then allow a f
 -=-=- Response times will vary, especially during peak times -=-=-
 	</string>
 	<string name="phoenix_no_support_available">
-		You are using a BETA release viewer!  If you are experiencing problems, please visit our jira at http://dev.phoenixviewer.com:8080/ and see if it has been reported and if not do so. The support team may or may not be able to help you.
+		You are using a BETA release viewer!  If you are experiencing problems, please visit our jira at http://jira.phoenixviewer.com and see if it has been reported and if not do so. The support team may or may not be able to help you.
 	</string>
 </floater>
