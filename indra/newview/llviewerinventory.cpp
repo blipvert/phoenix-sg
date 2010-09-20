@@ -465,7 +465,7 @@ bool LLViewerInventoryCategory::fetchDescendents()
 		std::string url = gAgent.getCapability("agent/inventory"); // OGPX : was WebFetchInventoryDescendents
 		if (url.empty()) //OGPX : agent/inventory Capability not found on agent domain.  See if the region has one.
 		{
-			llinfos << " agent/inventory not on AD, checking fallback to region " << llendl; //OGPX
+			//llinfos << " agent/inventory not on AD, checking fallback to region " << llendl; //OGPX
 			url = gAgent.getRegion()->getCapability("WebFetchInventoryDescendents");
 		}
 		if (!url.empty()) //Capability found.  Build up LLSD and use it.
