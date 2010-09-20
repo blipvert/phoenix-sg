@@ -1101,7 +1101,7 @@ bool LLViewerImage::updateFetch()
 		else
 		{
 			mFetchState = LLAppViewer::getTextureFetch()->getFetchState(mID, mDownloadProgress, mRequestedDownloadPriority,
-																		mFetchPriority, mFetchDeltaTime, mRequestDeltaTime);
+																		mFetchPriority, mFetchDeltaTime, mRequestDeltaTime, mCanUseHTTP);
 		}
 		
 		// We may have data ready regardless of whether or not we are finished (e.g. waiting on write)
@@ -1248,7 +1248,7 @@ bool LLViewerImage::updateFetch()
 			mRequestedDiscardLevel = desired_discard;
 
 			mFetchState = LLAppViewer::getTextureFetch()->getFetchState(mID, mDownloadProgress, mRequestedDownloadPriority,
-																		mFetchPriority, mFetchDeltaTime, mRequestDeltaTime);
+																		mFetchPriority, mFetchDeltaTime, mRequestDeltaTime, mCanUseHTTP);
 		}	
 
 		// if createRequest() failed, we're finishing up a request for this UUID,
@@ -1330,7 +1330,7 @@ BOOL LLViewerImage::forceFetch()
 		mRequestedDiscardLevel = desired_discard ;
 
 		mFetchState = LLAppViewer::getTextureFetch()->getFetchState(mID, mDownloadProgress, mRequestedDownloadPriority,
-																	mFetchPriority, mFetchDeltaTime, mRequestDeltaTime);
+																	mFetchPriority, mFetchDeltaTime, mRequestDeltaTime, mCanUseHTTP);
 	}	
 
 	return mIsFetching ? true : false;
