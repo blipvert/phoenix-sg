@@ -3269,6 +3269,11 @@ void LLVOAvatar::resolveClient(LLColor4& avatar_name_color, std::string& client,
 			avatar_name_color = avatar_name_color * (F32)0.5;
 			client = "Phoenix";
 		}
+		else if(idx == LLUUID("c228d1cf-4b5d-4ba8-84f4-899a0796aa97"))//viewer 2.0
+		{
+			avatar_name_color = LLColor4(0.9058823529f,0.5647058824f,0.5137254902f);
+			client = "Viewer 2";
+		}
 	}
 	if(avatar->getTE(5)->getID() != avatar->getTE(6)->getID() && client != "" && avatar->isReallyFullyLoaded())
 	{
