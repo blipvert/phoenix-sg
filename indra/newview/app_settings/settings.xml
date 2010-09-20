@@ -15262,6 +15262,33 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
+		<key>PhoenixColorFriendsNameTags</key>
+		<map>
+			<key>Comment</key>
+			<string>Highlight the name tags of your friends</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixFriendNameColor</key>
+		<map>
+			<key>Comment</key>
+			<string>Color of chat messages from friends</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Color4</string>
+			<key>Value</key>
+			<array>
+				<real>0.447</real>
+				<real>0.784</real>
+				<real>0.663</real>
+				<real>1.0</real>
+			</array>
+		</map>
 		<key>PhoenixColorFriendsChat</key>
 		<map>
 			<key>Comment</key>

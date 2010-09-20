@@ -3433,6 +3433,15 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 				{
 					client = "";
 				}
+
+				//Phoenix:KC - color friend's name tags
+				static BOOL* sPhoenixColorFriendsNameTags = rebind_llcontrol<BOOL>("PhoenixColorFriendsNameTags", &gSavedSettings, true);
+				if(*sPhoenixColorFriendsNameTags && LLAvatarTracker::instance().isBuddy(getID()))
+				{
+					static LLCachedControl<LLColor4> PhoenixFriendNameColor("PhoenixFriendNameColor", LLColor4(0.447f, 0.784f, 0.663f, 1.f));
+					avatar_name_color = PhoenixFriendNameColor;
+				}
+
 				avatar_name_color.setAlpha(alpha);
 				mNameText->setColor(avatar_name_color);
 

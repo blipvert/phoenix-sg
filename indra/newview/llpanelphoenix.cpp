@@ -36,6 +36,7 @@
 // linden library includes
 #include "llradiogroup.h"
 #include "llbutton.h"
+#include "llcolorswatch.h"
 #include "lluictrlfactory.h"
 
 #include "llcombobox.h"
@@ -375,6 +376,8 @@ BOOL LLPanelPhoenix::postBuild()
 
 	getChild<LLCheckBoxCtrl>("telerequest_toggle")->setCommitCallback(onConditionalPreferencesChanged);
 	getChild<LLCheckBoxCtrl>("mldct_toggle")->setCommitCallback(onConditionalPreferencesChanged);
+	
+	getChild<LLColorSwatchCtrl>("friend_tag_color_swatch")->set(gSavedSettings.getColor4("PhoenixFriendNameColor"));
 
 	refresh();
 	return TRUE;
@@ -476,7 +479,6 @@ void LLPanelPhoenix::apply()
 	glggHunSpell->setNewHighlightSetting(gSavedSettings.getBOOL("PhoenixSpellDisplay"));
 	gSavedPerAccountSettings.setString("PhoenixInstantMessageResponse", std::string(wstring_to_utf8str(im_response)));
 
-	//gSavedPerAccountSettings.setString(
 	gSavedPerAccountSettings.setBOOL("PhoenixInstantMessageResponseMuted", childGetValue("PhoenixInstantMessageResponseMuted").asBoolean());
 	gSavedPerAccountSettings.setBOOL("PhoenixInstantMessageResponseFriends", childGetValue("PhoenixInstantMessageResponseFriends").asBoolean());
 	gSavedPerAccountSettings.setBOOL("PhoenixInstantMessageResponseMuted", childGetValue("PhoenixInstantMessageResponseMuted").asBoolean());
