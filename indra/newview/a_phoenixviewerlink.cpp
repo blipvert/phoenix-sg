@@ -314,26 +314,7 @@ std::string PhoenixViewerLink::processRequestForInfo(LLUUID requester, std::stri
 	}
 	std::string my_name;
 	gAgent.buildFullname(my_name);
-	// If it's an unsupported build, say that.
-	if(LL_CHANNEL != PHOENIX_RELEASE_CHANNEL)
-	{
-		pack_instant_message(
-			 gMessageSystem,
-			 gAgent.getID(),
-			 FALSE,
-			 gAgent.getSessionID(),
-			 requester,
-			 my_name,
-			 "(Unsupported release)",
-			 IM_ONLINE,
-			 IM_NOTHING_SPECIAL,
-			 sessionid
-		);
-		gAgent.sendReliableMessage();
-		//let the user know they said this
-		gIMMgr->addMessage(gIMMgr->computeSessionID(IM_NOTHING_SPECIAL,requester),requester,my_name,"Information Sent: (Unsupported release)");
-	}
-	
+
 	//llinfos << "sysinfo was found in this message, it was at " << message.find("/sysinfo") << " pos." << llendl;
 	std::string outmessage("I am requesting information about your system setup.");
 	std::string reason("");
