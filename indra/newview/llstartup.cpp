@@ -2575,6 +2575,12 @@ bool idle_startup()
 		gRenderStartTime.reset();
 		gForegroundTime.reset();
 
+		if (gSavedSettings.getBOOL("FetchInventoryOnLogin"))
+		{
+			// Fetch inventory in the background
+			gInventory.startBackgroundFetch();
+		}
+
 		// HACK: Inform simulator of window size.
 		// Do this here so it's less likely to race with RegisterNewAgent.
 		// TODO: Put this into RegisterNewAgent

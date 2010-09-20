@@ -15327,5 +15327,16 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
+		<key>FetchInventoryOnLogin</key>
+		<map>
+			<key>Comment</key>
+			<string>Automatically fetch the inventory in the background after login</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
 	</map>
 </llsd>
