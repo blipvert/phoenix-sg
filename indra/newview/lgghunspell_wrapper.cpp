@@ -789,7 +789,7 @@ std::vector<std::string> lggHunSpell_Wrapper::getAvailDicts()
 		}
 		if(0==LLStringUtil::compareInsensitive(dics[i],currentBaseDic))
 			found=true;
-		if(0==LLStringUtil::compareInsensitive(dics[i],"Phoenix (CUSTOM)"))
+		if(0==LLStringUtil::compareInsensitive(dics[i],"Phoenix (CUSTOM)") || 0==LLStringUtil::compareInsensitive(dics[i],"Emerald (CUSTOM)"))
 			found=true;
 		if(!found)toReturn.push_back(dics[i]);
 	}
