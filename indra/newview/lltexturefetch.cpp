@@ -854,12 +854,20 @@ bool LLTextureFetchWorker::doWork(S32 param)
 	{
 		if(mCanUseHTTP)
 		{
-			//NOTE:
-			//it seems ok to let sim control the UDP traffic
-			//so there is no throttle for http here.
-			//
-			
-			mFetcher->removeFromNetworkQueue(this, false);
+			const S32 HTTP_QUEUE_MAX_SIZE = 8;
+			// *TODO: Integrate this with llviewerthrottle
+			// Note: LLViewerThrottle uses dynamic throttling which makes sense for UDP,
+			// but probably not for Textures.
+			// Set the throttle to the entire bandwidth, assuming UDP packets will get priority
+			// when they are needed
+			F32 max_bandwidth = mFetcher->mMaxBandwidth;
+			if ((mFetcher->getNumHTTPRequests() >= HTTP_QUEUE_MAX_SIZE) ||
+				(mFetcher->getTextureBandwidth() > max_bandwidth))
+			{
+				// Make normal priority and return (i.e. wait until there is room in the queue)
+				setPriority(LLWorkerThread::PRIORITY_NORMAL | mWorkPriority);
+				return false;
+			}
 			
 			S32 cur_size = 0;
 			if (mFormattedImage.notNull())
