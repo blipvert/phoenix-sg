@@ -68,7 +68,9 @@
 #include "llui.h"
 #include "llviewermenu.h"
 #include "lluictrlfactory.h"
-
+// [SA] needed to fetch avatar list for autocompletion
+#include "llworld.h"
+// [/SA]
 #include "chatbar_as_cmdline.h"
 
 // [RLVa:KB]
@@ -239,6 +241,96 @@ BOOL LLChatBar::handleKeyHere( KEY key, MASK mask )
 
 		handled = TRUE;
 	}
+	// [SA] Support for name autocompletion
+	else if ( gSavedSettings.getBOOL("TabAutoComplete")
+	  && KEY_TAB == key && mask == MASK_NONE )
+	{
+		std::string text = mInputEditor->getText();
+		int cursor = mInputEditor->getCursor();
+		if ( cursor && (text.at(cursor - 1) != ' ' || mInputEditor->hasSelection()))
+		{
+			//check who is around
+			std::vector<LLUUID> nearbyList;
+			std::vector<LLVector3d> positions;
+			LLWorld::getInstance()->getAvatars(&nearbyList, &positions, gAgent.getPositionGlobal(), gSavedSettings.getF32("NearMeRange"));
+
+			//parse current text entry for search pattern
+			std::string prefix;
+			prefix = text.substr(0, cursor);
+			std::string suffix = text.substr(cursor, text.length() - cursor);
+			int lastSpace = prefix.rfind(" ");
+			std::string pattern2 = prefix.substr(lastSpace + 1, prefix.length() - lastSpace - 1);
+			prefix = prefix.substr(0, lastSpace + 1);
+			std::string pattern1 = "";
+			
+			//declare and initialize variables for search
+			std::string name;
+			bool found = false;
+			std::vector<LLUUID>::iterator iter;
+			bool isInitial = false;
+			bool fullName = false;
+			//if there are several words, try matching firstName+beginningOfLastName (the user might want to do this if several avatars around have the same first name)
+			if (lastSpace != std::string::npos && !prefix.empty())
+			{
+				// go deeper in parsing
+				lastSpace = prefix.substr(0, prefix.length() - 2).rfind(" ");
+				if (lastSpace == std::string::npos && prefix.at(prefix.length() - 2) == ':')
+				{ //case of initial second autocompletion
+					pattern1 = prefix.substr(lastSpace + 1, prefix.length() - lastSpace - 3) + " ";
+					cursor -= 2;
+				}
+				else pattern1 = prefix.substr(lastSpace + 1, prefix.length() - lastSpace -1);
+				prefix = prefix.substr(0, lastSpace + 1);
+				// prepare search pattern
+				std::string fullPattern(pattern1+pattern2);
+				LLStringUtil::toLower(fullPattern);
+				// search
+				iter = nearbyList.begin();		
+				while (iter != nearbyList.end() && !found)
+				{
+					if ((bool)gCacheName->getFullName(*iter++, name))
+					{
+						if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) name = RlvStrings::getAnonym(name);
+						LLStringUtil::toLower(name);
+						found = (name.find(fullPattern) == 0);
+					}
+				}
+			}
+			else isInitial = true; //at this point we know the text has at most one word, thus the avatar name would be initial after replacement (if any)
+
+			if (found) {isInitial = (lastSpace == std::string::npos); fullName = true;} //ignore OnlyFirstName in case we want to disambiguate
+			else if (!pattern2.empty())// if first search did not work, try matching with last word before cursor only
+			{
+				prefix += pattern1; // first part of the pattern wasn't a pattern, so keep it in prefix
+				// prepare search pattern
+				LLStringUtil::toLower(pattern2);
+				// search
+				iter = nearbyList.begin();
+				while (iter != nearbyList.end() && !found)
+				{
+					if ((bool)gCacheName->getFullName(*iter++, name))
+					{
+						if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) name = RlvStrings::getAnonym(name);
+						LLStringUtil::toLower(name);
+						found = (name.find(pattern2) == 0);
+					}
+				}
+			}
+			// if we found something by either method, replace the pattern by the avatar name
+			if (found)
+			{
+				std::string first, last;
+				gCacheName->getName(*(iter - 1), first, last);
+				if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) prefix += RlvStrings::getAnonym(first + " " + last) + (isInitial?":":"") + " ";
+				else prefix += first + (fullName?(" "+last):"") + (isInitial?":":"") + " ";
+				mInputEditor->setText(prefix + suffix);
+				mInputEditor->setSelection(prefix.length(), cursor);
+			}
+			  
+			handled = TRUE;
+		}
+	}
+	// [/SA]
 
 	return handled;
 }

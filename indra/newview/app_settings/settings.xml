@@ -15349,5 +15349,16 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
+		<key>TabAutoComplete</key>
+		<map>
+			<key>Comment</key>
+			<string>Auto-complete avatar name in nearby chat on pressing Tab key</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 	</map>
 </llsd>
