@@ -64,12 +64,17 @@ public:
 	static void updateClientTagsLocal();
 	static const U8 EM_SUPPORT		= 0x01;
 	static const U8 EM_DEVELOPER	= 0x02;
+	static const U8 PH_BETA			= 0x01;
+	static const U8 PH_RELEASE		= 0x02;
 	//static const U8 x = 0x04;
 	//static const U8 x = 0x08;
 	//static const U8 x = 0x10;
 
 	std::map<LLUUID, U8> personnel;
+	std::map<std::string, U8> versions2;
 
+	static BOOL PhoenixViewerLink::is_BetaVersion(std::string version);
+	static BOOL PhoenixViewerLink::is_ReleaseVersion(std::string version);
 	static BOOL is_developer(LLUUID id);
 	static BOOL is_support(LLUUID id);
 
@@ -84,7 +89,9 @@ public:
 	std::set<std::string> blocked_versions;
 	static LLSD blocked_login_info;
 	std::string ms_motd;
+	static BOOL isMSDone() { return msDataDone; }
 private:
+	static BOOL msDataDone;
 	static std::string blacklist_version;
 
 

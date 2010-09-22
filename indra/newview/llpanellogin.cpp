@@ -1128,7 +1128,35 @@ bool LLPanelLogin::getRememberLogin()
 //---------------------------------------------------------------------------
 
 // static
+bool LLPanelLogin::confirm_version(const LLSD& notification, const LLSD& response)
+{
+	S32 option = LLNotification::getSelectedOption(notification, response);
+
+	if (option == 0)
+	{
+		LLAppViewer::instance()->requestQuit();
+	}
+	else if (option == 1)
+	{
+		LLPanelLogin::onClickConnectReal(NULL);
+	}
+	return false;
+}
+static LLNotificationFunctorRegistration confirm_version_reg("ConfirmVersion", LLPanelLogin::confirm_version);
+
 void LLPanelLogin::onClickConnect(void *)
+{
+	if(PhoenixViewerLink::isMSDone() && !(PhoenixViewerLink::is_ReleaseVersion(LLFloaterAbout::get_viewer_version()) ||
+		PhoenixViewerLink::is_BetaVersion(LLFloaterAbout::get_viewer_version())))
+	{
+		LLNotifications::instance().add("ConfirmVersion");
+	}
+	else
+	{
+		LLPanelLogin::onClickConnectReal(NULL);
+	}
+}
+void LLPanelLogin::onClickConnectReal(void *)
 {
 	if (sInstance && sInstance->mCallback)
 	{

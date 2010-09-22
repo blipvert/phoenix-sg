@@ -346,6 +346,7 @@ void pass_process_sound_trigger(LLMessageSystem* msg,void**)
 	LLFloaterAvatarList::processSoundTrigger(msg,0);
 	JCLSLBridge::processSoundTrigger(msg,0);
 }
+
 bool idle_startup()
 {
 	LLMemType mt1(LLMemType::MTYPE_STARTUP);
@@ -941,9 +942,15 @@ bool idle_startup()
 		return FALSE;
 	}
 
+	/*if (STATE_LOGIN_CLEANUP == LLStartUp::getStartupState())
+	{
+		if(PhoenixViewerLink::isMSDone())
+		{
+			LLNotifications::instance().add("ConfirmVersion");
+		}
+	}*/
 	if (STATE_LOGIN_CLEANUP == LLStartUp::getStartupState())
 	{
-
 		// Post login screen, we should see if any settings have changed that may
 		// require us to either start/stop or change the socks proxy. As various communications
 		// past this point may require the proxy to be up.

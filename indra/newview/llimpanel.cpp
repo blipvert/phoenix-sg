@@ -78,6 +78,7 @@
 #include "llversionviewer.h"
 #include "mfdkeywordfloater.h" //Phoenix KeywordAlert
 #include "a_phoenixviewerlink.h"
+#include "llfloaterabout.h"
 
 // [RLVa:KB]
 #include "rlvhandler.h"
@@ -1252,9 +1253,12 @@ void LLFloaterIMPanel::init(const std::string& session_label)
 	{
 		if(PhoenixViewerLink::is_support(mOtherParticipantUUID))
 		{
-			addHistoryLine(getString("phoenix_no_support_available"),
-						   gSavedSettings.getColor4("SystemChatColor"),
-						   false);
+			if(!PhoenixViewerLink::is_ReleaseVersion(LLFloaterAbout::get_viewer_version()))
+			{
+				addHistoryLine(getString("phoenix_no_support_available"),
+								gSavedSettings.getColor4("SystemChatColor"),
+								false);
+			}
 		}
 	}
 

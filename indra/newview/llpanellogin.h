@@ -99,9 +99,11 @@ public:
 	
 	// inherited from LLViewerMediaObserver
 	/*virtual*/ void handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event);
+	static bool LLPanelLogin::confirm_version(const LLSD& notification, const LLSD& response);
 
 private:
 	static void onClickConnect(void*);
+	static void onClickConnectReal(void*);
 	static void onClickNewAccount(void*);
 	static bool newAccountAlertCallback(const LLSD& notification, const LLSD& response);
 	static void onClickGrids(void*);

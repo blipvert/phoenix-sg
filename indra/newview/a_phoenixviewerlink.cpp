@@ -57,6 +57,7 @@
 std::string PhoenixViewerLink::blacklist_version;
 LLSD PhoenixViewerLink::blocked_login_info = 0;
 LLSD PhoenixViewerLink::phoenix_tags = 0;
+BOOL PhoenixViewerLink::msDataDone = FALSE;
 
 PhoenixViewerLink* PhoenixViewerLink::sInstance;
 
@@ -241,6 +242,20 @@ void PhoenixViewerLink::msdata(U32 status, std::string body)
 			self->personnel[LLUUID(key)] = val;
 		}
 
+		LLSD& versions = data["versions"];
+
+		self->versions2.clear();
+		for(LLSD::map_iterator itr = versions.beginMap(); itr != versions.endMap(); ++itr)
+		{
+			std::string key = (*itr).first;
+			key += "\n";
+			LLSD& content = (*itr).second;
+			U8 val = 0;
+			if(content.has("beta"))val = val | PH_BETA;
+			if(content.has("release"))val = val | PH_RELEASE;
+			self->versions2[key] = val;
+		}
+
 		LLSD& blocked = data["blocked"];
 
 		self->blocked_versions.clear();
@@ -268,6 +283,7 @@ void PhoenixViewerLink::msdata(U32 status, std::string body)
 			LLPrimitive::tagstring = PhoenixViewerLink::phoenix_tags[gSavedSettings.getString("PhoenixTagColor")].asString();
 		}
 	}
+	msDataDone = TRUE;
 
 	//LLSD& dev_agents = data["dev_agents"];
 	//LLSD& client_ids = data["client_ids"];
@@ -279,6 +295,26 @@ BOOL PhoenixViewerLink::is_support(LLUUID id)
 	if(self->personnel.find(id) != self->personnel.end())
 	{
 		return ((self->personnel[id] & EM_SUPPORT) != 0) ? TRUE : FALSE;
+	}
+	return FALSE;
+}
+
+BOOL PhoenixViewerLink::is_BetaVersion(std::string version)
+{
+	PhoenixViewerLink* self = getInstance();
+	if(self->versions2.find(version) != self->versions2.end())
+	{
+		return ((self->versions2[version] & PH_BETA) != 0) ? TRUE : FALSE;
+	}
+	return FALSE;
+}
+
+BOOL PhoenixViewerLink::is_ReleaseVersion(std::string version)
+{
+	PhoenixViewerLink* self = getInstance();
+	if(self->versions2.find(version) != self->versions2.end())
+	{
+		return ((self->versions2[version] & PH_RELEASE) != 0) ? TRUE : FALSE;
 	}
 	return FALSE;
 }
