@@ -1253,7 +1253,8 @@ void LLFloaterIMPanel::init(const std::string& session_label)
 	{
 		if(PhoenixViewerLink::is_support(mOtherParticipantUUID))
 		{
-			if(!PhoenixViewerLink::is_ReleaseVersion(LLFloaterAbout::get_viewer_version()))
+			if(!PhoenixViewerLink::is_ReleaseVersion(LLFloaterAbout::get_viewer_version()) ||
+				!PhoenixViewerLink::is_BetaVersion(LLFloaterAbout::get_viewer_version()))
 			{
 				addHistoryLine(getString("phoenix_no_support_available"),
 								gSavedSettings.getColor4("SystemChatColor"),
