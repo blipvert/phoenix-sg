@@ -377,6 +377,40 @@ void LLFloaterAO::updateLayout(LLFloaterAO* floater)
 	}
 }
 
+void LLFloaterAO::updateLayout2(LLFloaterAO* floater)
+{
+	if(floater)
+	{
+		if(LLStartUp::getStartupState() == STATE_STARTED)
+		{
+			LLUUID itemidimport = (LLUUID)gSavedPerAccountSettings.getString("PhoenixAOConfigNotecardID");
+			LLViewerInventoryItem* itemimport = gInventory.getItem(itemidimport);
+			if(itemimport)
+			{
+				floater->childSetValue("ao_nc_text","Currently set to: "+itemimport->getName());
+			}
+			else if(itemidimport.isNull())
+			{
+				floater->childSetValue("ao_nc_text","Currently not set");
+			}
+			else
+			{
+				floater->childSetValue("ao_nc_text","Currently set to a item not on this account");
+			}
+		}
+		else
+		{
+			floater->childSetValue("ao_nc_text","Not logged in");
+		}
+		LLFloaterAO::init();
+	}
+	else 
+	{
+		sInstance = new LLFloaterAO();
+		updateLayout2(sInstance);
+	}
+}
+
 BOOL LLFloaterAO::fullfetch = FALSE;
 
 BOOL LLFloaterAO::init()

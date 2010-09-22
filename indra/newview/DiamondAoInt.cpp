@@ -62,6 +62,15 @@ bool DiamondAoInt::AOCommand(std::string message)
 				regchan = atoi(args[2].asString().c_str());
 				send_chat_to_object(std::string("Channel registerd"),regchan,gAgent.getID());
 			}
+			else if(cmd == "loadcard")
+			{
+				std::string tmp = (JCLSLBridge::findInventoryByName(args[2].asString(),phoenix_category_name)).asString();
+				if(LLUUID(tmp).notNull())
+				{
+					gSavedPerAccountSettings.setString("PhoenixAOConfigNotecardID",tmp);
+					LLFloaterAO::updateLayout2(LLFloaterAO::getInstance());
+				}
+			}
 		}
 		return true;
 	}

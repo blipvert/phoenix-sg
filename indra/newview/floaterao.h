@@ -78,6 +78,7 @@ public:
 
 	static void toggle(void*); //Toggles interface visibility
 	static void updateLayout(LLFloaterAO* floater);
+	static void updateLayout2(LLFloaterAO* floater);
 
 	static LLUICtrl* getComboBox(std::string name);
 
@@ -125,8 +126,9 @@ public:
 
 	static LLUUID invfolderid;
 	static const LLUUID& getAssetIDByName(const std::string& name);
+	static LLFloaterAO* getInstance() { return sInstance;}
 	
-private:
+protected:
 
 	static LLFloaterAO* sInstance;
 	static int mAnimationState;
