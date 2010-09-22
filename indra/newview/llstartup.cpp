@@ -3324,8 +3324,8 @@ void pass_processAvatarPropertiesReply(LLMessageSystem *msg, void**)
 void pass_processObjectPropertiesFamily(LLMessageSystem *msg, void**)
 {
 	// send it to 'observers'
-	LLSelectMgr::processObjectPropertiesFamily(msg, NULL);
-	JCFloaterAreaSearch::processObjectPropertiesFamily(msg, NULL);
+	LLSelectMgr::processObjectPropertiesFamily(msg,0);
+	JCFloaterAreaSearch::processObjectPropertiesFamily(msg,0);
 	ScriptCounter::processObjectPropertiesFamily(msg,0);
 }
 
