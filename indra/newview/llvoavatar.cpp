@@ -3204,7 +3204,8 @@ void LLVOAvatar::resolveClient(LLColor4& avatar_name_color, std::string& client,
 		}
 		else
 			avatar_name_color = colour;
-	}else
+	}
+	else if(avatar->isReallyFullyLoaded())
 	{
 		//legacy code
 		if(idx == LLUUID("5d9581af-d615-bc16-2667-2f04f8eeefe4"))//green
