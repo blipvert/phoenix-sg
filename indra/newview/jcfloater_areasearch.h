@@ -27,18 +27,11 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Modified, debugged, optimized and improved by Henri Beauchamp Feb 2010.
  */
 
 #include "llfloater.h"
 #include "lluuid.h"
 #include "llstring.h"
-#include "llframetimer.h"
-
-class LLTextBox;
-class LLScrollListCtrl;
-class LLViewerRegion;
 
 struct AObjectDetails
 {
@@ -52,48 +45,55 @@ struct AObjectDetails
 class JCFloaterAreaSearch : public LLFloater
 {
 public:
+
 	JCFloaterAreaSearch();
 	virtual ~JCFloaterAreaSearch();
 
 	/*virtual*/ BOOL postBuild();
+	/*virtual*/ void draw();
 	/*virtual*/ void close(bool app = false);
 
 	static void results();
+
 	static void toggle();
-	static JCFloaterAreaSearch* getInstance() { return sInstance; }
-	static void callbackLoadOwnerName(const LLUUID& id, const std::string& first, const std::string& last, BOOL is_group, void* data);
-	static void processObjectPropertiesFamily(LLMessageSystem* msg, void** user_data);
 
 private:
-	static void checkRegion();
-	static void cancel(void* data);
+
+	static void reload(void* data);
 	static void search(void* data);
 	static void onCommitLine(LLLineEditor* line, void* user_data);
-	static void requestIfNeeded(LLViewerObject *objectp);
-	static void onDoubleClick(void *userdata);
+	static void requestifneed(LLViewerObject *objectp);
 
 	enum OBJECT_COLUMN_ORDER
 	{
 		LIST_OBJECT_NAME,
 		LIST_OBJECT_DESC,
 		LIST_OBJECT_OWNER,
-		LIST_OBJECT_GROUP
+		LIST_OBJECT_GROUP,
+		LIST_OBJECT_PAYABLE,
+		LIST_OBJECT_BUYABLE
 	};
 
 	static JCFloaterAreaSearch* sInstance;
 
-	static S32 sRequested;
-
-	LLTextBox* mCounterText;
 	LLScrollListCtrl* mResultList;
-	LLFrameTimer mLastUpdateTimer;
 
-	static std::map<LLUUID, AObjectDetails> sObjectDetails;
+	static std::map<LLUUID, AObjectDetails> mObjectDetails;
 
-	static std::string sSearchedName;
-	static std::string sSearchedDesc;
-	static std::string sSearchedOwner;
-	static std::string sSearchedGroup;
+	static std::string searched_name;
+	static std::string searched_desc;
+	static std::string searched_owner;
+	static std::string searched_group;
+	static bool payable_object;
+	static bool buyable_object;
 
-	static LLViewerRegion* sLastRegion;
+	static void onDoubleClick(void *userdata);
+
+public:
+
+	static JCFloaterAreaSearch* getInstance(){ return sInstance; }
+
+	static void callbackLoadOwnerName(const LLUUID& id, const std::string& first, const std::string& last, BOOL is_group, void* data);
+
+	static void processObjectPropertiesFamily(LLMessageSystem* msg, void** user_data);
 };
