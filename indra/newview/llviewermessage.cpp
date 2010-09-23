@@ -3611,7 +3611,8 @@ void process_teleport_progress(LLMessageSystem* msg, void**)
 	}
 	std::string buffer;
 	msg->getString("Info", "Message", buffer);
-	LL_DEBUGS("Messaging") << "teleport progress: " << buffer << LL_ENDL;
+	//LL_DEBUGS("Messaging") << "teleport progress: " << buffer << LL_ENDL;
+	LL_INFOS("Messaging") << "teleport progress: " << buffer << LL_ENDL; //Kadah: TP fail debuging
 
 	//Sorta hacky...default to using simulator raw messages
 	//if we don't find the coresponding mapping in our progress mappings
@@ -6164,7 +6165,10 @@ void process_teleport_failed(LLMessageSystem *msg, void**)
 	}
 
 	if(!gSavedSettings.getBOOL("PhoenixUseBridgeMoveToTarget") && !gSavedSettings.getBOOL("PhoenixDoubleClickTeleportChat"))//dont throw error when move to target on
+	{
 		LLNotifications::instance().add("CouldNotTeleportReason", args);
+		LL_WARNS("Messaging") << "process_teleport_failed: " << reason << LL_ENDL; //Kadah: TP fail debuging
+	}
 
 	if( gAgent.getTeleportState() != LLAgent::TELEPORT_NONE )
 	{

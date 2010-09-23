@@ -3248,11 +3248,13 @@ void LLAppViewer::forceDisconnect(const std::string& mesg)
 		// Tell users what happened
 		args["ERROR_MESSAGE"] = big_reason;
 		LLNotifications::instance().add("ErrorMessage", args, LLSD(), &finish_forced_disconnect);
+		LL_WARNS("Messaging") << "forceDisconnect: " << mesg << LL_ENDL; //Kadah: TP fail debuging
 	}
 	else
 	{
 		args["MESSAGE"] = big_reason;
 		LLNotifications::instance().add("YouHaveBeenLoggedOut", args, LLSD(), &finish_disconnect );
+		LL_WARNS("Messaging") << "forceDisconnect: " << mesg << LL_ENDL; //Kadah: TP fail debuging
 	}
 }
 
