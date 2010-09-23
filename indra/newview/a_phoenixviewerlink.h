@@ -73,8 +73,8 @@ public:
 	std::map<LLUUID, U8> personnel;
 	std::map<std::string, U8> versions2;
 
-	static BOOL PhoenixViewerLink::is_BetaVersion(std::string version);
-	static BOOL PhoenixViewerLink::is_ReleaseVersion(std::string version);
+	static BOOL is_BetaVersion(std::string version);
+	static BOOL is_ReleaseVersion(std::string version);
 	static BOOL is_developer(LLUUID id);
 	static BOOL is_support(LLUUID id);
 
