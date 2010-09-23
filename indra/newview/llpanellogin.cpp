@@ -1132,11 +1132,11 @@ bool LLPanelLogin::confirm_version(const LLSD& notification, const LLSD& respons
 {
 	S32 option = LLNotification::getSelectedOption(notification, response);
 
-	if (option == 0)
+	if (option == 1)
 	{
 		LLAppViewer::instance()->requestQuit();
 	}
-	else if (option == 1)
+	else if (option == 0)
 	{
 		LLPanelLogin::onClickConnectReal(NULL);
 	}
