@@ -2559,8 +2559,9 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 		std::string prepend_msg;
 		if (gAgent.isInGroup(session_id)&& gSavedSettings.getBOOL("DiamondShowGroupNameInChatIM"))
 		{
+			std::string tmp = std::string((char*)binary_bucket);
 			prepend_msg = "[";
-			prepend_msg += std::string((char*)binary_bucket);
+			prepend_msg += tmp.substr(0,gSavedSettings.getS32("DiamondShowGroupNameLength"));
 			prepend_msg += "] ";
 		}
 		else

@@ -1663,8 +1663,9 @@ public:
 			std::string prepend_msg;
 			if (gAgent.isInGroup(session_id)&& gSavedSettings.getBOOL("DiamondShowGroupNameInChatIM"))
 			{
+				std::string tmp = group_data.mName;
 				prepend_msg = "[";
-				prepend_msg += group_data.mName;
+				prepend_msg += tmp.substr(0,gSavedSettings.getS32("DiamondShowGroupNameLength"));
 				prepend_msg += "] ";
 			}
 			else
