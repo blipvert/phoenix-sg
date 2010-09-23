@@ -3062,12 +3062,12 @@ void set_startup_status(const F32 frac, const std::string& string, const std::st
 			last_d = new_d;
 			LLChat chat;
 			chat.mText = new_d;
-			chat.mSourceType = (EChatSourceType)(CHAT_SOURCE_OBJECT+1);
+			chat.mSourceType = (EChatSourceType)(CHAT_SOURCE_OBJECT+2);
 			LLFloaterChat::addChat(chat);
 			if(new_d == LLTrans::getString("LoginWaitingForRegionHandshake"))
 			{
 				chat.mText = "MOTD: "+msg;
-				chat.mSourceType = (EChatSourceType)(CHAT_SOURCE_OBJECT+1);
+				chat.mSourceType = (EChatSourceType)(CHAT_SOURCE_OBJECT+2);
 				LLFloaterChat::addChat(chat);
 			}
 		}
