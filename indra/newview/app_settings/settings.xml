@@ -195,7 +195,7 @@
 		<key>PhoenixTemporaryUpload</key>
 		<map>
 			<key>Comment</key>
-			<string>Whether or not a upload is temp</string>
+			<string>Whether or not an upload is temp</string>
 			<key>Persist</key>
 			<integer>0</integer>
 			<key>Type</key>
@@ -915,7 +915,7 @@
 		<key>PhoenixChatSpamTime</key>
 		<map>
 			<key>Comment</key>
-			<string>ADVANCED SETTINGS: Time of Evalulating spam. RECOMMENDED NUMBER IS 1.000</string>
+			<string>ADVANCED SETTINGS: Time of evaluating spam. RECOMMENDED NUMBER IS 1.000</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -953,7 +953,7 @@
 		<key>PhoenixSpamTime</key>
 		<map>
 			<key>Comment</key>
-			<string>ADVANCED SETTINGS: Time of Evalulating spam. RECOMMENDED NUMBER IS 1.000</string>
+			<string>ADVANCED SETTINGS: Time of evaluating spam. RECOMMENDED NUMBER IS 1.000</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -975,7 +975,7 @@
 		<key>PhoenixSpellDisplay</key>
 		<map>
 			<key>Comment</key>
-			<string>Turn on to show mispelled text in red</string>
+			<string>Turn on to show missplellings text in red</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -1387,7 +1387,7 @@
 		<key>PhoenixShowStatusBarInMouselook</key>
 		<map>
 			<key>Comment</key>
-			<string>Makes it so that the statistics bar stays visable when entering mouselook if it was open already.</string>
+			<string>Makes it so that the statistics bar stays visible when entering mouselook if it was open already.</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -1442,7 +1442,7 @@
 		<key>PhoenixOOCPostfix</key>
 		<map>
 			<key>Comment</key>
-			<string>Prefix to mark OOC chat</string>
+			<string>Postfix to mark OOC chat</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -1486,7 +1486,7 @@
 		<key>PhoenixAllowPhantomToggle</key>
 		<map>
 			<key>Comment</key>
-			<string>Do you want to be able to hit ctrl alt p to become visably phantom?</string>
+			<string>Do you want to be able to hit ctrl alt p to become visibly phantom?</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -9483,7 +9483,7 @@
 		<key>PhoenixCmdLineKeyToName</key>
 		<map>
 			<key>Comment</key>
-			<string>Use a fast key to name querry</string>
+			<string>Use a fast key to name query</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -15075,7 +15075,7 @@
 		<key>PhoenixIRC_ColorPrivate</key>
 		<map>
 			<key>Comment</key>
-			<string>Color of new objects textures</string>
+			<string>Colour of private IRC messages to the user</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -15091,7 +15091,7 @@
 		<key>PhoenixIRC_ColorNotice</key>
 		<map>
 			<key>Comment</key>
-			<string>Color of new objects textures</string>
+			<string>Colour channel notices are displayed in.</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -15123,7 +15123,7 @@
 		<key>PhoenixIRC_ColorQuit</key>
 		<map>
 			<key>Comment</key>
-			<string>Color of new objects textures</string>
+			<string>Colour used for user quit messages</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -15139,7 +15139,7 @@
 		<key>PhoenixIRC_ColorKick</key>
 		<map>
 			<key>Comment</key>
-			<string>Color of new objects textures</string>
+			<string>Colour used when user is kicked from IRC Chat</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -15155,7 +15155,7 @@
 		<key>PhoenixIRC_ColorNick</key>
 		<map>
 			<key>Comment</key>
-			<string>Color of new objects textures</string>
+			<string>Colour used when user changes nickname</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -15171,7 +15171,7 @@
 		<key>PhoenixIRC_ColorSystem</key>
 		<map>
 			<key>Comment</key>
-			<string>Color of new objects textures</string>
+			<string>Colour used for system messages</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -15286,7 +15286,7 @@
 		<key>PhoenixIRC_AutoReJoin</key>
 		<map>
 			<key>Comment</key>
-			<string>Automaticly accempt to reconnect to the channel you were just in if kicked. Some networks dont like this and may ban you for doing so, be carefull.</string>
+			<string>Automatically accept to reconnect to the channel you were just in if kicked. Some networks do not like this and may ban you for doing so, be carefull.</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -15297,7 +15297,7 @@
 		<key>PhoenixIRC_AutoConnect</key>
 		<map>
 			<key>Comment</key>
-			<string>Automaticly connect to any IRC networks that you have set to auto connect to upon startup.</string>
+			<string>Automatically connect to any IRC networks that you have set to auto connect to upon startup.</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
