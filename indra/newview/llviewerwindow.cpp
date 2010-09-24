@@ -978,7 +978,8 @@ BOOL LLViewerWindow::handleRightMouseDown(LLWindow *window,  LLCoordGL pos, MASK
 		llinfos << "Right Mouse Down not handled by view" << llendl;
 	}
 
-	if(LLToolMgr::getInstance()->getCurrentTool()->handleRightMouseDown( x, y, mask ) )
+	if( ( !gSavedSettings.getBOOL("PhoenixEnablePieMenuInMouselook") || ( !(gKeyboard->currentMask(TRUE) & MASK_ALT) && CAMERA_MODE_MOUSELOOK != gAgent.getCameraMode() ))
+		&& LLToolMgr::getInstance()->getCurrentTool()->handleRightMouseDown( x, y, mask ) )
 	{
 		// This is necessary to force clicks in the world to cause edit
 		// boxes that might have keyboard focus to relinquish it, and hence
