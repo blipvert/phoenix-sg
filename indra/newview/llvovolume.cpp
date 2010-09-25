@@ -754,7 +754,8 @@ void LLVOVolume::sculpt()
 					   
 			sculpt_data = raw_image->getData();
 		}
-		getVolume()->sculpt(sculpt_width, sculpt_height, sculpt_components, sculpt_data, discard_level);
+		static BOOL* sPhoenixOblongSculptLODHack = rebind_llcontrol<BOOL>("PhoenixOblongSculptLODHack", &gSavedSettings, false);
+		getVolume()->sculpt(sculpt_width, sculpt_height, sculpt_components, sculpt_data, discard_level, *sPhoenixOblongSculptLODHack);
 	}
 }
 
