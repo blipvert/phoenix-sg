@@ -888,6 +888,10 @@ bool LLTextureFetchWorker::doWork(S32 param)
 					}
 				}
 			}
+
+			resetFormattedData(); // discard any previous data we had
+			cur_size = 0 ;
+
 			mRequestedSize = mDesiredSize;
 			mRequestedDiscard = mDesiredDiscard;
 			mRequestedSize -= cur_size;
