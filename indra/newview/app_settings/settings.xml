@@ -15373,13 +15373,13 @@
 		<key>FetchInventoryOnLogin</key>
 		<map>
 			<key>Comment</key>
-			<string>Automatically fetch the inventory in the background after login</string>
+			<string>Automatically fetch the inventory in the background after login (has issues)</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
 			<string>Boolean</string>
 			<key>Value</key>
-			<integer>1</integer>
+			<integer>0</integer>
 		</map>
 		<key>TabAutoComplete</key>
 		<map>
