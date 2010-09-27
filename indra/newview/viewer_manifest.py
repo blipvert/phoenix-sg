@@ -101,9 +101,6 @@ class ViewerManifest(LLManifest):
                         self.path("*.png")
                         self.path("textures.xml")
                         self.end_prefix("*/textures")
-                self.exclude("default/xui/en_us/mime_types_windows.xml")
-                self.exclude("default/xui/en_us/mime_types_mac.xml")
-                self.exclude("default/xui/en_us/mime_types_linux.xml")
                 self.path("*/xui/*/*.xml")
                 self.path("*/*.xml")
                 
@@ -399,9 +396,6 @@ class WindowsManifest(ViewerManifest):
 
         self.disable_manifest_check()
 
-        # Per platform MIME config on the cheap.  See SNOW-307 / DEV-41388
-        self.path("skins/default/xui/en-us/mime_types_windows.xml", "skins/default/xui/en-us/mime_types.xml")
-
         # The config file name needs to match the exe's name.
         self.path(src="%s/secondlife-bin.exe.config" % self.args['configuration'], dst=self.final_exe() + ".config")
 
@@ -676,9 +670,6 @@ class DarwinManifest(ViewerManifest):
 
                     self.end_prefix("llplugin")
 
-                # Per platform MIME config on the cheap.  See SNOW-307 / DEV-41388
-                self.path("skins/default/xui/en-us/mime_types_mac.xml", "skins/default/xui/en-us/mime_types.xml")
-
                 # command line arguments for connecting to the proper grid
                 self.put_in_file(self.flags_list(), 'arguments.txt')
 
@@ -840,9 +831,6 @@ class LinuxManifest(ViewerManifest):
             self.path("../media_plugins/webkit/libmedia_plugin_webkit.so", "libmedia_plugin_webkit.so")
             self.path("../media_plugins/gstreamer010/libmedia_plugin_gstreamer010.so", "libmedia_plugin_gstreamer.so")
             self.end_prefix("bin/llplugin")
-
-        # Per platform MIME config on the cheap.  See SNOW-307 / DEV-41388
-        self.path("skins/default/xui/en-us/mime_types_linux.xml", "skins/default/xui/en-us/mime_types.xml")
 
         self.path("../llcommon/libllcommon.so", "lib/libllcommon.so")
 
