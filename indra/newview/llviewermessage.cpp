@@ -962,19 +962,16 @@ void open_offer(const std::vector<LLUUID>& items, const std::string& from_name)
 		LLInventoryView* view = LLInventoryView::getActiveInventory();
 		if(!view)
 		{
+			LL_INFOS("Messaging") << "no view" << LL_ENDL;
 			return;
 		}
 
 		if(gSavedSettings.getBOOL("ShowInInventory") &&
-		   asset_type != LLAssetType::AT_CALLINGCARD &&
-		   item->getInventoryType() != LLInventoryType::IT_ATTACHMENT &&
-		   !from_name.empty())
+		   asset_type != LLAssetType::AT_CALLINGCARD) //&&
+		   //item->getInventoryType() != LLInventoryType::IT_ATTACHMENT &&
+		   //!from_name.empty())
 		{
 			LLInventoryView::showAgentInventory(TRUE);
-		}
-		else
-		{
-			continue;
 		}
 		//Trash Check
 		LLUUID trash_id;
