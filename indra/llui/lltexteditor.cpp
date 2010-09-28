@@ -5060,7 +5060,7 @@ BOOL LLTextEditor::findHTML(const std::string &line, S32 *begin, S32 *end, std::
 		// jurl_types[] maps jiras to urls.
 		// We DO NOT sanity check jurl_types. Make sure there is an entry in jurls for any given type.
 		// (yes, it would be easier to use a map. No, there is no really good reason we don't.)
-		const int jira_count = 4;
+		const int jira_count = 5;
 		const char* jiras[] = { "SVC-", "VWR-", "SNOW-", "STORM-", "PHOE-" };
 		int jurl_types[] = { 0, 0, 0, 0, 1 };
 		const char* jurls[] = { "https://jira.secondlife.com/browse/%s", "http://jira.phoenixviewer.com/browse/%s" };
