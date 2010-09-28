@@ -2921,7 +2921,7 @@ void LLVOAvatar::idleUpdateAppearanceAnimation()
 				 param;
 				 param = getNextVisualParam())
 			{
-				if (param->getGroup() == VISUAL_PARAM_GROUP_TWEAKABLE)
+				if (param->isTweakable())
 				{
 					param->stopAnimating(mAppearanceAnimSetByUser);
 				}
@@ -2954,7 +2954,7 @@ void LLVOAvatar::idleUpdateAppearanceAnimation()
 				 param;
 				 param = getNextVisualParam())
 			{
-				if (param->getGroup() == VISUAL_PARAM_GROUP_TWEAKABLE)
+				if (param->isTweakable())
 				{
 					param->animate(morph_amt, mAppearanceAnimSetByUser);
 				}
@@ -8141,6 +8141,14 @@ BOOL LLVOAvatar::teToColorParams( ETextureIndex te, const char* param_name[3] )
 		param_name[2] = "skirt_blue";
 		break;
 
+	case TEX_HEAD_TATTOO:
+	case TEX_LOWER_TATTOO:
+	case TEX_UPPER_TATTOO:
+		param_name[0] = "tattoo_red";
+		param_name[1] = "tattoo_green";
+		param_name[2] = "tattoo_blue";
+		break;	
+
 	default:
 		llassert(0);
 		return FALSE;
@@ -8600,7 +8608,7 @@ void LLVOAvatar::processAvatarAppearance( LLMessageSystem* mesgsys )
 		{
 			for( S32 i = 0; i < num_blocks; i++ )
 			{
-				while( param && (param->getGroup() != VISUAL_PARAM_GROUP_TWEAKABLE) )
+				while( param && (param->getGroup() != VISUAL_PARAM_GROUP_TWEAKABLE) ) // should not be any of group VISUAL_PARAM_GROUP_TWEAKABLE_NO_TRANSMIT
 				{
 					param = getNextVisualParam();
 				}
@@ -8639,7 +8647,7 @@ void LLVOAvatar::processAvatarAppearance( LLMessageSystem* mesgsys )
 			}
 		}
 
-		while( param && (param->getGroup() != VISUAL_PARAM_GROUP_TWEAKABLE) )
+		while( param && (param->getGroup() != VISUAL_PARAM_GROUP_TWEAKABLE) ) // don't worry about VISUAL_PARAM_GROUP_TWEAKABLE_NO_TRANSMIT
 		{
 			param = getNextVisualParam();
 		}
@@ -8918,7 +8926,7 @@ void LLVOAvatar::dumpArchetypeXML( void* )
 		{
 			LLViewerVisualParam* viewer_param = (LLViewerVisualParam*)param;
 			if( (viewer_param->getWearableType() == type) &&
-				(viewer_param->getGroup() == VISUAL_PARAM_GROUP_TWEAKABLE) )
+				(param->isTweakable()) )
 			{
 				apr_file_printf( file, "\t\t<param id=\"%d\" name=\"%s\" value=\"%.3f\"/>\n",
 						 viewer_param->getID(), viewer_param->getName().c_str(), viewer_param->getWeight() );
