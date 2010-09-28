@@ -1735,15 +1735,17 @@ void LLViewerImage::destroySavedRawImage()
 
 void LLViewerImage::destroyRawImage()
 {
-	if (mRawImage.notNull()) sRawCount--;
 	if (mAuxRawImage.notNull()) sAuxCount--;
 
-	if(mForceToSaveRawImage)
+	if (mRawImage.notNull())
 	{
-		saveRawImage() ;
+		sRawCount--;
+		if(mForceToSaveRawImage)
+		{
+			saveRawImage() ;
+		}
+		setCachedRawImage() ;
 	}
-	
-	setCachedRawImage() ;
 
 	mRawImage = NULL;
 	mAuxRawImage = NULL;
@@ -1798,7 +1800,8 @@ void LLViewerImage::setCachedRawImage()
 			mRawImage->scale(w >> i, h >> i) ;
 		}
 		mCachedRawImage = mRawImage ;
-		mCachedRawDiscardLevel = mRawDiscardLevel + i ;			
+		mRawDiscardLevel += i ;
+		mCachedRawDiscardLevel = mRawDiscardLevel ;
 	}
 }
 
