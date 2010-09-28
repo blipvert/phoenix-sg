@@ -530,12 +530,10 @@ bool LLPanelGroupGeneral::apply(std::string& mesg)
 		}
 	}
 
-	BOOL receive_notices = false;
-	BOOL list_in_profile = false;
-	if (mCtrlReceiveNotices)
-		receive_notices = mCtrlReceiveNotices->get();
-	if (mCtrlListGroup) 
-		list_in_profile = mCtrlListGroup->get();
+	bool receive_notices = mCtrlReceiveNotices ? mCtrlReceiveNotices->get() : false;
+	bool list_in_profile = mCtrlListGroup ? mCtrlListGroup->get() : false;
+	mCtrlReceiveNotices->resetDirty();	//resetDirty() here instead of in update because this is where the settings 
+	mCtrlListGroup->resetDirty();		//are actually being applied. onCommitUserOnly doesn't call updateChanged directly.
 
 	gAgent.setUserGroupFlags(mGroupID, receive_notices, list_in_profile);
 
@@ -747,12 +745,14 @@ void LLPanelGroupGeneral::update(LLGroupChange gc)
 	{
 		mCtrlReceiveNotices->setVisible(is_member);
 		if (is_member)
-		{
 			mCtrlReceiveNotices->setEnabled(mAllowEdit);
-		}
-		mCtrlReceiveNotices->resetDirty();
 	}
-
+	if (mCtrlListGroup)
+	{
+		mCtrlListGroup->setVisible(is_member);
+		if (is_member)
+			mCtrlListGroup->setEnabled(mAllowEdit);
+	}
 
 	if (mInsignia) mInsignia->setEnabled(mAllowEdit && can_change_ident);
 	if (mEditCharter) mEditCharter->setEnabled(mAllowEdit && can_change_ident);
