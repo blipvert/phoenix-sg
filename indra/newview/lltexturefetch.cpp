@@ -1414,7 +1414,7 @@ S32 LLTextureFetchWorker::callbackHttpGet(const LLChannelDescriptors& channels,
 			// *TODO: set the formatted image data here directly to avoid the copy
 			mBuffer = new U8[data_size];
 			buffer->readAfter(channels.in(), NULL, mBuffer, data_size);
-			mBufferSize += data_size;
+
 			if (data_size < mRequestedSize &&
 			  (mRequestedDiscard == 0 || mRequestedSize >= MAX_IMAGE_DATA_SIZE) )
 			{
@@ -1423,13 +1423,10 @@ S32 LLTextureFetchWorker::callbackHttpGet(const LLChannelDescriptors& channels,
 			}
 			else if (data_size > mRequestedSize)
 			{
-				// *TODO: This shouldn't be happening any more
-				llwarns << "data_size = " << data_size << " > requested: " << mRequestedSize << llendl;
-				mHaveAllData = TRUE;
-				llassert_always(mDecodeHandle == 0);
-				mFormattedImage = NULL; // discard any previous data we had
-				mBufferSize = data_size;
+				LL_DEBUGS("Texture")  << "Extra data recived: data_size = " << data_size << " > requested: " << mRequestedSize << " on " << mID.asString() << llendl;
+				data_size = mRequestedSize;
 			}
+			mBufferSize += data_size;
 		}
 		else
 		{
