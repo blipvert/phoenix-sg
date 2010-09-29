@@ -559,6 +559,32 @@ void LLVOVolume::updateTextureVirtualSize()
 	else if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_FACE_AREA))
 	{
 		setDebugText(llformat("%.0f:%.0f", fsqrtf(min_vsize),fsqrtf(max_vsize)));
+	}else if(gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_TEXTURE_COMMENT))
+	{
+		const S32 num_faces = mDrawable->getNumFaces();
+		std::string allInfo("");
+		for (S32 i = 0; i < num_faces; i++)
+		{
+			LLFace* face = mDrawable->getFace(i);
+			LLViewerImage *imagep = face->getTexture();
+			std::string faceinfo("");
+			if(imagep)
+			{
+				std::map<std::string,std::string>::iterator it;
+				for ( it=imagep->decodedComment.begin() ; it != imagep->decodedComment.end(); it++ )
+				{
+					faceinfo.append(llformat("(%d) %s => %s\n",i,(*it).first,(*it).second));
+				}
+			}
+			if(faceinfo!="")
+			{
+				allInfo.append(faceinfo+"\n");
+			}
+		}
+		if(allInfo!="")
+		{
+			setDebugText(allInfo);
+		}
 	}
 
 	if (mPixelArea == 0)

@@ -12,6 +12,17 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>    
+		<key>PhoenixShowCommentsForAll</key>
+		<map>
+			<key>Comment</key>
+			<string>Read and display image comments (uploader and timestamp) for all images</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>PhoenixShowOwnClientColor</key>
 		<map>
 		<key>Comment</key>

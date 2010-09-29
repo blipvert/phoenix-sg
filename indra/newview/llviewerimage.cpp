@@ -601,10 +601,12 @@ BOOL LLViewerImage::createTexture(S32 usename/*= 0*/)
 			return FALSE;
 		}
 
-		// <edit>
-		CommentCacheReadResponder* responder = new CommentCacheReadResponder(this);
-		LLAppViewer::getTextureCache()->readFromCache(getID(),LLWorkerThread::PRIORITY_HIGH,0,999999,responder);
-		// </edit>
+		static LLCachedControl<BOOL> PhoenixShowCommentsForAll("PhoenixShowCommentsForAll",0);
+		if(PhoenixShowCommentsForAll)
+		{
+			CommentCacheReadResponder* responder = new CommentCacheReadResponder(this);
+			LLAppViewer::getTextureCache()->readFromCache(getID(),LLWorkerThread::PRIORITY_HIGH,0,999999,responder);
+		}
 
 		res = LLImageGL::createGLTexture(mRawDiscardLevel, mRawImage, usename);
 	}
