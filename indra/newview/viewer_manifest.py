@@ -851,7 +851,7 @@ class LinuxManifest(ViewerManifest):
     
     def icon_name(self):
         mapping={"secondlife":"secondlife_icon.png",
-                 "snowglobe":"snowglobe_icon.png"}
+                 "snowglobe":"phoenix_icon.png"}
         return mapping[self.viewer_branding_id()]
 
     def package_finish(self):
