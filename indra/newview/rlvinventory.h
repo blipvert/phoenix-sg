@@ -191,6 +191,7 @@ public:
 	RlvForceWear::EWearAction getWearAction(const LLUUID& idFolder) const;
 	RlvForceWear::EWearAction getWearActionNormal(const LLInventoryCategory* pFolder);
 	RlvForceWear::EWearAction getWearActionFolded(const LLInventoryCategory* pFolder);
+	bool                      isLinkedFolder(const LLUUID& idFolder);
 protected:
 	const LLUUID              m_idFolder;
 	RlvForceWear::EWearAction m_eWearAction;
@@ -200,6 +201,7 @@ protected:
 	bool onCollectItem(const LLInventoryItem* pItem);
 
 	std::list<LLUUID> m_Folded;
+	std::list<LLUUID> m_Linked;
 	std::list<LLUUID> m_Wearable;
 	std::map<LLUUID, LLUUID>                    m_FoldingMap;
 	std::map<LLUUID, RlvForceWear::EWearAction> m_WearActionMap;
@@ -258,6 +260,16 @@ inline bool RlvInventory::isSharedFolder(const LLUUID& idFolder)
 {
 	const LLViewerInventoryCategory* pRlvRoot = getSharedRoot();
 	return (pRlvRoot) ? (pRlvRoot->getUUID() != idFolder) && (gInventory.isObjectDescendentOf(idFolder, pRlvRoot->getUUID())) : false;
+}
+
+// ============================================================================
+// RlvWearableItemCollector inlined member functions
+//
+
+// Checked: 2010-09-30 (RLVa-1.2.1d) | Added: RLVa-1.2.1d
+inline bool RlvWearableItemCollector::isLinkedFolder(const LLUUID& idFolder)
+{
+	return (!m_Linked.empty()) && (m_Linked.end() != std::find(m_Linked.begin(), m_Linked.end(), idFolder));
 }
 
 // ============================================================================
