@@ -573,12 +573,12 @@ void LLVOVolume::updateTextureVirtualSize()
 				std::map<std::string,std::string>::iterator it;
 				for ( it=imagep->decodedComment.begin() ; it != imagep->decodedComment.end(); it++ )
 				{
-					faceinfo.append(llformat("(%d) %s => %s\n",i,(*it).first,(*it).second));
+					faceinfo+=llformat("(%d)",i)+(*it).first+" => "+(*it).second+"\n";
 				}
 			}
 			if(faceinfo!="")
 			{
-				allInfo.append(faceinfo+"\n");
+				allInfo+=faceinfo+"\n";
 			}
 		}
 		if(allInfo!="")

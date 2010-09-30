@@ -101,7 +101,7 @@ std::vector<U8> LLJ2cParser::GetNextComment()
 std::map<std::string,std::string> LLImageMetaDataReader::ExtractKDUUploadComment(U8* data,int data_size)
 {
 	LLJ2cParser parser = LLJ2cParser(data,data_size);
-
+	LL_INFOS("Comment Reader")  << "Reading data with size "<<data_size<<LL_ENDL;
 	std::map<std::string,std::string>  result;
 	while(1)
 	{
@@ -111,7 +111,7 @@ std::map<std::string,std::string> LLImageMetaDataReader::ExtractKDUUploadComment
 		{
 			std::string fullComment(comment.begin()+2,comment.end());
 
-			result["full"]=fullComment;
+			//result["full"]=fullComment;
 			//a=abbee3b5-fbe0-4cfa-8d15-323d6800448e&h=480&w=640&z=20081118204138&c=26961aff
 			int pos = 0;//where we are in the string
 			while(pos<fullComment.length())
