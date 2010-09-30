@@ -808,7 +808,7 @@ OPJ_API void OPJ_CALLCONV opj_set_default_decoder_parameters(opj_dparameters_t *
 #ifdef _MSC_VER
 #pragma message ( "warning, opj_setup_decoder is deprecated")
 #else
-#warning "warning, opj_setup_decoder is deprecated"
+//#warning "warning, opj_setup_decoder is deprecated"
 #endif
 /**
 Setup the decoder decoding parameters using user parameters.
@@ -992,7 +992,7 @@ OPJ_API bool OPJ_CALLCONV opj_restrict_decoding (opj_dparameters_t *parameters,O
 #ifdef _MSC_VER
 #pragma message ("warning, opj_setup_encoder is deprecated")
 #else
-#warning "warning, opj_setup_encoder is deprecated"
+//#warning "warning, opj_setup_encoder is deprecated"
 #endif
 /**
 Setup the encoder parameters using the current image and using user parameters. 
