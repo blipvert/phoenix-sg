@@ -13,13 +13,15 @@ include_directories(
     ${OPENJPEG_INCLUDE_DIR}
     )
 
-set(llimagej2coj_SOURCE_FILES
-    llimagej2coj.cpp
-    )
+if (LIBOPENJPEG2)
+  set(llimagej2coj_SOURCE_FILES llimagej2coj2.cpp)
+else (LIBOPENJPEG2)
+  set(llimagej2coj_SOURCE_FILES llimagej2coj.cpp)
+endif (LIBOPENJPEG2)
+
 
 set(llimagej2coj_HEADER_FILES
     CMakeLists.txt
-
     llimagej2coj.h
     )
 
