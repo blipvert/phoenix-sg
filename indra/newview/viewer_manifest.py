@@ -208,7 +208,7 @@ class WindowsManifest(ViewerManifest):
         # This is used to test that no manifest for the msvcrt exists.
         # It is used as a temporary override during the construct method
         from indra.util.test_win32_manifest import test_assembly_binding
-        from indra.util.test_win32_manifest import NoManifestException, NoMatchingAssemblyException
+        from indra.util.test_win32_manifest import NoManifestException, NoMatchingAssemblyException, UnexpectedVersionException
         if src and (os.path.exists(src) or os.path.islink(src)):
             # ensure that destination path exists
             self.cmakedirs(os.path.dirname(dst))
@@ -223,6 +223,8 @@ class WindowsManifest(ViewerManifest):
                 except NoManifestException, err:
                     pass
                 except NoMatchingAssemblyException, err:
+                    pass
+                except UnexpectedVersionException, err:
                     pass
                     
                 self.ccopy(src,dst)
