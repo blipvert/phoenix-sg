@@ -1146,12 +1146,12 @@ static LLNotificationFunctorRegistration confirm_version_reg("ConfirmVersion", L
 
 void LLPanelLogin::onClickConnect(void *)
 {
-	/*if(PhoenixViewerLink::isMSDone() && !(PhoenixViewerLink::is_ReleaseVersion(LLFloaterAbout::get_viewer_version()) ||
+	if(PhoenixViewerLink::isMSDone() && !(PhoenixViewerLink::is_ReleaseVersion(LLFloaterAbout::get_viewer_version()) ||
 		PhoenixViewerLink::is_BetaVersion(LLFloaterAbout::get_viewer_version())))
 	{
 		LLNotifications::instance().add("ConfirmVersion");
 	}
-	else*/
+	else
 	{
 		LLPanelLogin::onClickConnectReal(NULL);
 	}
