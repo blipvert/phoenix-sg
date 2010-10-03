@@ -89,9 +89,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>0d9bc8f051135799f86df230801f33c3</string>
+						<string>af06208ec80b1f170cc560141602e2dc</string>
 						<key>url</key>
-						<uri>http://downloads.phoenixviewer.com/libnotify-0.5.0-linux-20100910.tar.bz2</uri>
+						<uri>http://downloads.phoenixviewer.com/libnotify-0.4.4-linux-20101003.tar.bz2</uri>
 					</map>
 				</map>
 			</map>
@@ -417,9 +417,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>eb25444142d4102b0ce1b7ffaadb071e</string>
+						<string>5a3883730ee2ebd9d1853124b9346443</string>
 						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/dbusglib-linux-20080707.tar.bz2</uri>
+						<uri>http://downloads.phoenixviewer.com/libdbus-glib-0.76-linux-20101003.tar.bz2</uri>
 					</map>
 				</map>
 			</map>
@@ -724,9 +724,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>21c16a74f8fc9a62e3ab944a6eb7403d</string>
+						<string>61973c28541c6a426c18d944c42d7173</string>
 						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/gtk-atk-pango-glib-linux-20080616.tar.bz</uri>
+						<uri>http://downloads.phoenixviewer.com/gtk-atk-pango-glib-linux-20101003.tar.bz2</uri>
 					</map>
 					<key>windows</key>
 					<map>
