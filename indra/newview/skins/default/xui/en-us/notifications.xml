@@ -1359,7 +1359,14 @@ any problems you may have. Do you wish to continue?
 		</unique>
 	</notification>
 	<notification icon="alertmodal.tga" name="PreprocEnabled" type="alertmodal">Toggling the preprocessor will not take full effect unless you close and reopen this editor.</notification>
-	<notification duration="10" icon="notifytip.tga" name="ServerVersionChanged" priority="high" type="notifytip">The region you have entered is running a different simulator version. Click this message for details.</notification>
+	<notification duration="15" icon="notifytip.tga" name="ServerVersionChanged" priority="high" type="notifytip">The region you have entered is running a different simulator version.
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+		<unique>
+			<context key="OLDVERSION"/>
+			<context key="NEWVERSION"/>
+		</unique>
+	</notification>
 	<notification icon="notifytip.tga" name="UnableToOpenCommandURL" priority="high" type="notifytip">The URL you clicked cannot be opened from this web browser.</notification>
 	<notification icon="notify.tga" name="QueryClientTags" type="notify">Would you like to have the client tag database automatically updated from phoenixviewer.com? This ensures that you have the latest information available regarding other clients. 
 		<form name="form">
