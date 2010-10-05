@@ -276,6 +276,9 @@ public:
 	// multiple trash can bug.
 	LLUUID findCategoryUUIDForType(LLAssetType::EType preferred_type, bool create_folder = true);
 
+	// Get whatever special folder this object is a child of, if any.
+	const LLViewerInventoryCategory *getFirstNondefaultParent(const LLUUID& obj_id) const;
+
 	// Call this method when it's time to update everyone on a new
 	// state, by default, the inventory model will not update
 	// observers automatically.

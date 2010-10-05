@@ -205,6 +205,7 @@ extern BOOL gDebugClicks;
 
 // function prototypes
 void open_offer(const std::vector<LLUUID>& items, const std::string& from_name);
+bool highlight_offered_object(const LLUUID& obj_id);
 bool check_offer_throttle(const std::string& from_name, bool check_only);
 void callbackCacheEstateOwnerName(const LLUUID& id,
 								  const std::string& first, const std::string& last,
@@ -916,7 +917,6 @@ void open_offer(const std::vector<LLUUID>& items, const std::string& from_name)
 {
 	std::vector<LLUUID>::const_iterator it = items.begin();
 	std::vector<LLUUID>::const_iterator end = items.end();
-	LLUUID trash_id(gInventory.findCategoryUUIDForType(LLAssetType::AT_TRASH));
 	LLInventoryItem* item;
 	for(; it != end; ++it)
 	{
@@ -926,7 +926,7 @@ void open_offer(const std::vector<LLUUID>& items, const std::string& from_name)
 			LL_WARNS("Messaging") << "Unable to show inventory item: " << *it << LL_ENDL;
 			continue;
 		}
-		if(gInventory.isObjectDescendentOf(*it, trash_id))
+		if(!highlight_offered_object(item->getUUID()))
 		{
 			continue;
 		}
@@ -1003,6 +1003,41 @@ void open_offer(const std::vector<LLUUID>& items, const std::string& from_name)
 		view->getPanel()->setSelection(item->getUUID(), TAKE_FOCUS_NO);
 		gFocusMgr.setKeyboardFocus(focus_ctrl);
 	}
+}
+
+bool highlight_offered_object(const LLUUID& obj_id)
+{
+	const LLInventoryObject* obj = gInventory.getObject(obj_id);
+	if(!obj)
+	{
+		LL_WARNS("Messaging") << "Unable to show inventory item: " << obj_id << LL_ENDL;
+		return false;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// Don't highlight if it's in certain "quiet" folders which don't need UI
+	// notification (e.g. trash, cof, lost-and-found).
+	if(!gAgent.getAFK())
+	{
+		const LLViewerInventoryCategory *parent = gInventory.getFirstNondefaultParent(obj_id);
+		if (parent)
+		{
+			const LLAssetType::EType parent_type = parent->getPreferredType();
+			switch (parent_type)
+			{
+				case LLAssetType::AT_TRASH:
+				case LLAssetType::AT_LOST_AND_FOUND:
+				case LLAssetType::AT_CURRENT_OUTFIT:
+				case LLAssetType::AT_OUTFIT:
+				case LLAssetType::AT_MY_OUTFITS:
+					return false;
+				default:
+					break;
+			}
+		}
+	}
+
+	return true;
 }
 
 void inventory_offer_mute_callback(const LLUUID& blocked_id,

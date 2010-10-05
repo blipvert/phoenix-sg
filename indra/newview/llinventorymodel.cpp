@@ -341,6 +341,27 @@ LLUUID LLInventoryModel::findCategoryUUIDForType(LLAssetType::EType t, bool crea
 	return rv;
 }
 
+const LLViewerInventoryCategory *LLInventoryModel::getFirstNondefaultParent(const LLUUID& obj_id) const
+{
+	const LLInventoryObject* obj = getObject(obj_id);
+
+	// Search up the parent chain until we get to root or an acceptable folder.
+	// This assumes there are no cycles in the tree else we'll get a hang.
+	LLUUID parent_id = obj->getParentUUID();
+	while (!parent_id.isNull())
+	{
+		const LLViewerInventoryCategory *cat = getCategory(parent_id);
+		if (!cat) break;
+		const LLAssetType::EType folder_type = cat->getPreferredType();
+		if (folder_type != LLAssetType::AT_NONE && folder_type != LLAssetType::AT_ROOT_CATEGORY)
+		{
+			return cat;
+		}
+		parent_id = cat->getParentUUID();
+	}
+	return NULL;
+}
+
 // Internal method which looks for a category with the specified
 // preferred type. Returns LLUUID::null if not found.
 LLUUID LLInventoryModel::findCatUUID(LLAssetType::EType preferred_type)
