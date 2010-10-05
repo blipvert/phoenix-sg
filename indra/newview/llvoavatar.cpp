@@ -73,6 +73,7 @@
 #include "noise.h"
 #include "llsdserialize.h"
 
+#include "cofmgr.h"
 #include "llagent.h" //  Get state values from here
 #include "llviewercontrol.h"
 #include "lldrawpoolavatar.h"
@@ -2697,10 +2698,12 @@ BOOL LLVOAvatar::idleUpdate(LLAgent &agent, LLWorld &world, const F64 &time)
 
 	// attach objects that were waiting for a drawable
 	lazyAttach();
+/*
 	if (mIsSelf)
 	{
 		checkAttachments();
 	}
+*/
 
 	// animate the character
 	// store off last frame's root position to be consistent with camera position
@@ -6781,6 +6784,12 @@ BOOL LLVOAvatar::attachObject(LLViewerObject *viewer_object)
 		// Then make sure the inventory is in sync with the avatar.
 		gInventory.addChangedMask(LLInventoryObserver::LABEL, viewer_object->getAttachmentItemID());
 		gInventory.notifyObservers();
+
+		// Should just be the last object added
+		if (attachment->isObjectAttached(viewer_object))
+		{
+			LLCOFMgr::instance().addAttachment(viewer_object->getAttachmentItemID());
+		}
 	}
 
 	return TRUE;
@@ -6925,11 +6934,16 @@ BOOL LLVOAvatar::detachObject(LLViewerObject *viewer_object)
 				// Then make sure the inventory is in sync with the avatar.
 				gInventory.addChangedMask(LLInventoryObserver::LABEL, item_id);
 				gInventory.notifyObservers();
+
+				// Update COF contents (unless the avatar is being destroyed)
+				if ( (getRegion()) && (!isDead()) )
+				{
+					LLCOFMgr::instance().removeAttachment(item_id);
+				}
 			}
 			return TRUE;
 		}
 	}
-
 
 	return FALSE;
 }
@@ -7644,10 +7658,17 @@ BOOL LLVOAvatar::isReallyFullyLoaded()
 BOOL LLVOAvatar::isFullyLoaded()
 {
 	static BOOL* sRenderUnloadedAvatar = rebind_llcontrol<BOOL>("RenderUnloadedAvatar", &gSavedSettings, true);
-	if (*sRenderUnloadedAvatar)
+//	if (*sRenderUnloadedAvatar)
+//		return TRUE;
+//	else
+//		return mFullyLoaded;
+// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-09-22 (Catznip-2.2.0a) | Added: Catznip-2.2.0a
+	// Changes to LLAppearanceMgr::updateAppearanceFromCOF() expect this function to actually return mFullyLoaded for gAgentAvatarp
+	if ( (!isSelf()) && (*sRenderUnloadedAvatar) )
 		return TRUE;
 	else
 		return mFullyLoaded;
+// [/SL:KB]
 }
 
 

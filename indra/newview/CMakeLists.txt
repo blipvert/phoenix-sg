@@ -76,6 +76,7 @@ include_directories(
 )
 
 set(viewer_SOURCE_FILES
+    cofmgr.cpp
 	lggautocorrectfloater.cpp
 	lggautocorrect.cpp
 	lgghunspell_wrapper.cpp
@@ -548,6 +549,8 @@ endif (LINUX)
 set(viewer_HEADER_FILES
     CMakeLists.txt
     ViewerInstall.cmake
+
+    cofmgr.h
     a_phoenixviewerlink.h
 	chatbar_as_cmdline.h
 	DiamondAoInt.h

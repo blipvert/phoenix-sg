@@ -35,8 +35,8 @@
 #include "stdtypes.h"
 #include "stdenums.h"
 
+#include "cofmgr.h"
 #include "llagent.h" 
-
 #include "llcamera.h"
 #include "llcoordframe.h"
 #include "indra_constants.h"
@@ -7278,6 +7278,8 @@ void LLAgent::processAgentInitialWearablesUpdate( LLMessageSystem* mesgsys, void
 			LL_DEBUGS("Wearables") << "       " << LLWearable::typeToTypeLabel(type) << " " << asset_id << " item id " << gAgent.mWearableEntry[type].mItemID.asString() << LL_ENDL;
 		}
 
+		LLCOFMgr::instance().fetchCOF();
+
 		// now that we have the asset ids...request the wearable assets
 // [RLVa:KB] - Alternate: Snowglobe-1.2.4 | Checked: 2009-08-08 (RLVa-1.0.1g) | Added: RLVa-1.0.1g
 		LLInventoryFetchObserver::item_ref_t rlvItems;
@@ -7603,6 +7605,7 @@ void LLAgent::makeNewOutfit(
 						item->getLinkedUUID(),
 						folder_id,
 						item->getName(),		// Apparently, links cannot have arbitrary names...
+						item->getDescription(),
 						LLAssetType::AT_LINK,
 						LLPointer<LLInventoryCallback>(NULL));
 				}
@@ -7662,6 +7665,7 @@ void LLAgent::makeNewOutfit(
 						item->getLinkedUUID(),
 						folder_id,
 						item->getName(),
+						item->getDescription(),
 						LLAssetType::AT_LINK,
 						LLPointer<LLInventoryCallback>(NULL));
 				}
@@ -8429,6 +8433,162 @@ LLVector3 LLAgent::getLastCoords()
 	return mLastCoordinates;
 }
 
+// Combines userRemoveAllAttachments() and userAttachMultipleAttachments() logic to
+// get attachments into desired state with minimal number of adds/removes.
+//void LLAgentWearables::userUpdateAttachments(LLInventoryModel::item_array_t& obj_item_array)
+// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-09-22 (Catznip-2.2.0a) | Added: Catznip-2.2.0a
+void LLAgent::userUpdateAttachments(LLInventoryModel::item_array_t& obj_item_array, bool fAttachOnly)
+// [/SL:KB]
+{
+	// Possible cases:
+	// already wearing but not in request set -> take off.
+	// already wearing and in request set -> leave alone.
+	// not wearing and in request set -> put on.
+
+	LLVOAvatar* pAvatar = gAgent.getAvatarObject();
+	if (!pAvatar) return;
+
+	std::set<LLUUID> requested_item_ids;
+	std::set<LLUUID> current_item_ids;
+	for (S32 i=0; i<obj_item_array.count(); i++)
+		requested_item_ids.insert(obj_item_array[i].get()->getLinkedUUID());
+
+	// Build up list of objects to be removed and items currently attached.
+	llvo_vec_t objects_to_remove;
+	for (LLVOAvatar::attachment_map_t::iterator iter = pAvatar->mAttachmentPoints.begin(); 
+		 iter != pAvatar->mAttachmentPoints.end();)
+	{
+		LLVOAvatar::attachment_map_t::iterator curiter = iter++;
+		LLViewerJointAttachment* attachment = curiter->second;
+		for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
+			 attachment_iter != attachment->mAttachedObjects.end();
+			 ++attachment_iter)
+		{
+			LLViewerObject *objectp = (*attachment_iter);
+			if (objectp)
+			{
+				LLUUID object_item_id = objectp->getAttachmentItemID();
+				if (requested_item_ids.find(object_item_id) != requested_item_ids.end())
+				{
+					// Object currently worn, was requested.
+					// Flag as currently worn so we won't have to add it again.
+					current_item_ids.insert(object_item_id);
+				}
+				else
+				{
+					// object currently worn, not requested.
+					objects_to_remove.push_back(objectp);
+				}
+			}
+		}
+	}
+
+	LLInventoryModel::item_array_t items_to_add;
+	for (LLInventoryModel::item_array_t::iterator it = obj_item_array.begin();
+		 it != obj_item_array.end();
+		 ++it)
+	{
+		LLUUID linked_id = (*it).get()->getLinkedUUID();
+		if (current_item_ids.find(linked_id) != current_item_ids.end())
+		{
+			// Requested attachment is already worn.
+		}
+		else
+		{
+			// Requested attachment is not worn yet.
+			items_to_add.push_back(*it);
+		}
+	}
+	// S32 remove_count = objects_to_remove.size();
+	// S32 add_count = items_to_add.size();
+	// llinfos << "remove " << remove_count << " add " << add_count << llendl;
+
+	// Remove everything in objects_to_remove
+//	userRemoveMultipleAttachments(objects_to_remove);
+// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-09-22 (Catznip-2.2.0a) | Added: Catznip-2.2.0a
+	if (!fAttachOnly)
+	{
+		userRemoveMultipleAttachments(objects_to_remove);
+	}
+// [/SL:KB]
+
+	// Add everything in items_to_add
+	userAttachMultipleAttachments(items_to_add);
+}
+
+void LLAgent::userRemoveMultipleAttachments(llvo_vec_t& objects_to_remove)
+{
+	if (!gAgent.getAvatarObject()) return;
+
+	if (objects_to_remove.empty())
+		return;
+
+	gMessageSystem->newMessage("ObjectDetach");
+	gMessageSystem->nextBlockFast(_PREHASH_AgentData);
+	gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+	gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+	
+	for (llvo_vec_t::iterator it = objects_to_remove.begin();
+		 it != objects_to_remove.end();
+		 ++it)
+	{
+		LLViewerObject *objectp = *it;
+		gMessageSystem->nextBlockFast(_PREHASH_ObjectData);
+		gMessageSystem->addU32Fast(_PREHASH_ObjectLocalID, objectp->getLocalID());
+	}
+	gMessageSystem->sendReliable(gAgent.getRegionHost());
+}
+
+void LLAgent::userAttachMultipleAttachments(LLInventoryModel::item_array_t& obj_item_array)
+{
+	// Build a compound message to send all the objects that need to be rezzed.
+	S32 obj_count = obj_item_array.count();
+
+	// Limit number of packets to send
+	const S32 MAX_PACKETS_TO_SEND = 10;
+	const S32 OBJECTS_PER_PACKET = 4;
+	const S32 MAX_OBJECTS_TO_SEND = MAX_PACKETS_TO_SEND * OBJECTS_PER_PACKET;
+	if( obj_count > MAX_OBJECTS_TO_SEND )
+	{
+		obj_count = MAX_OBJECTS_TO_SEND;
+	}
+				
+	// Create an id to keep the parts of the compound message together
+	LLUUID compound_msg_id;
+	compound_msg_id.generate();
+	LLMessageSystem* msg = gMessageSystem;
+
+	for(S32 i = 0; i < obj_count; ++i)
+	{
+		if( 0 == (i % OBJECTS_PER_PACKET) )
+		{
+			// Start a new message chunk
+			msg->newMessageFast(_PREHASH_RezMultipleAttachmentsFromInv);
+			msg->nextBlockFast(_PREHASH_AgentData);
+			msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+			msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+			msg->nextBlockFast(_PREHASH_HeaderData);
+			msg->addUUIDFast(_PREHASH_CompoundMsgID, compound_msg_id );
+			msg->addU8Fast(_PREHASH_TotalObjects, obj_count );
+			msg->addBOOLFast(_PREHASH_FirstDetachAll, false );
+		}
+
+		const LLInventoryItem* item = obj_item_array.get(i).get();
+		msg->nextBlockFast(_PREHASH_ObjectData );
+		msg->addUUIDFast(_PREHASH_ItemID, item->getLinkedUUID());
+		msg->addUUIDFast(_PREHASH_OwnerID, item->getPermissions().getOwner());
+		msg->addU8Fast(_PREHASH_AttachmentPt, 0 | ATTACHMENT_ADD);	// Wear at the previous or default attachment point
+		pack_permissions_slam(msg, item->getFlags(), item->getPermissions());
+		msg->addStringFast(_PREHASH_Name, item->getName());
+		msg->addStringFast(_PREHASH_Description, item->getDescription());
+
+		if( (i+1 == obj_count) || ((OBJECTS_PER_PACKET-1) == (i % OBJECTS_PER_PACKET)) )
+		{
+			// End of message chunk
+			msg->sendReliable( gAgent.getRegion()->getHost() );
+		}
+	}
+}
 
 // OGPX - This code will change when capabilities get refactored.
 // Right now this is used for capabilities that we get from OGP agent domain

@@ -945,6 +945,19 @@ void LLInventoryModel::deleteObject(const LLUUID& id)
 	}
 }
 
+// Delete a particular inventory item by ID, and remove it from the server.
+void LLInventoryModel::purgeObject(const LLUUID &id)
+{
+	lldebugs << "LLInventoryModel::purgeObject() [ id: " << id << " ] " << llendl;
+	LLPointer<LLInventoryObject> obj = getObject(id);
+	if(obj)
+	{
+		obj->removeFromServer();
+		LLPreview::hide(id);
+		deleteObject(id);
+	}
+}
+
 // This is a method which collects the descendents of the id
 // provided. If the category is not found, no action is
 // taken. This method goes through the long winded process of

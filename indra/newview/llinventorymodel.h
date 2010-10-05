@@ -237,6 +237,10 @@ public:
 	// notification, or server update is performed.
 	void deleteObject(const LLUUID& id);
 
+	// Delete a particular inventory object by ID, and delete it from
+	// the server. Also updates linked items.
+	void purgeObject(const LLUUID& id);
+
 	// This is a method which collects the descendents of the id
 	// provided. If the category is not found, no action is
 	// taken. This method goes through the long winded process of
