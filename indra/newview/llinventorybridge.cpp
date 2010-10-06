@@ -39,6 +39,7 @@
 
 #include "message.h"
 
+#include "cofmgr.h"
 #include "llagent.h"
 #include "llcallingcard.h"
 #include "llcheckboxctrl.h"		// for radio buttons
@@ -2635,8 +2636,16 @@ BOOL LLFolderBridge::dragItemIntoFolder(LLInventoryItem* inv_item,
 		}
 
 		LLUUID trash_id = model->findCategoryUUIDForType(LLAssetType::AT_TRASH);
+		const LLUUID &current_outfit_id = model->findCategoryUUIDForType(LLAssetType::AT_CURRENT_OUTFIT, false);
 		BOOL move_is_into_trash = (mUUID == trash_id) || model->isObjectDescendentOf(mUUID, trash_id);
-		if(is_movable && move_is_into_trash)
+		BOOL move_is_into_current_outfit = (mUUID == current_outfit_id);
+		BOOL move_is_outof_current_outfit = model->isObjectDescendentOf(inv_item->getUUID(), current_outfit_id);
+
+		if (is_movable && move_is_outof_current_outfit)
+		{
+			is_movable = FALSE;	// Don't allow dragging links out of COF
+		}
+		else if(is_movable && move_is_into_trash)
 		{
 			if (inv_item->getIsLinkType())
 			{
@@ -2681,12 +2690,34 @@ BOOL LLFolderBridge::dragItemIntoFolder(LLInventoryItem* inv_item,
 				}
 			}
 
-			// restamp if the move is into the trash.
-			LLInvFVBridge::changeItemParent(
-				model,
-				(LLViewerInventoryItem*)inv_item,
-				mUUID,
-				move_is_into_trash);
+			if (move_is_into_current_outfit)
+			{
+				switch (inv_item->getType())
+				{
+					case LLAssetType::AT_BODYPART:
+					case LLAssetType::AT_CLOTHING:
+						wear_inventory_item_on_avatar(inv_item);
+						break;
+					case LLAssetType::AT_OBJECT:
+						rez_attachment((LLViewerInventoryItem*)inv_item, NULL, false);
+						break;
+					/*
+					case LLAssetType::AT_GESTURE:
+						break;
+					*/
+					default:
+						break;
+				}
+			}
+			else
+			{
+				// restamp if the move is into the trash.
+				LLInvFVBridge::changeItemParent(
+					model,
+					(LLViewerInventoryItem*)inv_item,
+					mUUID,
+					move_is_into_trash);
+			}
 		}
 	}
 	else if(LLToolDragAndDrop::SOURCE_WORLD == source)
