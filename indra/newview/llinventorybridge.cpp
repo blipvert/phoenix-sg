@@ -4815,7 +4815,7 @@ void remove_inventory_category_from_avatar_step2( BOOL proceed, void* userdata)
 			{
 //				if( gAgent.isWearingItem (item_array.get(i)->getUUID()) )
 // [RLVa:KB] - Checked: 2009-07-07 (RLVa-1.1.3b) | Modified: RLVa-0.2.2a
-				LLWearable* pWearable = gAgent.getWearableFromWearableItem(item_array.get(i)->getUUID());
+				LLWearable* pWearable = gAgent.getWearableFromWearableItem(item_array.get(i)->getLinkedUUID());
 				if ( (pWearable) && ( (!rlv_handler_t::isEnabled()) || (gRlvWearableLocks.canRemove(pWearable->getType())) ) )
 // [/RLVa:KB]
 				{
@@ -4846,9 +4846,9 @@ void remove_inventory_category_from_avatar_step2( BOOL proceed, void* userdata)
 		{
 			for(i = 0; i  < gest_count; ++i)
 			{
-				if ( gGestureManager.isGestureActive( gest_item_array.get(i)->getUUID()) )
+				if ( gGestureManager.isGestureActive( gest_item_array.get(i)->getLinkedUUID()) )
 				{
-					gGestureManager.deactivateGesture( gest_item_array.get(i)->getUUID() );
+					gGestureManager.deactivateGesture( gest_item_array.get(i)->getLinkedUUID() );
 					gInventory.updateItem( gest_item_array.get(i) );
 					gInventory.notifyObservers();
 				}
