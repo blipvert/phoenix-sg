@@ -6864,6 +6864,9 @@ void LLAgent::sendAgentWearablesUpdate()
 	// Then make sure the inventory is in sync with the avatar.
 	gInventory.notifyObservers();
 
+	// This isn't the proper place to be doing this, but it's a good "catch-all"
+	LLCOFMgr::instance().synchWearables();
+
 	// Send the AgentIsNowWearing 
 	gMessageSystem->newMessageFast(_PREHASH_AgentIsNowWearing);
 

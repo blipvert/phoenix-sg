@@ -35,6 +35,7 @@ public:
 	{
 		LLCOFMgr::instance().setLinkAttachments(true);
 		LLCOFMgr::instance().updateAttachments();
+		LLCOFMgr::instance().synchWearables();
 
 		gInventory.removeObserver(this);
 		delete this;
@@ -233,9 +234,9 @@ void LLCOFMgr::removeAttachment(const LLUUID& idItem)
 	gInventory.addChangedMask(LLInventoryObserver::LABEL, idItem);
 
 	// Remove the attachment from the pending list
-	uuid_vec_t::iterator itPendingAttachLink = std::find(m_PendingAttachLinks.begin(), m_PendingAttachLinks.end(), idItem);
-	if (itPendingAttachLink != m_PendingAttachLinks.end())
-		m_PendingAttachLinks.erase(itPendingAttachLink);
+	uuid_vec_t::iterator itPending = std::find(m_PendingAttachLinks.begin(), m_PendingAttachLinks.end(), idItem);
+	if (itPending != m_PendingAttachLinks.end())
+		m_PendingAttachLinks.erase(itPending);
 	
 	if (m_fLinkAttachments)
 	{
@@ -271,9 +272,9 @@ void LLCOFMgr::onLinkAttachmentComplete(const LLUUID& idItem)
 	const LLUUID& idItemBase = gInventory.getLinkedItemID(idItem);
 
 	// Remove the attachment from the pending list
-	uuid_vec_t::iterator itPendingAttachLink = std::find(m_PendingAttachLinks.begin(), m_PendingAttachLinks.end(), idItemBase);
-	if (itPendingAttachLink != m_PendingAttachLinks.end())
-		m_PendingAttachLinks.erase(itPendingAttachLink);
+	uuid_vec_t::iterator itPending = std::find(m_PendingAttachLinks.begin(), m_PendingAttachLinks.end(), idItemBase);
+	if (itPending != m_PendingAttachLinks.end())
+		m_PendingAttachLinks.erase(itPending);
 
 	// It may have been detached already in which case we should remove the COF link
 	if ( (gAgent.getAvatarObject()) && (!gAgent.getAvatarObject()->isWearingAttachment(idItemBase)) )
@@ -318,6 +319,46 @@ void LLCOFMgr::updateAttachments()
 // Wearable functions
 //
 
+void LLCOFMgr::addWearable(const LLUUID& idItem)
+{
+	if ( (isLinkInCOF(idItem)) || (std::find(m_PendingWearableLinks.begin(), m_PendingWearableLinks.end(), idItem) != m_PendingWearableLinks.end()) )
+	{
+		return;
+	}
+
+	gInventory.addChangedMask(LLInventoryObserver::LABEL, idItem);
+	m_PendingWearableLinks.push_back(idItem);
+
+	LLPointer<LLInventoryCallback> cb = new LLLinkWearableCallback();
+	addCOFItemLink(idItem, cb);
+}
+
+void LLCOFMgr::removeWearable(const LLUUID& idItem)
+{
+	gInventory.addChangedMask(LLInventoryObserver::LABEL, idItem);
+
+	// Remove the attachment from the pending list
+	uuid_vec_t::iterator itPending = std::find(m_PendingWearableLinks.begin(), m_PendingWearableLinks.end(), idItem);
+	if (itPending != m_PendingWearableLinks.end())
+		m_PendingWearableLinks.erase(itPending);
+	
+   removeCOFItemLinks(idItem);
+}
+
+void LLCOFMgr::onLinkWearableComplete(const LLUUID& idItem)
+{
+	const LLUUID& idItemBase = gInventory.getLinkedItemID(idItem);
+
+	// Remove the attachment from the pending list
+	uuid_vec_t::iterator itPending = std::find(m_PendingWearableLinks.begin(), m_PendingWearableLinks.end(), idItemBase);
+	if (itPending != m_PendingWearableLinks.end())
+		m_PendingWearableLinks.erase(itPending);
+
+	// It may have been removed already in which case we should remove the COF link
+	if (!gAgent.isWearingItem(idItemBase))
+		removeCOFItemLinks(idItemBase);
+}
+
 void LLCOFMgr::synchWearables()
 {
 	const LLUUID idCOF = getCOF();
@@ -351,13 +392,12 @@ void LLCOFMgr::synchWearables()
 	LLCommonUtils::computeDifference(newItems, curItems, addItems, remItems);
 
 	// Add links for worn wearables that aren't linked yet
-	LLPointer<LLInventoryCallback> cb = NULL;
 	for (uuid_vec_t::const_iterator itItem = addItems.begin(); itItem != addItems.end(); ++itItem)
-		addCOFItemLink(*itItem, cb);
+		addWearable(*itItem);
 
 	// Remove links of wearables that aren't worn anymore
 	for (uuid_vec_t::const_iterator itItem = remItems.begin(); itItem != remItems.end(); ++itItem)
-		removeCOFItemLinks(*itItem);
+		removeWearable(*itItem);
 }
 
 // ============================================================================
