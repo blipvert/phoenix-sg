@@ -42,12 +42,14 @@ class RlvNotifications
 {
 public:
 	static void notifyBehaviour(ERlvBehaviour eBhvr, ERlvParamType eType);
+	static void notifyBlockedTeleport()    { notifyBlocked("blocked_teleport"); }
 	static void notifyBlockedViewNote()    { notifyBlockedViewXXX(LLAssetType::lookup(LLAssetType::AT_NOTECARD)); }
 	static void notifyBlockedViewScript()  { notifyBlockedViewXXX(LLAssetType::lookup(LLAssetType::AT_SCRIPT)); }
 	static void notifyBlockedViewTexture() { notifyBlockedViewXXX(LLAssetType::lookup(LLAssetType::AT_TEXTURE)); }
 
 	static void warnGiveToRLV();
 protected:
+	static void notifyBlocked(const std::string& strRlvString);
 	static void notifyBlockedViewXXX(const char* pstrAssetType);
 
 	static void onGiveToRLVConfirmation(const LLSD& notification, const LLSD& response);

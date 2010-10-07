@@ -6414,6 +6414,7 @@ void LLAgent::teleportViaLandmark(const LLUUID& landmark_asset_id)
 		 ( (gRlvHandler.hasBehaviour(RLV_BHVR_TPLM)) || 
 		   ((gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) && (mAvatarObject.notNull()) && (mAvatarObject->mIsSitting)) ))
 	{
+		RlvNotifications::notifyBlockedTeleport();
 		return;
 	}
 // [/RLVa:KB]
@@ -6494,6 +6495,7 @@ void LLAgent::teleportViaLocation(const LLVector3d& pos_global, bool go_to)
 		     ( (mAvatarObject.notNull()) && (mAvatarObject->mIsSitting) && 
 			   (gRlvHandler.hasBehaviourExcept(RLV_BHVR_UNSIT, gRlvHandler.getCurrentObject()))) )
 		{
+			RlvNotifications::notifyBlockedTeleport();
 			return;
 		}
 
@@ -6603,6 +6605,7 @@ void LLAgent::teleportViaLocationLookAt(const LLVector3d& pos_global)
 	if ( (rlv_handler_t::isEnabled()) && (!RlvUtil::isForceTp()) && 
 		 ((gRlvHandler.hasBehaviour(RLV_BHVR_SITTP)) || (!gRlvHandler.canStand())) )
 	{
+		RlvNotifications::notifyBlockedTeleport();
 		return;
 	}
 // [/RLVa:KB]

@@ -47,6 +47,14 @@ void RlvNotifications::notifyBehaviour(ERlvBehaviour eBhvr, ERlvParamType eType)
 }
 #endif // RLV_EXTENSION_NOTIFY_BEHAVIOUR
 
+// Checked: 2010-10-11 (RLVa-1.1.3c) | Added: RLVa-1.1.3c
+void RlvNotifications::notifyBlocked(const std::string& strRlvString)
+{
+	LLSD argsNotify;
+	argsNotify["MESSAGE"] = RlvStrings::getString(strRlvString);
+	LLNotifications::instance().add("SystemMessageTip", argsNotify);
+}
+
 // Checked: 2009-11-11 (RLVa-1.1.0a) | Added: RLVa-1.1.0a
 void RlvNotifications::notifyBlockedViewXXX(const char* pstrAssetType)
 {
