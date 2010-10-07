@@ -566,7 +566,7 @@
     <key>Value</key>
     <string></string>
   </map>
-  <key>PhoenixAODefaultswimmingforwards</key>
+  <key>PhoenixAODefaultswimmingforward</key>
   <map>
     <key>Comment</key>
     <string>anim</string>
