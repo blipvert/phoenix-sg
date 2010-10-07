@@ -44,7 +44,7 @@
 				>Author Name</text>
   <check_box bottom_delta="-20" left_delta="-32" height="16" width="100" enabled="true" follows="left|top"
 			font="SansSerifSmall" mouse_opaque="true" radio_style="false" label="Enabled, priority:"
-			control_name="em_ac_enabled" name="em_ac_list_enabled" tool_tip="Whether or not you with to use this particular list"/>
+			control_name="em_ac_enabled" name="em_ac_list_enabled" tool_tip="Whether or not you wish to use this particular list"/>
   <spinner bottom_delta="-0" left_delta="120" height="16" width="50" follows="left|top"
       decimal_digits="0" increment="1" min_val="0" max_val="10" mouse_opaque="true"
       label="" label_width="0" name="em_ac_priority" tool_tip="This number determine what order your list will be used to replace words.  A higher priority means it will be used before lower priority lists"/>
