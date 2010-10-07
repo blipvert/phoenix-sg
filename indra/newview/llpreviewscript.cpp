@@ -90,7 +90,7 @@
 
 #include "jclslpreproc.h"
 
-// [RLVa:KB]
+// [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.2.1f)
 #include "rlvhandler.h"
 // [/RLVa:KB]
   
@@ -2327,14 +2327,15 @@ void LLLiveLSLEditor::onRunningCheckboxClicked( LLUICtrl*, void* userdata )
 	LLCheckBoxCtrl* runningCheckbox = self->getChild<LLCheckBoxCtrl>("running");
 	BOOL running =  runningCheckbox->get();
 	//self->mRunningCheckbox->get();
-// [RLVa:KB] - Checked: 2009-10-10 (RLVa-1.0.5a) | Modified: RLVa-1.0.5a
-	if ( (rlv_handler_t::isEnabled()) && (gRlvHandler.isLockedAttachment(object, RLV_LOCK_REMOVE)) )
-	{
-		return;
-	}
-// [/RLVa:KB]
 	if( object )
 	{
+// [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.2.1f) | Modified: RLVa-1.0.5a
+		if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.isLockedAttachment(object->getRootEdit())) )
+		{
+			return;
+		}
+// [/RLVa:KB]
+
 		LLMessageSystem* msg = gMessageSystem;
 		msg->newMessageFast(_PREHASH_SetScriptRunning);
 		msg->nextBlockFast(_PREHASH_AgentData);
@@ -2358,14 +2359,15 @@ void LLLiveLSLEditor::onReset(void *userdata)
 	LLLiveLSLEditor* self = (LLLiveLSLEditor*) userdata;
 
 	LLViewerObject* object = gObjectList.findObject( self->mObjectID );
-// [RLVa:KB] - Checked: 2009-10-10 (RLVa-1.0.5a) | Modified: RLVa-1.0.5a
-	if ( (rlv_handler_t::isEnabled()) && (gRlvHandler.isLockedAttachment(object, RLV_LOCK_REMOVE)) )
-	{
-		return;
-	}
-// [/RLV:KB]
 	if(object)
 	{
+// [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.2.1f) | Modified: RLVa-1.0.5a
+		if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.isLockedAttachment(object->getRootEdit())) )
+		{
+			return;
+		}
+// [/RLVa:KB]
+
 		LLMessageSystem* msg = gMessageSystem;
 		msg->newMessageFast(_PREHASH_ScriptReset);
 		msg->nextBlockFast(_PREHASH_AgentData);
@@ -2797,12 +2799,13 @@ void LLLiveLSLEditor::onSave(void* userdata, BOOL close_after_save)
 {
 	LLLiveLSLEditor* self = (LLLiveLSLEditor*)userdata;
 
-// [RLVa:KB] - Checked: 2009-10-10 (RLVa-1.0.5a) | Modified: RLVa-1.0.5a
-	if ( (rlv_handler_t::isEnabled()) && (gRlvHandler.isLockedAttachment(gObjectList.findObject(self->mObjectID), RLV_LOCK_REMOVE)) )
+// [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.2.1f) | Modified: RLVa-1.0.5a
+	const LLViewerObject* pObject = gObjectList.findObject(self->mObjectID);
+	if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.isLockedAttachment(pObject->getRootEdit())) )
 	{
 		return;
 	}
-// [/RLV:KB]
+// [/RLVa:KB]
 
 	self->mCloseAfterSave = close_after_save;
 	self->saveIfNeeded();
