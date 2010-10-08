@@ -282,8 +282,8 @@ void PhoenixViewerLink::msdata(U32 status, std::string body)
 			phoenix_tags = data["phoenixTags"];
 			LLPrimitive::tagstring = PhoenixViewerLink::phoenix_tags[gSavedSettings.getString("PhoenixTagColor")].asString();
 		}
+		msDataDone = TRUE;
 	}
-	msDataDone = TRUE;
 
 	//LLSD& dev_agents = data["dev_agents"];
 	//LLSD& client_ids = data["client_ids"];

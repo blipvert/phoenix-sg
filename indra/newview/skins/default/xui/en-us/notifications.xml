@@ -4229,7 +4229,7 @@ Are you sure you want to quit?
 
   <notification
    icon="alertmodal.tga"
-   name="ConfirmVersion"
+   name="ConfirmVersionNew"
    type="alertmodal">
 The build you are running was not made by Phoenix.   
 Phoenix support will most likely be unable to help you with

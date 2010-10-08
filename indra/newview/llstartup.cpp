@@ -942,13 +942,6 @@ bool idle_startup()
 		return FALSE;
 	}
 
-	/*if (STATE_LOGIN_CLEANUP == LLStartUp::getStartupState())
-	{
-		if(PhoenixViewerLink::isMSDone())
-		{
-			LLNotifications::instance().add("ConfirmVersion");
-		}
-	}*/
 	if (STATE_LOGIN_CLEANUP == LLStartUp::getStartupState())
 	{
 		// Post login screen, we should see if any settings have changed that may
