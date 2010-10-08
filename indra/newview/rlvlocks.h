@@ -400,7 +400,8 @@ inline bool RlvWearableLocks::canRemove(const LLInventoryItem* pItem) const
 {
 	// The specified item can be removed if its wearable can be removed
 	RLV_ASSERT( (pItem) && (LLInventoryType::IT_WEARABLE == pItem->getInventoryType()) );
-	return (pItem) ? !isLockedWearable(gAgent.getWearableFromWearableItem(pItem->getLinkedUUID())) : false;
+	const LLWearable* pWearable = (pItem) ? gAgent.getWearableFromWearableItem(pItem->getLinkedUUID()) : NULL;
+	return (pWearable) && (!isLockedWearable(pWearable));
 }
 
 // Checked: 2010-05-14 (RLVa-1.2.0g) | Modified: RLVa-1.2.0g
