@@ -364,7 +364,9 @@ inline bool RlvAttachmentLocks::isLockedAttachment(const LLViewerObject* pObj) c
 // Checked: 2010-02-28 (RLVa-1.1.3a) | Added: RLVa-1.0.5a
 inline bool RlvAttachmentLocks::isLockedAttachment(const LLInventoryItem* pItem) const
 {
-	return (pItem) && (gAgent.getAvatarObject()) && (isLockedAttachment(gAgent.getAvatarObject()->getWornAttachment(pItem->getLinkedUUID())));
+	const LLViewerObject* pAttachObj = 
+		((pItem) && (gAgent.getAvatarObject())) ? gAgent.getAvatarObject()->getWornAttachment(pItem->getLinkedUUID()) : NULL;
+	return (pAttachObj) && (isLockedAttachment(pAttachObj));
 }
 
 // Checked: 2010-02-28 (RLVa-1.2.0a) | Added: RLVa-1.0.5a
