@@ -585,6 +585,10 @@ class DarwinManifest(ViewerManifest):
 
                 # Translations
                 self.path("English.lproj")
+                # I have no idea why it's picking up the uncustomized version
+                #  of this file, but that's what it's doing, so instead just
+                #  copy it manually.
+                self.path("English.lproj/InfoPlist.strings", "English.lproj/InfoPlist.strings")
                 self.path("German.lproj")
                 self.path("Japanese.lproj")
                 self.path("Korean.lproj")
