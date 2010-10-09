@@ -2965,7 +2965,7 @@ void LLFloaterIMPanel::sendMsg()
 				}
 			}
 			// Check for IM commands
-			if(utf8_text.find("/sysinfo")==0)
+			if(utf8_text.find("/sysinfo")==0 && IM_NOTHING_SPECIAL == mDialog)
 			{
 				std::string my_name;
 				gAgent.buildFullname(my_name);
