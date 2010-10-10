@@ -1564,8 +1564,14 @@ bool idle_startup()
 					gSavedSettings.setString("FirstName", std::string(""));
 					gSavedSettings.setString("LastName", std::string(""));
 				}
-
-				LLSavedLogins::saveFile(history_data, history_file);
+				if(gSavedSettings.getBOOL("PhoenixSaveLoginInfoOnLogin"))
+				{
+					LLSavedLogins::saveFile(history_data, history_file);
+				}
+				else
+				{
+					gSavedSettings.setString("PhoenixPasswordTempSpace",password);
+				}
 			}
 
 			// this is their actual ability to access content
