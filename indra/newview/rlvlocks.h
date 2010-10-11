@@ -340,7 +340,7 @@ inline bool RlvAttachmentLocks::canDetach(const LLInventoryItem* pItem) const
 {
 	const LLViewerObject* pAttachObj = 
 		((pItem) && (gAgent.getAvatarObject())) ? gAgent.getAvatarObject()->getWornAttachment(pItem->getLinkedUUID()) : NULL;
-	return (pAttachObj) && (isLockedAttachment(pAttachObj));
+	return (pAttachObj) && (!isLockedAttachment(pAttachObj));
 }
 
 // Checked: 2010-02-28 (RLVa-1.2.0a) | Modified: RLVa-1.2.0a
