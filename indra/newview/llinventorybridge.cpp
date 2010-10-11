@@ -2247,6 +2247,7 @@ void LLFolderBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 //	std::vector<std::string> disabled_items;
 	LLInventoryModel* model = mInventoryPanel->getModel();
 	if(!model) return;
+	LLUUID cof_id = LLCOFMgr::instance().getCOF();
 	LLUUID trash_id = model->findCategoryUUIDForType(LLAssetType::AT_TRASH);
 	LLUUID lost_and_found_id = model->findCategoryUUIDForType(LLAssetType::AT_LOST_AND_FOUND);
 
@@ -2262,7 +2263,11 @@ void LLFolderBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 		  mItems.push_back(std::string("Empty Lost And Found"));
 	  }
 
-	if(trash_id == mUUID)
+	if (cof_id == mUUID)
+	{
+		mItems.push_back(std::string("Take Off Items"));
+	}
+	else if(trash_id == mUUID)
 	{
 		// This is the trash.
 		mItems.push_back(std::string("Empty Trash"));
