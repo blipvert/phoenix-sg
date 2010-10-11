@@ -8309,38 +8309,16 @@ void LLAgent::userRemoveAllAttachments( void* userdata )
 		return;
 	}
 
-/*
-	gMessageSystem->newMessage("ObjectDetach");
-	gMessageSystem->nextBlockFast(_PREHASH_AgentData);
-	gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
-	gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-
+	llvo_vec_t objects_to_remove;
+	
 	for (LLVOAvatar::attachment_map_t::iterator iter = avatarp->mAttachmentPoints.begin(); 
-		 iter != avatarp->mAttachmentPoints.end(); )
+		 iter != avatarp->mAttachmentPoints.end();)
 	{
 		LLVOAvatar::attachment_map_t::iterator curiter = iter++;
 		LLViewerJointAttachment* attachment = curiter->second;
 		for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
 			 attachment_iter != attachment->mAttachedObjects.end();
 			 ++attachment_iter)
-		{
-			LLViewerObject *attached_object = (*attachment_iter);
-			if (attached_object)
-			{
-				gMessageSystem->nextBlockFast(_PREHASH_ObjectData);
-				gMessageSystem->addU32Fast(_PREHASH_ObjectLocalID, attached_object->getLocalID());
-			}
-		}
-	}
-	gMessageSystem->sendReliable( gAgent.getRegionHost() );
-*/
-	llvo_vec_t objects_to_remove;
-	for (LLVOAvatar::attachment_map_t::iterator iter = avatarp->mAttachmentPoints.begin(); iter != avatarp->mAttachmentPoints.end();)
-	{
-		LLVOAvatar::attachment_map_t::iterator curiter = iter++;
-		LLViewerJointAttachment* attachment = curiter->second;
-		for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
-				attachment_iter != attachment->mAttachedObjects.end(); ++attachment_iter)
 		{
 			LLViewerObject *attached_object = (*attachment_iter);
 //			if (attached_object)
@@ -8352,21 +8330,7 @@ void LLAgent::userRemoveAllAttachments( void* userdata )
 			}
 		}
 	}
-
-	if (objects_to_remove.empty())
-		return;
-
-	gMessageSystem->newMessage("ObjectDetach");
-	gMessageSystem->nextBlockFast(_PREHASH_AgentData);
-	gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-	gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-	for (llvo_vec_t::iterator it = objects_to_remove.begin(); it != objects_to_remove.end(); ++it)
-	{
-		LLViewerObject *objectp = *it;
-		gMessageSystem->nextBlockFast(_PREHASH_ObjectData);
-		gMessageSystem->addU32Fast(_PREHASH_ObjectLocalID, objectp->getLocalID());
-	}
-	gMessageSystem->sendReliable(gAgent.getRegionHost());
+	userRemoveMultipleAttachments(objects_to_remove);
 }
 
 void LLAgent::observeFriends()
