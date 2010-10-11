@@ -3395,8 +3395,8 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 			case CHAT_TYPE_OWNER:
 				if(DiamondAoInt::AOCommand(mesg))return;
 				if(JCLSLBridge::lsltobridge(mesg, from_name, from_id, owner_id))return;
-// [RLVa:KB] - Checked: 2009-11-25 (RLVa-1.1.0f) | Modified: RLVa-1.1.0f
-				// TODO-RLVa: [2009-11-25] this could really use some rewriting
+// [RLVa:KB] - Checked: 2010-02-XX (RLVa-1.2.0a) | Modified: RLVa-1.1.0f
+				// TODO-RLVa: [RLVa-1.2.0] consider rewriting this before a RLVa-1.2.0 release
 				if ( (rlv_handler_t::isEnabled()) && (mesg.length() > 3) && (RLV_CMD_PREFIX == mesg[0]) && (CHAT_TYPE_OWNER == chat.mChatType) )
 				{
 					mesg.erase(0, 1);
@@ -3405,12 +3405,14 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 					std::string strExecuted, strFailed, strRetained, *pstr;
 
 					boost_tokenizer tokens(mesg, boost::char_separator<char>(",", "", boost::drop_empty_tokens));
-					for (boost_tokenizer::iterator itToken = tokens.begin(); itToken != tokens.end(); ++itToken)
-					{
-						std::string strCmd = *itToken;
-
-						ERlvCmdRet eRet = gRlvHandler.processCommand(from_id, strCmd, true);
-						if (RlvSettings::getDebug())
+ 					for (boost_tokenizer::iterator itToken = tokens.begin(); itToken != tokens.end(); ++itToken)
+ 					{
+ 						std::string strCmd = *itToken;
+ 
+ 						ERlvCmdRet eRet = gRlvHandler.processCommand(from_id, strCmd, true);
+						if ( (RlvSettings::getDebug()) &&
+							 ( (!RlvSettings::getDebugHideUnsetDup()) || 
+							   ((RLV_RET_SUCCESS_UNSET != eRet) && (RLV_RET_SUCCESS_DUPLICATE != eRet)) ) )
 						{
 							if ( RLV_RET_SUCCESS == (eRet & RLV_RET_SUCCESS) )
 								pstr = &strExecuted;
@@ -3434,7 +3436,9 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 						}
 					}
 
-					if (!RlvSettings::getDebug())
+					RlvForceWear::instance().done();
+
+					if ( (!RlvSettings::getDebug()) || ((strExecuted.empty()) && (strFailed.empty()) && (strRetained.empty())) )
 						return;
 
 					// Silly people want comprehensive debug messages, blah :p
