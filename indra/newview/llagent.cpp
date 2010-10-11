@@ -8535,6 +8535,34 @@ void LLAgent::userRemoveMultipleAttachments(llvo_vec_t& objects_to_remove)
 {
 	if (!gAgent.getAvatarObject()) return;
 
+// [RLVa:KB] - Checked: 2010-03-04 (RLVa-1.1.3b) | Modified: RLVa-1.2.0a
+	// RELEASE-RLVa: [SL-2.0.0] Check our callers and verify that erasing elements from the passed vector won't break random things
+	if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)) )
+	{
+		llvo_vec_t::iterator itObj = objects_to_remove.begin();
+		while (itObj != objects_to_remove.end())
+		{
+			const LLViewerObject* pAttachObj = *itObj;
+			if (gRlvAttachmentLocks.isLockedAttachment(pAttachObj))
+			{
+				itObj = objects_to_remove.erase(itObj);
+
+				// Fall-back code: re-add the attachment if it got removed from COF somehow (compensates for possible bugs elsewhere)
+				LLInventoryModel::cat_array_t folders; LLInventoryModel::item_array_t items;
+				LLLinkedItemIDMatches f(pAttachObj->getAttachmentItemID());
+				gInventory.collectDescendentsIf(LLCOFMgr::instance().getCOF(), folders, items, LLInventoryModel::EXCLUDE_TRASH, f);
+				RLV_ASSERT( 0 != items.count() );
+				if (0 == items.count())
+					LLCOFMgr::instance().addAttachment(pAttachObj->getAttachmentItemID());
+			}
+			else
+			{
+				++itObj;
+			}
+		}
+	}
+// [/RLVa:KB]
+
 	if (objects_to_remove.empty())
 		return;
 
@@ -8556,6 +8584,23 @@ void LLAgent::userRemoveMultipleAttachments(llvo_vec_t& objects_to_remove)
 
 void LLAgent::userAttachMultipleAttachments(LLInventoryModel::item_array_t& obj_item_array)
 {
+// [RLVa:KB] - Checked: 2010-03-04 (RLVa-1.2.0a) | Modified: RLVa-1.2.0a
+	// RELEASE-RLVa: [SL-2.0.0] Check our callers and verify that erasing elements from the passed vector won't break random things
+	if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
+	{
+		// Fall-back code: everything should really already have been pruned before we get this far
+		for (S32 idxItem = obj_item_array.count() - 1; idxItem >= 0; idxItem--)
+		{
+			const LLInventoryItem* pItem = obj_item_array.get(idxItem).get();
+			if (!gRlvAttachmentLocks.canAttach(pItem))
+			{
+				obj_item_array.remove(idxItem);
+				RLV_ASSERT(false);
+			}
+		}
+	}
+// [/RLVa:KB]
+
 	// Build a compound message to send all the objects that need to be rezzed.
 	S32 obj_count = obj_item_array.count();
 
