@@ -4536,15 +4536,9 @@ void wear_inventory_category_on_avatar_step2( BOOL proceed, void* userdata )
 		S32 i;
 		S32 wearable_count = item_array.count();
 
-		LLInventoryModel::cat_array_t	obj_cat_array;
-		LLInventoryModel::item_array_t	obj_item_array;
-		LLIsType is_object( LLAssetType::AT_OBJECT );
-		gInventory.collectDescendentsIf(wear_info->mCategoryID,
-										obj_cat_array,
-										obj_item_array,
-										LLInventoryModel::EXCLUDE_TRASH,
-										is_object);
-		S32 obj_count = obj_item_array.count();
+		LLInventoryModel::item_array_t obj_items_new;
+		LLCOFMgr::getDescendentsOfAssetType(wear_info->mCategoryID, obj_items_new, LLAssetType::AT_OBJECT, false);
+		S32 obj_count = obj_items_new.count();
 
 		// Find all gestures in this folder
 		LLInventoryModel::cat_array_t	gest_cat_array;
@@ -4623,26 +4617,31 @@ void wear_inventory_category_on_avatar_step2( BOOL proceed, void* userdata )
 			}
 		}
 
+		const LLUUID idCOF = LLCOFMgr::instance().getCOF();
 
-		//If not appending and the folder doesn't contain only gestures, take off all attachments.
-		if (!wear_info->mAppend 
-			&& !(wearable_count == 0 && obj_count == 0 && gest_count > 0) )
+		//
+		// - Attachments: include COF contents only if appending.
+		//
+		LLInventoryModel::item_array_t obj_items;
+		if (wear_info->mAppend)
+			LLCOFMgr::getDescendentsOfAssetType(idCOF, obj_items, LLAssetType::AT_OBJECT, false);
+// [RLVa:KB] - Checked: 2010-03-05 (RLVa-1.2.0z) | Modified: RLVa-1.2.0b
+		else if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
 		{
-			LLAgent::userRemoveAllAttachments(NULL);
+			// Make sure that all currently locked attachments remain in COF when replacing
+			LLCOFMgr::getDescendentsOfAssetType(idCOF, obj_items, LLAssetType::AT_OBJECT, false);
+			obj_items.erase(std::remove_if(obj_items.begin(), obj_items.end(), rlvPredIsRemovableItem), obj_items.end());
 		}
+// [/RLVa:KB]
+	//	getDescendentsOfAssetType(category, obj_items, LLAssetType::AT_OBJECT, false);
+// [RLVa:KB] - Checked: 2010-03-05 (RLVa-1.2.0z) | Modified: RLVa-1.2.0b
+		// Filter out any new attachments that can't be worn before adding them
+		if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
+			obj_items_new.erase(std::remove_if(obj_items_new.begin(), obj_items_new.end(), rlvPredIsNotWearableItem), obj_items_new.end());
+		obj_items.insert(obj_items.end(), obj_items_new.begin(), obj_items_new.end());
+// [/RLVa:KB]
 
-		if( obj_count > 0 )
-		{
-			LLVOAvatar* avatar = gAgent.getAvatarObject();
-			if( avatar )
-			{
-				for(i = 0; i < obj_count; ++i)
-				{
-					LLInventoryItem* item = obj_item_array.get(i);
-					LLAttachmentsMgr::instance().addAttachment(item->getLinkedUUID(), 0, !wear_info->mReplace);
-				}
-			}
-		}
+		LLAgent::userUpdateAttachments(obj_items);
 	}
 	delete wear_info;
 	wear_info = NULL;
