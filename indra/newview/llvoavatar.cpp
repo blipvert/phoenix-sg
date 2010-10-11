@@ -2885,18 +2885,18 @@ void LLVOAvatar::idleUpdateMisc(bool detailed_update)
 					{
 						gPipeline.updateMoveNormalAsync(attached_object->mDrawable);
 					}
-				}
-				else
-				{
-					gPipeline.updateMoveDampedAsync(attached_object->mDrawable);
-				}
+					else
+					{
+						gPipeline.updateMoveDampedAsync(attached_object->mDrawable);
+					}
 
-				LLSpatialBridge* bridge = attached_object->mDrawable->getSpatialBridge();
-				if (bridge)
-				{
-					gPipeline.updateMoveNormalAsync(bridge);
+					LLSpatialBridge* bridge = attached_object->mDrawable->getSpatialBridge();
+					if (bridge)
+					{
+						gPipeline.updateMoveNormalAsync(bridge);
+					}
+					attached_object->updateText();
 				}
-				attached_object->updateText();
 			}
 		}
 	}
@@ -6826,7 +6826,7 @@ void LLVOAvatar::sitOnObject(LLViewerObject *sit_object)
 // [RLVa:KB] - Checked: 2010-08-29 (RLVa-1.2.1c) | Modified: RLVa-1.2.1c
 		if (rlv_handler_t::isEnabled())
 		{
-			gRlvHandler.onSitOrStand(false);
+			gRlvHandler.onSitOrStand(true);
 		}
 // [/RLVa:KB]
 
@@ -6909,7 +6909,7 @@ void LLVOAvatar::getOffObject()
 // [RLVa:KB] - Checked: 2010-08-29 (RLVa-1.2.1c) | Modified: RLVa-1.2.1c
 		if (rlv_handler_t::isEnabled())
 		{
-			gRlvHandler.onSitOrStand(true);
+			gRlvHandler.onSitOrStand(false);
 		}
 // [/RLVa:KB]
 
