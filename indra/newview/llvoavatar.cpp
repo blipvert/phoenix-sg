@@ -2729,6 +2729,11 @@ BOOL LLVOAvatar::idleUpdate(LLAgent &agent, LLWorld &world, const F64 &time)
 BOOL LLVOAvatar::detachAttachmentIntoInventory(const LLUUID &item_id)
 {
 	LLInventoryItem* item = gInventory.getLinkedItem(item_id);
+	if ( (item) && (gAgent.getAvatarObject()) && (!gAgent.getAvatarObject()->isWearingAttachment(item->getUUID())) )
+	{
+		LLCOFMgr::instance().removeAttachment(item->getUUID());
+		return FALSE;
+	}
 //	if (item)
 // [RLVa:KB] - Checked: 2010-09-04 (RLVa-1.2.1c) | Added: RLVa-1.2.1c
 	if ( (item) && ((!rlv_handler_t::isEnabled()) || (gRlvAttachmentLocks.canDetach(item))) )
