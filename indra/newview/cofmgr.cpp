@@ -41,6 +41,7 @@ public:
 
 	void doneIdle()
 	{
+		LLCOFMgr::instance().checkCOF();
 		LLCOFMgr::instance().setLinkAttachments(true);
 		LLCOFMgr::instance().updateAttachments();
 		LLCOFMgr::instance().synchWearables();
@@ -163,6 +164,28 @@ public:
 // ============================================================================
 // Helper functions
 //
+
+void LLCOFMgr::checkCOF()
+{
+	const LLUUID idCOF = getCOF();
+	const LLUUID idLAF = gInventory.findCategoryUUIDForType(LLAssetType::AT_LOST_AND_FOUND);
+
+	// Check COF for non-links and move them to Lost&Found
+	LLInventoryModel::cat_array_t* pFolders; LLInventoryModel::item_array_t* pItems;
+	gInventory.getDirectDescendentsOf(idCOF, pFolders, pItems);
+	for (S32 idxFolder = 0, cntFolder = pFolders->count(); idxFolder < cntFolder; idxFolder++)
+	{
+		LLViewerInventoryCategory* pFolder = pFolders->get(idxFolder).get();
+		if ( (pFolder) && (idLAF.notNull()) )
+			change_category_parent(&gInventory, pFolder, idLAF, false);
+	}
+	for (S32 idxItem = 0, cntItem = pItems->count(); idxItem < cntItem; idxItem++)
+	{
+		LLViewerInventoryItem* pItem = pItems->get(idxItem).get();
+		if ( (pItem) && (!pItem->getIsLinkType()) && (idLAF.notNull()) )
+			change_item_parent(&gInventory, pItem, idLAF, false);
+	}
+}
 
 void LLCOFMgr::fetchCOF()
 {

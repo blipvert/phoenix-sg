@@ -26,6 +26,7 @@ class LLCOFMgr : public LLSingleton<LLCOFMgr>
 	 * Helper functions
 	 */
 public:
+	void                checkCOF();
 	void                fetchCOF();
 	static const LLUUID getCOF() { return gInventory.findCategoryUUIDForType(LLAssetType::AT_CURRENT_OUTFIT); }
 	static void         getDescendentsOfAssetType(const LLUUID& idCat, LLInventoryModel::item_array_t& items, 

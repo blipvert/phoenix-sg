@@ -69,5 +69,11 @@ private:
 };
 
 // ============================================================================
+// From llinventoryfunctions.cpp
+
+void change_item_parent(LLInventoryModel* model, LLViewerInventoryItem* item, const LLUUID& new_parent_id, BOOL restamp);
+void change_category_parent(LLInventoryModel* model, LLViewerInventoryCategory* cat, const LLUUID& new_parent_id, BOOL restamp);
+
+// ============================================================================
 
 #endif // RLV_VIEWER2_H
