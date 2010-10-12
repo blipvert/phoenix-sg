@@ -531,12 +531,6 @@ void LLInvFVBridge::getClipboardEntries(bool show_asset_id, std::vector<std::str
 				disabled_items.push_back(std::string("Find Original"));
 			}
 		}
-
-		items.push_back(std::string("Export"));
-		if ( (! ( isItemPermissive() || gAgent.isGodlike() ) ))
-		{
-			disabled_items.push_back(std::string("Export"));
-		}
 		else
 		{
 			items.push_back(std::string("Rename"));
@@ -561,6 +555,12 @@ void LLInvFVBridge::getClipboardEntries(bool show_asset_id, std::vector<std::str
 			if (!isItemCopyable())
 			{
 				disabled_items.push_back(std::string("Copy"));
+			}
+
+			items.push_back(std::string("Export"));
+			if ( (! ( isItemPermissive() || gAgent.isGodlike() ) ))
+			{
+				disabled_items.push_back(std::string("Export"));
 			}
 		}
 	}
