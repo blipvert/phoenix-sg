@@ -26,10 +26,10 @@
 // Inventory helper classes
 //
 
-class LLCOFLinkTargetFetcher : public LLInventoryFetchObserver
+class LLCOFLinkTargetFetcher : public LLInventoryFetchItemsObserver
 {
 public:
-	LLCOFLinkTargetFetcher() {}
+	LLCOFLinkTargetFetcher(const uuid_vec_t& idItems) : LLInventoryFetchItemsObserver(idItems) {}
 	/*virtual*/ ~LLCOFLinkTargetFetcher() {}
 
 	/*virtual*/ void done()
@@ -57,7 +57,7 @@ public:
 
 	/*virtual*/ void done()
 	{
-		LLInventoryFetchObserver::item_ref_t idItems; 
+		uuid_vec_t idItems; 
 
 		// Add the link targets for COF
 		LLInventoryModel::cat_array_t folders; LLInventoryModel::item_array_t items;
@@ -99,9 +99,9 @@ public:
 		}
 
 		// Fetch it all
-		LLCOFLinkTargetFetcher* pFetcher = new LLCOFLinkTargetFetcher();
-		pFetcher->fetchItems(idItems);
-		if (pFetcher->isEverythingComplete())
+		LLCOFLinkTargetFetcher* pFetcher = new LLCOFLinkTargetFetcher(idItems);
+		pFetcher->startFetch();
+		if (pFetcher->isFinished())
 			pFetcher->done();
 		else
 			gInventory.addObserver(pFetcher);
@@ -111,23 +111,33 @@ public:
 	}
 };
 
-class LLDeferredAddLinkTargetFetcher : public LLInventoryFetchObserver
+class LLDeferredAddLinkTargetFetcher : public LLInventoryFetchItemsObserver
 {
 public:
-	LLDeferredAddLinkTargetFetcher(LLPointer<LLInventoryCallback> cb) : m_Callback(cb) {}
+	LLDeferredAddLinkTargetFetcher(const LLUUID& idItem, LLPointer<LLInventoryCallback> cb) 
+		: LLInventoryFetchItemsObserver(idItem), m_Callback(cb)
+	{}
+	LLDeferredAddLinkTargetFetcher(const uuid_vec_t& idItems, LLPointer<LLInventoryCallback> cb) 
+		: LLInventoryFetchItemsObserver(idItems), m_Callback(cb)
+	{}
 	/*virtual*/ ~LLDeferredAddLinkTargetFetcher() {}
 
 	/*virtual*/ void done()
 	{
-		for (item_ref_t::const_iterator itItemId = mComplete.begin(); itItemId != mComplete.end(); ++itItemId)
+		// We shouldn't be messing with inventory items during LLInventoryModel::notifyObservers()
+		doOnIdleOneTime(boost::bind(&LLDeferredAddLinkTargetFetcher::doneIdle, this));
+		gInventory.removeObserver(this);
+	}
+
+	void doneIdle()
+	{
+		for (uuid_vec_t::const_iterator itItemId = mComplete.begin(); itItemId != mComplete.end(); ++itItemId)
 		{
 			const LLViewerInventoryItem* pItem = gInventory.getItem(*itItemId);
 			if (!pItem)
 				continue;
 			LLCOFMgr::instance().addCOFItemLink(pItem, m_Callback);
 		}
-
-		gInventory.removeObserver(this);
 		delete this;
 	}
 protected:
@@ -193,12 +203,8 @@ void LLCOFMgr::addCOFItemLink(const LLUUID& idItem, LLPointer<LLInventoryCallbac
 	const LLViewerInventoryItem *pItem = gInventory.getItem(idItem);
 	if (!pItem)
 	{
-		LLInventoryFetchObserver::item_ref_t idItems; 
-		idItems.push_back(idItem);
-
-		LLDeferredAddLinkTargetFetcher* pFetcher = new LLDeferredAddLinkTargetFetcher(cb);
-		pFetcher->fetchItems(idItems);
-
+		LLDeferredAddLinkTargetFetcher* pFetcher = new LLDeferredAddLinkTargetFetcher(idItem, cb);
+		pFetcher->startFetch();
 		gInventory.addObserver(pFetcher);
 		return;
 	}
