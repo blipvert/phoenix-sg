@@ -241,7 +241,7 @@ void LLCOFMgr::removeCOFItemLinks(const LLUUID& idItem)
 
 	for (S32 idxItem = 0; idxItem < items.count(); idxItem++)
 	{
-		const LLInventoryItem* pItem = items.get(idxItem);
+		const LLInventoryItem* pItem = items.get(idxItem).get();
 		if ( (pItem->getIsLinkType()) && (idItem == pItem->getLinkedUUID()) )
 			gInventory.purgeObject(pItem->getUUID());
 	}
