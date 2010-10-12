@@ -70,15 +70,12 @@ public:
 			idItems.push_back(pItem->getLinkedUUID());
 		}
 
-		if (!idItems.empty())
-		{
-			LLCOFLinkTargetFetcher* pFetcher = new LLCOFLinkTargetFetcher();
-			pFetcher->fetchItems(idItems);
-			if (pFetcher->isEverythingComplete())
-				pFetcher->done();
-			else
-				gInventory.addObserver(pFetcher);
-		}
+		LLCOFLinkTargetFetcher* pFetcher = new LLCOFLinkTargetFetcher();
+		pFetcher->fetchItems(idItems);
+		if (pFetcher->isEverythingComplete())
+			pFetcher->done();
+		else
+			gInventory.addObserver(pFetcher);
 
 		gInventory.removeObserver(this);
 		delete this;
