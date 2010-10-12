@@ -20,6 +20,7 @@
 #include "llcommonutils.h"
 #include "llerror.h"
 #include "llvoavatar.h"
+#include "rlvviewer2.h"
 
 // ============================================================================
 // Inventory helper classes
@@ -33,11 +34,17 @@ public:
 
 	/*virtual*/ void done()
 	{
+		// We shouldn't be messing with inventory items during LLInventoryModel::notifyObservers()
+		doOnIdleOneTime(boost::bind(&LLCOFLinkTargetFetcher::doneIdle, this));
+		gInventory.removeObserver(this);
+	}
+
+	void doneIdle()
+	{
 		LLCOFMgr::instance().setLinkAttachments(true);
 		LLCOFMgr::instance().updateAttachments();
 		LLCOFMgr::instance().synchWearables();
 
-		gInventory.removeObserver(this);
 		delete this;
 	}
 };
