@@ -1,9 +1,12 @@
 //***********************************************************************//
 //* Phoenix LSL bridge script version 0.10                              *//
 //*                                                                     *//
-//* This script has two functions:                                      *//
+//* This script has five functions:                                     *//
 //* 1) Send radar informaion to the viewer                              *//
 //* 2) Retrieve true online/offline status for a requested user         *//
+//* 3) Perform local teleports via llMoveToTarget()                     *//
+//* 4) Listen on any desired channel and return data to the viewer      *//
+//* 5) Play a sound repeatedly                                          *//
 //*                                                                     *//
 //***********************************************************************//
 
@@ -12,16 +15,16 @@
 
 integer debugger = FALSE;	// TRUE to enable debugging messages
 integer receive_channel;	// Fixed channel to receive from viewer on
-integer tid;
-integer altListenHandler;
-integer listenReq;
-integer startTime;
-vector  moveToTarget;
+integer tid;			// Listener ID for fixed channel
+integer altListenHandler = 0;	// Listener handle for general listener
+integer listenReq;		// ID of listen request from viewer
+integer startTime;		// Time an llMoveToTarget() teleport began
+vector  moveToTarget;		// Destinstion of llMoveToTarget() teleport
 
-integer tid2;
-integer l2c;
+integer tid2;			// Listener ID for random channel
+integer l2c;			// Random channel to listen on
 
-list onlinereqs;
+list onlinereqs;		// List of avatar keys to check online
 
 //**** END VARIABLES ****//
 
@@ -118,45 +121,86 @@ receive(string data)
 	// This retrieves the position of requested object(s) or avatar(s).
 	//  The command can request more than one position by simply listing
 	//  them, and we will return them in the same order.
-	else if(cmd == "pos")
+	else if (cmd == "pos")
 	{
+		// Build the reply, starting with the requested UUID.
 		list positions = [id];
+		// Loop through the request list and add the position of each
+		//  item to the reply list.
 		integer increment = 2;
-		for(;increment<(instruction!=[]);increment++)
+		for (;increment<(instruction!=[]);increment++)
 		{
-			//send in the same order we received.
-			positions += [(string)llGetObjectDetails((key)llList2String(instruction,increment),[OBJECT_POS])];
+			positions += [(string)llGetObjectDetails(
+				(key)llList2String(instruction,increment),
+							[OBJECT_POS])];
 		}
+		// Send the list to the viewer.
 		send(llDumpList2String(positions,"|"));
 	}// End Else If
 
-	else if(cmd == "listen")//for client listening on channels, 0 to stop
+	// This adds another listener on whatever channel the command
+	//  specifies, or removes the existing listener if the channel is 0.
+	//  The listen event handler just sends the received data back to the
+	//  viewer.
+	else if (cmd == "listen")
 	{
+		// Save the request ID for the return value string.
 		listenReq = id;
-		llListenRemove(altListenHandler);
-		integer channelToListenOn = (integer)llList2String(instruction,2);
-		if(channelToListenOn)
-			altListenHandler = llListen(channelToListenOn,"",NULL_KEY,"");
+		// Remove the existing listener, if any.
+		if (altListenHandler != 0)
+		{
+			llListenRemove(altListenHandler);
+		}
+		// Figure out what channel to listen to now.
+		integer channelToListenOn = 
+			(integer)llList2String(instruction,2);
+		// If we were actually given a channel, start the listener.
+		if (channelToListenOn != 0)
+		{
+			altListenHandler = 
+				llListen(channelToListenOn,"",NULL_KEY,"");
+		}
 	}// End Else If
-	else if (cmd == "move")//for client to use llMoveToTarget
+
+	// This will move the user to the specified position using
+	//  llMoveToTarget, breaking up a long move into steps if needed. The
+	//  real work happens in the timer event handler; this code just sets
+	//  up the actual move.
+	else if (cmd == "move")
 	{
+		// Figure out where we're going.
 		moveToTarget=(vector)llList2String(instruction,2);
+		// Save the starting time so we don't try forever.
 		startTime=llGetUnixTime();
+		// Start the timer to do the actual work.
 		llSetTimerEvent(.05);
 	}// End Else If
-	else if(cmd == "l2c") //connection bridge to client
+
+	// This command sets up the random high channel to use to communicate
+	//  with the viewer.
+	else if (cmd == "l2c")
 	{
+		// Get an integer between 100000000 and 999999999.
 		l2c = max_rand_integer();
+		// Start the listener on that channel.
 		connect();
+		// Tell the viewer what channel we picked.
 		llOwnerSay("l2c"+(string)l2c);
 	}// End Else If
-	else if (cmd == "loopsound") // play a sound
+
+	// This command will play a sound repeatedly.
+	else if (cmd == "loopsound")
 	{
-		llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_POSITION, llGetPos(),PRIM_POSITION, <0,0,0>]);
+		llSetLinkPrimitiveParamsFast(LINK_THIS,
+			[PRIM_POSITION,llGetPos(), PRIM_POSITION,<0,0,0>]);
+		// Get the UUID of the sound we want to play.
 		string sound = llList2String(instruction,2);
+		// Play it repeatedly, at full volume.
 		llLoopSound((key)sound, 1.0);
 	}// End Else If
-	else if (cmd == "stopsound") // stop attatched sound
+
+	// This command stops the sound started by the loopsound command.
+	else if (cmd == "stopsound")
 	{
 		llStopSound();
 	}// End Else If
@@ -188,7 +232,8 @@ default
 	//  command channel, either fixed or randomized, we take the message
 	//  text and feed it to the receive() function to process. Otherwise,
 	//  it's in reply to a request to listen on some other channel; we
-	//  return the data to the viewer for processing there.
+	//  return the data to the viewer for processing there, prefixed with
+	//  the ID passed on the listen command.
 	listen(integer channel, string name, key id, string message){
 		if(channel == receive_channel || channel == l2c)
 		{
