@@ -27,6 +27,7 @@ set(cmake_SOURCE_FILES
     FindBerkeleyDB.cmake
     FindCARes.cmake
     FindELFIO.cmake
+    FindFMOD.cmake
     FindGooglePerfTools.cmake
     FindHunSpell.cmake
     FindMono.cmake

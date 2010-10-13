@@ -308,7 +308,7 @@ class WindowsManifest(ViewerManifest):
 
         try:
             # For using FMOD for sound... DJS
-            self.path("fmod.dll")
+            self.path("../../fmodapi375win/api/fmod.dll", "fmod.dll");
         except:
             print("Skipping FMOD not found")
         
@@ -910,33 +910,14 @@ class Linux_i686Manifest(LinuxManifest):
     def construct(self):
         super(Linux_i686Manifest, self).construct()
 
-        # install either the libllkdu we just built, or a prebuilt one, in
-        # decreasing order of preference.  for linux package, this goes to bin/
-#        try:
-#            self.path(self.find_existing_file('../llkdu/libllkdu.so',
-#                '../../libraries/i686-linux/lib_release_client/libllkdu.so'), 
-#                  dst='bin/libllkdu.so')
-            # keep this one to preserve syntax, open source mangling removes previous lines
-#            pass
-#        except:
-#            print "Skipping libllkdu.so - not found"
-#            pass
-
         if self.prefix("../../libraries/i686-linux/lib_release_client", dst="lib"):
 
-#            try:
-#                self.path("libkdu_v42R.so", "libkdu.so")
-#                pass
-#            except:
-#                print "Skipping libkdu_v42R.so - not found"
-#                pass
-
-#            try:
-#                self.path("libfmod-3.75.so")
-#                pass
-#            except:
-#                print "Skipping libfmod-3.75.so - not found"
-#                pass
+            try:
+                self.path("../../fmodapi375linux/api/libfmod-3.75.so", "libfmod-3.75.so");
+                pass
+            except:
+                print "Skipping libfmod-3.75.so - not found"
+                pass
 
             self.path("libapr-1.so.0")
             self.path("libaprutil-1.so.0")
