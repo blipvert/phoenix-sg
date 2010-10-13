@@ -231,6 +231,8 @@
 
 #include "llfloatermessagelog.h"
 
+#include "floatermediaplayer.h"
+
 using namespace LLVOAvatarDefines;
 
 void init_client_menu(LLMenuGL* menu);
@@ -6098,6 +6100,10 @@ class LLShowFloater : public view_listener_t
 		{
 			LLFloaterPerms::toggleInstance(LLSD());
 		}
+		else if (floater_name == "media_player")
+        {
+			FloaterMediaPlayer::showInstance();
+        }
         else if (floater_name == "animationexplorer")
         {
 			new LLFloaterExploreAnimations(gAgent.getID());
