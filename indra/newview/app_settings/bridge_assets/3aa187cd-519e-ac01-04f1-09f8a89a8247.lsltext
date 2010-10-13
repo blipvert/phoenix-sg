@@ -1,7 +1,17 @@
+//***********************************************************************//
+//* Phoenix LSL bridge script version 0.10                              *//
+//*                                                                     *//
+//* This script has two functions:                                      *//
+//* 1) Send radar informaion to the viewer                              *//
+//* 2) Retrieve true online/offline status for a requested user         *//
+//*                                                                     *//
+//***********************************************************************//
+
 
 //**** BEGIN VARIABLES ****//
 
-integer recieve_channel;// = channel(key id)
+integer debugger = FALSE;	// TRUE to enable debugging messages
+integer receive_channel;	// Channel to receive from viewer on
 integer tid;
 integer altListenHandler;
 integer listenReq;
@@ -15,40 +25,77 @@ list onlinereqs;
 
 //**** END VARIABLES ****//
 
+// This function prints debugging messages if selected at the top of this
+//  file.
+debug(string message)
+{
+	if (debugger)
+	{
+		llOwnerSay("Phoenix Bridge: "+message);
+	}
+}
 
-
+// This function initializes the script's communications channel. It'll be
+//  reset later to a randomized value, but we have to start somewhere. The
+//  initial channel is set from an MD5 hash of the user's UUID.
 init()
 {
-	recieve_channel = (integer)("0x"+llGetSubString(llMD5String((string)llGetOwner(),1),0,6)); //Takes owners UUID, then generates a large number from a segment of the 32 character MD5 message digest to use as the bridges channel - very likely to be unique.
-	//llOwnerSay((string) recieve_channel);
+	receive_channel = (integer)("0x"+llGetSubString(
+				llMD5String((string)llGetOwner(),1),0,6));
+	debug("init: Receive channel: "+(string) receive_channel);
 	connect();
 }
+
+// This function restarts the listeners to get data from the viewer.
 connect()
 {
-	llListenRemove(tid); //clean up old listener
-	tid = llListen(recieve_channel,"",llGetOwner(),""); //setup new listeners to connect to client
+	// Remove old main listener.
+	llListenRemove(tid);
+	// Start new main listener.
+	tid = llListen(receive_channel,"",llGetOwner(),"");
+
+	// If there was an old secondary listener,
 	if(l2c != 0)
 	{
+		// remove it,
 		llListenRemove(tid2);
+		// and start a new one.
 		tid2 = llListen(l2c,"",llGetOwner(),"");
 	}// End If
+
+	// If the bridge is attached (instead of rezzed on the ground),
 	if(llGetAttached() != 0)
 	{
-		llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS); // grab permissions so we still work in noscript areas
+		// take the viewer's controls so we still work in noscript
+		//  areas. We don't actually do anything with them.
+		llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS);
 	}// End If
 }
+
+// This function sends data to the viewer, prefixed with a flag that tells
+//  the viewer it came from the bridge.
 send(string data)
 {
-	//if(llStringLength(data) > (1023 - 5))llOwnerSay("ERR: string too long");
-	llOwnerSay("#@#@#"+data); //appends and sends passed data to client
-	//llOwnerSay("Sending"+data);
+	//if (llStringLength(data) > (1023 - 5))
+	//	llOwnerSay("ERR: string too long");
+	llOwnerSay("#@#@#"+data);
+	debug("send: Sending '"+data+"'");
 }
 
+// This function returns a very large integer between 100000001 and 999999999.
+//  Note that there will only be somewhere in the neighborhood of 24 bits
+//  of randomness. See the Second Life Wiki's article on llFrand() for
+//  details.
 integer max_rand_integer()
 {
-	return (integer)(((llFrand(0.999998) + 0.000001) + ((llFrand(0.899) + 0.1) * 1000)) * 1000000); // Generates a very large random integer - somewhere between
+	return (integer)((
+		(llFrand(0.999998) + 0.000001) + // 0.000001 through 0.999999
+		((llFrand(0.899) + 0.1) * 1000)  // 100 through 999
+		) * 1000000);
 }
-recieve(string data)
+
+
+receive(string data)
 {
 	list instruction = llParseString2List(data,["|"],[]); //parse message to work out what command has been issued
 	integer id = (integer)llList2String(instruction,0); //this is the uuid of whatever the command refers to
@@ -64,7 +111,7 @@ recieve(string data)
 		integer increment = 2;
 		for(;increment<(instruction!=[]);increment++)
 		{
-			//send in the same order we recieved.
+			//send in the same order we received.
 			positions += [(string)llGetObjectDetails((key)llList2String(instruction,increment),[OBJECT_POS])];
 		}
 		send(llDumpList2String(positions,"|"));
@@ -119,8 +166,8 @@ default
 
 	
 	listen(integer channel, string name, key id, string message){
-		if(channel == recieve_channel || channel == l2c){ //if on our channels
-			recieve(message);	// parse it for commands and act on them
+		if(channel == receive_channel || channel == l2c){ //if on our channels
+			receive(message);	// parse it for commands and act on them
 			return; //carry on
 		}// End If
 		send(llDumpList2String([listenReq,channel,name,id,message],"|")); // send info back
