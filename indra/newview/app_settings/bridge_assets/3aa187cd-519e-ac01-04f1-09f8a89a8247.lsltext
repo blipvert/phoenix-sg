@@ -188,11 +188,11 @@ receive(string data)
 		llOwnerSay("l2c"+(string)l2c);
 	}// End Else If
 
-	// This command will play a sound repeatedly.
+	// This command will play a sound repeatedly. The viewer uses this
+	//  for the "Loop sound" selection when right-clicking a sound in
+	//  inventory.
 	else if (cmd == "loopsound")
 	{
-		llSetLinkPrimitiveParamsFast(LINK_THIS,
-			[PRIM_POSITION,llGetPos(), PRIM_POSITION,<0,0,0>]);
 		// Get the UUID of the sound we want to play.
 		string sound = llList2String(instruction,2);
 		// Play it repeatedly, at full volume.
