@@ -4647,6 +4647,9 @@ void wear_inventory_category_on_avatar_step2( BOOL proceed, void* userdata )
 // [/RLVa:KB]
 
 		LLAgent::userUpdateAttachments(obj_items);
+
+		if (!wear_info->mAppend)
+			LLCOFMgr::instance().addBOFLink(wear_info->mCategoryID);
 	}
 	delete wear_info;
 	wear_info = NULL;
