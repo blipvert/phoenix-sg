@@ -126,9 +126,6 @@
 				tab_stop="true"
 				width="599">
 				<column label="File Name" name="mp_file_name" width="599" />
-				file://C:\Users\Chris\Music\iTunes\iTunes Media\Music\Garth Brooks\Double Live [Disc 1]\1-01 Callin' Baton Rouge.m4a
-				file://C:\Users\Chris\Music\iTunes\iTunes Media\Music\Garth Brooks\Double Live [Disc 1]\1-04 Papa Loved Mama.m4a
-				http://a51.video2.blip.tv/8110006726710/SLPNvideo-ThePhoenixHour5thOctober2010367.m4v
 			</scroll_list>
 			<button
 				name="mp_add_file"
