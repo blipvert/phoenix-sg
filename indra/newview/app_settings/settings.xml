@@ -13991,6 +13991,17 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
+        <key>UseOutfitFolders</key>
+        <map>
+          <key>Comment</key>
+          <string>When making a new outfit, use Viewer 2 outfit folders</string>
+          <key>Persist</key>
+          <integer>1</integer>
+          <key>Type</key>
+          <string>Boolean</string>
+          <key>Value</key>
+          <integer>1</integer>
+        </map>
 		<key>RenderDelayVBUpdate</key>
 		<map>
 			<key>Comment</key>

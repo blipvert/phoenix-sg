@@ -7518,14 +7518,16 @@ void LLAgent::makeNewOutfit(
 		return;
 	}
 
-	// First, make a folder in the Clothes directory.
-	LLUUID folder_id = gInventory.createNewCategory(
-		gInventory.findCategoryUUIDForType(LLAssetType::AT_CLOTHING),
-		LLAssetType::AT_NONE,
-		new_folder_name);
+	BOOL fUseLinks = !gSavedSettings.getBOOL("UseInventoryLinks");
+	BOOL fUseOutfits = gSavedSettings.getBOOL("UseOutfitFolders");
+
+	LLAssetType::EType typeDest = (fUseOutfits) ? LLAssetType::AT_MY_OUTFITS : LLAssetType::AT_CLOTHING;
+	LLAssetType::EType typeFolder = (fUseOutfits) ? LLAssetType::AT_OUTFIT : LLAssetType::AT_NONE;
+
+	// First, make a folder for the outfit.
+	LLUUID folder_id = gInventory.createNewCategory(gInventory.findCategoryUUIDForType(typeDest), typeFolder, new_folder_name);
 
 	bool found_first_item = false;
-	BOOL no_link = !gSavedSettings.getBOOL("UseInventoryLinks");
 
 	///////////////////
 	// Wearables
@@ -7543,70 +7545,85 @@ void LLAgent::makeNewOutfit(
 			if( old_wearable )
 			{
 				LLViewerInventoryItem* item = gInventory.getItem(mWearableEntry[index].mItemID);
-
-				std::string new_name = item->getName();
-				if (rename_clothing)
+				if (fUseOutfits)
 				{
-					new_name = new_folder_name;
-					new_name.append(" ");
-					new_name.append(old_wearable->getTypeLabel());
-					LLStringUtil::truncate(new_name, DB_INV_ITEM_NAME_STR_LEN);
-				}
+					std::string strOrdering = llformat("@%d", item->getWearableType() * 100);
 
-				if (no_link || isWearableCopyable((EWearableType)index))
-				{
-					LLWearable* new_wearable = gWearableList.createCopy(old_wearable);
-					if (rename_clothing)
-					{
-						new_wearable->setName(new_name);
-					}
-
-					S32 todo = addWearableToAgentInventoryCallback::CALL_NONE;
-					if (!found_first_item)
-					{
-						found_first_item = true;
-						/* set the focus to the first item */
-						todo |= addWearableToAgentInventoryCallback::CALL_MAKENEWOUTFITDONE;
-						/* send the agent wearables update when done */
-						cbdone = new sendAgentWearablesUpdateCallback;
-					}
-					LLPointer<LLInventoryCallback> cb =
-						new addWearableToAgentInventoryCallback(
-							cbdone,
-							index,
-							new_wearable,
-							todo);
-					if (isWearableCopyable((EWearableType)index))
-					{
-						copy_inventory_item(
-							gAgent.getID(),
-							item->getPermissions().getOwner(),
-							item->getLinkedUUID(),
-							folder_id,
-							new_name,
-							cb);
-					}
-					else
-					{
-						move_inventory_item(
-							gAgent.getID(),
-							gAgent.getSessionID(),
-							item->getLinkedUUID(),
-							folder_id,
-							new_name,
-							cb);
-					}
-				}
-				else
-				{
 					link_inventory_item(
 						gAgent.getID(),
 						item->getLinkedUUID(),
 						folder_id,
-						item->getName(),		// Apparently, links cannot have arbitrary names...
-						item->getDescription(),
+						item->getName(),
+						strOrdering,
 						LLAssetType::AT_LINK,
 						LLPointer<LLInventoryCallback>(NULL));
+				}
+				else
+				{
+					std::string new_name = item->getName();
+					if (rename_clothing)
+					{
+						new_name = new_folder_name;
+						new_name.append(" ");
+						new_name.append(old_wearable->getTypeLabel());
+						LLStringUtil::truncate(new_name, DB_INV_ITEM_NAME_STR_LEN);
+					}
+
+					if (fUseLinks || isWearableCopyable((EWearableType)index))
+					{
+						LLWearable* new_wearable = gWearableList.createCopy(old_wearable);
+						if (rename_clothing)
+						{
+							new_wearable->setName(new_name);
+						}
+
+						S32 todo = addWearableToAgentInventoryCallback::CALL_NONE;
+						if (!found_first_item)
+						{
+							found_first_item = true;
+							/* set the focus to the first item */
+							todo |= addWearableToAgentInventoryCallback::CALL_MAKENEWOUTFITDONE;
+							/* send the agent wearables update when done */
+							cbdone = new sendAgentWearablesUpdateCallback;
+						}
+						LLPointer<LLInventoryCallback> cb =
+							new addWearableToAgentInventoryCallback(
+								cbdone,
+								index,
+								new_wearable,
+								todo);
+						if (isWearableCopyable((EWearableType)index))
+						{
+							copy_inventory_item(
+								gAgent.getID(),
+								item->getPermissions().getOwner(),
+								item->getLinkedUUID(),
+								folder_id,
+								new_name,
+								cb);
+						}
+						else
+						{
+							move_inventory_item(
+								gAgent.getID(),
+								gAgent.getSessionID(),
+								item->getLinkedUUID(),
+								folder_id,
+								new_name,
+								cb);
+						}
+					}
+					else
+					{
+						link_inventory_item(
+							gAgent.getID(),
+							item->getLinkedUUID(),
+							folder_id,
+							item->getName(),		// Apparently, links cannot have arbitrary names...
+							item->getDescription(),
+							LLAssetType::AT_LINK,
+							LLPointer<LLInventoryCallback>(NULL));
+					}
 				}
 			}
 		}
@@ -7634,30 +7651,7 @@ void LLAgent::makeNewOutfit(
 				if (item_id.isNull()) continue;
 				LLInventoryItem* item = gInventory.getItem(item_id);
 				if (!item) continue;
-				if (no_link || item->getPermissions().allowCopyBy(gAgent.getID()))
-				{
-					const LLUUID& old_folder_id = item->getParentUUID();
-
-					move_inventory_item(
-						gAgent.getID(),
-						gAgent.getSessionID(),
-						item->getLinkedUUID(),
-						folder_id,
-						item->getName(),
-						LLPointer<LLInventoryCallback>(NULL));
-
-					if (item->getPermissions().allowCopyBy(gAgent.getID()))
-					{
-						copy_inventory_item(
-							gAgent.getID(),
-							item->getPermissions().getOwner(),
-							item->getLinkedUUID(),
-							old_folder_id,
-							item->getName(),
-							LLPointer<LLInventoryCallback>(NULL));
-					}
-				}
-				else
+				if (fUseOutfits)
 				{
 					link_inventory_item(
 						gAgent.getID(),
@@ -7667,6 +7661,43 @@ void LLAgent::makeNewOutfit(
 						item->getDescription(),
 						LLAssetType::AT_LINK,
 						LLPointer<LLInventoryCallback>(NULL));
+				}
+				else
+				{
+					if (fUseLinks || item->getPermissions().allowCopyBy(gAgent.getID()))
+					{
+						const LLUUID& old_folder_id = item->getParentUUID();
+
+						move_inventory_item(
+							gAgent.getID(),
+							gAgent.getSessionID(),
+							item->getLinkedUUID(),
+							folder_id,
+							item->getName(),
+							LLPointer<LLInventoryCallback>(NULL));
+
+						if (item->getPermissions().allowCopyBy(gAgent.getID()))
+						{
+							copy_inventory_item(
+								gAgent.getID(),
+								item->getPermissions().getOwner(),
+								item->getLinkedUUID(),
+								old_folder_id,
+								item->getName(),
+								LLPointer<LLInventoryCallback>(NULL));
+						}
+					}
+					else
+					{
+						link_inventory_item(
+							gAgent.getID(),
+							item->getLinkedUUID(),
+							folder_id,
+							item->getName(),
+							item->getDescription(),
+							LLAssetType::AT_LINK,
+							LLPointer<LLInventoryCallback>(NULL));
+					}
 				}
 			}
 		}
