@@ -70,13 +70,13 @@ import platform
 import pprint
 import shutil
 import tarfile
-import zipfile
 import tempfile
 import urllib2
 import urlparse
 
 from indra.base import llsd
 from indra.util import helpformatter
+from indra.util import zipfile
 
 # *HACK: Necessary for python 2.4. Consider replacing this code wart
 # after python >=2.5 has deployed everywhere. 2009-10-05
