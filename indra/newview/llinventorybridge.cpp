@@ -1343,7 +1343,7 @@ BOOL LLFolderBridge::isItemRemovable()
 		return FALSE;
 	}
 
-	if( LLAssetType::AT_NONE != category->getPreferredType() )
+	if ( (LLAssetType::AT_NONE != category->getPreferredType()) && (LLAssetType::AT_OUTFIT != category->getPreferredType()) )
 	{
 		return FALSE;
 	}
@@ -1958,7 +1958,7 @@ void LLFolderBridge::openItem()
 BOOL LLFolderBridge::isItemRenameable() const
 {
 	LLViewerInventoryCategory* cat = (LLViewerInventoryCategory*)getCategory();
-	if(cat && (cat->getPreferredType() == LLAssetType::AT_NONE)
+	if(cat && ((cat->getPreferredType() == LLAssetType::AT_NONE) || (cat->getPreferredType() == LLAssetType::AT_OUTFIT))
 	   && (cat->getOwnerID() == gAgent.getID()))
 	{
 		return TRUE;
