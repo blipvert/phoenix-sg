@@ -6,6 +6,7 @@
 #include "lluictrlfactory.h"
 #include "llviewercontrol.h"
 #include "llfloaterurlentry_mp.h"
+#include "llfilepicker.h"
 
 
 
@@ -159,6 +160,18 @@ void FloaterMediaPlayer::onClickMPNext( void* userdata )
 
 void FloaterMediaPlayer::onClickMPAddFile( void* userdata )
 {
+	LLFilePicker& picker = LLFilePicker::instance();
+	if ( !picker.getMultipleOpenFiles(LLFilePicker::FFLOAD_MEDIA) ) 
+	{
+		return;
+	}
+	std::string filename = picker.getFirstFile();	
+	while( !filename.empty() )
+	{
+		filename = "file://"+filename;
+		sInstance->mMPPlayList->addSimpleElement(filename);
+		filename = picker.getNextFile();
+	}
 }
 
 void FloaterMediaPlayer::onClickMPAddURL( void* userdata )
