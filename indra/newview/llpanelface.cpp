@@ -36,6 +36,7 @@
 #include "llpanelface.h"
  
 // library includes
+#include "llcalc.h"
 #include "llerror.h"
 #include "llfocusmgr.h"
 #include "llrect.h"
@@ -43,6 +44,7 @@
 #include "llfontgl.h"
 
 // project includes
+#include "llagent.h"
 #include "llbutton.h"
 #include "llcheckboxctrl.h"
 #include "llcolorswatch.h"
@@ -61,6 +63,7 @@
 #include "llviewercontrol.h"
 #include "llviewermedia.h"
 #include "llviewerobject.h"
+#include "llviewerregion.h"
 #include "llviewerstats.h"
 #include "lluictrlfactory.h"
 #include "llpluginclassmedia.h"
@@ -180,6 +183,8 @@ BOOL	LLPanelFace::postBuild()
 	childSetCommitCallback("TexOffsetU",LLPanelFace::onCommitTextureInfo, this);
 	childSetCommitCallback("TexOffsetV",LLPanelFace::onCommitTextureInfo, this);
 	childSetAction("button align",onClickAutoFix,this);
+	childSetAction("copytextures",onClickCopy,this);
+	childSetAction("pastetextures",onClickPaste,this);
 
 	clearCtrls();
 
@@ -488,6 +493,7 @@ void LLPanelFace::getState()
 {
 	LLViewerObject* objectp = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
 
+	LLCalc* calcp = LLCalc::getInstance();
 	if( objectp
 		&& objectp->getPCode() == LL_PCODE_VOLUME
 		&& objectp->permModify())
@@ -508,6 +514,13 @@ void LLPanelFace::getState()
 		//		
 		//		//mBtnAutoFix->setEnabled ( editable );
 		//	}
+		S32 selected_count = LLSelectMgr::getInstance()->getSelection()->getObjectCount();
+		BOOL single_volume = (LLSelectMgr::getInstance()->selectionAllPCode( LL_PCODE_VOLUME ))
+						 && (selected_count == 1);
+		
+		childSetEnabled("copytextures", single_volume && editable);
+		childSetEnabled("pastetextures", single_volume && editable);
+		childSetEnabled("textbox params", single_volume && editable);
 		childSetEnabled("button apply",editable);
 
 		bool identical;
@@ -905,6 +918,15 @@ void LLPanelFace::getState()
 				childSetEnabled("button apply",enabled);
 			}
 		}
+
+		// Set variable values for numeric expressions
+		calcp->setVar(LLCalc::TEX_U_SCALE, childGetValue("TexScaleU").asReal());
+		calcp->setVar(LLCalc::TEX_V_SCALE, childGetValue("TexScaleV").asReal());
+		calcp->setVar(LLCalc::TEX_U_OFFSET, childGetValue("TexOffsetU").asReal());
+		calcp->setVar(LLCalc::TEX_V_OFFSET, childGetValue("TexOffsetV").asReal());
+		calcp->setVar(LLCalc::TEX_ROTATION, childGetValue("TexRot").asReal());
+		calcp->setVar(LLCalc::TEX_TRANSPARENCY, childGetValue("ColorTrans").asReal());
+		calcp->setVar(LLCalc::TEX_GLOW, childGetValue("glow").asReal());
 	}
 	else
 	{
@@ -940,6 +962,16 @@ void LLPanelFace::getState()
 
 		childSetEnabled("button align",FALSE);
 		childSetEnabled("button apply",FALSE);
+
+
+		// Set variable values for numeric expressions
+		calcp->clearVar(LLCalc::TEX_U_SCALE);
+		calcp->clearVar(LLCalc::TEX_V_SCALE);
+		calcp->clearVar(LLCalc::TEX_U_OFFSET);
+		calcp->clearVar(LLCalc::TEX_V_OFFSET);
+		calcp->clearVar(LLCalc::TEX_ROTATION);
+		calcp->clearVar(LLCalc::TEX_TRANSPARENCY);
+		calcp->clearVar(LLCalc::TEX_GLOW);		
 	}
 }
 
@@ -1133,4 +1165,71 @@ void LLPanelFace::onCommitPlanarAlign(LLUICtrl* ctrl, void* userdata)
 	LLPanelFace* self = (LLPanelFace*) userdata;
 	self->getState();
 	self->sendTextureInfo();
+}
+
+static LLSD textures;
+
+void LLPanelFace::onClickCopy(void* userdata)
+{
+	LLViewerObject* objectp = LLSelectMgr::getInstance()->getSelection()->getFirstRootObject();
+	LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstRootNode();
+	if(!objectp || !node)
+	{
+		objectp = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
+		node = LLSelectMgr::getInstance()->getSelection()->getFirstNode();
+		if (!objectp || !node)
+		{
+			return;
+		}
+	}
+	BOOL is_fullperm = gAgent.getID() == node->mPermissions->getOwner() && gAgent.getID() == node->mPermissions->getCreator();
+	S32 te_count = objectp->getNumFaces();
+	textures.clear();
+	for (S32 i = 0; i < te_count; i++)
+	{
+		//llinfos << "Copying params on face " << i << "." << llendl;
+		LLSD face = objectp->getTE(i)->asLLSD();
+		if (!is_fullperm)
+			face.erase("imageid");
+		textures.append(face);
+	}
+}
+
+void LLPanelFace::onClickPaste(void* userdata)
+{
+	LLViewerObject* objectp = LLSelectMgr::getInstance()->getSelection()->getFirstRootObject();
+	if(!objectp)
+	{
+		objectp = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
+		if (!objectp)
+		{
+			return;
+		}
+	}
+	LLMessageSystem* msg = gMessageSystem;
+	msg->newMessageFast(_PREHASH_ObjectImage);
+	msg->nextBlockFast(_PREHASH_AgentData);
+	msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+	msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+	
+	msg->nextBlockFast(_PREHASH_ObjectData);
+	msg->addU32Fast(_PREHASH_ObjectLocalID, objectp->getLocalID());
+	msg->addStringFast(_PREHASH_MediaURL, NULL);
+	
+	LLPrimitive obj;
+	obj.setNumTEs(U8(textures.size()));
+	
+	for (int i = 0; i < textures.size(); i++)
+	{
+		//llinfos << "Pasting params on face " << i << "." << llendl;
+		LLTextureEntry tex;
+		tex.fromLLSD(textures[i]);
+		if (!textures[i].has("imageid"))
+			tex.setID(objectp->getTE(U8(i))->getID());
+		obj.setTE(U8(i), tex);
+	}
+	
+	obj.packTEMessage(gMessageSystem);
+	
+	msg->sendReliable(gAgent.getRegion()->getHost());
 }

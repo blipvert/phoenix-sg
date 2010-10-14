@@ -132,6 +132,8 @@ LLVector3 LLPanelObject::mClipboardPos;
 LLVector3 LLPanelObject::mClipboardSize;
 LLVector3 LLPanelObject::mClipboardRot;
 
+LLVolumeParams LLPanelObject::mClipboardVolumeParams;
+BOOL LLPanelObject::hasParamClipboard = FALSE;
 
 
 //*TODO:translate (depricated, so very low priority)
@@ -144,6 +146,9 @@ BOOL	LLPanelObject::postBuild()
 	//--------------------------------------------------------
 	// Top
 	//--------------------------------------------------------
+
+	// Build constant tipsheet
+	childSetAction("build_math_constants",onClickBuildConstants,this);
 
 	// Lock checkbox
 	mCheckLock = getChild<LLCheckBoxCtrl>("checkbox locked");
@@ -192,6 +197,11 @@ BOOL	LLPanelObject::postBuild()
 	mCtrlRotZ = getChild<LLSpinCtrl>("Rot Z");
 	childSetCommitCallback("Rot Z",onCommitRotation,this);
 
+	mBtnLinkObj = getChild<LLButton>("link_obj");
+	childSetAction("link_obj",onLinkObj, this);
+	mBtnUnlinkObj = getChild<LLButton>("unlink_obj");
+	childSetAction("unlink_obj",onUnlinkObj, this);
+
 	mBtnCopyPos = getChild<LLButton>("copypos");
 	childSetAction("copypos",onCopyPos, this);
 	mBtnPastePos = getChild<LLButton>("pastepos");
@@ -213,6 +223,10 @@ BOOL	LLPanelObject::postBuild()
 	mBtnPasteRotClip = getChild<LLButton>("pasterotclip");
 	childSetAction("pasterotclip",onPasteRotClip, this);
 
+	mBtnCopyParams = getChild<LLButton>("copyparams");
+	childSetAction("copyparams",onCopyParams, this);
+	mBtnPasteParams = getChild<LLButton>("pasteparams");
+	childSetAction("pasteparams",onPasteParams, this);
 
 	//--------------------------------------------------------
 
@@ -426,6 +440,7 @@ void LLPanelObject::getState( )
 	BOOL enable_scale	= objectp->permMove() && objectp->permModify();
 	//BOOL enable_rotate	= objectp->permMove() && ( (objectp->permModify() && !objectp->isAttachment()) || !gSavedSettings.getBOOL("EditLinkedParts"));
 	BOOL enable_rotate	= objectp->permMove() /*&& !objectp->isAttachment() */&& (objectp->permModify() || !gSavedSettings.getBOOL("EditLinkedParts"));
+	childSetEnabled("build_math_constants",true);
 
 	S32 selected_count = LLSelectMgr::getInstance()->getSelection()->getObjectCount();
 	BOOL single_volume = (LLSelectMgr::getInstance()->selectionAllPCode( LL_PCODE_VOLUME ))
@@ -473,6 +488,44 @@ void LLPanelObject::getState( )
 	mCtrlPosX->setEnabled(enable_move);
 	mCtrlPosY->setEnabled(enable_move);
 	mCtrlPosZ->setEnabled(enable_move);
+
+	bool enable_link = false;
+	// check if there are at least 2 objects selected, and that the
+	// user can modify at least one of the selected objects.
+	// in component mode, can't link
+	if (!gSavedSettings.getBOOL("EditLinkedParts"))
+	{
+		if(LLSelectMgr::getInstance()->selectGetAllRootsValid() && LLSelectMgr::getInstance()->getSelection()->getRootObjectCount() >= 2)
+		{
+			struct f : public LLSelectedObjectFunctor
+			{
+				virtual bool apply(LLViewerObject* object)
+				{
+					return object->permModify();
+				}
+			} func;
+			const bool firstonly = true;
+			enable_link = LLSelectMgr::getInstance()->getSelection()->applyToRootObjects(&func, firstonly);
+		}
+	}
+	mBtnLinkObj->setEnabled( enable_link );
+
+	bool enable_unlink = LLSelectMgr::getInstance()->selectGetAllRootsValid() &&
+		LLSelectMgr::getInstance()->getSelection()->getFirstEditableObject() &&
+		!LLSelectMgr::getInstance()->getSelection()->getFirstEditableObject()->isAttachment();
+// [RLVa:KB] - Checked: 2009-07-10 (RLVa-1.0.0g) | Modified: RLVa-0.2.0g
+		if ( (enable_unlink) && (gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) && 
+		 (gAgent.getAvatarObject()) && (gAgent.getAvatarObject()->mIsSitting) )
+	{
+		// Allow if the avie isn't sitting on any of the selected objects
+		LLObjectSelectionHandle handleSel = LLSelectMgr::getInstance()->getSelection();
+		RlvSelectIsSittingOn func(gAgent.getAvatarObject()->getRoot());
+		if (handleSel->getFirstRootNode(&func, TRUE))
+			enable_unlink = false;
+	}
+// [/RLVa:KB]
+	mBtnUnlinkObj->setEnabled( enable_unlink );
+
 	mBtnCopyPos->setEnabled(enable_move);
 	mBtnPastePos->setEnabled(enable_move);
 	mBtnPastePosClip->setEnabled(enable_move);
@@ -545,6 +598,8 @@ void LLPanelObject::getState( )
 	mBtnPasteRot->setEnabled( enable_rotate );
 	mBtnPasteRotClip->setEnabled( enable_rotate );
 
+	mBtnCopyParams->setEnabled( single_volume && objectp->permModify() );
+	mBtnPasteParams->setEnabled( single_volume && objectp->permModify() );
 
 	BOOL owners_identical;
 	LLUUID owner_id;
@@ -2231,6 +2286,8 @@ void LLPanelObject::clearCtrls()
 	childSetEnabled("advanced_cut", FALSE);
 	childSetEnabled("advanced_dimple", FALSE);
 	childSetVisible("advanced_slice", FALSE);
+
+	childSetEnabled("build_math_constants",false);
 }
 
 //
@@ -2370,6 +2427,11 @@ void LLPanelObject::onCommitSculptType(LLUICtrl *ctrl, void* userdata)
 	self->sendSculpt();
 }
 
+// static
+void LLPanelObject::onClickBuildConstants(void *)
+{
+	LLNotifications::instance().add("ClickBuildConstants");
+}
 
 std::string shortfloat(F32 in)
 {
@@ -2430,7 +2492,31 @@ void LLPanelObject::onCopyRot(void* user_data)
 	gViewerWindow->mWindow->copyTextToClipboard(utf8str_to_wstring(stringVec));
 }
 
+void LLPanelObject::onCopyParams(void* user_data)
+{
+	LLPanelObject* self = (LLPanelObject*) user_data;
+	self->getVolumeParams(mClipboardVolumeParams);
+	hasParamClipboard = TRUE;
+}
 
+void LLPanelObject::onPasteParams(void* user_data)
+{
+	LLPanelObject* self = (LLPanelObject*) user_data;
+	if(hasParamClipboard)
+		self->mObject->updateVolume(mClipboardVolumeParams);
+}
+
+void LLPanelObject::onLinkObj(void* user_data)
+{
+	llinfos << "Attempting link." << llendl;
+	LLSelectMgr::getInstance()->sendLink();
+}
+
+void LLPanelObject::onUnlinkObj(void* user_data)
+{
+	llinfos << "Attempting unlink." << llendl;
+	LLSelectMgr::getInstance()->sendDelink();
+}
 
 void LLPanelObject::onPastePos(void* user_data)
 {
