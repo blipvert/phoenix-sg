@@ -550,7 +550,7 @@ windows/i686/vs/2003 -- specify a windows visual studio 2003 package"""
     def _install(self, to_install, install_dir):
         for ifile in to_install:
             if ifile.filename.endswith("zip"):
-                zip = ZipFile.open(ifile.filename, 'r')
+                zip = zipfile.ZipFile(ifile.filename, 'r')
                 print "Extracting",ifile.filename,"to",install_dir
                 if not self._dryrun:
                     zip.extractall(install_dir)
