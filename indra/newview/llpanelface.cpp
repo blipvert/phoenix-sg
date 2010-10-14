@@ -67,6 +67,7 @@
 #include "llviewerstats.h"
 #include "lluictrlfactory.h"
 #include "llpluginclassmedia.h"
+#include "llinventorymodel.h"
 
 //
 // Methods
@@ -1167,29 +1168,76 @@ void LLPanelFace::onCommitPlanarAlign(LLUICtrl* ctrl, void* userdata)
 	self->sendTextureInfo();
 }
 
+const LLUUID& LLPanelFace::findItemID(const LLUUID& asset_id)
+{
+	LLViewerInventoryCategory::cat_array_t cats;
+	LLViewerInventoryItem::item_array_t items;
+	LLAssetIDMatches asset_id_matches(asset_id);
+	gInventory.collectDescendentsIf(LLUUID::null,
+							cats,
+							items,
+							LLInventoryModel::INCLUDE_TRASH,
+							asset_id_matches);
+
+	if (items.count())
+	{
+		// search for copyable version first
+		for (S32 i = 0; i < items.count(); i++)
+		{
+			LLInventoryItem* itemp = items[i];
+			LLPermissions item_permissions = itemp->getPermissions();
+			if (item_permissions.allowCopyBy(gAgent.getID(), gAgent.getGroupID()))
+			{
+				return itemp->getUUID();
+			}
+		}
+	}
+	return LLUUID::null;
+}
+
 static LLSD textures;
 
 void LLPanelFace::onClickCopy(void* userdata)
 {
+	LLPanelFace* self = (LLPanelFace*) userdata;
 	LLViewerObject* objectp = LLSelectMgr::getInstance()->getSelection()->getFirstRootObject();
-	LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstRootNode();
-	if(!objectp || !node)
+	if(!objectp)
 	{
 		objectp = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
-		node = LLSelectMgr::getInstance()->getSelection()->getFirstNode();
-		if (!objectp || !node)
+		if (!objectp)
 		{
 			return;
 		}
 	}
-	BOOL is_fullperm = gAgent.getID() == node->mPermissions->getOwner() && gAgent.getID() == node->mPermissions->getCreator();
 	S32 te_count = objectp->getNumFaces();
 	textures.clear();
 	for (S32 i = 0; i < te_count; i++)
 	{
 		//llinfos << "Copying params on face " << i << "." << llendl;
 		LLSD face = objectp->getTE(i)->asLLSD();
-		if (!is_fullperm)
+		LLUUID image_id = objectp->getTE(i)->getID();
+		BOOL allow_texture = FALSE;
+		if (gInventory.isObjectDescendentOf(face["imageid"], gInventoryLibraryRoot)
+			|| image_id == LLUUID(gSavedSettings.getString( "DefaultObjectTexture" ))
+			|| image_id == LLUUID(gSavedSettings.getString( "UIImgWhiteUUID" ))
+			|| image_id == LLUUID(gSavedSettings.getString( "UIImgInvisibleUUID" ))
+		)
+			allow_texture = TRUE;
+		else
+		{
+			LLUUID inventory_item_id  = self->findItemID(image_id);
+			if (inventory_item_id.notNull())
+			{
+				LLInventoryItem* itemp = gInventory.getItem(inventory_item_id);
+				if (itemp)
+				{
+					LLPermissions perm = itemp->getPermissions();
+					if ( (perm.getMaskBase() & PERM_ITEM_UNRESTRICTED) == PERM_ITEM_UNRESTRICTED )
+						allow_texture = TRUE;
+				}
+			}
+		}
+		if (!allow_texture)
 			face.erase("imageid");
 		textures.append(face);
 	}
