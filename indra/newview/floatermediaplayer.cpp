@@ -68,8 +68,12 @@ void FloaterMediaPlayer::onClose(bool app_quitting)
 	sInstance->setVisible(FALSE);
 	if( app_quitting )
 	{
-		sMPMediaImpl->stop();
-		sMPMediaImpl->destroyMediaSource();
+		if(sMPMediaImpl)
+		{
+			sMPMediaImpl->stop();
+			sMPMediaImpl->destroyMediaSource();
+			sMPMediaImpl = NULL;
+		}
 		destroy();
 	}
 }
