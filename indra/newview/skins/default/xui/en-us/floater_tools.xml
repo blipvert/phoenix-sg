@@ -673,7 +673,7 @@
 
 
       <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-			     bottom_delta="-26" drop_shadow_visible="true" follows="left|top"
+			     bottom_delta="-16" drop_shadow_visible="true" follows="left|top"
 			     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="5"
 			     mouse_opaque="true" name="label size" v_pad="0" width="121">
         Size
@@ -882,12 +882,12 @@
 			     increment="0.025" initial_val="0" left_delta="73" max_val="1.0"
 			     min_val="-0.95" mouse_opaque="true" name="Skew" width="68" />
       <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-			     bottom_delta="-15" drop_shadow_visible="true" follows="left|top"
+			     bottom_delta="-14" drop_shadow_visible="true" follows="left|top"
 			     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="121"
 			     mouse_opaque="true" name="Hollow Shape" v_pad="0" width="141">
         Hollow Shape
       </text>
-      <combo_box allow_text_entry="false" bottom_delta="-24" follows="left|top" height="18"
+      <combo_box allow_text_entry="false" bottom_delta="-22" follows="left|top" height="18"
 			     left="121" max_chars="20" mouse_opaque="true" name="hole" width="141">
         <combo_item name="Default" value="Default">
           Default
@@ -903,7 +903,7 @@
         </combo_item>
       </combo_box>
       <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-			     bottom_delta="-12" drop_shadow_visible="true" follows="left|top"
+			     bottom_delta="-11" drop_shadow_visible="true" follows="left|top"
 			     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="121"
 			     mouse_opaque="true" name="text twist" v_pad="0" width="141">
         Twist Begin and End
@@ -917,7 +917,7 @@
 			     max_val="180" min_val="-180" mouse_opaque="true" name="Twist End"
 			     width="68" />
       <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-			     bottom_delta="-14" drop_shadow_visible="true" follows="left|top"
+			     bottom_delta="-13" drop_shadow_visible="true" follows="left|top"
 			     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="121"
 			     mouse_opaque="true" name="scale_taper" v_pad="0" width="141">
         Taper
@@ -937,7 +937,7 @@
 			     max_val="1" min_val="-1" mouse_opaque="true" name="Taper Scale Y"
 			     width="68" />
       <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-			     bottom_delta="-14" drop_shadow_visible="true" follows="left|top"
+			     bottom_delta="-13" drop_shadow_visible="true" follows="left|top"
 			     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="121"
 			     mouse_opaque="true" name="text topshear" v_pad="0" width="141">
         Top Shear
@@ -949,7 +949,7 @@
 			     increment="0.025" initial_val="0" label="Y" label_width="10" left_delta="73"
 			     max_val="0.5" min_val="-0.5" mouse_opaque="true" name="Shear Y" width="68" />
       <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-			     bottom_delta="-14" drop_shadow_visible="true" follows="left|top"
+			     bottom_delta="-13" drop_shadow_visible="true" follows="left|top"
 			     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="121"
 			     mouse_opaque="true" name="advanced_cut" v_pad="0" width="141">
         Profile Cut Begin and End
@@ -975,7 +975,7 @@
 			     max_val="1" min_val="0.05" mouse_opaque="true" name="Path Limit End"
 			     width="68" />
       <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-			     bottom_delta="-14" drop_shadow_visible="true" follows="left|top"
+			     bottom_delta="-13" drop_shadow_visible="true" follows="left|top"
 			     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="121"
 			     mouse_opaque="true" name="text taper2" v_pad="0" width="141">
         Taper
