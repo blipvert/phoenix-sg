@@ -4120,9 +4120,10 @@ void process_agent_movement_complete(LLMessageSystem* msg, void**)
 
 	if (!gLastVersionChannel.empty())
 	{
-		LLSD payload;
-		payload["message"] = version_channel;
-		LLNotifications::instance().add("ServerVersionChanged", LLSD(), payload);
+		LLSD args;
+		args["OLDVERSION"] = gLastVersionChannel;
+		args["NEWVERSION"] = version_channel;
+		LLNotifications::instance().add("ServerVersionChanged", args);
 	}
 
 	gLastVersionChannel = version_channel;

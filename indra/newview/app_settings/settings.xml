@@ -11,7 +11,31 @@
 			<string>Boolean</string>
 			<key>Value</key>
 			<integer>0</integer>
-		</map>    
+		</map>
+		<key>PhoenixSaveLoginInfoOnLogin</key>
+		<map>
+			<key>Comment</key>
+			<string>Save login information on login instead of logout. This will clear your password for your current account if enabled.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixPasswordTempSpace</key>
+		<map>
+			<key>Comment</key>
+			<string>Temparary holding spot for hashed password, used only for saving login info on logout.</string>
+			<key>Persist</key>
+			<integer>0</integer>
+			<key>HideFromEditor</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string></string>
+		</map>
 		<key>PhoenixShowCommentsForAll</key>
 		<map>
 			<key>Comment</key>

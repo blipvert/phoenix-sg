@@ -306,7 +306,10 @@ public:
 							  const LLChannelDescriptors& channels,
 							  const LLIOPipe::buffer_ptr_t& buffer)
 	{
-		if ((gSavedSettings.getBOOL("LogTextureDownloadsToViewerLog")) || (gSavedSettings.getBOOL("LogTextureDownloadsToSimulator")))
+		static LLCachedControl<bool> log_to_viewer_log("LogTextureDownloadsToViewerLog", 0);
+		static LLCachedControl<bool> log_to_sim("LogTextureDownloadsToSimulator", 0);
+
+		if (log_to_viewer_log || log_to_sim)
 		{
 			mFetcher->mTextureInfo.setRequestStartTime(mID, mStartTime);
 			U64 timeNow = LLTimer::getTotalTime();
@@ -763,7 +766,7 @@ bool LLTextureFetchWorker::doWork(S32 param)
 
 	if (mState == LOAD_FROM_NETWORK)
 	{
-		bool use_http = gSavedSettings.getBOOL("ImagePipelineUseHTTP");
+		static LLCachedControl<bool> use_http("ImagePipelineUseHTTP", 0);
 
 // 		if (mHost != LLHost::invalid) get_url = false;
 		if ( use_http && mCanUseHTTP && mUrl.empty())//get http url.
@@ -1077,7 +1080,7 @@ bool LLTextureFetchWorker::doWork(S32 param)
 	
 	if (mState == DECODE_IMAGE)
 	{
-		bool textures_decode_disabled = gSavedSettings.getBOOL("TextureDecodeDisabled");
+		static LLCachedControl<bool> textures_decode_disabled("TextureDecodeDisabled", 0);
 		if(textures_decode_disabled)
 		{
 			// for debug use, don't decode
@@ -2068,7 +2071,9 @@ void LLTextureFetch::sendRequestListToSimulators()
 // 				llinfos << "IMAGE REQUEST: " << req->mID << " Discard: " << req->mDesiredDiscard
 // 						<< " Packet: " << packet << " Priority: " << req->mImagePriority << llendl;
 
-				if ((gSavedSettings.getBOOL("LogTextureDownloadsToViewerLog")) || (gSavedSettings.getBOOL("LogTextureDownloadsToSimulator")))
+				static LLCachedControl<bool> log_to_viewer_log("LogTextureDownloadsToViewerLog", 0);
+				static LLCachedControl<bool> log_to_sim("LogTextureDownloadsToSimulator", 0);
+				if (log_to_viewer_log || log_to_sim)
 				{
 					mTextureInfo.setRequestStartTime(req->mID, LLTimer::getTotalTime());
 					mTextureInfo.setRequestOffset(req->mID, 0);
@@ -2289,7 +2294,10 @@ bool LLTextureFetch::receiveImagePacket(const LLHost& host, const LLUUID& id, U1
 
 	if(packet_num >= (worker->mTotalPackets - 1))
 	{
-		if ((gSavedSettings.getBOOL("LogTextureDownloadsToViewerLog")) || (gSavedSettings.getBOOL("LogTextureDownloadsToSimulator")))
+		static LLCachedControl<bool> log_to_viewer_log("LogTextureDownloadsToViewerLog", 0);
+		static LLCachedControl<bool> log_to_sim("LogTextureDownloadsToSimulator", 0);
+
+		if (log_to_viewer_log || log_to_sim)
 		{
 			U64 timeNow = LLTimer::getTotalTime();
 			mTextureInfo.setRequestSize(id, worker->mFileSize);

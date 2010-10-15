@@ -243,12 +243,12 @@ std::string LLDir::buildSLOSCacheDir() const
 		}
 		else
 		{
-			res = getOSUserAppDir() + mDirDelimiter + "cache";
+			res = getOSUserAppDir() + mDirDelimiter + "phoenixviewer";
 		}
 	}
 	else
 	{
-		res = getOSCacheDir() + mDirDelimiter + "SecondLife";
+		res = getOSCacheDir() + mDirDelimiter + "PhoenixViewer";
 	}
 	return res;
 }

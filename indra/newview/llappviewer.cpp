@@ -133,6 +133,7 @@
 #include "llvectorperfoptions.h"
 #include "llurlsimstring.h"
 #include "llwatchdog.h"
+#include "llsavedlogins.h"
 
 // Included so that constants/settings might be initialized
 // in save_settings_to_globals()
@@ -1435,6 +1436,30 @@ bool LLAppViewer::cleanup()
 	if (!gSavedSettings.getBOOL("RememberPassword"))
 	{
 		LLStartUp::deletePasswordFromDisk();
+	}
+
+	if(!gSavedSettings.getBOOL("PhoenixSaveLoginInfoOnLogin"))
+	{
+		// Save the login history data to disk
+		std::string history_file = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "saved_logins_phoenix.xml");
+
+		LLSavedLogins history_data = LLSavedLogins::loadFile(history_file);
+		static std::string firstname = gSavedSettings.getString("FirstName");
+		static std::string lastname = gSavedSettings.getString("LastName");
+		history_data.deleteEntry(firstname, lastname);
+		if (gSavedSettings.getBOOL("RememberLogin"))
+		{
+			LLSavedLoginEntry login_entry(firstname, lastname, gSavedSettings.getString("PhoenixPasswordTempSpace"));
+			history_data.addEntry(login_entry);
+		}
+		else
+		{
+			// Clear the old-style login data as well
+			gSavedSettings.setString("FirstName", std::string(""));
+			gSavedSettings.setString("LastName", std::string(""));
+		}
+
+		LLSavedLogins::saveFile(history_data, history_file);
 	}
 
 	// Store the time of our current logoff

@@ -1142,14 +1142,14 @@ bool LLPanelLogin::confirm_version(const LLSD& notification, const LLSD& respons
 	}
 	return false;
 }
-static LLNotificationFunctorRegistration confirm_version_reg("ConfirmVersion", LLPanelLogin::confirm_version);
+static LLNotificationFunctorRegistration confirm_version_reg("ConfirmVersionNew", LLPanelLogin::confirm_version);
 
 void LLPanelLogin::onClickConnect(void *)
 {
 	if(PhoenixViewerLink::isMSDone() && !(PhoenixViewerLink::is_ReleaseVersion(LLFloaterAbout::get_viewer_version()) ||
 		PhoenixViewerLink::is_BetaVersion(LLFloaterAbout::get_viewer_version())))
 	{
-		LLNotifications::instance().add("ConfirmVersion");
+		LLNotifications::instance().add("ConfirmVersionNew");
 	}
 	else
 	{

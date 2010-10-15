@@ -54,6 +54,7 @@ LLFilePicker LLFilePicker::sInstance;
 #define SOUND_FILTER L"Sounds (*.wav)\0*.wav\0"
 #define IMAGE_FILTER L"Images (*.tga; *.bmp; *.jpg; *.jpeg; *.png)\0*.tga;*.bmp;*.jpg;*.jpeg;*.png\0"
 #define BLACKLIST_FILTER L"Asset Blacklist (*.blacklist)\0*.blacklist;\0"
+#define MEDIA_FILTER L"Media files (*.wav; *.mp3; *.mpa; *.mpg; *.mpeg; *.avi; *.mp4; *.m4v; *.m4a; *.mov; *.dif; *.dv; *.qt; *.swa)\0*.wav;*.mp3;*.mpa;*.mpg;*.mpeg;*.avi;*.mp4;*.m4v;*.m4a;*.mov;*.dif;*.dv;*.qt;*.swa\0"
 
 #define ANIM_FILTER L"Animations (*.bvh)\0*.bvh\0"
 #ifdef _CORY_TESTING
@@ -201,6 +202,10 @@ BOOL LLFilePicker::setupFilter(ELoadFilter filter)
 		break;
 	case FFLOAD_BLACKLIST:
 		mOFN.lpstrFilter = BLACKLIST_FILTER \
+			L"\0";
+		break;
+	case FFLOAD_MEDIA:
+		mOFN.lpstrFilter = MEDIA_FILTER \
 			L"\0";
 		break;
 	default:

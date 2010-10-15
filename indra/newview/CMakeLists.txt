@@ -95,6 +95,7 @@ set(viewer_SOURCE_FILES
 	floateravatarlist.cpp
 	floaterao.cpp
 	floaterexploresounds.cpp
+	floatermediaplayer.cpp
 	hippogridmanager.cpp
 	hippolimits.cpp
 	hipporestrequest.cpp
@@ -257,6 +258,7 @@ set(viewer_SOURCE_FILES
     llfloatertos.cpp
     llfloaterurldisplay.cpp
     llfloaterurlentry.cpp
+	llfloaterurlentry_mp.cpp
     llfloatervoicedevicesettings.cpp
     llfloaterwater.cpp
     llfloaterwindlight.cpp
@@ -561,6 +563,7 @@ set(viewer_HEADER_FILES
 	floateravatarlist.h
 	floaterao.h
 	floaterexploresounds.h
+	floatermediaplayer.h
 	hippogridmanager.h
 	hippolimits.h
 	hipporestrequest.h
@@ -733,6 +736,7 @@ set(viewer_HEADER_FILES
     llfloatertos.h
     llfloaterurldisplay.h
     llfloaterurlentry.h
+	llfloaterurlentry_mp.h
     llfloatervoicedevicesettings.h
     llfloaterwater.h
     llfloaterwindlight.h
@@ -1178,7 +1182,7 @@ if (WINDOWS)
         comdlg32
         ${DINPUT_LIBRARY}
         ${DXGUID_LIBRARY}
-#        fmodvc
+        ${FMOD_LIBRARIES}
         gdi32
         kernel32
         odbc32

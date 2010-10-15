@@ -308,7 +308,7 @@ class WindowsManifest(ViewerManifest):
 
         try:
             # For using FMOD for sound... DJS
-            self.path("fmod.dll")
+            self.path("../../fmodapi375win/api/fmod.dll", "fmod.dll");
         except:
             print("Skipping FMOD not found")
         
@@ -585,6 +585,10 @@ class DarwinManifest(ViewerManifest):
 
                 # Translations
                 self.path("English.lproj")
+                # I have no idea why it's picking up the uncustomized version
+                #  of this file, but that's what it's doing, so instead just
+                #  copy it manually.
+                self.path("English.lproj/InfoPlist.strings", "English.lproj/InfoPlist.strings")
                 self.path("German.lproj")
                 self.path("Japanese.lproj")
                 self.path("Korean.lproj")
@@ -906,33 +910,14 @@ class Linux_i686Manifest(LinuxManifest):
     def construct(self):
         super(Linux_i686Manifest, self).construct()
 
-        # install either the libllkdu we just built, or a prebuilt one, in
-        # decreasing order of preference.  for linux package, this goes to bin/
-#        try:
-#            self.path(self.find_existing_file('../llkdu/libllkdu.so',
-#                '../../libraries/i686-linux/lib_release_client/libllkdu.so'), 
-#                  dst='bin/libllkdu.so')
-            # keep this one to preserve syntax, open source mangling removes previous lines
-#            pass
-#        except:
-#            print "Skipping libllkdu.so - not found"
-#            pass
-
         if self.prefix("../../libraries/i686-linux/lib_release_client", dst="lib"):
 
-#            try:
-#                self.path("libkdu_v42R.so", "libkdu.so")
-#                pass
-#            except:
-#                print "Skipping libkdu_v42R.so - not found"
-#                pass
-
-#            try:
-#                self.path("libfmod-3.75.so")
-#                pass
-#            except:
-#                print "Skipping libfmod-3.75.so - not found"
-#                pass
+            try:
+                self.path("../../fmodapi375linux/api/libfmod-3.75.so", "libfmod-3.75.so");
+                pass
+            except:
+                print "Skipping libfmod-3.75.so - not found"
+                pass
 
             self.path("libapr-1.so.0")
             self.path("libaprutil-1.so.0")
@@ -949,10 +934,10 @@ class Linux_i686Manifest(LinuxManifest):
             # Phoenix-specific addons
             self.path("libotr.so.2.2.0", "libotr.so.2")
 #            self.path("libhunspell-1.2.so.0.0.0", "libhunspell-1.2.so.0")
-#            self.path("libnotify.so.1.1.2", "libnotify.so.1")
-#            self.path("libdirect-1.0.so.0.1.0", "libdirect-1.0.so.0")
-#            self.path("libdirectfb-1.0.so.0.1.0", "libdirectfb-1.0.so.0")
-#            self.path("libfusion-1.0.so.0.1.0", "libfusion-1.0.so.0")
+            self.path("libnotify.so.1.1.2", "libnotify.so.1")
+            self.path("libdirect-1.0.so.0.1.0", "libdirect-1.0.so.0")
+            self.path("libdirectfb-1.0.so.0.1.0", "libdirectfb-1.0.so.0")
+            self.path("libfusion-1.0.so.0.1.0", "libfusion-1.0.so.0")
             
             self.end_prefix("lib")
 
