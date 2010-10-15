@@ -88,6 +88,9 @@
 
 #include "llglheaders.h"
 
+#include "llparcel.h" // moymod
+#include "llviewerparcelmgr.h" // moymod
+
 // [RLVa:KB]
 #include "rlvhandler.h"
 // [/RLVa:KB]
@@ -3146,7 +3149,21 @@ void LLSelectMgr::packDuplicateOnRayHead(void *user_data)
 	msg->nextBlockFast(_PREHASH_AgentData);
 	msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
 	msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID() );
-	msg->addUUIDFast(_PREHASH_GroupID, gAgent.getGroupID() );
+	LLUUID group_id = gAgent.getGroupID();
+
+	//KC: lets make sure that shift-copied stuff also gets the right group set >_>
+	//MOYMOD 2009-05, If avatar is in land group/land owner group,
+	//	it rezzes it with it to prevent autoreturn/whatever...
+	if(gSavedSettings.getBOOL("mm_alwaysRezWithLandGroup")){
+		LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+		if(gAgent.isInGroup(parcel->getGroupID())){
+			msg->addUUIDFast(_PREHASH_GroupID, parcel->getGroupID());
+		}else if(gAgent.isInGroup(parcel->getOwnerID())){
+			msg->addUUIDFast(_PREHASH_GroupID, parcel->getOwnerID());
+		}else msg->addUUIDFast(_PREHASH_GroupID, gAgent.getGroupID());
+	}else msg->addUUIDFast(_PREHASH_GroupID, gAgent.getGroupID());
+	
+	msg->addUUIDFast(_PREHASH_GroupID, group_id);
 	msg->addVector3Fast(_PREHASH_RayStart, data->mRayStartRegion );
 	msg->addVector3Fast(_PREHASH_RayEnd, data->mRayEndRegion );
 	msg->addBOOLFast(_PREHASH_BypassRaycast, data->mBypassRaycast );
@@ -3929,6 +3946,19 @@ void LLSelectMgr::packAgentAndSessionAndGroupID(void* user_data)
 void LLSelectMgr::packDuplicateHeader(void* data)
 {
 	LLUUID group_id(gAgent.getGroupID());
+	
+	//KC: lets make sure that shift-copied stuff also gets the right group set >_>
+	//MOYMOD 2009-05, If avatar is in land group/land owner group,
+	//	it rezzes it with it to prevent autoreturn/whatever...
+	if(gSavedSettings.getBOOL("mm_alwaysRezWithLandGroup")){
+		LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+		if(gAgent.isInGroup(parcel->getGroupID())){
+			group_id = parcel->getGroupID();
+		}else if(gAgent.isInGroup(parcel->getOwnerID())){
+			group_id = parcel->getOwnerID();
+		}
+	}
+	
 	packAgentAndSessionAndGroupID(&group_id);
 
 	LLDuplicateData* dup_data = (LLDuplicateData*) data;
