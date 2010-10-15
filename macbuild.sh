@@ -49,11 +49,11 @@ make_disk_image()
         if [ -n "$BUILD_RELEASE" ]; then
                 IMAGE="release-template.dmg"
                 VOLUME_NAME="Phoenix Viewer $REVISION"
-                OUTPUT_FILE="Phoenix_Viewer_1.5.1.${REVISION}_${1}.dmg"
+                OUTPUT_FILE="Phoenix_Viewer_1.5.2.${REVISION}_${1}.dmg"
         else
                 IMAGE="beta-template.dmg"
                 VOLUME_NAME="Phoenix Viewer $REVISION Beta"
-                OUTPUT_FILE="Phoenix_Viewer_1.5.1.${REVISION}_${1}_Beta.dmg"
+                OUTPUT_FILE="Phoenix_Viewer_1.5.2.${REVISION}_${1}_Beta.dmg"
         fi
 
         # hdiutil convert won't overwrite an existing output file
