@@ -1885,6 +1885,22 @@
 				<integer>100</integer>
 			</array>
 		</map>
+		<key>PhoenixMPRect</key>
+		<map>
+			<key>Comment</key>
+			<string>Rectangle for AO window</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Rect</string>
+			<key>Value</key>
+			<array>
+				<integer>0</integer>
+				<integer>100</integer>
+				<integer>100</integer>
+				<integer>100</integer>
+			</array>
+		</map>
 		<key>PhoenixUseYou</key>
 		<map>
 			<key>Comment</key>
