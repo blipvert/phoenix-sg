@@ -40,6 +40,7 @@
 #include "lloverlaybar.h"
 #include "lltextbox.h"
 #include "llcombobox.h"
+#include "llsliderctrl.h"
 #include "llwlparammanager.h"
 #include "llwaterparammanager.h"
 #include "llstartup.h"
@@ -136,6 +137,8 @@ BOOL wlfPanel_AdvSettings::postBuild()
 	
 	childSetAction("EnvAdvancedSkyButton", onOpenAdvancedSky, NULL);
 	childSetAction("EnvAdvancedWaterButton", onOpenAdvancedWater, NULL);
+	
+	childSetCommitCallback("EnvTimeSlider", onChangeDayTime, NULL);
 	
 	fixPointer = this;
 	return TRUE;
@@ -311,4 +314,25 @@ void wlfPanel_AdvSettings::onOpenAdvancedSky(void* userData)
 void wlfPanel_AdvSettings::onOpenAdvancedWater(void* userData)
 {
 	LLFloaterWater::show();
+}
+
+void wlfPanel_AdvSettings::onChangeDayTime(LLUICtrl* ctrl, void* userData)
+{
+	LLSliderCtrl* sldr = (LLSliderCtrl*) ctrl;
+
+	if (sldr) {
+		// deactivate animator
+		LLWLParamManager::instance()->mAnimator.mIsRunning = false;
+		LLWLParamManager::instance()->mAnimator.mUseLindenTime = false;
+
+		F32 val = sldr->getValueF32() + 0.25f;
+		if(val > 1.0) 
+		{
+			val--;
+		}
+
+		LLWLParamManager::instance()->mAnimator.setDayTime((F64)val);
+		LLWLParamManager::instance()->mAnimator.update(
+			LLWLParamManager::instance()->mCurParams);
+	}
 }

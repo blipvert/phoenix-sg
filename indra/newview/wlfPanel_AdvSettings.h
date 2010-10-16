@@ -57,6 +57,7 @@ protected:
 	static void onClickWLPrev(void* user_data);
 	static void onOpenAdvancedSky(void* userData);
 	static void onOpenAdvancedWater(void* userData);
+	static void onChangeDayTime(LLUICtrl* ctrl, void* userData);
 };
 
 #endif // LL_wlfPanel_AdvSettings_H
