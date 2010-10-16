@@ -394,9 +394,11 @@ const LLUUID& JCLSLBridge::findInventoryByName(const std::string& object_name, s
 
 	gInventory.collectDescendentsIf(category,cats,items,FALSE,objectnamematches);
 
-	if (items.count())
+	for (S32 idxItem = 0, cntItem = items.count(); idxItem < cntItem; idxItem++)
 	{
-		return items[0]->getUUID();
+		const LLViewerInventoryItem* itemp = items.get(idxItem);
+		if (!itemp->getIsLinkType())
+			return itemp->getUUID();
 	}
 	return LLUUID::null;
 }

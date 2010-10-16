@@ -35,8 +35,8 @@
 #include "stdtypes.h"
 #include "stdenums.h"
 
+#include "cofmgr.h"
 #include "llagent.h" 
-
 #include "llcamera.h"
 #include "llcoordframe.h"
 #include "indra_constants.h"
@@ -142,8 +142,10 @@
 #include "llfloaterstats.h"
 #include "floaterao.h"
 #include "llworldmapmessage.h"
-// [RLVa:KB]
+// [RLVa:KB] - Checked: 2010-09-27 (RLVa-1.1.3b)
 #include "rlvhandler.h"
+#include "rlvinventory.h"
+#include "llattachmentsmgr.h"
 // [/RLVa:KB]
 
 using namespace LLVOAvatarDefines;
@@ -3524,13 +3526,18 @@ void LLAgent::updateCamera()
 		{
 			LLVOAvatar::attachment_map_t::iterator curiter = iter++;
 			LLViewerJointAttachment* attachment = curiter->second;
-			LLViewerObject *attached_object = attachment->getObject();
-			if (attached_object && !attached_object->isDead() && attached_object->mDrawable.notNull())
+			for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
+				 attachment_iter != attachment->mAttachedObjects.end();
+				 ++attachment_iter)
 			{
-				// clear any existing "early" movements of attachment
-				attached_object->mDrawable->clearState(LLDrawable::EARLY_MOVE);
-				gPipeline.updateMoveNormalAsync(attached_object->mDrawable);
-				attached_object->updateText();
+				LLViewerObject *attached_object = (*attachment_iter);
+				if (attached_object && !attached_object->isDead() && attached_object->mDrawable.notNull())
+				{
+					// clear any existing "early" movements of attachment
+					attached_object->mDrawable->clearState(LLDrawable::EARLY_MOVE);
+					gPipeline.updateMoveNormalAsync(attached_object->mDrawable);
+					attached_object->updateText();
+				}
 			}
 		}
 
@@ -6407,6 +6414,7 @@ void LLAgent::teleportViaLandmark(const LLUUID& landmark_asset_id)
 		 ( (gRlvHandler.hasBehaviour(RLV_BHVR_TPLM)) || 
 		   ((gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) && (mAvatarObject.notNull()) && (mAvatarObject->mIsSitting)) ))
 	{
+		RlvNotifications::notifyBlockedTeleport();
 		return;
 	}
 // [/RLVa:KB]
@@ -6487,6 +6495,7 @@ void LLAgent::teleportViaLocation(const LLVector3d& pos_global, bool go_to)
 		     ( (mAvatarObject.notNull()) && (mAvatarObject->mIsSitting) && 
 			   (gRlvHandler.hasBehaviourExcept(RLV_BHVR_UNSIT, gRlvHandler.getCurrentObject()))) )
 		{
+			RlvNotifications::notifyBlockedTeleport();
 			return;
 		}
 
@@ -6591,6 +6600,16 @@ void LLAgent::teleportViaLocation(const LLVector3d& pos_global, bool go_to)
 // Teleport to global position, but keep facing in the same direction 
 void LLAgent::teleportViaLocationLookAt(const LLVector3d& pos_global)
 {
+// [RLVa:KB] - Checked: 2010-10-07 (RLVa-1.2.1f) | Added: RLVa-1.2.1f
+	// RELEASE-RLVa: [SL-2.2.0] Make sure this isn't used for anything except double-click teleporting
+	if ( (rlv_handler_t::isEnabled()) && (!RlvUtil::isForceTp()) && 
+		 ((gRlvHandler.hasBehaviour(RLV_BHVR_SITTP)) || (!gRlvHandler.canStand())) )
+	{
+		RlvNotifications::notifyBlockedTeleport();
+		return;
+	}
+// [/RLVa:KB]
+
 	mbTeleportKeepsLookAt = true;
 	setFocusOnAvatar(FALSE, ANIMATE);	// detach camera form avatar, so it keeps direction
 	U64 region_handle = to_region_handle(pos_global);
@@ -6857,6 +6876,9 @@ void LLAgent::sendAgentWearablesUpdate()
 	// Then make sure the inventory is in sync with the avatar.
 	gInventory.notifyObservers();
 
+	// This isn't the proper place to be doing this, but it's a good "catch-all"
+	LLCOFMgr::instance().synchWearables();
+
 	// Send the AgentIsNowWearing 
 	gMessageSystem->newMessageFast(_PREHASH_AgentIsNowWearing);
 
@@ -6876,7 +6898,15 @@ void LLAgent::sendAgentWearablesUpdate()
 		if( wearable )
 		{
 			LL_DEBUGS("Wearables") << "Sending wearable " << wearable->getName() << " mItemID = " << mWearableEntry[ i ].mItemID << LL_ENDL; 
-			gMessageSystem->addUUIDFast(_PREHASH_ItemID, mWearableEntry[ i ].mItemID );
+			LLUUID item_id = mWearableEntry[i].mItemID;
+			const LLViewerInventoryItem *item = gInventory.getItem(item_id);
+			if (item && item->getIsLinkType())
+			{
+				// Get the itemID that this item points to.  i.e. make sure
+				// we are storing baseitems, not their links, in the database.
+				item_id = item->getLinkedUUID();
+			}
+			gMessageSystem->addUUIDFast(_PREHASH_ItemID, item_id);
 		}
 		else
 		{
@@ -7185,7 +7215,8 @@ BOOL LLAgent::selfHasWearable( void* userdata )
 
 BOOL LLAgent::isWearingItem( const LLUUID& item_id )
 {
-	return (getWearableFromWearableItem( item_id ) != NULL);
+	const LLUUID& base_item_id = gInventory.getLinkedItemID(item_id);
+	return (getWearableFromWearableItem(base_item_id) != NULL);
 }
 
 // static
@@ -7262,19 +7293,14 @@ void LLAgent::processAgentInitialWearablesUpdate( LLMessageSystem* mesgsys, void
 			LL_DEBUGS("Wearables") << "       " << LLWearable::typeToTypeLabel(type) << " " << asset_id << " item id " << gAgent.mWearableEntry[type].mItemID.asString() << LL_ENDL;
 		}
 
+		LLCOFMgr::instance().fetchCOF();
+
 		// now that we have the asset ids...request the wearable assets
-// [RLVa:KB] - Alternate: Snowglobe-1.2.4 | Checked: 2009-08-08 (RLVa-1.0.1g) | Added: RLVa-1.0.1g
-		LLInventoryFetchObserver::item_ref_t rlvItems;
-// [/RLVa:KB]
 		for( i = 0; i < WT_COUNT; i++ )
 		{
 			LL_DEBUGS("Wearables") << "      fetching " << asset_id_array[i] << LL_ENDL;
 			if( !gAgent.mWearableEntry[i].mItemID.isNull() )
 			{
-// [RLVa:KB] - Alternate: Snowglobe-1.2.4 | Checked: 2009-08-08 (RLVa-1.0.1g) | Added: RLVa-1.0.1g
-				if (rlv_handler_t::isEnabled())
-					rlvItems.push_back(gAgent.mWearableEntry[i].mItemID);
-// [/RLVa:KB]
 				gWearableList.getAsset( 
 					asset_id_array[i],
 					LLStringUtil::null,
@@ -7283,14 +7309,8 @@ void LLAgent::processAgentInitialWearablesUpdate( LLMessageSystem* mesgsys, void
 			}
 		}
 
-// [RLVa:KB] - Alternate: Snowglobe-1.2.4 | Checked: 2009-08-08 (RLVa-1.0.1g) | Added: RLVa-1.0.1g
-		// TODO-RLVa: checking that we're in STATE_STARTED is probably not needed, but leave it until we can be absolutely sure
-		if ( (rlv_handler_t::isEnabled()) && (LLStartUp::getStartupState() == STATE_STARTED) )
-		{
-			RlvCurrentlyWorn f;
-			f.fetchItems(rlvItems);
-		}
-// [/RLVa:KB]
+		// Not really sure where else to put this
+		gIdleCallbacks.addFunction(&LLAttachmentsMgr::onIdle, NULL);
 	}
 }
 
@@ -7505,6 +7525,7 @@ void LLAgent::makeNewOutfit(
 		new_folder_name);
 
 	bool found_first_item = false;
+	BOOL no_link = !gSavedSettings.getBOOL("UseInventoryLinks");
 
 	///////////////////
 	// Wearables
@@ -7514,7 +7535,6 @@ void LLAgent::makeNewOutfit(
 		// Then, iterate though each of the wearables and save copies of them in the folder.
 		S32 i;
 		S32 count = wearables_to_include.count();
-		LLDynamicArray<LLUUID> delete_items;
 		LLPointer<LLRefCount> cbdone = NULL;
 		for( i = 0; i < count; ++i )
 		{
@@ -7522,53 +7542,71 @@ void LLAgent::makeNewOutfit(
 			LLWearable* old_wearable = mWearableEntry[ index ].mWearable;
 			if( old_wearable )
 			{
-				std::string new_name;
-				LLWearable* new_wearable;
-				new_wearable = gWearableList.createCopy(old_wearable);
+				LLViewerInventoryItem* item = gInventory.getItem(mWearableEntry[index].mItemID);
+
+				std::string new_name = item->getName();
 				if (rename_clothing)
 				{
 					new_name = new_folder_name;
 					new_name.append(" ");
 					new_name.append(old_wearable->getTypeLabel());
 					LLStringUtil::truncate(new_name, DB_INV_ITEM_NAME_STR_LEN);
-					new_wearable->setName(new_name);
 				}
 
-				LLViewerInventoryItem* item = gInventory.getItem(mWearableEntry[index].mItemID);
-				S32 todo = addWearableToAgentInventoryCallback::CALL_NONE;
-				if (!found_first_item)
+				if (no_link || isWearableCopyable((EWearableType)index))
 				{
-					found_first_item = true;
-					/* set the focus to the first item */
-					todo |= addWearableToAgentInventoryCallback::CALL_MAKENEWOUTFITDONE;
-					/* send the agent wearables update when done */
-					cbdone = new sendAgentWearablesUpdateCallback;
-				}
-				LLPointer<LLInventoryCallback> cb =
-					new addWearableToAgentInventoryCallback(
-						cbdone,
-						index,
-						new_wearable,
-						todo);
-				if (isWearableCopyable((EWearableType)index))
-				{
-					copy_inventory_item(
-						gAgent.getID(),
-						item->getPermissions().getOwner(),
-						item->getUUID(),
-						folder_id,
-						new_name,
-						cb);
+					LLWearable* new_wearable = gWearableList.createCopy(old_wearable);
+					if (rename_clothing)
+					{
+						new_wearable->setName(new_name);
+					}
+
+					S32 todo = addWearableToAgentInventoryCallback::CALL_NONE;
+					if (!found_first_item)
+					{
+						found_first_item = true;
+						/* set the focus to the first item */
+						todo |= addWearableToAgentInventoryCallback::CALL_MAKENEWOUTFITDONE;
+						/* send the agent wearables update when done */
+						cbdone = new sendAgentWearablesUpdateCallback;
+					}
+					LLPointer<LLInventoryCallback> cb =
+						new addWearableToAgentInventoryCallback(
+							cbdone,
+							index,
+							new_wearable,
+							todo);
+					if (isWearableCopyable((EWearableType)index))
+					{
+						copy_inventory_item(
+							gAgent.getID(),
+							item->getPermissions().getOwner(),
+							item->getLinkedUUID(),
+							folder_id,
+							new_name,
+							cb);
+					}
+					else
+					{
+						move_inventory_item(
+							gAgent.getID(),
+							gAgent.getSessionID(),
+							item->getLinkedUUID(),
+							folder_id,
+							new_name,
+							cb);
+					}
 				}
 				else
 				{
-					move_inventory_item(
+					link_inventory_item(
 						gAgent.getID(),
-						gAgent.getSessionID(),
-						item->getUUID(),
+						item->getLinkedUUID(),
 						folder_id,
-						new_name,
-						cb);
+						item->getName(),		// Apparently, links cannot have arbitrary names...
+						item->getDescription(),
+						LLAssetType::AT_LINK,
+						LLPointer<LLInventoryCallback>(NULL));
 				}
 			}
 		}
@@ -7581,39 +7619,57 @@ void LLAgent::makeNewOutfit(
 
 	if( attachments_to_include.count() )
 	{
-		BOOL msg_started = FALSE;
-		LLMessageSystem* msg = gMessageSystem;
 		for( S32 i = 0; i < attachments_to_include.count(); i++ )
 		{
 			S32 attachment_pt = attachments_to_include[i];
 			LLViewerJointAttachment* attachment = get_if_there(mAvatarObject->mAttachmentPoints, attachment_pt, (LLViewerJointAttachment*)NULL );
 			if(!attachment) continue;
-			LLViewerObject* attached_object = attachment->getObject();
-			if(!attached_object) continue;
-			const LLUUID& item_id = attachment->getItemID();
-			if(item_id.isNull()) continue;
-			LLInventoryItem* item = gInventory.getItem(item_id);
-			if(!item) continue;
-			if(!msg_started)
-			{
-				msg_started = TRUE;
-				msg->newMessage("CreateNewOutfitAttachments");
-				msg->nextBlock("AgentData");
-				msg->addUUID("AgentID", getID());
-				msg->addUUID("SessionID", getSessionID());
-				msg->nextBlock("HeaderData");
-				msg->addUUID("NewFolderID", folder_id);
+			for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
+				 attachment_iter != attachment->mAttachedObjects.end();
+				 ++attachment_iter)
+ 			{
+				LLViewerObject *attached_object = (*attachment_iter);
+				if (!attached_object) continue;
+				const LLUUID& item_id = attached_object->getAttachmentItemID();
+				if (item_id.isNull()) continue;
+				LLInventoryItem* item = gInventory.getItem(item_id);
+				if (!item) continue;
+				if (no_link || item->getPermissions().allowCopyBy(gAgent.getID()))
+				{
+					const LLUUID& old_folder_id = item->getParentUUID();
+
+					move_inventory_item(
+						gAgent.getID(),
+						gAgent.getSessionID(),
+						item->getLinkedUUID(),
+						folder_id,
+						item->getName(),
+						LLPointer<LLInventoryCallback>(NULL));
+
+					if (item->getPermissions().allowCopyBy(gAgent.getID()))
+					{
+						copy_inventory_item(
+							gAgent.getID(),
+							item->getPermissions().getOwner(),
+							item->getLinkedUUID(),
+							old_folder_id,
+							item->getName(),
+							LLPointer<LLInventoryCallback>(NULL));
+					}
+				}
+				else
+				{
+					link_inventory_item(
+						gAgent.getID(),
+						item->getLinkedUUID(),
+						folder_id,
+						item->getName(),
+						item->getDescription(),
+						LLAssetType::AT_LINK,
+						LLPointer<LLInventoryCallback>(NULL));
+				}
 			}
-			msg->nextBlock("ObjectData");
-			msg->addUUID("OldItemID", item_id);
-			msg->addUUID("OldFolderID", item->getParentUUID());
 		}
-
-		if( msg_started )
-		{
-			sendReliableMessage();
-		}
-
 	} 
 }
 
@@ -7799,8 +7855,8 @@ void LLAgent::removeWearable( EWearableType type )
 		return;
 	}
 
-// [RLVa:KB] - Version: 1.23.4 | Checked: 2009-07-07 (RLVa-1.0.0d)
-	if ( (rlv_handler_t::isEnabled()) && (!gRlvHandler.isRemovable(type)) )
+// [RLVa:KB] - Checked: 2009-07-07 (RLVa-1.1.3b)
+	if ( (rlv_handler_t::isEnabled()) && (!gRlvWearableLocks.canRemove(type)) )
 	{
 		return;
 	}
@@ -7932,18 +7988,18 @@ void LLAgent::setWearableOutfit(
 	wearables_to_remove[WT_SKIN]		= FALSE;
 	wearables_to_remove[WT_HAIR]		= FALSE;
 	wearables_to_remove[WT_EYES]		= FALSE;
-// [RLVa:KB] - Checked: 2009-07-06 (RLVa-1.0.0c) | Added: RLVa-0.2.2a
-	wearables_to_remove[WT_SHIRT]		= remove && gRlvHandler.isRemovable(WT_SHIRT);
-	wearables_to_remove[WT_PANTS]		= remove && gRlvHandler.isRemovable(WT_PANTS);
-	wearables_to_remove[WT_SHOES]		= remove && gRlvHandler.isRemovable(WT_SHOES);
-	wearables_to_remove[WT_SOCKS]		= remove && gRlvHandler.isRemovable(WT_SOCKS);
-	wearables_to_remove[WT_JACKET]		= remove && gRlvHandler.isRemovable(WT_JACKET);
-	wearables_to_remove[WT_GLOVES]		= remove && gRlvHandler.isRemovable(WT_GLOVES);
-	wearables_to_remove[WT_UNDERSHIRT]	= (!gAgent.isTeen()) && remove && gRlvHandler.isRemovable(WT_UNDERSHIRT);
-	wearables_to_remove[WT_UNDERPANTS]	= (!gAgent.isTeen()) && remove && gRlvHandler.isRemovable(WT_UNDERPANTS);
-	wearables_to_remove[WT_SKIRT]		= remove && gRlvHandler.isRemovable(WT_SKIRT);
-	wearables_to_remove[WT_ALPHA]		= remove && gRlvHandler.isRemovable(WT_ALPHA);
-	wearables_to_remove[WT_TATTOO]		= remove && gRlvHandler.isRemovable(WT_TATTOO);
+// [RLVa:KB] - Checked: 2009-07-06 (RLVa-1.1.3b) | Added: RLVa-0.2.2a
+	wearables_to_remove[WT_SHIRT]		= remove && gRlvWearableLocks.canRemove(WT_SHIRT);
+	wearables_to_remove[WT_PANTS]		= remove && gRlvWearableLocks.canRemove(WT_PANTS);
+	wearables_to_remove[WT_SHOES]		= remove && gRlvWearableLocks.canRemove(WT_SHOES);
+	wearables_to_remove[WT_SOCKS]		= remove && gRlvWearableLocks.canRemove(WT_SOCKS);
+	wearables_to_remove[WT_JACKET]		= remove && gRlvWearableLocks.canRemove(WT_JACKET);
+	wearables_to_remove[WT_GLOVES]		= remove && gRlvWearableLocks.canRemove(WT_GLOVES);
+	wearables_to_remove[WT_UNDERSHIRT]	= (!gAgent.isTeen()) && remove && gRlvWearableLocks.canRemove(WT_UNDERSHIRT);
+	wearables_to_remove[WT_UNDERPANTS]	= (!gAgent.isTeen()) && remove && gRlvWearableLocks.canRemove(WT_UNDERPANTS);
+	wearables_to_remove[WT_SKIRT]		= remove && gRlvWearableLocks.canRemove(WT_SKIRT);
+	wearables_to_remove[WT_ALPHA]		= remove && gRlvWearableLocks.canRemove(WT_ALPHA);
+	wearables_to_remove[WT_TATTOO]		= remove && gRlvWearableLocks.canRemove(WT_TATTOO);
 // [/RLVa:KB]
 
 	S32 count = wearables.count();
@@ -8037,7 +8093,7 @@ void LLAgent::setWearable( LLInventoryItem* new_item, LLWearable* new_wearable )
 
 // [RLVa:KB] - Checked: 2009-07-07 (RLVa-1.0.0d)
 	// Block if: we can't wear on that layer; or we're already wearing something there we can't take off
-	if ( (rlv_handler_t::isEnabled()) && ((!gRlvHandler.isWearable(type)) || ((old_wearable) && (!gRlvHandler.isRemovable(type)))) )
+	if ( (rlv_handler_t::isEnabled()) && (!gRlvWearableLocks.canWear(type)) )
 	{
 		return;
 	}
@@ -8237,38 +8293,28 @@ void LLAgent::userRemoveAllAttachments( void* userdata )
 		return;
 	}
 
-// [RLVa:KB] - Checked: 2009-11-24 (RLVa-1.1.0f) | Modified: RLVa-1.1.0e
-	std::list<U32> LocalIDs;
-	for (LLVOAvatar::attachment_map_t::iterator iter = avatarp->mAttachmentPoints.begin(); iter != avatarp->mAttachmentPoints.end(); )
+	llvo_vec_t objects_to_remove;
+	
+	for (LLVOAvatar::attachment_map_t::iterator iter = avatarp->mAttachmentPoints.begin(); 
+		 iter != avatarp->mAttachmentPoints.end();)
 	{
 		LLVOAvatar::attachment_map_t::iterator curiter = iter++;
 		LLViewerJointAttachment* attachment = curiter->second;
-		LLViewerObject* objectp = attachment->getObject();
-		if (objectp)
+		for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
+			 attachment_iter != attachment->mAttachedObjects.end();
+			 ++attachment_iter)
 		{
-			if ( (rlv_handler_t::isEnabled()) && (gRlvHandler.isLockedAttachment(curiter->first, RLV_LOCK_REMOVE)) )
-				continue;
-			LocalIDs.push_back(objectp->getLocalID());
-		}
-	}
-
-	// Only send the message if we actually have something to detach
-	if (LocalIDs.size() > 0)
-	{
-		gMessageSystem->newMessage("ObjectDetach");
-		gMessageSystem->nextBlockFast(_PREHASH_AgentData);
-		gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
-		gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-
-		for (std::list<U32>::const_iterator itLocalID = LocalIDs.begin(); itLocalID != LocalIDs.end(); ++itLocalID)
-		{
-			gMessageSystem->nextBlockFast(_PREHASH_ObjectData);
-			gMessageSystem->addU32Fast(_PREHASH_ObjectLocalID, *itLocalID);
-		}
-
-		gMessageSystem->sendReliable(gAgent.getRegionHost());
-	}
+			LLViewerObject *attached_object = (*attachment_iter);
+//			if (attached_object)
+// [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.1.3b) | Modified: RLVa-1.1.3b
+			if ( (attached_object) && ((!rlv_handler_t::isEnabled()) || (!gRlvAttachmentLocks.isLockedAttachment(attached_object))) )
 // [/RLVa:KB]
+			{
+				objects_to_remove.push_back(attached_object);
+			}
+		}
+	}
+	userRemoveMultipleAttachments(objects_to_remove);
 }
 
 void LLAgent::observeFriends()
@@ -8350,6 +8396,207 @@ LLVector3 LLAgent::getLastCoords()
 	return mLastCoordinates;
 }
 
+// Combines userRemoveAllAttachments() and userAttachMultipleAttachments() logic to
+// get attachments into desired state with minimal number of adds/removes.
+//void LLAgentWearables::userUpdateAttachments(LLInventoryModel::item_array_t& obj_item_array)
+// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-09-22 (Catznip-2.2.0a) | Added: Catznip-2.2.0a
+void LLAgent::userUpdateAttachments(LLInventoryModel::item_array_t& obj_item_array, bool fAttachOnly)
+// [/SL:KB]
+{
+	// Possible cases:
+	// already wearing but not in request set -> take off.
+	// already wearing and in request set -> leave alone.
+	// not wearing and in request set -> put on.
+
+	LLVOAvatar* pAvatar = gAgent.getAvatarObject();
+	if (!pAvatar) return;
+
+	std::set<LLUUID> requested_item_ids;
+	std::set<LLUUID> current_item_ids;
+	for (S32 i=0; i<obj_item_array.count(); i++)
+		requested_item_ids.insert(obj_item_array[i].get()->getLinkedUUID());
+
+	// Build up list of objects to be removed and items currently attached.
+	llvo_vec_t objects_to_remove;
+	for (LLVOAvatar::attachment_map_t::iterator iter = pAvatar->mAttachmentPoints.begin(); 
+		 iter != pAvatar->mAttachmentPoints.end();)
+	{
+		LLVOAvatar::attachment_map_t::iterator curiter = iter++;
+		LLViewerJointAttachment* attachment = curiter->second;
+		for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
+			 attachment_iter != attachment->mAttachedObjects.end();
+			 ++attachment_iter)
+		{
+			LLViewerObject *objectp = (*attachment_iter);
+			if (objectp)
+			{
+				LLUUID object_item_id = objectp->getAttachmentItemID();
+				if (requested_item_ids.find(object_item_id) != requested_item_ids.end())
+				{
+					// Object currently worn, was requested.
+					// Flag as currently worn so we won't have to add it again.
+					current_item_ids.insert(object_item_id);
+				}
+				else
+				{
+					// object currently worn, not requested.
+					objects_to_remove.push_back(objectp);
+				}
+			}
+		}
+	}
+
+	LLInventoryModel::item_array_t items_to_add;
+	for (LLInventoryModel::item_array_t::iterator it = obj_item_array.begin();
+		 it != obj_item_array.end();
+		 ++it)
+	{
+		LLUUID linked_id = (*it).get()->getLinkedUUID();
+		if (current_item_ids.find(linked_id) != current_item_ids.end())
+		{
+			// Requested attachment is already worn.
+		}
+		else
+		{
+			// Requested attachment is not worn yet.
+			items_to_add.push_back(*it);
+		}
+	}
+	// S32 remove_count = objects_to_remove.size();
+	// S32 add_count = items_to_add.size();
+	// llinfos << "remove " << remove_count << " add " << add_count << llendl;
+
+	// Remove everything in objects_to_remove
+//	userRemoveMultipleAttachments(objects_to_remove);
+// [SL:KB] - Patch: Appearance-SyncAttach | Checked: 2010-09-22 (Catznip-2.2.0a) | Added: Catznip-2.2.0a
+	if (!fAttachOnly)
+	{
+		userRemoveMultipleAttachments(objects_to_remove);
+	}
+// [/SL:KB]
+
+	// Add everything in items_to_add
+	userAttachMultipleAttachments(items_to_add);
+}
+
+void LLAgent::userRemoveMultipleAttachments(llvo_vec_t& objects_to_remove)
+{
+	if (!gAgent.getAvatarObject()) return;
+
+// [RLVa:KB] - Checked: 2010-03-04 (RLVa-1.1.3b) | Modified: RLVa-1.2.0a
+	// RELEASE-RLVa: [SL-2.0.0] Check our callers and verify that erasing elements from the passed vector won't break random things
+	if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)) )
+	{
+		llvo_vec_t::iterator itObj = objects_to_remove.begin();
+		while (itObj != objects_to_remove.end())
+		{
+			const LLViewerObject* pAttachObj = *itObj;
+			if (gRlvAttachmentLocks.isLockedAttachment(pAttachObj))
+			{
+				itObj = objects_to_remove.erase(itObj);
+
+				// Fall-back code: re-add the attachment if it got removed from COF somehow (compensates for possible bugs elsewhere)
+				LLInventoryModel::cat_array_t folders; LLInventoryModel::item_array_t items;
+				LLLinkedItemIDMatches f(pAttachObj->getAttachmentItemID());
+				gInventory.collectDescendentsIf(LLCOFMgr::instance().getCOF(), folders, items, LLInventoryModel::EXCLUDE_TRASH, f);
+				RLV_ASSERT( 0 != items.count() );
+				if (0 == items.count())
+					LLCOFMgr::instance().addAttachment(pAttachObj->getAttachmentItemID());
+			}
+			else
+			{
+				++itObj;
+			}
+		}
+	}
+// [/RLVa:KB]
+
+	if (objects_to_remove.empty())
+		return;
+
+	gMessageSystem->newMessage("ObjectDetach");
+	gMessageSystem->nextBlockFast(_PREHASH_AgentData);
+	gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+	gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+	
+	for (llvo_vec_t::iterator it = objects_to_remove.begin();
+		 it != objects_to_remove.end();
+		 ++it)
+	{
+		LLViewerObject *objectp = *it;
+		gMessageSystem->nextBlockFast(_PREHASH_ObjectData);
+		gMessageSystem->addU32Fast(_PREHASH_ObjectLocalID, objectp->getLocalID());
+	}
+	gMessageSystem->sendReliable(gAgent.getRegionHost());
+}
+
+void LLAgent::userAttachMultipleAttachments(LLInventoryModel::item_array_t& obj_item_array)
+{
+// [RLVa:KB] - Checked: 2010-03-04 (RLVa-1.2.0a) | Modified: RLVa-1.2.0a
+	// RELEASE-RLVa: [SL-2.0.0] Check our callers and verify that erasing elements from the passed vector won't break random things
+	if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
+	{
+		// Fall-back code: everything should really already have been pruned before we get this far
+		for (S32 idxItem = obj_item_array.count() - 1; idxItem >= 0; idxItem--)
+		{
+			const LLInventoryItem* pItem = obj_item_array.get(idxItem).get();
+			if (!gRlvAttachmentLocks.canAttach(pItem))
+			{
+				obj_item_array.remove(idxItem);
+				RLV_ASSERT(false);
+			}
+		}
+	}
+// [/RLVa:KB]
+
+	// Build a compound message to send all the objects that need to be rezzed.
+	S32 obj_count = obj_item_array.count();
+
+	// Limit number of packets to send
+	const S32 MAX_PACKETS_TO_SEND = 10;
+	const S32 OBJECTS_PER_PACKET = 4;
+	const S32 MAX_OBJECTS_TO_SEND = MAX_PACKETS_TO_SEND * OBJECTS_PER_PACKET;
+	if( obj_count > MAX_OBJECTS_TO_SEND )
+	{
+		obj_count = MAX_OBJECTS_TO_SEND;
+	}
+				
+	// Create an id to keep the parts of the compound message together
+	LLUUID compound_msg_id;
+	compound_msg_id.generate();
+	LLMessageSystem* msg = gMessageSystem;
+
+	for(S32 i = 0; i < obj_count; ++i)
+	{
+		if( 0 == (i % OBJECTS_PER_PACKET) )
+		{
+			// Start a new message chunk
+			msg->newMessageFast(_PREHASH_RezMultipleAttachmentsFromInv);
+			msg->nextBlockFast(_PREHASH_AgentData);
+			msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+			msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+			msg->nextBlockFast(_PREHASH_HeaderData);
+			msg->addUUIDFast(_PREHASH_CompoundMsgID, compound_msg_id );
+			msg->addU8Fast(_PREHASH_TotalObjects, obj_count );
+			msg->addBOOLFast(_PREHASH_FirstDetachAll, false );
+		}
+
+		const LLInventoryItem* item = obj_item_array.get(i).get();
+		msg->nextBlockFast(_PREHASH_ObjectData );
+		msg->addUUIDFast(_PREHASH_ItemID, item->getLinkedUUID());
+		msg->addUUIDFast(_PREHASH_OwnerID, item->getPermissions().getOwner());
+		msg->addU8Fast(_PREHASH_AttachmentPt, 0 | ATTACHMENT_ADD);	// Wear at the previous or default attachment point
+		pack_permissions_slam(msg, item->getFlags(), item->getPermissions());
+		msg->addStringFast(_PREHASH_Name, item->getName());
+		msg->addStringFast(_PREHASH_Description, item->getDescription());
+
+		if( (i+1 == obj_count) || ((OBJECTS_PER_PACKET-1) == (i % OBJECTS_PER_PACKET)) )
+		{
+			// End of message chunk
+			msg->sendReliable( gAgent.getRegion()->getHost() );
+		}
+	}
+}
 
 // OGPX - This code will change when capabilities get refactored.
 // Right now this is used for capabilities that we get from OGP agent domain

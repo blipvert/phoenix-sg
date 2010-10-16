@@ -76,6 +76,7 @@ include_directories(
 )
 
 set(viewer_SOURCE_FILES
+    cofmgr.cpp
 	lggautocorrectfloater.cpp
 	lggautocorrect.cpp
 	lgghunspell_wrapper.cpp
@@ -130,6 +131,7 @@ set(viewer_SOURCE_FILES
     llappviewer.cpp
     llassetuploadresponders.cpp
     llassetuploadqueue.cpp
+    llattachmentsmgr.cpp
     llaudiosourcevo.cpp
     llbbox.cpp
     llbox.cpp
@@ -518,9 +520,11 @@ set(viewer_SOURCE_FILES
     rlvhandler.cpp
     rlvhelper.cpp
     rlvcommon.cpp
-    rlvmultistringsearch.cpp
+    rlvlocks.cpp
+    rlvinventory.cpp
     rlvextensions.cpp
     rlvfloaterbehaviour.cpp
+    rlvviewer2.cpp
     wlfPanel_AdvSettings.cpp
     floaterexploreanimations.cpp
 	floaterblacklist.cpp
@@ -547,6 +551,8 @@ endif (LINUX)
 set(viewer_HEADER_FILES
     CMakeLists.txt
     ViewerInstall.cmake
+
+    cofmgr.h
     a_phoenixviewerlink.h
 	chatbar_as_cmdline.h
 	DiamondAoInt.h
@@ -602,7 +608,8 @@ set(viewer_HEADER_FILES
     llappviewer.h
     llassetuploadresponders.h
     llassetuploadqueue.h
-    llaudiosourcevo.h
+    llassetuploadqueue.h
+    llattachmentsmgr.h
     llbbox.h
     llbox.h
     llcallbacklist.h
@@ -998,9 +1005,11 @@ set(viewer_HEADER_FILES
     rlvhandler.h
     rlvhelper.h
     rlvcommon.h
-    rlvmultistringsearch.h
+    rlvlocks.h
+    rlvinventory.h
     rlvextensions.h
     rlvfloaterbehaviour.h
+    rlvviewer2.h
     VertexCache.h
     VorbisFramework.h
     wlfPanel_AdvSettings.h
