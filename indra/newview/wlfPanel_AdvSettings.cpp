@@ -111,9 +111,9 @@ BOOL wlfPanel_AdvSettings::postBuild()
 				WWcomboBox->add(mIt->first);
 		}
 		WWcomboBox->add(LLStringUtil::null);
-		WWcomboBox->selectByValue(LLSD("Default"));
+		WWcomboBox->setSimple(LLWaterParamManager::instance()->mCurParams.mName);
+		WWcomboBox->setCommitCallback(onChangePresetName);
 	}
-	WWcomboBox->setCommitCallback(onChangePresetName);
 
 	LLComboBox* WLcomboBox = getChild<LLComboBox>("WLPresetsCombo");
 	if(WLcomboBox != NULL) {
@@ -125,9 +125,9 @@ BOOL wlfPanel_AdvSettings::postBuild()
 				WLcomboBox->add(mIt->first);
 		}
 		WLcomboBox->add(LLStringUtil::null);
-		WLcomboBox->selectByValue(LLSD("Default"));
+		WLcomboBox->setSimple(LLWLParamManager::instance()->mCurParams.mName);
+		WLcomboBox->setCommitCallback(onChangePresetName);
 	}
-	WLcomboBox->setCommitCallback(onChangePresetName);
 	
 	// next/prev buttons
 	childSetAction("WWnext", onClickWWNext, this);
