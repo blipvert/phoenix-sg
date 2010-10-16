@@ -41,7 +41,11 @@
 #include "lltextbox.h"
 #include "llcombobox.h"
 #include "llwlparammanager.h"
+#include "llwaterparammanager.h"
 #include "llstartup.h"
+
+#include "llfloaterwindlight.h"
+#include "llfloaterwater.h"
 
 // [RLVa:KB]
 #include "rlvhandler.h"
@@ -50,6 +54,7 @@
 BOOL firstBuildDone;
 void* fixPointer;
 std::string ButtonState;
+
 wlfPanel_AdvSettings::wlfPanel_AdvSettings()
 {
 	setIsChrome(TRUE);
@@ -76,6 +81,7 @@ void wlfPanel_AdvSettings::refresh()
 // [RLVa:KB] - Checked: 2009-09-19
 	if ( (rlv_handler_t::isEnabled()) && (gSavedSettings.getBOOL("wlfAdvSettingsPopup")) )
 	{
+		childSetEnabled("WWPresetsCombo", !gRlvHandler.hasBehaviour(RLV_BHVR_SETENV));
 		childSetEnabled("WLPresetsCombo", !gRlvHandler.hasBehaviour(RLV_BHVR_SETENV));
 	}
 // [/RLVa:KB]
@@ -94,18 +100,43 @@ BOOL wlfPanel_AdvSettings::postBuild()
 {
 	childSetAction("expand", onClickExpandBtn, this);
 	
-	LLComboBox* comboBox = getChild<LLComboBox>("WLPresetsCombo");
-	if(comboBox != NULL) {
+	LLComboBox* WWcomboBox = getChild<LLComboBox>("WWPresetsCombo");
+	if(WWcomboBox != NULL) {
+		std::map<std::string, LLWaterParamSet>::iterator mIt =
+			LLWaterParamManager::instance()->mParamList.begin();
+		for(; mIt != LLWaterParamManager::instance()->mParamList.end(); mIt++) 
+		{
+			if (mIt->first.length() > 0)
+				WWcomboBox->add(mIt->first);
+		}
+		WWcomboBox->add(LLStringUtil::null);
+		WWcomboBox->selectByValue(LLSD("Default"));
+	}
+	WWcomboBox->setCommitCallback(onChangePresetName);
+
+	LLComboBox* WLcomboBox = getChild<LLComboBox>("WLPresetsCombo");
+	if(WLcomboBox != NULL) {
 		std::map<std::string, LLWLParamSet>::iterator mIt = 
 			LLWLParamManager::instance()->mParamList.begin();
 		for(; mIt != LLWLParamManager::instance()->mParamList.end(); mIt++) 
 		{
-			comboBox->add(mIt->first);
+			if (mIt->first.length() > 0)
+				WLcomboBox->add(mIt->first);
 		}
-		comboBox->add(LLStringUtil::null);
-		comboBox->selectByValue(LLSD("Default"));
+		WLcomboBox->add(LLStringUtil::null);
+		WLcomboBox->selectByValue(LLSD("Default"));
 	}
-	comboBox->setCommitCallback(onChangePresetName);
+	WLcomboBox->setCommitCallback(onChangePresetName);
+	
+	// next/prev buttons
+	childSetAction("WWnext", onClickWWNext, this);
+	childSetAction("WWprev", onClickWWPrev, this);
+	childSetAction("WLnext", onClickWLNext, this);
+	childSetAction("WLprev", onClickWLPrev, this);
+	
+	childSetAction("EnvAdvancedSkyButton", onOpenAdvancedSky, NULL);
+	childSetAction("EnvAdvancedWaterButton", onOpenAdvancedWater, NULL);
+	
 	fixPointer = this;
 	return TRUE;
 }
@@ -150,4 +181,134 @@ void wlfPanel_AdvSettings::onChangePresetName(LLUICtrl* ctrl, void * userData)
 	LLWLParamManager::instance()->mAnimator.mUseLindenTime = false;
 	LLWLParamManager::instance()->loadPreset(
 		combo_box->getSelectedValue().asString());
+}
+
+void wlfPanel_AdvSettings::onClickWWNext(void* user_data)
+{
+	wlfPanel_AdvSettings* self = (wlfPanel_AdvSettings*) user_data;
+	
+	LLWaterParamManager * param_mgr = LLWaterParamManager::instance();
+	LLWaterParamSet& currentParams = param_mgr->mCurParams;
+
+	// find place of current param
+	std::map<std::string, LLWaterParamSet>::iterator mIt = 
+		param_mgr->mParamList.find(currentParams.mName);
+
+	// if at the end, loop
+	std::map<std::string, LLWaterParamSet>::iterator last = param_mgr->mParamList.end(); --last;
+	if(mIt == last) 
+	{
+		mIt = param_mgr->mParamList.begin();
+	}
+	else
+	{
+		mIt++;
+	}
+	/*param_mgr->mAnimator.mIsRunning = false;
+	param_mgr->mAnimator.mUseLindenTime = false;*/
+	param_mgr->loadPreset(mIt->first, true);
+	LLComboBox* comboBox = self->getChild<LLComboBox>("WWPresetsCombo");
+	comboBox->setSimple(mIt->first);
+}
+
+void wlfPanel_AdvSettings::onClickWWPrev(void* user_data)
+{
+	wlfPanel_AdvSettings* self = (wlfPanel_AdvSettings*) user_data;
+	
+	LLWaterParamManager * param_mgr = LLWaterParamManager::instance();
+	LLWaterParamSet & currentParams = param_mgr->mCurParams;
+
+	// find place of current param
+	std::map<std::string, LLWaterParamSet>::iterator mIt = 
+		param_mgr->mParamList.find(currentParams.mName);
+
+	// if at the beginning, loop
+	if(mIt == param_mgr->mParamList.begin()) 
+	{
+		std::map<std::string, LLWaterParamSet>::iterator last = param_mgr->mParamList.end(); --last;
+		mIt = last;
+	}
+	else
+	{
+		mIt--;
+	}
+	/*param_mgr->mAnimator.mIsRunning = false;
+	param_mgr->mAnimator.mUseLindenTime = false;*/
+	param_mgr->loadPreset(mIt->first, true);
+	LLComboBox* comboBox = self->getChild<LLComboBox>("WWPresetsCombo");
+	comboBox->setSimple(mIt->first);
+}
+
+void wlfPanel_AdvSettings::onClickWLNext(void* user_data)
+{
+	wlfPanel_AdvSettings* self = (wlfPanel_AdvSettings*) user_data;
+	
+	// find place of current param
+	std::map<std::string, LLWLParamSet>::iterator mIt = 
+		LLWLParamManager::instance()->mParamList.find(LLWLParamManager::instance()->mCurParams.mName);
+
+	// shouldn't happen unless you delete every preset but Default
+	if (mIt == LLWLParamManager::instance()->mParamList.end())
+	{
+		llwarns << "No more presets left!" << llendl;
+		return;
+	}
+
+	// if at the end, loop
+	std::map<std::string, LLWLParamSet>::iterator last = LLWLParamManager::instance()->mParamList.end(); --last;
+	if(mIt == last) 
+	{
+		mIt = LLWLParamManager::instance()->mParamList.begin();
+	}
+	else
+	{
+		mIt++;
+	}
+	LLWLParamManager::instance()->mAnimator.mIsRunning = false;
+	LLWLParamManager::instance()->mAnimator.mUseLindenTime = false;
+	LLWLParamManager::instance()->loadPreset(mIt->first, true);
+	LLComboBox* comboBox = self->getChild<LLComboBox>("WLPresetsCombo");
+	comboBox->setSimple(mIt->first);
+}
+
+void wlfPanel_AdvSettings::onClickWLPrev(void* user_data)
+{
+	wlfPanel_AdvSettings* self = (wlfPanel_AdvSettings*) user_data;
+	
+	// find place of current param
+	std::map<std::string, LLWLParamSet>::iterator mIt = 
+		LLWLParamManager::instance()->mParamList.find(LLWLParamManager::instance()->mCurParams.mName);
+
+	// shouldn't happen unless you delete every preset but Default
+	if (mIt == LLWLParamManager::instance()->mParamList.end())
+	{
+		llwarns << "No more presets left!" << llendl;
+		return;
+	}
+
+	// if at the beginning, loop
+	if(mIt == LLWLParamManager::instance()->mParamList.begin()) 
+	{
+		std::map<std::string, LLWLParamSet>::iterator last = LLWLParamManager::instance()->mParamList.end(); --last;
+		mIt = last;
+	}
+	else
+	{
+		mIt--;
+	}
+	LLWLParamManager::instance()->mAnimator.mIsRunning = false;
+	LLWLParamManager::instance()->mAnimator.mUseLindenTime = false;
+	LLWLParamManager::instance()->loadPreset(mIt->first, true);
+	LLComboBox* comboBox = self->getChild<LLComboBox>("WLPresetsCombo");
+	comboBox->setSimple(mIt->first);
+}
+
+void wlfPanel_AdvSettings::onOpenAdvancedSky(void* userData)
+{
+	LLFloaterWindLight::show();
+}
+
+void wlfPanel_AdvSettings::onOpenAdvancedWater(void* userData)
+{
+	LLFloaterWater::show();
 }
