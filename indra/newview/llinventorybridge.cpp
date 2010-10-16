@@ -83,6 +83,7 @@
 #include "llviewerparcelmgr.h"
 #include "llviewerwindow.h"
 #include "llvoavatar.h"
+#include "llwaterparammanager.h"
 #include "llwearable.h"
 #include "llwearablelist.h"
 #include "llviewermessage.h" 
@@ -91,6 +92,7 @@
 #include "lluictrlfactory.h"
 #include "llselectmgr.h"
 #include "llfloateropenobject.h"
+#include "llwlparammanager.h"
 #include "jc_lslviewerbridge.h"
 #include "exporttracker.h"
 
@@ -3020,17 +3022,46 @@ std::string LLNotecardBridge::sPrefix("Note: ");
 
 LLUIImagePtr LLNotecardBridge::getIcon() const
 {
-	return get_item_icon(LLAssetType::AT_NOTECARD, LLInventoryType::IT_NOTECARD, 0, FALSE);
+	if(isSkySetting())
+	{
+		return LLUI::getUIImage("Inv_WindLight");
+	}
+	else if(isWaterSetting())
+ 	{
+		return LLUI::getUIImage("Inv_WaterLight");
+	}
+	else
+	{
+		return get_item_icon(LLAssetType::AT_NOTECARD, LLInventoryType::IT_NOTECARD, 0, FALSE);
+	}
 }
 
 void LLNotecardBridge::performAction(LLFolderView* folder, LLInventoryModel* model, std::string action)
 {
+	LLViewerInventoryItem* itemp = model->getItem(mUUID);
+	if(!itemp) return;
+
 	if ("export" == action)
 	{
 		LLViewerInventoryItem* item = getItem();
 		JCExportTracker::mirror(item);
 	}
-	else LLItemBridge::performAction(folder, model, action);
+	else if ("load_windlight" == action)
+	{
+		LLWLParamManager::instance()->loadPresetNotecard(itemp->getName(), itemp->getAssetUUID(), mUUID);
+	}
+	else if ("load_waterlight" == action)
+	{
+		LLWaterParamManager::instance()->loadPresetNotecard(itemp->getName(), itemp->getAssetUUID(), mUUID);
+	}
+	else if ("edit_windlight" == action)
+	{
+		open_notecard(itemp, getPrefix() + itemp->getName(), LLUUID::null, FALSE);
+	}
+	else
+	{
+		LLItemBridge::performAction(folder, model, action);
+	}
 }
 
 
@@ -3094,10 +3125,95 @@ void LLNotecardBridge::openItem()
 	LLViewerInventoryItem* item = getItem();
 	if (item)
 	{
-		open_notecard(item, getPrefix() + item->getName(), LLUUID::null, FALSE);
+		if(isSkySetting())
+ 		{
+			LLWLParamManager::instance()->loadPresetNotecard(item->getName(), item->getAssetUUID(), mUUID);
+		}
+		else if(isWaterSetting())
+		{
+			LLWaterParamManager::instance()->loadPresetNotecard(item->getName(), item->getAssetUUID(), mUUID);
+		}
+		else
+		{
+			open_notecard(item, getPrefix() + item->getName(), LLUUID::null, FALSE);
+		}
 	}
 }
+ 
+void LLNotecardBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
+{
+	// *TODO: Translate
+	lldebugs << "LLNotecardBridge::buildContextMenu()" << llendl;
+	std::vector<std::string> items;
+	std::vector<std::string> disabled_items;
+	if(isInTrash())
+	{
+		items.push_back(std::string("Purge Item"));
+		if (!isItemRemovable())
+		{
+			disabled_items.push_back(std::string("Purge Item"));
+		}
 
+		items.push_back(std::string("Restore Item"));
+	}
+
+	else
+	{
+
+		if(isWindLight())
+		{
+			if(isSkySetting())
+			{
+				items.push_back(std::string("Use WindLight Settings"));
+			}
+			else if(isWaterSetting())
+			{
+				items.push_back(std::string("Use WaterLight Settings"));
+			}
+			items.push_back(std::string("Edit WindLight Settings"));
+		}
+		else
+		{
+			items.push_back(std::string("Open"));
+		}
+		items.push_back(std::string("Properties"));
+
+		// RLVa stuff copied from LLInvFVBridge::buildContextMenu
+		// [RLVa:KB] - Checked: 2009-10-13 (RLVa-1.0.5c) | Modified: RLVa-1.0.5c
+		if (rlv_handler_t::isEnabled())
+		{
+			LLInventoryObject* pItem = (mInventoryPanel->getModel()) ? mInventoryPanel->getModel()->getObject(mUUID) : NULL;
+			if ( (pItem) &&
+				 ( ((LLAssetType::AT_NOTECARD == pItem->getType()) && (gRlvHandler.hasBehaviour(RLV_BHVR_VIEWNOTE))) ||
+				   ((LLAssetType::AT_LSL_TEXT == pItem->getType()) && (gRlvHandler.hasBehaviour(RLV_BHVR_VIEWSCRIPT))) ||
+				   ((LLAssetType::AT_NOTECARD == pItem->getType()) && (gRlvHandler.hasBehaviour(RLV_BHVR_VIEWTEXTURE))) ) )
+			{
+				disabled_items.push_back(std::string("Open"));
+			}
+		}
+		// [/RLVa:KB]
+
+		getClipboardEntries(true, items, disabled_items, flags);
+	}
+	hideContextEntries(menu, items, disabled_items);
+}
+
+
+
+bool LLNotecardBridge::isSkySetting() const
+{
+	return (getName().length() > 2 && getName().compare(getName().length() - 3, 3, ".wl") == 0);
+}
+
+bool LLNotecardBridge::isWaterSetting() const
+{
+	return (getName().length() > 2 && getName().compare(getName().length() - 3, 3, ".ww") == 0);
+}
+
+bool LLNotecardBridge::isWindLight() const
+{
+	return (isSkySetting() || isWaterSetting());
+}
 
 // +=================================================+
 // |        LLGestureBridge                          |
