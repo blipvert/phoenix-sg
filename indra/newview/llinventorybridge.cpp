@@ -4894,16 +4894,17 @@ BOOL LLWearableBridge::isItemRemovable()
 //k, all uploadable asset types do not use this characteristic; therefore, we can use it to show temporaryness and not interfere cuz we're awesome like that
 LLFontGL::StyleFlags LLItemBridge::getLabelStyle() const
 {
-	LLPermissions perm = getItem()->getPermissions();
-	if(perm.getGroup() == gAgent.getID())
+	U8 font = LLFontGL::NORMAL;
+
+	const LLViewerInventoryItem* item = getItem();
+	if ( (item) && (item->getPermissions().getGroup() == gAgent.getID()) )
 	{
-		return LLFontGL::ITALIC;
+		font |= LLFontGL::ITALIC;
 	}
-	else
-	{
-		return LLFontGL::NORMAL;
-	}
+
+	return (LLFontGL::StyleFlags)font;
 }
+
 LLFontGL::StyleFlags LLWearableBridge::getLabelStyle() const
 { 
 	U8 font = LLFontGL::NORMAL;
