@@ -135,17 +135,17 @@
 		<on_click filter="" function="Inventory.DoToSelected" userdata="delete" />
 	</menu_item_call>
 	<menu_item_separator name="Folder Wearables Separator" />
-	<menu_item_call bottom_delta="-18" height="18" label="Take Off Items" left="0" mouse_opaque="true" name="Take Off Items" width="128">
-		<on_click filter="" function="Inventory.DoToSelected" userdata="removefromoutfit" />
-	</menu_item_call>
-	<menu_item_call bottom_delta="-18" height="18" label="Add To Outfit" left="0" mouse_opaque="true" name="Add To Outfit" width="128">
-		<on_click filter="" function="Inventory.DoToSelected" userdata="addtooutfit" />
-	</menu_item_call>
 	<menu_item_call bottom_delta="-18" height="18" label="Wear Items" left="0" mouse_opaque="true" name="Wear Items" width="128">
 		<on_click filter="" function="Inventory.DoToSelected" userdata="wearitems" />
 	</menu_item_call>
+	<menu_item_call bottom_delta="-18" height="18" label="Add Items" left="0" mouse_opaque="true" name="Add To Outfit" width="128">
+		<on_click filter="" function="Inventory.DoToSelected" userdata="addtooutfit" />
+	</menu_item_call>
 	<menu_item_call bottom_delta="-18" height="18" label="Replace Outfit" left="0" mouse_opaque="true" name="Replace Outfit" width="128">
 		<on_click filter="" function="Inventory.DoToSelected" userdata="replaceoutfit" />
+	</menu_item_call>
+	<menu_item_call bottom_delta="-18" height="18" label="Take Off Items" left="0" mouse_opaque="true" name="Take Off Items" width="128">
+		<on_click filter="" function="Inventory.DoToSelected" userdata="removefromoutfit" />
 	</menu_item_call>
 	<menu_item_separator name="Calling Card Separator" />
 	<menu_item_call bottom_delta="-18" height="18" label="Start Conference Chat" left="0" mouse_opaque="true" name="Conference Chat Folder" width="128">

@@ -463,3 +463,32 @@ void LLCOFMgr::synchWearables()
 }
 
 // ============================================================================
+// Base outfit folder functions
+//
+
+void LLCOFMgr::addBOFLink(const LLUUID &idFolder, LLPointer<LLInventoryCallback> cb)
+{
+	purgeBOFLink();
+
+	const LLViewerInventoryCategory* pFolder = gInventory.getCategory(idFolder);
+	if ( (pFolder) && (LLAssetType::AT_OUTFIT == pFolder->getPreferredType()) )
+		link_inventory_item(gAgent.getID(), idFolder, getCOF(), pFolder->getName(), "", LLAssetType::AT_LINK_FOLDER, cb);
+}
+
+void LLCOFMgr::purgeBOFLink()
+{
+	LLInventoryModel::cat_array_t* pFolders; LLInventoryModel::item_array_t* pItems;
+	gInventory.getDirectDescendentsOf(getCOF(), pFolders, pItems);
+	for (S32 idxItem = 0, cntItem = pItems->count(); idxItem < cntItem; idxItem++)
+	{
+		const LLViewerInventoryItem* pItem = pItems->get(idxItem).get();
+		if ( (!pItem) || (LLAssetType::AT_LINK_FOLDER  != pItem->getActualType()) )
+			continue;
+
+		const LLViewerInventoryCategory* pLinkFolder = pItem->getLinkedCategory();
+		if ( (pLinkFolder) && (LLAssetType::AT_OUTFIT == pLinkFolder->getPreferredType()) )
+			gInventory.purgeObject(pItem->getUUID());
+	}
+}
+
+// ============================================================================

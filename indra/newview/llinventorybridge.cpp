@@ -1345,7 +1345,7 @@ BOOL LLFolderBridge::isItemRemovable()
 		return FALSE;
 	}
 
-	if( LLAssetType::AT_NONE != category->getPreferredType() )
+	if ( (LLAssetType::AT_NONE != category->getPreferredType()) && (LLAssetType::AT_OUTFIT != category->getPreferredType()) )
 	{
 		return FALSE;
 	}
@@ -1960,7 +1960,7 @@ void LLFolderBridge::openItem()
 BOOL LLFolderBridge::isItemRenameable() const
 {
 	LLViewerInventoryCategory* cat = (LLViewerInventoryCategory*)getCategory();
-	if(cat && (cat->getPreferredType() == LLAssetType::AT_NONE)
+	if(cat && ((cat->getPreferredType() == LLAssetType::AT_NONE) || (cat->getPreferredType() == LLAssetType::AT_OUTFIT))
 	   && (cat->getOwnerID() == gAgent.getID()))
 	{
 		return TRUE;
@@ -4763,6 +4763,9 @@ void wear_inventory_category_on_avatar_step2( BOOL proceed, void* userdata )
 // [/RLVa:KB]
 
 		LLAgent::userUpdateAttachments(obj_items);
+
+		if (!wear_info->mAppend)
+			LLCOFMgr::instance().addBOFLink(wear_info->mCategoryID);
 	}
 	delete wear_info;
 	wear_info = NULL;
@@ -5007,16 +5010,17 @@ BOOL LLWearableBridge::isItemRemovable()
 //k, all uploadable asset types do not use this characteristic; therefore, we can use it to show temporaryness and not interfere cuz we're awesome like that
 LLFontGL::StyleFlags LLItemBridge::getLabelStyle() const
 {
-	LLPermissions perm = getItem()->getPermissions();
-	if(perm.getGroup() == gAgent.getID())
+	U8 font = LLFontGL::NORMAL;
+
+	const LLViewerInventoryItem* item = getItem();
+	if ( (item) && (item->getPermissions().getGroup() == gAgent.getID()) )
 	{
-		return LLFontGL::ITALIC;
+		font |= LLFontGL::ITALIC;
 	}
-	else
-	{
-		return LLFontGL::NORMAL;
-	}
+
+	return (LLFontGL::StyleFlags)font;
 }
+
 LLFontGL::StyleFlags LLWearableBridge::getLabelStyle() const
 { 
 	U8 font = LLFontGL::NORMAL;

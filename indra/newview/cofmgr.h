@@ -61,6 +61,13 @@ protected:
 	void onLinkWearableComplete(const LLUUID& idItem);
 
 	/*
+	 * Base outfit folder functions
+	 */
+public:
+	void addBOFLink(const LLUUID& idFolder, LLPointer<LLInventoryCallback> cb = NULL);
+	void purgeBOFLink();
+
+	/*
 	 * Member variables
 	 */
 protected:
