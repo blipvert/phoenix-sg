@@ -7247,7 +7247,6 @@ The download of [DISPLAY_NAME] failed:
     type="alertmodal">
 [DISPLAY_NAME] has been downloaded and installed. The new skin will take effect after you relaunch Phoenix Viewer.
   </notification>
-</notifications>
 
  <!-- [KITTY VIEWER] -->
   <notification
@@ -7275,3 +7274,19 @@ Do you wish to overwrite the saved preset?
      yestext="Yes"/>
   </notification>
  <!-- [/KITTY VIEWER] -->
+
+   <notification
+   icon="alertmodal.tga"
+   name="ClickOutfitHelp"
+   type="alertmodal">
+For more details on outfits in Phoenix, please see the Phoenix Viewer Wiki.
+    <url option="0" name="url">
+	http://wiki.phoenixviewer.com/doku.php?id=outfits
+    </url>
+    <usetemplate
+     name="okcancelbuttons"
+     yestext="Go to Wiki"
+	 notext="Close" />
+  </notification>
+
+</notifications>

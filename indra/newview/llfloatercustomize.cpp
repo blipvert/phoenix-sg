@@ -222,6 +222,7 @@ public:
 		childSetAction("Cancel", onCancel, this ); 
 		childSetAction("Check All", onCheckAll, this );
 		childSetAction("Uncheck All", onUncheckAll, this );
+		childSetAction("OutfitHelp", onClickHelp, this);
 
 		LLCheckBoxCtrl* pOutfitFoldersCtrl = getChild<LLCheckBoxCtrl>("checkbox_use_outfits");
 		pOutfitFoldersCtrl->setCommitCallback(&LLMakeOutfitDialog::onOutfitFoldersToggle);
@@ -327,6 +328,11 @@ public:
 			std::string name = self->mCheckBoxList[i].first;
 			if(self->childIsEnabled(name))self->childSetValue(name,FALSE);
 		}
+	}
+	
+	static void onClickHelp( void* userdata )
+	{
+		LLNotifications::instance().add("ClickOutfitHelp");
 	}
 
 	BOOL postBuild()
