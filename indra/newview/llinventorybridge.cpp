@@ -1989,6 +1989,11 @@ LLUIImagePtr LLFolderBridge::getIcon() const
 	LLViewerInventoryCategory* cat = getCategory();
 	if(cat)
 	{
+		//KC: hack
+		if(cat->getName() == phoenix_category_name)
+		{
+			return LLUI::getUIImage("inv_folder_phoenix.tga");
+		}
 		preferred_type = cat->getPreferredType();
 	}
 	switch(preferred_type)
