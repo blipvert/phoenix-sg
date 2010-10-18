@@ -68,8 +68,9 @@
 
 #include "floaterao.h"
 
+#include "llattachmentsmgr.h"
 
-#define phoenix_point (LLAssetType::EType)127
+#define phoenix_point (U8)127
 #define phoenix_bridge_name "#LSL<->Client Bridge v0.09"
 
 void cmdline_printchat(std::string message);
@@ -617,19 +618,8 @@ BOOL JCLSLBridge::tick()
 							{
 								//cmdline_printchat("attaching");
 								//cmdline_printchat("bridge is complete, attaching");//<< llendl;
-								LLMessageSystem* msg = gMessageSystem;
-								msg->newMessageFast(_PREHASH_RezSingleAttachmentFromInv);
-								msg->nextBlockFast(_PREHASH_AgentData);
-								msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-								msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-								msg->nextBlockFast(_PREHASH_ObjectData);
-								msg->addUUIDFast(_PREHASH_ItemID, bridge->getUUID());
-								msg->addUUIDFast(_PREHASH_OwnerID, bridge->getPermissions().getOwner());
-								msg->addU8Fast(_PREHASH_AttachmentPt, phoenix_point);
-								pack_permissions_slam(msg, bridge->getFlags(), bridge->getPermissions());
-								msg->addStringFast(_PREHASH_Name, bridge->getName());
-								msg->addStringFast(_PREHASH_Description, bridge->getDescription());
-								msg->sendReliable(gAgent.getRegionHost());
+								// Queue bridge attachment
+								LLAttachmentsMgr::instance().addAttachment(bridge->getUUID(), phoenix_point, TRUE, TRUE);
 								sBridgeStatus = RECHANNEL;
 							}
 						}/*else
