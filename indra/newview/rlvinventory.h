@@ -88,10 +88,10 @@ private:
 // RlvRenameOnWearObserver - Handles "auto-rename-on-wear" for (linked) items living under #RLV
 //
 
-class RlvRenameOnWearObserver : public LLInventoryFetchObserver
+class RlvRenameOnWearObserver : public LLInventoryFetchItemsObserver
 {
 public:
-	RlvRenameOnWearObserver() {}
+	RlvRenameOnWearObserver(const LLUUID& idItem) : LLInventoryFetchItemsObserver(idItem) {}
 	virtual ~RlvRenameOnWearObserver() {}
 	virtual void done();
 protected:

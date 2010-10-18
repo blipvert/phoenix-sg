@@ -428,12 +428,9 @@ void RlvHandler::onAttach(const LLViewerObject* pAttachObj, const LLViewerJointA
 	// Fetch the inventory item if it isn't already (we need it in case of a reattach-on-detach) and rename it if appropriate
 	if ( (STATE_STARTED == LLStartUp::getStartupState()) && (gInventory.isInventoryUsable()) )
 	{
-		LLInventoryFetchObserver::item_ref_t items;
-		items.push_back(pAttachObj->getAttachmentItemID());
-
-		RlvRenameOnWearObserver* pFetcher = new RlvRenameOnWearObserver();
-		pFetcher->fetchItems(items);
-		if (pFetcher->isEverythingComplete())
+		RlvRenameOnWearObserver* pFetcher = new RlvRenameOnWearObserver(pAttachObj->getAttachmentItemID());
+		pFetcher->startFetch();
+		if (pFetcher->isFinished())
 			pFetcher->done();
 		else
 			gInventory.addObserver(pFetcher);
