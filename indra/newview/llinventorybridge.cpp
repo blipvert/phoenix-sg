@@ -2039,6 +2039,16 @@ LLUIImagePtr LLFolderBridge::getIcon() const
 	case LLAssetType::AT_GESTURE:
 		control = "inv_folder_gesture.tga";
 		break;
+	case LLAssetType::AT_FAVORITE:
+		control = "inv_folder_favorite.tga";
+		break;
+	case LLAssetType::AT_OUTFIT:
+	case LLAssetType::AT_MY_OUTFITS:
+		control = "inv_folder_outfit.tga";
+		break;
+	case LLAssetType::AT_CURRENT_OUTFIT:
+		control = "inv_folder_sys.tga";
+		break;
 	default:
 		control = "inv_folder_plain_closed.tga";
 		break;
