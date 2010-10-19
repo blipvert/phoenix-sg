@@ -3056,8 +3056,9 @@ Fai clic su Accetta per partecipare alla chiamata o su Rifiuta per rifiutare l&a
 	</notification>
 	<notification name="ServerVersionChanged">
 		La regione in cui sei entrato, gira su una versione di simulatore differente.
-Current simulator : [NEWVERSION]
-Previous simulator: [OLDVERSION]
+Simulatore attuale: [NEWVERSION]
+Simulatore precedente: [OLDVERSION]
+
     <unique>
       <context key="OLDVERSION"/>
       <context key="NEWVERSION"/>
