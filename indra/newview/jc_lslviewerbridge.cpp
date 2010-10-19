@@ -72,8 +72,9 @@
 
 #define phoenix_point (U8)127
 #define phoenix_bridge_name "#LSL<->Client Bridge v0.09"
+#define phoenix_current_version (F32)0.09f
 
-void cmdline_printchat(std::string message);
+void //cmdline_printchat(std::string message);
 
 U8 JCLSLBridge::sBridgeStatus;
 JCLSLBridge* JCLSLBridge::sInstance;
@@ -526,13 +527,13 @@ void bridge_trash_check()
 							F32 version_float;
 							if(vstream >> version_float)
 							{
-								if(version_float < 0.06f)
+								if(version_float < phoenix_current_version)
 								{
-									llinfos << "bridge older than 0.06f found (" << version_float << ")[" << version_str << "] in inv but not in trash" << llendl;
+									llinfos << "bridge older than " << phoenix_current_version << " found (" << version_float << ")[" << version_str << "] in inv but not in trash" << llendl;
 									delete_queue.push_back(item);
 								}else
 								{
-									llinfos << "bridge >= 0.06f found (" << version_float << ")[" << version_str << "] in inv but not in trash" << llendl;
+									llinfos << "bridge >= " << phoenix_current_version << " found (" << version_float << ")[" << version_str << "] in inv but not in trash" << llendl;
 								}
 							}else
 							{
