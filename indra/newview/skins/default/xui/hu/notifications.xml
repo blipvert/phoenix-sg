@@ -93,7 +93,7 @@ Hiba részletei: Ez a figyelemfelhívás: &apos;[_NAME]&apos; nem található a 
 		<usetemplate name="okcancelbuttons" notext="Mégsem" yestext="Igen"/>
 	</notification>
 	<notification name="BadInstallation">
-		Hiba merült fel a Second Life frissítése során. Kérjük töltsd le a legfrissebb verziót a secondlife.com oldalról.
+		Hiba merült fel a Second Life frissítése során. Kérjük töltsd le a legfrissebb verziót a PheonixViewer.com oldalról.
     <usetemplate
      name="okbutton"
      yestext="OK"/>
@@ -2639,7 +2639,13 @@ Kattints az elfogad gombra a beszélgetés megkezdéséhez vagy az elutasít gom
 		Hiba merült fel a ehhez beszélgetéshez történő csatlakozáskor: [VOICE_CHANNEL_NAME]. Kérjük próbáld meg később.
 	</notification>
 	<notification name="ServerVersionChanged">
-		Ezen a régión más verziójú szimulátor fut. Kattints erre az üzenetre a részletekért.
+		Ezen a régión más verziójú szimulátor fut.
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		A hivatkozás, melyre kattintottál nem nyitható meg ebből a böngészőből.

@@ -94,7 +94,7 @@
 		<usetemplate name="okcancelbuttons" notext="取り消し" yestext="はい"/>
 	</notification>
 	<notification name="BadInstallation">
-		Second Life をアップデート中にエラーが発生しました。 secondlife.com から最新バージョンをダウンロードしてください。
+		Second Life をアップデート中にエラーが発生しました。 PheonixViewer.com から最新バージョンをダウンロードしてください。
 		<usetemplate name="okbutton" yestext="OK"/>
 	</notification>
 	<notification name="LoginFailedNoNetwork">
@@ -3266,7 +3266,13 @@ Macの場合は、Cmd-Opt-Shift-Dを押してください。
 		[VOICE_CHANNEL_NAME]のボイス・チャットに接続中に、エラーが発生しました。後でもう一度お試しください。
 	</notification>
 	<notification name="ServerVersionChanged">
-		到着した地域は異なるシミュレーターのバージョンで実行されています。 詳細についてはこのメッセージをクリックしてください。
+		到着した地域は異なるシミュレーターのバージョンで実行されています。
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		クリックしたURLはこのウェブブラウザでは開けません

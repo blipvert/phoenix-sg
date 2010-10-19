@@ -94,7 +94,7 @@ Szczegóły błędu: Błąd o nazwie &apos;[_NAME]&apos; nie został odnaleziony
 		<usetemplate name="okcancelbuttons" notext="Anuluj" yestext="Tak"/>
 	</notification>
 	<notification name="BadInstallation">
-		Podczas aktualizacji klienta Second Life wystąpił błąd. Proszę odwiedzić stronę secondlife.com by ściągnąć najnowszą wersje klienta.
+		Podczas aktualizacji klienta Second Life wystąpił błąd. Proszę odwiedzić stronę PheonixViewer.com by ściągnąć najnowszą wersje klienta.
     <usetemplate
      name="okbutton"
      yestext="OK"/>
@@ -3003,7 +3003,13 @@ Wybierz Wycisz żeby wyciszyć tą osobę.
 		Błąd podczas łączenia z rozmową [VOICE_CHANNEL_NAME]. Spróbuj póżniej.
 	</notification>
 	<notification name="ServerVersionChanged">
-		Ten region używa innej wersji symulatora. Kliknij na tą wiadomość żeby uzyskać więcej informacji.
+		Ten region używa innej wersji symulatora.
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		Wybrany link nie daje się otworzyć z tej przeglądarki.

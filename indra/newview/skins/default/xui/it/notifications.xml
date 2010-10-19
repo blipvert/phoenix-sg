@@ -94,7 +94,7 @@ Dettagli dell&apos;errore: il messaggio di allerta &apos;[_NAME]&apos; non è st
 		<usetemplate name="okcancelbuttons" notext="Annulla" yestext="Si"/>
 	</notification>
 	<notification name="BadInstallation">
-		Si è verificato un errore durante l&apos;aggiornamento di Second Life. Scarica l&apos;ultima versione da secondlife.com.
+		Si è verificato un errore durante l&apos;aggiornamento di Second Life. Scarica l&apos;ultima versione da PheonixViewer.com.
     <usetemplate
      name="okbutton"
      yestext="OK"/>
@@ -3055,7 +3055,13 @@ Fai clic su Accetta per partecipare alla chiamata o su Rifiuta per rifiutare l&a
 		Si è verificato un errore durante il tentativo di collegarti a una voice chat con [VOICE_CHANNEL_NAME].  Riprova più tardi.
 	</notification>
 	<notification name="ServerVersionChanged">
-		La regione in cui sei entrato, gira su una versione di simulatore differente. Fai clic su questo messaggio per i dettagli.
+		La regione in cui sei entrato, gira su una versione di simulatore differente.
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		L&apos;URL che hai selezionato non può essere aperto da questo browser.

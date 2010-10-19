@@ -94,7 +94,7 @@ Détails de l&apos;erreur : L&apos;alerte, appelée &apos;[_NAME]&apos; est int
 		<usetemplate name="okcancelbuttons" notext="Annuler" yestext="Oui"/>
 	</notification>
 	<notification name="BadInstallation">
-		Une erreur est survenue lors de la mise à jour de Second Life. Veuillez télécharger la dernière version depuis secondlife.com.
+		Une erreur est survenue lors de la mise à jour de Second Life. Veuillez télécharger la dernière version depuis PheonixViewer.com.
 		<usetemplate name="okbutton" yestext="OK"/>
 	</notification>
 	<notification name="LoginFailedNoNetwork">
@@ -2975,7 +2975,13 @@ Pour y participer, cliquez sur Accepter. Sinon, cliquez sur Refuser. Pour ignore
 		Une erreur est survenue pendant la connexion au chat vocal pour [VOICE_CHANNEL_NAME]. Veuillez réessayer ultérieurement.
 	</notification>
 	<notification name="ServerVersionChanged">
-		La région dans laquelle vous avez pénétré utilise une version de simulateur différente. Pour plus de détails, cliquez sur ce message.
+		La région dans laquelle vous avez pénétré utilise une version de simulateur différente.
+Simulateur actuel: [NEWVERSION]
+Précédant simulateur: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		L&apos;URL sur laquelle vous avez cliqué ne peut pas être ouverte dans ce navigateur.
