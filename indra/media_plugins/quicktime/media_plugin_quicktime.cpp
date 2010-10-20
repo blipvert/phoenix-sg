@@ -105,14 +105,14 @@ private:
 		message.setValueS32("top", top);
 		message.setValueS32("right", right);
 		message.setValueS32("bottom", bottom);
-		
+
 		if(mMovieHandle)
 		{
 			message.setValueReal("current_time", getCurrentTime());
 			message.setValueReal("duration", getDuration());
 			message.setValueReal("current_rate", Fix2X(GetMovieRate(mMovieHandle)));
 		}
-			
+
 		sendMessage(message);
 	}
 
@@ -120,16 +120,16 @@ private:
 	static Rect rectFromSize(int width, int height)
 	{
 		Rect result;
-		
+
 
 		result.left = 0;
 		result.top = 0;
 		result.right = width;
 		result.bottom = height;
-		
+
 		return result;
 	}
-	
+
 	Fixed getPlayRate(void)
 	{
 		Fixed result;
@@ -148,25 +148,27 @@ private:
 		{
 			result = X2Fix(mPlayRate);
 		}
-		
+
 		return result;
 	}
-	
+
 	void load( const std::string url )
 	{
+
 		if ( url.empty() )
 			return;
-		
+
 		// Stop and unload any existing movie before starting another one.
 		unload();
-			
+
 		setStatus(STATUS_LOADING);
-		
+
 		//In case std::string::c_str() makes a copy of the url data,
 		//make sure there is memory to hold it before allocating memory for handle.
 		//if fails, NewHandleClear(...) should return NULL.
 		const char* url_string = url.c_str() ;
 		Handle handle = NewHandleClear( ( Size )( url.length() + 1 ) );
+
 		if ( NULL == handle || noErr != MemError() || NULL == *handle )
 		{
 			setStatus(STATUS_ERROR);
@@ -205,7 +207,7 @@ private:
 		SetMovieDrawingCompleteProc( mMovieHandle, movieDrawingCallWhenChanged, movieDrawingCompleteCallback, ( long )this );
 
 		setStatus(STATUS_LOADED);
-		
+
 		sizeChanged();
 	};
 
@@ -242,7 +244,7 @@ private:
 			DisposeGWorld( mGWorldHandle );
 			mGWorldHandle = NULL;
 		};
-		
+
 		setStatus(STATUS_NONE);
 
 		return true;
@@ -252,7 +254,7 @@ private:
 	{
 		unload();
 		load( url );
-		
+
 		return true;
 	};
 
@@ -260,7 +262,7 @@ private:
 	{
 		if ( ! mMovieHandle )
 			return false;
-		
+
 		// Check to see whether the movie's natural size has updated
 		{
 			int width, height;
@@ -278,14 +280,14 @@ private:
 				//std::cerr << "<--- Sending size change request to application with name: " << mTextureSegmentName << " - size is " << width << " x " << height << std::endl;
 			}
 		}
-		
+
 		// sanitize destination size
 		Rect dest_rect = rectFromSize(mWidth, mHeight);
 
 		// media depth won't change
 		int depth_bits = mDepth * 8;
 		long rowbytes = mDepth * mTextureWidth;
-				
+
 		GWorldPtr old_gworld_handle = mGWorldHandle;
 
 		if(mPixels != NULL)
@@ -317,7 +319,7 @@ private:
 		{
 			DisposeGWorld( old_gworld_handle );
 		}
-		
+
 		// Set up the movie display matrix
 		{
 			// scale movie to fit rect and invert vertically to match opengl image format
@@ -330,7 +332,7 @@ private:
 			ScaleMatrix( &transform, X2Fix( scaleX ), X2Fix( scaleY ), X2Fix( centerX ), X2Fix( centerY ) );
 			SetMovieMatrix( mMovieHandle, &transform );
 		}
-		
+
 		// update movie controller
 		if ( mMovieController )
 		{
@@ -348,7 +350,6 @@ private:
 
 		return true;
 	}
-
 	static Boolean mcActionFilterCallBack( MovieController mc, short action, void *params, long ref )
 	{
 		Boolean result = false;
@@ -358,9 +359,9 @@ private:
 		switch( action )
 		{
 			// handle window resizing
-			case mcActionControllerSizeChanged:				
+			case mcActionControllerSizeChanged:
 				// Ensure that the movie draws correctly at the new size
-				self->sizeChanged();						
+				self->sizeChanged();
 				break;
 
 			// Block any movie controller actions that open URLs.
@@ -388,6 +389,7 @@ private:
 		//LLMediaEvent event( self );
 //		self->updateQuickTime();
 		// TODO ^^^
+
 
 		if ( self->mWidth > 0 && self->mHeight > 0 )
 			self->setDirty( 0, 0, self->mWidth, self->mHeight );
@@ -437,7 +439,7 @@ private:
 						MCDoAction( mMovieController, mcActionPlay, (void*)rate );
 						rewind();
 					};
-					
+
 					MCDoAction( mMovieController, mcActionPrerollAndPlay, (void*)getPlayRate() );
 					MCDoAction( mMovieController, mcActionSetVolume, (void*)mCurVolume );
 					setStatus(STATUS_PLAYING);
@@ -465,7 +467,7 @@ private:
 		if ( mCommand == COMMAND_PAUSE )
 		{
 			if ( mStatus == STATUS_PLAYING )
-			{				
+			{
 				if ( GetMovieLoadState( mMovieHandle ) >= kMovieLoadStatePlaythroughOK )
 				{
 					Fixed rate = X2Fix( 0.0 );
@@ -498,7 +500,7 @@ private:
 	void getMovieNaturalSize(int *movie_width, int *movie_height)
 	{
 		Rect rect;
-		
+
 		GetMovieNaturalBoundsRect( mMovieHandle, &rect );
 
 		int width  = ( rect.right - rect.left );
@@ -521,7 +523,7 @@ private:
 		*movie_width = width;
 		*movie_height = height;
 	}
-	
+
 	void updateQuickTime(int milliseconds)
 	{
 		if ( ! mMovieHandle )
@@ -864,7 +866,7 @@ void MediaPluginQuickTime::receiveMessage(const char *message_string)
 			{
 				// no response is necessary here.
 				F64 time = message_in.getValueReal("time");
-				
+
 				// Convert time to milliseconds for update()
 				update((int)(time * 1000.0f));
 			}
@@ -878,8 +880,6 @@ void MediaPluginQuickTime::receiveMessage(const char *message_string)
 				info.mAddress = message_in.getValuePointer("address");
 				info.mSize = (size_t)message_in.getValueS32("size");
 				std::string name = message_in.getValue("name");
-
-
 //				std::cerr << "MediaPluginQuickTime::receiveMessage: shared memory added, name: " << name
 //					<< ", size: " << info.mSize
 //					<< ", address: " << info.mAddress
@@ -902,9 +902,9 @@ void MediaPluginQuickTime::receiveMessage(const char *message_string)
 						// This is the currently active pixel buffer.  Make sure we stop drawing to it.
 						mPixels = NULL;
 						mTextureSegmentName.clear();
-						
+
 						// Make sure the movie GWorld is no longer pointed at the shared segment.
-						sizeChanged();						
+						sizeChanged();
 					}
 					mSharedSegments.erase(iter);
 				}
@@ -995,9 +995,9 @@ void MediaPluginQuickTime::receiveMessage(const char *message_string)
 						mTextureHeight = texture_height;
 
 						mMediaSizeChanging = false;
-						
+
 						sizeChanged();
-						
+
 						update();
 					};
 				};
@@ -1006,14 +1006,14 @@ void MediaPluginQuickTime::receiveMessage(const char *message_string)
 			{
 				std::string uri = message_in.getValue("uri");
 				load( uri );
-				sendStatus();		
+				sendStatus();
 			}
 			else if(message_name == "mouse_event")
 			{
 				std::string event = message_in.getValue("event");
 				S32 x = message_in.getValueS32("x");
 				S32 y = message_in.getValueS32("y");
-				
+
 				if(event == "down")
 				{
 					mouseDown(x, y);
@@ -1106,7 +1106,7 @@ MediaPluginQuickTime::~MediaPluginQuickTime()
 
 void MediaPluginQuickTime::receiveMessage(const char *message_string)
 {
-    // no-op 
+    // no-op
 }
 
 // We're building without quicktime enabled.  Just refuse to initialize.
