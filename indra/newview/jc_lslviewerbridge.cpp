@@ -74,7 +74,7 @@
 #define phoenix_bridge_name "#LSL<->Client Bridge v0.09"
 #define phoenix_current_version (F32)0.09f
 
-void //cmdline_printchat(std::string message);
+void cmdline_printchat(std::string message);
 
 U8 JCLSLBridge::sBridgeStatus;
 JCLSLBridge* JCLSLBridge::sInstance;
