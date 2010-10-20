@@ -163,7 +163,7 @@ No tutorial is currently available.
    icon="alertmodal.tga"
    name="BadInstallation"
    type="alertmodal">
-    An error occurred while updating the Phoenix Viewer. Please download the latest version from secondlife.com.
+    An error occurred while updating the Phoenix Viewer. Please download the latest version from PhoenixViewer.com.
     <usetemplate
      name="okbutton"
      yestext="Ok"/>

@@ -93,7 +93,7 @@ Detalhes do erro: O alerta chamado &apos;[_NAME]&apos; não foi encontrado em no
 		<usetemplate name="okcancelbuttons" notext="Cancelar" yestext="Sim"/>
 	</notification>
 	<notification name="BadInstallation">
-		Ocorreu um erro atualizando o Second Life. Por favor, faça o download da última versão em secondlife.com.
+		Ocorreu um erro atualizando o Second Life. Por favor, faça o download da última versão em PheonixViewer.com.
     <usetemplate
      name="okbutton"
      yestext="OK"/>
@@ -3008,7 +3008,13 @@ Clique Aceitar para juntar-se à chamada ou Recusar para recusar o convite. Cliq
 		Ocorreu um erro enquanto você tentava se conectar à conversa de voz de [VOICE_CHANNEL_NAME].  Favor tentar novamente mais tarde.
 	</notification>
 	<notification name="ServerVersionChanged">
-		A região em que você entrou está rodando uma versão diferente de simulador. Clique aqui para mais detalhes.
+		A região em que você entrou está rodando uma versão diferente de simulador.
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		A URL que vocÊ clicou não pode ser aberta no navegador web.

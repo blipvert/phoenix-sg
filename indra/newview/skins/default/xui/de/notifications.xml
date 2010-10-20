@@ -94,7 +94,7 @@ Fehlerdetails: Der Warnhinweis „[_NAME]“ wurde in notifications.xml nicht ge
 		<usetemplate name="okcancelbuttons" notext="Abbrechen" yestext="Ja"/>
 	</notification>
 	<notification name="BadInstallation">
-		Beim Aktualisieren von Second Life ist ein Fehler aufgetreten. Bitte laden Sie die aktuellste Version von secondlife.com herunter.
+		Beim Aktualisieren von Second Life ist ein Fehler aufgetreten. Bitte laden Sie die aktuellste Version von PheonixViewer.com herunter.
 		<usetemplate name="okbutton" yestext="OK"/>
 	</notification>
 	<notification name="LoginFailedNoNetwork">
@@ -2980,7 +2980,13 @@ Klicken Sie auf „Akzeptieren“, um dem Chat beizutreten, oder auf „Ablehnen
 		Fehler beim Versuch, eine Voice-Chat-Verbindung zu [VOICE_CHANNEL_NAME] herzustellen.  Bitte versuchen Sie es erneut.
 	</notification>
 	<notification name="ServerVersionChanged">
-		Die Region, die Sie betreten haben, verwendet eine andere Simulatorversion. Klicken Sie auf diese Nachricht, um weitere Informationen zu erhalten.
+		Die Region, die Sie betreten haben, verwendet eine andere Simulatorversion.
+Aktueller Simulator: [NEWVERSION]
+Vorheriger Simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		Die URL, die Sie angeklickt haben, kann in diesem Web Browser nicht geöffnet werden.

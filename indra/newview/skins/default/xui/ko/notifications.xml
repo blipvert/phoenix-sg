@@ -5989,7 +5989,13 @@ sculpted prim은 그 형태를 지정하는 특별한 텍스처를 요구합니�
    
    name="ServerVersionChanged"
    >
-이동한 지역이 다른 시뮬레이터 버전으로 실행 중입니다. 자세한 내용을 보려면 이 메시지를 클릭하십시오.
+이동한 지역이 다른 시뮬레이터 버전으로 실행 중입니다.
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
   </notification>
 
   <notification

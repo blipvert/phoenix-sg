@@ -88,7 +88,7 @@ Hata detayları: &apos;[_NAME]&apos; adındaki uyarı notifications.xml&apos;de 
 		<usetemplate name="okcancelbuttons" notext="İptal" yestext="Evet"/>
 	</notification>
 	<notification name="BadInstallation">
-		Second Life güncellenirken bir hata oluştu. Lütfen secondlife.com&apos;dan en güncel sürümü yükleyiniz.
+		Second Life güncellenirken bir hata oluştu. Lütfen PheonixViewer.com&apos;dan en güncel sürümü yükleyiniz.
 		<usetemplate name="okbutton" yestext="Tamam"/>
 	</notification>
 	<notification name="LoginFailedNoNetwork">
@@ -2001,7 +2001,13 @@ Sohbete katılmak için Kabul et veya daveti reddetmek için Reddet butonuna tı
 		[VOICE_CHANNEL_NAME] ile sesli sohbet bağlantısı kurulmaya çalışılırken bir hata oluştu.Lütfen daha sonra tekrar deneyiniz.
 	</notification>
 	<notification name="ServerVersionChanged">
-		Girdiğiniz bölge farklı bir simulatör versiyonunda çalıştırılıyor.Detaylar için bu mesaja tıklayınız.
+		Girdiğiniz bölge farklı bir simulatör versiyonunda çalıştırılıyor.
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		Tıkladığınız link bu web tarayıcısında açılamıyor.

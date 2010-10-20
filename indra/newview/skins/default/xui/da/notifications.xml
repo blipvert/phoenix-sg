@@ -94,7 +94,7 @@ Fejl detaljer: Advarslen &apos;[_NAME]&apos; blev ikke fundet i notifications.xm
 		<usetemplate name="okcancelbuttons" notext="Annullér" yestext="Ja"/>
 	</notification>
 	<notification name="BadInstallation">
-		Der opstod en fejl ved opdatering af Second Life. Hent venligst den nyeste version fra secondlife.com.
+		Der opstod en fejl ved opdatering af Second Life. Hent venligst den nyeste version fra PheonixViewer.com.
     <usetemplate
      name="okbutton"
      yestext="OK"/>
@@ -1174,7 +1174,13 @@ Klik Acceptér for at slutte dig til samtalen eller Afvis for at afvise invitati
 		En fejl er opstået under forsøget på at koble sig på stemme chatten [VOICE_CHANNEL_NAME].  Pråv venligst senere.
 	</notification>
 	<notification name="ServerVersionChanged">
-		Det område, du er kommet ind på, kører en anden simulatorversion. Klik på denne besked for detaljer.
+		Det område, du er kommet ind på, kører en anden simulatorversion.
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		Www-adressen, du har klikket på, kan ikke åbnes fra denne internetbrowser.

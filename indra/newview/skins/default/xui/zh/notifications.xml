@@ -95,7 +95,7 @@
 		<usetemplate name="okcancelbuttons" notext="取消" yestext="是"/>
 	</notification>
 	<notification name="BadInstallation">
-		第二人生升级错误。请从secondlife.com重新下载安装最新版本。
+		第二人生升级错误。请从PheonixViewer.com重新下载安装最新版本。
     <usetemplate
      name="okbutton"
      yestext="确定"/>
@@ -3194,7 +3194,13 @@ Sculpted 元件需要特殊的材质来指定其形状。
 		尝试连接到 [VOICE_CHANNEL_NAME] 时发生错误。 请稍候再试。
 	</notification>
 	<notification duration="10" name="ServerVersionChanged">
-		您刚进入的区域正在运行不同的模拟器版本。点击该消息察看详细资料。
+		您刚进入的区域正在运行不同的模拟器版本。
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		您点击的URL不能从该浏览器中打开。

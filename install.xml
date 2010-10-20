@@ -49,9 +49,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>37966f20fde607c52513334d00e0bbbc</string>
+						<string>84eef12ae4c4a303e83cf20c531e8fdf</string>
 						<key>url</key>
-						<uri>http://downloads.phoenixviewer.com/libotr-2.2.0-linux-20100911.tar.bz2</uri>
+						<uri>http://downloads.phoenixviewer.com/libotr-2.2.0-linux-20101018.tar.bz2</uri>
 					</map>
 					<key>darwin</key>
 					<map>

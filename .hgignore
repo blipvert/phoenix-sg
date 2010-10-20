@@ -1,9 +1,12 @@
 syntax: glob
 *.pyc
+*.orig
+*.bak
 indra/build-vc[0-9]*
 indra/test_apps/terrain_mule/*.dll
 libraries
 LICENSES
+fmodapi375win
 installed.xml
 glob:indra/newview/browser_profile/*
 glob:indra/newview/fmod.dll

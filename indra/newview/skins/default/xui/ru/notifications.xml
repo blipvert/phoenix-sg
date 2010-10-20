@@ -95,7 +95,7 @@
 		<usetemplate name="okcancelbuttons" notext="Отмена" yestext="Да"/>
 	</notification>
 	<notification name="BadInstallation">
-		Во время обновления Second Life произошла ошибка. Пожалуйста, скачайте последнюю версию с сайта secondlife.com.
+		Во время обновления Second Life произошла ошибка. Пожалуйста, скачайте последнюю версию с сайта PheonixViewer.com.
     <usetemplate
      name="okbutton"
      yestext="OK"/>
@@ -3033,7 +3033,13 @@ X и Y задает их позицию. D (плотность) определя
 		Возникла ошибка при подключении к голосовому чату [VOICE_CHANNEL_NAME].Попробуйте позже.
 	</notification>
 	<notification name="ServerVersionChanged">
-		Этот регион работает, используя другую версию симулятора. Нажмите на это сообщение для подробностей.
+		Этот регион работает, используя другую версию симулятора.
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		URL, на который Вы кликнули, не может быть открыт этим браузером.
