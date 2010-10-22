@@ -80,6 +80,7 @@
 #include "llviewercontrol.h"
 #include "llviewerjoystick.h"
 #include "lluictrlfactory.h"
+#include "qtoolalign.h"
 #include "llselectmgr.h" //Banana:KC
 
 #include "llfloaterland.h"
@@ -223,6 +224,8 @@ BOOL	LLFloaterTools::postBuild()
 	childSetCommitCallback("radio stretch",commit_select_tool,LLToolCompScale::getInstance());
 	mRadioSelectFace = getChild<LLCheckBoxCtrl>("radio select face");
 	childSetCommitCallback("radio select face",commit_select_tool,LLToolFace::getInstance());
+	mRadioAlign = getChild<LLCheckBoxCtrl>("radio align");
+	childSetCommitCallback("radio align",commit_select_tool,QToolAlign::getInstance());
 	mCheckSelectIndividual = getChild<LLCheckBoxCtrl>("checkbox edit linked parts");
 	childSetValue("checkbox edit linked parts",(BOOL)gSavedSettings.getBOOL("EditLinkedParts"));
 	childSetCommitCallback("checkbox edit linked parts",commit_select_component,this);
@@ -376,6 +379,7 @@ LLFloaterTools::LLFloaterTools()
 	mRadioRotate(NULL),
 	mRadioStretch(NULL),
 	mRadioSelectFace(NULL),
+	mRadioAlign(NULL),
 	mCheckSelectIndividual(NULL),
 
 	mCheckSnapToGrid(NULL),
@@ -655,6 +659,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 						tool == LLToolCompScale::getInstance() ||
 						tool == LLToolFace::getInstance() ||
 						tool == LLToolIndividual::getInstance() ||
+						tool == QToolAlign::getInstance() ||
 						tool == LLToolPipette::getInstance();
 
 	mBtnEdit	->setToggleState( edit_visible );
@@ -667,6 +672,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 		mRadioSelectFace->setVisible( edit_visible );
 		mRadioSelectFace->set( tool == LLToolFace::getInstance() );
 	}
+	mRadioAlign		->setVisible( edit_visible );
 
 	if (mCheckSelectIndividual)
 	{
@@ -677,6 +683,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	mRadioPosition	->set( tool == LLToolCompTranslate::getInstance() );
 	mRadioRotate	->set( tool == LLToolCompRotate::getInstance() );
 	mRadioStretch	->set( tool == LLToolCompScale::getInstance() );
+	mRadioAlign	->set( tool == QToolAlign::getInstance() );
 
 	if (mComboGridMode) 
 	{

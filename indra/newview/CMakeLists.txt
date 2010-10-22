@@ -517,6 +517,7 @@ set(viewer_SOURCE_FILES
     llxmlrpctransaction.cpp
     noise.cpp
     pipeline.cpp
+	qtoolalign.cpp
     rlvhandler.cpp
     rlvhelper.cpp
     rlvcommon.cpp
@@ -1000,6 +1001,7 @@ set(viewer_HEADER_FILES
     macmain.h
     noise.h
     pipeline.h
+	qtoolalign.h
     randgauss.h
     rlvdefines.h
     rlvhandler.h

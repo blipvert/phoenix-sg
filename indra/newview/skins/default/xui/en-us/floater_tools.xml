@@ -66,7 +66,7 @@
 	     mouse_opaque="true" name="radio spin" radio_style="true" width="114" />
 
   <!-- Edit panel -->
-  <check_box bottom="-70" follows="left|top" font="SansSerifSmall" height="16"
+  <check_box bottom="-65" follows="left|top" font="SansSerifSmall" height="16"
 	     initial_value="false" label="Position" left="4" mouse_opaque="true"
 	     name="radio position" radio_style="true" width="114" />
   <check_box bottom_delta="-15" follows="left|top" font="SansSerifSmall" height="16"
@@ -78,12 +78,15 @@
   <check_box bottom_delta="-15" follows="left|top" font="SansSerifSmall" height="16"
 	     initial_value="false" label="Select Texture" left="4" mouse_opaque="true"
 	     name="radio select face" radio_style="true" width="114" />
+  <check_box bottom_delta="-15" follows="left|top" font="SansSerifSmall" height="16"
+	     initial_value="false" label="Align" left="4" mouse_opaque="true"
+	     name="radio align" radio_style="true" width="114" />
   <check_box bottom_delta="-19" control_name="EditLinkedParts" follows="left|top"
 	     font="SansSerifSmall" height="16" initial_value="false"
 	     label="Edit linked parts" left="4" mouse_opaque="true"
 	     name="checkbox edit linked parts" width="114" />
   <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-	     bottom_delta="-20" drop_shadow_visible="true" follows="left|top"
+	     bottom_delta="-15" drop_shadow_visible="true" follows="left|top"
 	     font="SansSerifSmall" h_pad="0" halign="left" height="14" left="6"
 	     mouse_opaque="true" name="text ruler mode" v_pad="0" width="68">
     Ruler:
