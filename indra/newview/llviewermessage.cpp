@@ -3575,6 +3575,9 @@ void process_teleport_start(LLMessageSystem *msg, void**)
 		gViewerWindow->setProgressCancelButtonVisible(TRUE, std::string("Cancel")); // *TODO: Translate
 	}
 
+	// Set last region data for teleport history
+	gAgent.setLastRegionData(gAgent.getRegion()->getName(), gAgent.getPositionAgent());
+
 	// Freeze the UI and show progress bar
 	// Note: could add data here to differentiate between normal teleport and death.
 
