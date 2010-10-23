@@ -654,9 +654,20 @@ void LLFolderViewItem::preview( void )
 		{
 			LLVOAvatar* avatar = gAgent.getAvatarObject();
 			if(avatar->isWearingAttachment(mListener->getUUID()))
+			{
 				mListener->performAction(NULL, &gInventory, "detach");
+			}
 			else
-				mListener->performAction(NULL, &gInventory, "attach");
+			{
+				if(gSavedSettings.getBOOL("PhoenixDoubleClickAddInventoryObjects"))
+				{
+					mListener->performAction(NULL, &gInventory, "wear_add");
+				}
+				else
+				{
+					mListener->performAction(NULL, &gInventory, "attach");
+				}
+			}
 		}else
 		{
 			mListener->previewItem();

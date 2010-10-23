@@ -109,6 +109,7 @@ private:
 	//static void onCommitAvatarEffectsChange(LLUICtrl* caller, void* user_data);
 	//static void onCommitAutoResponse(LLUICtrl* caller, void* user_data);
 	static void onPhoenixInstantMessageAnnounceIncoming(LLUICtrl* ctrl, void* userdata);
+	static void onWearInvToggle(LLUICtrl* ctrl, void* userdata);
 
 private:
 	std::string mSkin;

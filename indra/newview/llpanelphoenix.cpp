@@ -278,6 +278,8 @@ BOOL LLPanelPhoenix::postBuild()
 
 	childSetValue("PhoenixUseOTR", LLSD((S32)gSavedSettings.getU32("PhoenixUseOTR"))); // [$PLOTR$]
 	getChild<LLButton>("otr_help_btn")->setClickedCallback(onClickOtrHelp, this);      // [/$PLOTR$]
+	const bool Wear_Dbl_Click = gSavedSettings.getBOOL("PhoenixDoubleClickWearInventoryObjects");
+	getChild<LLCheckBoxCtrl>("add-inv-toggle")->setEnabled(Wear_Dbl_Click);
 
 	initHelpBtn("PhoenixHelp_TeleportLogin",	"PhoenixHelp_TeleportLogin");
 	initHelpBtn("PhoenixHelp_Voice",			"PhoenixHelp_Voice");
@@ -360,6 +362,7 @@ BOOL LLPanelPhoenix::postBuild()
 	childSetValue("PhoenixInstantMessageResponseItem", gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseItem"));
 	childSetValue("PhoenixInstantMessageAnnounceIncoming", AnnounceIncoming);
 	getChild<LLCheckBoxCtrl>("PhoenixInstantMessageAnnounceIncoming")->setCommitCallback(onPhoenixInstantMessageAnnounceIncoming);
+	getChild<LLCheckBoxCtrl>("wear-inv-toggle")->setCommitCallback(onWearInvToggle);
 	childSetValue("PhoenixInstantMessageAnnounceStealFocus", gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageAnnounceStealFocus"));
 	childSetValue("PhoenixShadowsON", gSavedSettings.getBOOL("PhoenixShadowsToggle"));
 
@@ -814,6 +817,13 @@ void LLPanelPhoenix::onPhoenixInstantMessageAnnounceIncoming(LLUICtrl* ctrl, voi
 	} else {
 		ShowOnTyping->setValue(gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageShowOnTyping")); //restore to last value
 	}
+}
+
+void LLPanelPhoenix::onWearInvToggle(LLUICtrl* ctrl, void* userdata)
+{
+	LLPanelPhoenix* self = (LLPanelPhoenix*)ctrl->getParent();
+	const bool Wear_Dbl_Click = gSavedSettings.getBOOL("PhoenixDoubleClickWearInventoryObjects");
+	self->getChild<LLCheckBoxCtrl>("add-inv-toggle")->setEnabled(Wear_Dbl_Click);
 }
 
 void LLPanelPhoenix::onConditionalPreferencesChanged(LLUICtrl* ctrl, void* userdata)
