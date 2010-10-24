@@ -4388,6 +4388,15 @@ The following required components are missing from [FLOATER]:
   </notification>
 
   <notification
+   icon="alertmodal.tga"
+   name="PhoenixUsingDeprecatedAttachPoint"
+   type="alertmodal">
+You are attempting to use a secondary attachment point.
+The secondary attachment points in previous versions of the Phoenix Viewer are no longer supported. Items that were attached there have been detached.
+You should attach any items on those points to the regular attachment points instead. Once you have done so, you may need to adjust their position, but you should only have to do that once for each attachment.
+  </notification>
+
+  <notification
    icon="alert.tga"
    label="Replace Existing Attachment"
    name="ReplaceAttachment"
