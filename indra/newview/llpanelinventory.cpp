@@ -459,14 +459,15 @@ BOOL LLTaskInvFVBridge::isItemRemovable()
 // [RLVa:KB] - Checked: 2010-04-01 (RLVa-1.2.0c) | Modified: RLVa-1.0.5a
 	if ( (object) && (rlv_handler_t::isEnabled()) )
 	{
-		if (gRlvAttachmentLocks.isLockedAttachment(object->getRootEdit()))
+		const LLViewerObject* pObjRoot = object->getRootEdit();
+		if (gRlvAttachmentLocks.isLockedAttachment(pObjRoot))
 		{
 			return FALSE;
 		}
 		else if ( (gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP)) )
 		{
 			LLVOAvatar* pAvatar = gAgent.getAvatarObject();
-			if ( (pAvatar) && (pAvatar->mIsSitting) && (pAvatar->getRoot() == object->getRootEdit()) )
+			if ( (pAvatar) && (pAvatar->mIsSitting) && (pAvatar->getRoot() == pObjRoot) )
 				return FALSE;
 		}
 	}
