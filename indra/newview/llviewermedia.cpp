@@ -43,11 +43,15 @@
 #include "llviewerimagelist.h"
 #include "llpluginclassmedia.h"
 
+#include "llurldispatcher.h"
+
 #include "llevent.h"		// LLSimpleListener
 #include "lluuid.h"
 #include "llkeyboard.h"
 
 #include "llappviewer.h"
+#include "llfilepicker.h"
+#include "llfloatermediabrowser.h"	// for handling window close requests and geometry change requests in media browser windows.
 
 
 // Merov: Temporary definitions while porting the new viewer media code to Snowglobe
@@ -1123,22 +1127,225 @@ bool LLViewerMediaImpl::hasMedia()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
-void LLViewerMediaImpl::handleMediaEvent(LLPluginClassMedia* self, LLPluginClassMediaOwner::EMediaEvent event)
+//
+void LLViewerMediaImpl::resetPreviousMediaState()
 {
+	mPreviousMediaState = MEDIA_NONE;
+	mPreviousMediaTime = 0.0f;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+void LLViewerMediaImpl::handleMediaEvent(LLPluginClassMedia* plugin, LLPluginClassMediaOwner::EMediaEvent event)
+{
+	bool pass_through = true;
 	switch(event)
 	{
-		case MEDIA_EVENT_PLUGIN_FAILED:
+		case MEDIA_EVENT_CLICK_LINK_NOFOLLOW:
 		{
+			LL_DEBUGS("Media") << "MEDIA_EVENT_CLICK_LINK_NOFOLLOW, uri is: " << plugin->getClickURL() << LL_ENDL; 
+			std::string url = plugin->getClickURL();
+			LLURLDispatcher::dispatch(url, NULL, mTrustedBrowser);
+
+		}
+		break;
+		case MEDIA_EVENT_CLICK_LINK_HREF:
+		{
+			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_CLICK_LINK_HREF, target is \"" << plugin->getClickTarget() << "\", uri is " << plugin->getClickURL() << LL_ENDL;
+		};
+		break;
+		case MEDIA_EVENT_PLUGIN_FAILED_LAUNCH:
+		{
+			// The plugin failed to load properly.  Make sure the timer doesn't retry.
+			// TODO: maybe mark this plugin as not loadable somehow?
+			mMediaSourceFailed = true;
+
+			// Reset the last known state of the media to defaults.
+			resetPreviousMediaState();
+			
+			// TODO: may want a different message for this case?
 			LLSD args;
-			args["PLUGIN"] = LLMIMETypes::implType(mMimeType);
+			args["PLUGIN"] = LLMIMETypes::implType(mCurrentMimeType);
 			LLNotifications::instance().add("MediaPluginFailed", args);
 		}
 		break;
+
+		case MEDIA_EVENT_PLUGIN_FAILED:
+		{
+			// The plugin crashed.
+			mMediaSourceFailed = true;
+
+			// Reset the last known state of the media to defaults.
+			resetPreviousMediaState();
+
+			LLSD args;
+			args["PLUGIN"] = LLMIMETypes::implType(mCurrentMimeType);
+			// SJB: This is getting called every frame if the plugin fails to load, continuously respawining the alert!
+			//LLNotificationsUtil::add("MediaPluginFailed", args);
+		}
+		break;
+		
+		case MEDIA_EVENT_CURSOR_CHANGED:
+		{
+			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_CURSOR_CHANGED, new cursor is " << plugin->getCursorName() << LL_ENDL;
+
+			std::string cursor = plugin->getCursorName();
+			
+			if(cursor == "arrow")
+				mLastSetCursor = UI_CURSOR_ARROW;
+			else if(cursor == "ibeam")
+				mLastSetCursor = UI_CURSOR_IBEAM;
+			else if(cursor == "splith")
+				mLastSetCursor = UI_CURSOR_SIZEWE;
+			else if(cursor == "splitv")
+				mLastSetCursor = UI_CURSOR_SIZENS;
+			else if(cursor == "hand")
+				mLastSetCursor = UI_CURSOR_HAND;
+			else // for anything else, default to the arrow
+				mLastSetCursor = UI_CURSOR_ARROW;
+		}
+		break;
+
+		case LLViewerMediaObserver::MEDIA_EVENT_NAVIGATE_BEGIN:
+		{
+			LL_DEBUGS("Media") << "MEDIA_EVENT_NAVIGATE_BEGIN, uri is: " << plugin->getNavigateURI() << LL_ENDL;
+
+			if(getNavState() == MEDIANAVSTATE_SERVER_SENT)
+			{
+				setNavState(MEDIANAVSTATE_SERVER_BEGUN);
+			}
+			else
+			{
+				setNavState(MEDIANAVSTATE_BEGUN);
+			}
+		}
+		break;
+
+		case LLViewerMediaObserver::MEDIA_EVENT_NAVIGATE_COMPLETE:
+		{
+			LL_DEBUGS("Media") << "MEDIA_EVENT_NAVIGATE_COMPLETE, uri is: " << plugin->getNavigateURI() << LL_ENDL;
+
+			std::string url = plugin->getNavigateURI();
+			if(getNavState() == MEDIANAVSTATE_BEGUN)
+			{
+				if(mCurrentMediaURL == url)
+				{
+					// This is a navigate that takes us to the same url as the previous navigate.
+					setNavState(MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED_SPURIOUS);
+				}
+				else
+				{
+					mCurrentMediaURL = url;
+					setNavState(MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED);
+				}
+			}
+			else if(getNavState() == MEDIANAVSTATE_SERVER_BEGUN)
+			{
+				mCurrentMediaURL = url;
+				setNavState(MEDIANAVSTATE_SERVER_COMPLETE_BEFORE_LOCATION_CHANGED);
+			}
+			else
+			{
+				// all other cases need to leave the state alone.
+			}
+		}
+		break;
+		
+		case LLViewerMediaObserver::MEDIA_EVENT_LOCATION_CHANGED:
+		{
+			LL_DEBUGS("Media") << "MEDIA_EVENT_LOCATION_CHANGED, uri is: " << plugin->getLocation() << LL_ENDL;
+
+			std::string url = plugin->getLocation();
+
+			if(getNavState() == MEDIANAVSTATE_BEGUN)
+			{
+				if(mCurrentMediaURL == url)
+				{
+					// This is a navigate that takes us to the same url as the previous navigate.
+					setNavState(MEDIANAVSTATE_FIRST_LOCATION_CHANGED_SPURIOUS);
+				}
+				else
+				{
+					mCurrentMediaURL = url;
+					setNavState(MEDIANAVSTATE_FIRST_LOCATION_CHANGED);
+				}
+			}
+			else if(getNavState() == MEDIANAVSTATE_SERVER_BEGUN)
+			{
+				mCurrentMediaURL = url;
+				setNavState(MEDIANAVSTATE_SERVER_FIRST_LOCATION_CHANGED);
+			}
+			else
+			{
+				// Don't track redirects.
+				setNavState(MEDIANAVSTATE_NONE);
+			}
+		}
+		break;
+
+		case LLViewerMediaObserver::MEDIA_EVENT_PICK_FILE_REQUEST:
+		{
+			// Display a file picker
+			std::string response;
+			
+			LLFilePicker& picker = LLFilePicker::instance();
+			if (!picker.getOpenFile(LLFilePicker::FFLOAD_ALL))
+			{
+				// The user didn't pick a file -- the empty response string will indicate this.
+			}
+			
+			response = picker.getFirstFile();
+			
+			plugin->sendPickFileResponse(response);
+		}
+		break;
+		
+		case LLViewerMediaObserver::MEDIA_EVENT_CLOSE_REQUEST:
+		{
+			std::string uuid = plugin->getClickUUID();
+
+			llinfos << "MEDIA_EVENT_CLOSE_REQUEST for uuid " << uuid << llendl;
+
+			if(uuid.empty())
+			{
+				// This close request is directed at this instance, let it fall through.
+			}
+			else
+			{
+				// This close request is directed at another instance
+				pass_through = false;
+				//LLFloaterMediaBrowser::closeRequest(uuid);
+			}
+		}
+		break;
+
+		case LLViewerMediaObserver::MEDIA_EVENT_GEOMETRY_CHANGE:
+		{
+			std::string uuid = plugin->getClickUUID();
+
+			llinfos << "MEDIA_EVENT_GEOMETRY_CHANGE for uuid " << uuid << llendl;
+
+			if(uuid.empty())
+			{
+				// This geometry change request is directed at this instance, let it fall through.
+			}
+			else
+			{
+				// This request is directed at another instance
+				pass_through = false;
+				LLFloaterMediaBrowser::geometryChanged(uuid, plugin->getGeometryX(), plugin->getGeometryY(), plugin->getGeometryWidth(), plugin->getGeometryHeight());
+			}
+		}
+		break;
+
 		default:
 		break;
 	}
-	// Just chain the event to observers.
-	emitEvent(self, event);
+
+	if(pass_through)
+	{
+		// Just chain the event to observers.
+		emitEvent(plugin, event);
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1201,3 +1408,21 @@ LLViewerMediaImpl::canPaste() const
 		return FALSE;
 }
 
+void LLViewerMediaImpl::setNavState(EMediaNavState state)
+{
+	mMediaNavState = state;
+	
+	switch (state) 
+	{
+		case MEDIANAVSTATE_NONE: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_NONE" << llendl; break;
+		case MEDIANAVSTATE_BEGUN: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_BEGUN" << llendl; break;
+		case MEDIANAVSTATE_FIRST_LOCATION_CHANGED: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_FIRST_LOCATION_CHANGED" << llendl; break;
+		case MEDIANAVSTATE_FIRST_LOCATION_CHANGED_SPURIOUS: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_FIRST_LOCATION_CHANGED_SPURIOUS" << llendl; break;
+		case MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED" << llendl; break;
+		case MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED_SPURIOUS: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED_SPURIOUS" << llendl; break;
+		case MEDIANAVSTATE_SERVER_SENT: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_SERVER_SENT" << llendl; break;
+		case MEDIANAVSTATE_SERVER_BEGUN: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_SERVER_BEGUN" << llendl; break;
+		case MEDIANAVSTATE_SERVER_FIRST_LOCATION_CHANGED: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_SERVER_FIRST_LOCATION_CHANGED" << llendl; break;
+		case MEDIANAVSTATE_SERVER_COMPLETE_BEFORE_LOCATION_CHANGED: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_SERVER_COMPLETE_BEFORE_LOCATION_CHANGED" << llendl; break;
+	}
+}
