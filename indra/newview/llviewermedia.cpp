@@ -1313,7 +1313,7 @@ void LLViewerMediaImpl::handleMediaEvent(LLPluginClassMedia* plugin, LLPluginCla
 			{
 				// This close request is directed at another instance
 				pass_through = false;
-				//LLFloaterMediaBrowser::closeRequest(uuid);
+				//TODO: LLFloaterMediaBrowser::closeRequest(uuid);
 			}
 		}
 		break;
@@ -1332,7 +1332,7 @@ void LLViewerMediaImpl::handleMediaEvent(LLPluginClassMedia* plugin, LLPluginCla
 			{
 				// This request is directed at another instance
 				pass_through = false;
-				LLFloaterMediaBrowser::geometryChanged(uuid, plugin->getGeometryX(), plugin->getGeometryY(), plugin->getGeometryWidth(), plugin->getGeometryHeight());
+				//TODO: LLFloaterMediaBrowser::geometryChanged(uuid, plugin->getGeometryX(), plugin->getGeometryY(), plugin->getGeometryWidth(), plugin->getGeometryHeight());
 			}
 		}
 		break;
