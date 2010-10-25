@@ -269,7 +269,8 @@ protected:
 	int				numberOfAliases;
 	std::string		subscriptionHandle;
 	std::string		subscriptionType;
-		
+	
+	std::string		mediaCompletionType;
 
 	// Members for processing text between tags
 	std::string		textBuffer;
@@ -642,7 +643,10 @@ void LLVivoxProtocolParser::EndTag(const char *tag)
 			subscriptionHandle = string;
 		else if (!stricmp("SubscriptionType", tag))
 			subscriptionType = string;
-		
+		else if (!stricmp("MediaCompletionType", tag))
+		{
+			mediaCompletionType = string;;
+		}
 
 		if(clearbuffer)
 		{
@@ -729,6 +733,16 @@ void LLVivoxProtocolParser::processResponse(std::string tag)
 			*/
 			gVoiceClient->mediaStreamUpdatedEvent(sessionHandle, sessionGroupHandle, statusCode, statusString, state, incoming);
 		}		
+		else if (!stricmp(eventTypeCstr, "MediaCompletionEvent"))
+		{
+			/*
+			<Event type="MediaCompletionEvent">
+			<SessionGroupHandle />
+			<MediaCompletionType>AuxBufferAudioCapture</MediaCompletionType>
+			</Event>
+			*/
+			gVoiceClient->mediaCompletionEvent(sessionGroupHandle, mediaCompletionType);
+		}
 		else if (!stricmp(eventTypeCstr, "TextStreamUpdatedEvent"))
 		{
 			/*
@@ -4212,6 +4226,26 @@ void LLVoiceClient::accountLoginStateChangeEvent(
 			//Used to be a commented out warning
 			LL_DEBUGS("Voice") << "unknown state: " << state << LL_ENDL;
 		break;
+	}
+}
+
+void LLVoiceClient::mediaCompletionEvent(std::string &sessionGroupHandle, std::string &mediaCompletionType)
+{
+	if (mediaCompletionType == "AuxBufferAudioCapture")
+	{
+		mCaptureBufferRecording = false;
+	}
+	else if (mediaCompletionType == "AuxBufferAudioRender")
+	{
+		// Ignore all but the last stop event
+		if (--mPlayRequestCount <= 0)
+		{
+			mCaptureBufferPlaying = false;
+		}
+	}
+	else
+	{
+		LL_DEBUGS("Voice") << "Unknown MediaCompletionType: " << mediaCompletionType << LL_ENDL;
 	}
 }
 

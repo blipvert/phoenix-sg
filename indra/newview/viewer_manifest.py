@@ -315,10 +315,12 @@ class WindowsManifest(ViewerManifest):
         # Vivox runtimes
         if self.prefix(src="vivox-runtime/i686-win32", dst=""):
             self.path("SLVoice.exe")
-            self.path("alut.dll")
             self.path("vivoxsdk.dll")
             self.path("ortp.dll")
-            self.path("wrap_oal.dll")
+            self.path("libsndfile-1.dll")
+            self.path("zlib1.dll")
+            self.path("vivoxplatform.dll")
+            self.path("vivoxoal.dll")
             self.end_prefix()
 
         self.enable_no_crt_manifest_check()
@@ -607,9 +609,10 @@ class DarwinManifest(ViewerManifest):
                 
                 # SLVoice and vivox lols
                 self.path("vivox-runtime/universal-darwin/libalut.dylib", "libalut.dylib")
-                self.path("vivox-runtime/universal-darwin/libopenal.dylib", "libopenal.dylib")
+                self.path("vivox-runtime/universal-darwin/libvivoxoal.dylib", "libvivoxoal.dylib")
                 self.path("vivox-runtime/universal-darwin/libortp.dylib", "libortp.dylib")
                 self.path("vivox-runtime/universal-darwin/libvivoxsdk.dylib", "libvivoxsdk.dylib")
+                self.path("vivox-runtime/universal-darwin/libvivoxplatform.dylib", "libvivoxplatform.dylib")
                 self.path("vivox-runtime/universal-darwin/SLVoice", "SLVoice")
 
                 libdir = "../../libraries/universal-darwin/lib_release"
@@ -930,6 +933,7 @@ class Linux_i686Manifest(LinuxManifest):
             self.path("libELFIO.so")
             self.path("libalut.so")
             self.path("libopenal.so", "libopenal.so.1")
+#            self.path("libopenal.so", "libvivoxoal.so.1") # vivox's sdk expects this soname
             
             # Phoenix-specific addons
             self.path("libotr.so.2.2.0", "libotr.so.2")
@@ -947,7 +951,10 @@ class Linux_i686Manifest(LinuxManifest):
 #                    self.end_prefix()
 #            if self.prefix(src="vivox-runtime/i686-linux", dst="lib"):
 #                    self.path("libortp.so")
+#                    self.path("libsndfile.so.1")
+                     #self.path("libvivoxoal.so.1") # no - we'll re-use the viewer's own OpenAL lib
 #                    self.path("libvivoxsdk.so")
+#                    self.path("libvivoxplatform.so")
 #                    self.end_prefix("lib")
 
 class Linux_x86_64Manifest(LinuxManifest):
