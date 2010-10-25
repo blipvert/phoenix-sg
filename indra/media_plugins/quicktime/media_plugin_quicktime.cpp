@@ -584,7 +584,11 @@ private:
 				}
 			}
 		}
-
+		if(mStatus == STATUS_PLAYING)
+		{
+			// update the current playback time
+			updateTime();
+		}
 	};
 
 	int getDataWidth() const
@@ -696,6 +700,16 @@ private:
 	void keyPress( unsigned char key )
 	{
 	};
+	
+	void updateTime()
+	{
+		LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA, "time_update");
+		F64 duration = getDuration();
+		F64 current_time = getCurrentTime();
+		message.setValueReal("duration",duration);
+		message.setValueReal("current_time",current_time);
+		sendMessage(message);
+	}
 
 	////////////////////////////////////////////////////////////////////////////////
 	// Grab movie title into mMovieTitle - should be called repeatedly
