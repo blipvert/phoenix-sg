@@ -159,6 +159,7 @@ void LLFloaterMPURLEntry::onBtnOK( void* userdata )
 		// status is ignored for now -- error = "none/none"
 		media_player->addMediaURL(self->mMediaURLEdit->getValue().asString());
 	}
+	self->close();
 }
 
 // static
