@@ -9,10 +9,12 @@ include(CMakeCopyIfDifferent)
 set(vivox_src_dir "${CMAKE_SOURCE_DIR}/newview/vivox-runtime/i686-win32")
 set(vivox_files
     SLVoice.exe
-    alut.dll
-    vivoxsdk.dll
-    ortp.dll
-    wrap_oal.dll
+	libsndfile-1.dll
+	ortp.dll
+	vivoxoal.dll
+	vivoxplatform.dll
+	vivoxsdk.dll
+	zlib1.dll
     )
 copy_if_different(
     ${vivox_src_dir}
