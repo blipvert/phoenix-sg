@@ -6578,8 +6578,26 @@ LLViewerJointAttachment* LLVOAvatar::getTargetAttachmentPoint(const LLViewerObje
 	{
 		if(isSelf() && (attachmentID > 38) && (attachmentID <= 70))
 		{
-			llinfos << "Refusing to use old secondary attachment:" << attachmentID << llendl;
+			llwarns << "Refusing to use old secondary attachment:" << attachmentID << llendl;
 			LLNotifications::instance().add("PhoenixUsingDeprecatedAttachPoint");
+			LLUUID item_id;
+			// Find the inventory item ID of the attached object
+			LLNameValue* item_id_nv = viewer_object->getNVPair("AttachItemID");
+			if( item_id_nv )
+			{
+				const char* s = item_id_nv->getString();
+				if( s )item_id.set( s );
+				llinfos << "Found item UUID " << s << llendl;
+			}
+			if(item_id.notNull())
+			{
+				llinfos << "Detaching item UUID " << item_id << llendl;
+				detachAttachmentIntoInventory(item_id);
+			}
+			else
+			{
+				llinfos << "Unable to detach: null item id" << llendl;
+			}
 			attachment = 0;
 		}
 		else
