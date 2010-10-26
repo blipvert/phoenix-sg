@@ -4,7 +4,7 @@
 BINS="bin/SLVoice lib/libortp.so lib/libvivoxsdk.so lib/libfmod-3.75.so"
 
 # Locations of client to use
-URL="http://www.phoenixviewer.com/fmod-vivox.tar.bz2"
+URL="http://downloads.phoenixviewer.com/fmod-vivox.tar.bz2"
 ARCHIVE="${URL##*/}"
 #FOLDER="${ARCHIVE%.*.*}"
 
