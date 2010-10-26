@@ -60,7 +60,7 @@ public:
 		
 		MEDIA_EVENT_PLUGIN_FAILED_LAUNCH,	// The plugin failed to launch 
 		MEDIA_EVENT_PLUGIN_FAILED,			// The plugin died unexpectedly
-		MEDIA_EVENT_STATUS_CHANGED			// The status of the plugin changed
+		MEDIA_EVENT_STATUS_CHANGED			// The status of the plugin changed // Added by Liny for use with the built in client side media player
 		
 	} EMediaEvent;
 	
