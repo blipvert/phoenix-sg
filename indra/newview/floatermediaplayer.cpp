@@ -178,7 +178,7 @@ void FloaterMediaPlayer::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent 
 		{
 			media_length = self->getDuration();
 			media_time = self->getCurrentTime();
-			if(!length_check)
+			if(!length_check && (media_length != -1.0F))
 			{
 				sInstance->childSetMaxValue("mp_seek",media_length);
 				length_check = true;
