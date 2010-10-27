@@ -159,6 +159,10 @@ void FloaterMediaPlayer::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent 
 		EMediaStatus status = self->getStatus();
 		if(status == MEDIA_DONE || status == MEDIA_PAUSED)
 		{
+			if(status == MEDIA_DONE)
+			{
+				length_check = false;
+			}
 			sInstance->childSetVisible("mp_play",false);
 			sInstance->childSetVisible("mp_pause",true);
 		}
