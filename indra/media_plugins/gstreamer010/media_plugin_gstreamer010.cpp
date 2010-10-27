@@ -79,6 +79,8 @@ private:
 	bool stop();
 	bool play(double rate);
 	bool getTimePos(double &sec_out);
+	bool getDuration(double &sec_out);
+	U8 update_counter;
 
 	static const double MIN_LOOP_SEC = 1.0F;
 
@@ -659,6 +661,49 @@ MediaPluginGStreamer010::getTimePos(double &sec_out)
 }
 
 bool
+MediaPluginGStreamer010::getDuration(double &sec_out)
+{
+	bool got_duration = false;
+	if (mDoneInit && mPlaybin)
+	{
+		gint64 dur;
+		GstFormat timefmt = GST_FORMAT_TIME;
+		got_duration =
+			llgst_element_query_duration &&
+			llgst_element_query_duration(mPlaybin,
+						     &timefmt,
+						     &dur);
+		got_duration = got_duration
+			&& (timefmt == GST_FORMAT_TIME);
+		// GStreamer may have other ideas, but we consider the current duration
+		// undefined if not PLAYING or PAUSED
+		got_position = got_position &&
+			(GST_STATE(mPlaybin) == GST_STATE_PLAYING ||
+			 GST_STATE(mPlaybin) == GST_STATE_PAUSED);
+		if (got_duration && !GST_CLOCK_TIME_IS_VALID(dur))
+		{
+			if (GST_STATE(mPlaybin) == GST_STATE_PLAYING)
+			{
+				// if we're playing then we treat an invalid clock time
+				// as 0, for complicated reasons (insert reason here)
+				dur = 0;
+			}
+			else
+			{
+				got_duration = false;
+			}
+			
+		}
+		// If all the preconditions succeeded... we can trust the result.
+		if (got_duration)
+		{
+			sec_out = double(dur) / double(GST_SECOND); // gst to sec
+		}
+	}
+	return got_duration;
+}
+
+bool
 MediaPluginGStreamer010::load()
 {
 	if (!mDoneInit)
@@ -1007,6 +1052,17 @@ void MediaPluginGStreamer010::receiveMessage(const char *message_string)
 				
 				// Convert time to milliseconds for update()
 				update((int)(time * 1000.0f));
+
+				if(GST_STATE(mPlaybin) == GST_STATE_PLAYING)
+				{
+					// update the current playback time
+					if(update_counter == 10)
+					{
+						updateTime();
+						update_counter = 0;
+					}
+					update_counter++;
+				}
 			}
 			else if(message_name == "cleanup")
 			{
@@ -1213,6 +1269,20 @@ void MediaPluginGStreamer010::receiveMessage(const char *message_string)
 			INFOMSG("MediaPluginGStreamer010::receiveMessage: unknown message class: %s", message_class.c_str());
 		}
 	}
+}
+
+void MediaPluginGStreamer010::updateTime()
+{
+	LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA, "time_update");
+	F64 current_time = 0.0F;
+	getTimePos(current_time);
+	F64 duration = -1.0F;
+	if(getDuration(duration))
+	{
+		message.setValueReal("duration",duration);
+	}
+	message.setValueReal("current_time",current_time);
+	sendMessage(message);
 }
 
 int init_media_plugin(LLPluginInstance::sendMessageFunction host_send_func, void *host_user_data, LLPluginInstance::sendMessageFunction *plugin_send_func, void **plugin_user_data)
