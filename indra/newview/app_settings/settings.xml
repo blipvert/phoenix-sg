@@ -69,6 +69,17 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
+		<key>PhoenixTPFromSearch</key>
+		<map>
+			<key>Comment</key>
+			<string>Should the TP button in search start a TP or should it show an info window of the place your going to</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
 		<key>DiamondShowGroupNameInChatIM</key>
 		<map>
 			<key>Comment</key>
