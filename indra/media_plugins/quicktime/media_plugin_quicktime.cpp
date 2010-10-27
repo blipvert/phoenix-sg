@@ -524,6 +524,8 @@ private:
 		*movie_height = height;
 	}
 
+	U8 update_counter;
+
 	void updateQuickTime(int milliseconds)
 	{
 		if ( ! mMovieHandle )
@@ -587,7 +589,12 @@ private:
 		if(mStatus == STATUS_PLAYING)
 		{
 			// update the current playback time
-			updateTime();
+			if(update_counter == 10)
+			{
+				updateTime();
+				update_counter = 0;
+			}
+			update_counter++;
 		}
 	};
 
