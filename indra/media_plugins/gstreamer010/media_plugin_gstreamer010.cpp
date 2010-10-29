@@ -102,6 +102,7 @@ private:
 	bool load();
 
 	bool update(int milliseconds);
+	void updateTime();
         void mouseDown( int x, int y );
         void mouseUp( int x, int y );
         void mouseMove( int x, int y );
@@ -669,15 +670,15 @@ MediaPluginGStreamer010::getDuration(double &sec_out)
 		gint64 dur;
 		GstFormat timefmt = GST_FORMAT_TIME;
 		got_duration =
-			llgst_element_query_duration &&
-			llgst_element_query_duration(mPlaybin,
+			gst_element_query_duration &&
+			gst_element_query_duration(mPlaybin,
 						     &timefmt,
 						     &dur);
 		got_duration = got_duration
 			&& (timefmt == GST_FORMAT_TIME);
 		// GStreamer may have other ideas, but we consider the current duration
 		// undefined if not PLAYING or PAUSED
-		got_position = got_position &&
+		got_duration = got_duration &&
 			(GST_STATE(mPlaybin) == GST_STATE_PLAYING ||
 			 GST_STATE(mPlaybin) == GST_STATE_PAUSED);
 		if (got_duration && !GST_CLOCK_TIME_IS_VALID(dur))
