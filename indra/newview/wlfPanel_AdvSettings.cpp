@@ -97,6 +97,7 @@ void wlfPanel_AdvSettings::fixPanel()
 		onClickExpandBtn(fixPointer);
 	}
 }
+
 BOOL wlfPanel_AdvSettings::postBuild()
 {
 	childSetAction("expand", onClickExpandBtn, this);
@@ -112,7 +113,7 @@ BOOL wlfPanel_AdvSettings::postBuild()
 		}
 		WWcomboBox->add(LLStringUtil::null);
 		WWcomboBox->setSimple(LLWaterParamManager::instance()->mCurParams.mName);
-		WWcomboBox->setCommitCallback(onChangePresetName);
+		WWcomboBox->setCommitCallback(onChangeWWPresetName);
 	}
 
 	LLComboBox* WLcomboBox = getChild<LLComboBox>("WLPresetsCombo");
@@ -126,7 +127,7 @@ BOOL wlfPanel_AdvSettings::postBuild()
 		}
 		WLcomboBox->add(LLStringUtil::null);
 		WLcomboBox->setSimple(LLWLParamManager::instance()->mCurParams.mName);
-		WLcomboBox->setCommitCallback(onChangePresetName);
+		WLcomboBox->setCommitCallback(onChangeWLPresetName);
 	}
 	
 	// next/prev buttons
@@ -143,6 +144,7 @@ BOOL wlfPanel_AdvSettings::postBuild()
 	fixPointer = this;
 	return TRUE;
 }
+
 void wlfPanel_AdvSettings::draw()
 {
 	LLButton* expand_button = getChild<LLButton>("expand");
@@ -161,9 +163,11 @@ void wlfPanel_AdvSettings::draw()
 	refresh();
 	LLPanel::draw();
 }
+
 wlfPanel_AdvSettings::~wlfPanel_AdvSettings ()
 {
 }
+
 void wlfPanel_AdvSettings::onClickExpandBtn(void* user_data)
 {
 	gSavedSettings.setBOOL("wlfAdvSettingsPopup",!gSavedSettings.getBOOL("wlfAdvSettingsPopup"));
@@ -171,7 +175,23 @@ void wlfPanel_AdvSettings::onClickExpandBtn(void* user_data)
 	remotep->build();
 	gOverlayBar->layoutButtons();
 }
-void wlfPanel_AdvSettings::onChangePresetName(LLUICtrl* ctrl, void * userData)
+
+void wlfPanel_AdvSettings::onChangeWWPresetName(LLUICtrl* ctrl, void * userData)
+{
+	LLComboBox * combo_box = static_cast<LLComboBox*>(ctrl);
+	
+	if(combo_box->getSimple() == "")
+	{
+		return;
+	}
+
+	// LLWaterParamManager::instance()->mAnimator.mIsRunning = false;
+	// LLWaterParamManager::instance()->mAnimator.mUseLindenTime = false;
+	LLWaterParamManager::instance()->loadPreset(
+		combo_box->getSelectedValue().asString());
+}
+
+void wlfPanel_AdvSettings::onChangeWLPresetName(LLUICtrl* ctrl, void * userData)
 {
 	LLComboBox * combo_box = static_cast<LLComboBox*>(ctrl);
 	
