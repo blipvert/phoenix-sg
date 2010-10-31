@@ -26,7 +26,7 @@ FloaterMediaPlayer::~FloaterMediaPlayer()
 {
 }
 
-BOOL FloaterMediaPlayer::handleKeyHere(KEY key, MASK mask)
+BOOL handleKeyHere(KEY key, MASK mask)
 {
 	if (( KEY_DELETE == key ) && (MASK_NONE == mask))
 	{
