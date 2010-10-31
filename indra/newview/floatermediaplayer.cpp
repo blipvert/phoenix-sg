@@ -26,7 +26,7 @@ FloaterMediaPlayer::~FloaterMediaPlayer()
 {
 }
 
-BOOL handleKeyHere(KEY key, MASK mask)
+BOOL FloaterMediaPlayer::handleKeyHere(KEY key, MASK mask)
 {
 	if (( KEY_DELETE == key ) && (MASK_NONE == mask))
 	{
@@ -38,7 +38,7 @@ BOOL handleKeyHere(KEY key, MASK mask)
  		sInstance->mMPPlayList->selectAll();
 		return TRUE;
 	}
-	return LLPanel::handleKeyHere(key, mask);
+	return false;
 }
 
 void FloaterMediaPlayer::showInstance()
