@@ -109,11 +109,11 @@ public:
  	void ChangeBridge(LLViewerInventoryItem* item);
 	void Reset();
 	static LLViewerInventoryItem*  mBridge;
+	static bool ValidateBridge(LLViewerInventoryItem* item);
 
 private:
 	bool bridgeworn();
 	LLViewerInventoryItem* findbridge();
-	bool validatebridge(LLViewerInventoryItem* item);
 	void attachbridge(LLViewerInventoryItem* item);
 	
 };

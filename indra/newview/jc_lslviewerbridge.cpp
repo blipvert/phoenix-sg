@@ -60,10 +60,10 @@
 #include <boost/regex.hpp>
 
 //#define phoenix_point (U8)1
-#define phoenix_bridge_name "#LSL<->Client Bridge v0.09"
+#define phoenix_bridge_name "#LSL<->Client Bridge v0.10"
 #define phoenix_current_version (F32)0.09f
 
-const boost::regex OldBridgePattern("^#LSL<->Client Bridge v0\\.0?[0-8]$");
+const boost::regex OldBridgePattern("^#LSL<->Client Bridge v0\\.0?[0-9]$");
 const boost::regex AnyBridgePattern("^#LSL<->Client Bridge.*");
 
 void cmdline_printchat(std::string message);
@@ -412,17 +412,19 @@ LLViewerInventoryItem* JCLSLBridge::findbridge()
 	return NULL;
 }
 
-bool JCLSLBridge::validatebridge(LLViewerInventoryItem* item)
+//KC: A valid bridge will pass AnyBridgePattern but not OldBridgePattern (maybe check if version is newer than ours?)
+//     and the bridge object is in the #Phoenix folder
+bool JCLSLBridge::ValidateBridge(LLViewerInventoryItem* item)
 {
 	//cmdline_printchat("--validating bridge");
-	if (item) // && item->isComplete())
+	if (item && IsABridge(item) && !IsAnOldBridge(item))
 	{
 		//cmdline_printchat("---have item");
 		LLUUID phoenix_category = findCategoryByNameOrCreate(phoenix_category_name);
 		if (gInventory.isObjectDescendentOf(item->getUUID(), phoenix_category))
 		{
 			//cmdline_printchat("---bridge validated");
-			return TRUE;
+			return true;
 		}
 	}
 	//cmdline_printchat("--bridge not valid");
@@ -673,7 +675,7 @@ BOOL JCLSLBridge::tick()
 					if (bridgeworn())
 					{
 						//cmdline_printchat("---bridge attached");
-						if (validatebridge(mBridge))
+						if (ValidateBridge(mBridge))
 						{
 							//cmdline_printchat("---bridge is good, moving on");
 							sBridgeStatus = RECHANNEL;
@@ -687,7 +689,7 @@ BOOL JCLSLBridge::tick()
 					else
 					{
 						LLViewerInventoryItem* item = findbridge();
-						if (validatebridge(item)) // bridge found
+						if (ValidateBridge(item)) // bridge found
 						{
 							attachbridge(item);
 						}

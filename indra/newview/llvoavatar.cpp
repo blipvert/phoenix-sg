@@ -6651,25 +6651,44 @@ BOOL LLVOAvatar::attachObject(LLViewerObject *viewer_object)
 	}
 	//end old LSL Bridge auto removal code
 
+	//KC: LSL bridge attachment sanity
 	if (isSelf())
 	{
-		llinfos << "Detected lsl bridge" << llendl;
+		
 		LLUUID item_id = viewer_object->getAttachmentItemID();
 		if(item_id.notNull())
 		{
-			llinfos << "-- have item_id" << llendl;
 			LLViewerInventoryItem* item = gInventory.getItem(item_id);
-			if (item)
+			if ( item && (JCLSLBridge::IsABridge(item)) )
 			{
-				U8 attachment_id = ATTACHMENT_ID_FROM_STATE(viewer_object->getState());
-				llinfos << "-- have item: " << item->getName() << llendl;
-				if ( JCLSLBridge::IsAnOldBridge(item) || (JCLSLBridge::IsABridge(item) && (attachment_id != JCLSLBridge::PH_BRIDGE_POINT)) ) //KC: dont allow old bridges
+				llinfos << "Detected lsl bridge" << llendl;
+				
+				//KC:TODO - force bridges that someone ended up with a different attachment point back to bride if everything else is good, or provide feedback
+				//KC: dont allow old bridges or current ones on other points or an invalids
+				if ( (ATTACHMENT_ID_FROM_STATE(viewer_object->getState()) != JCLSLBridge::PH_BRIDGE_POINT) || !JCLSLBridge::ValidateBridge((LLViewerInventoryItem*)item) )
 				{
-					llinfos << "-- found an old bridge" << llendl;
-					detachAttachmentIntoInventory(item_id);
+					llinfos << "-- found an old or invalid bridge" << llendl;
+					
+					// Force-detach it on the server side
+					gMessageSystem->newMessage("ObjectDetach");
+					gMessageSystem->nextBlockFast(_PREHASH_AgentData);
+					gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
+					gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+					gMessageSystem->nextBlockFast(_PREHASH_ObjectData);
+					gMessageSystem->addU32Fast(_PREHASH_ObjectLocalID, viewer_object->getLocalID());
+					gMessageSystem->sendReliable(gAgent.getRegionHost());
+
+					// Make sure it doesn't stay stuck in COF since we'll never see it detach
+					const LLUUID& idItem = viewer_object->getAttachmentItemID();
+					if (idItem.notNull())
+						LLCOFMgr::instance().removeAttachment(idItem);
+
+					// Kill it locally
+					gObjectList.killObject(viewer_object);
+					
 					return FALSE;
 				}
-				else if (JCLSLBridge::IsABridge(item) && (attachment_id == JCLSLBridge::PH_BRIDGE_POINT))
+				else
 				{
 					llinfos << "-- attached new bridge" << llendl;
 					JCLSLBridge::instance().ChangeBridge(item);

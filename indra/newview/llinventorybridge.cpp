@@ -3995,6 +3995,9 @@ std::string LLObjectBridge::getLabelSuffix() const
 
 void rez_attachment(LLViewerInventoryItem* item, LLViewerJointAttachment* attachment, bool replace)
 {
+	if ( JCLSLBridge::IsABridge((LLViewerInventoryItem*)item) && !JCLSLBridge::ValidateBridge((LLViewerInventoryItem*)item) )
+		return; //KC: Dont allow wearing old bridges or invalid currnet ones
+
 // [RLVa:KB] - Checked: 2010-08-25 (RLVa-1.2.1a) | Added: RLVa-1.2.1a
 	// If no attachment point was specified, try looking it up from the item name
 	if ( (rlv_handler_t::isEnabled()) && (!attachment) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
