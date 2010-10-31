@@ -459,7 +459,7 @@ BOOL LLTaskInvFVBridge::isItemRemovable()
 // [RLVa:KB] - Checked: 2010-04-01 (RLVa-1.2.0c) | Modified: RLVa-1.0.5a
 	if ( (object) && (rlv_handler_t::isEnabled()) )
 	{
-		if (gRlvAttachmentLocks.isLockedAttachment(object))
+		if (gRlvAttachmentLocks.isLockedAttachment(object->getRootEdit()))
 		{
 			return FALSE;
 		}
