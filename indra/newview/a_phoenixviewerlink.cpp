@@ -108,10 +108,10 @@ void PhoenixViewerLink::downloadClientTags()
 	if(gSavedSettings.getBOOL("PhoenixDownloadClientTags"))
 	{
 		//url = "http://phoenixviewer.com/app/client_tags/client_list.xml";
-		std::string url("http://www.phoenixviewer.com/app/client_list.xml");
+		std::string url("http://phoenixviewer.com/app/client_list.xml");
 		if(gSavedSettings.getBOOL("PhoenixDontUseMultipleColorTags"))
 		{
-			url="http://www.phoenixviewer.com/app/client_list_unified_colours.xml";
+			url="http://phoenixviewer.com/app/client_list_unified_colours.xml";
 		}
 		LLSD headers;
 		LLHTTPClient::get(url,new ModularSystemsDownloader( PhoenixViewerLink::updateClientTags),headers);

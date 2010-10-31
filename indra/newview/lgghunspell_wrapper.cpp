@@ -847,7 +847,7 @@ void lggHunSpell_Wrapper::getMoreButton(void * data)
 {
 	std::vector<std::string> shortNames;
 	std::vector<std::string> longNames;
-	LLSD response = LLHTTPClient::blockingGet("http://www.phoenixviewer.com/app/dics/dic_list.xml");
+	LLSD response = LLHTTPClient::blockingGet("http://phoenixviewer.com/app/dics/dic_list.xml");
 	if(response.has("body"))
 	{
 		const LLSD &dict_list = response["body"];
