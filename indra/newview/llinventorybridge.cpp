@@ -974,12 +974,12 @@ void LLItemBridge::performAction(LLFolderView* folder, LLInventoryModel* model, 
 		LLUUID asset_id = item->getAssetUUID();
 		std::string buffer;
 		asset_id.toString(buffer);
-		JCLSLBridge::bridgetolsl(llformat("loopsound|%s",buffer.c_str()),NULL);
+		JCLSLBridge::instance().bridgetolsl(llformat("loopsound|%s",buffer.c_str()),NULL);
 		return;
 	}
 	else if ("stopsound" == action)
 	{
-		JCLSLBridge::bridgetolsl(std::string("stopsound") ,NULL);
+		JCLSLBridge::instance().bridgetolsl(std::string("stopsound") ,NULL);
 		return;
 	}
 	else if ("copy" == action)
@@ -4141,6 +4141,15 @@ void LLObjectBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 					disabled_items.push_back(std::string("Attach To"));
 					disabled_items.push_back(std::string("Attach To HUD"));
 				}
+				else if (JCLSLBridge::IsABridge((LLViewerInventoryItem*)item))
+				{
+					disabled_items.push_back(std::string("Object Add"));
+					disabled_items.push_back(std::string("Attach To"));
+					disabled_items.push_back(std::string("Attach To HUD"));
+					if (JCLSLBridge::IsAnOldBridge((LLViewerInventoryItem*)item))
+						disabled_items.push_back(std::string("Object Wear"));
+				}
+				
 // [RLVa:KB] - Checked: 2010-09-03 (RLVa-1.2.1a) | Modified: RLVa-1.2.1a | OK
 				else if (rlv_handler_t::isEnabled())
 				{
@@ -4164,37 +4173,40 @@ void LLObjectBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 					{
 						LLVOAvatar::attachment_map_t::iterator curiter = iter++;
 						LLViewerJointAttachment* attachment = curiter->second;
-						LLMenuItemCallGL *new_item;
-						if (attachment->getIsHUDAttachment())
+						if (attachment->getName() != "Bridge") //KC: Hide the bridge from the dropdown
 						{
-// [RLVa:KB] - Checked: 2009-07-06 (RLVa-1.0.0c)
-							attach_hud_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
-								NULL, //&LLObjectBridge::attachToAvatar, 
-								(rlv_handler_t::isEnabled()) ? &rlvAttachToEnabler : NULL,
-								&attach_label, (void*)attachment));
-// [/RLVa:KB]
-							//attach_hud_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
-							//	NULL, //&LLObjectBridge::attachToAvatar, 
-							//	NULL, &attach_label, (void*)attachment));
-						}
-						else
-						{
-// [RLVa:KB] - Checked: 2009-07-06 (RLVa-1.0.0c)
-							attach_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
-								NULL, //&LLObjectBridge::attachToAvatar,
-								(rlv_handler_t::isEnabled()) ? &rlvAttachToEnabler : NULL,
-								&attach_label, (void*)attachment));
-// [/RLVa:KB]
-							//attach_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
-							//	NULL, //&LLObjectBridge::attachToAvatar,
-							//	NULL, &attach_label, (void*)attachment));
-						}
+							LLMenuItemCallGL *new_item;
+							if (attachment->getIsHUDAttachment())
+							{
+	// [RLVa:KB] - Checked: 2009-07-06 (RLVa-1.0.0c)
+								attach_hud_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
+									NULL, //&LLObjectBridge::attachToAvatar, 
+									(rlv_handler_t::isEnabled()) ? &rlvAttachToEnabler : NULL,
+									&attach_label, (void*)attachment));
+	// [/RLVa:KB]
+								//attach_hud_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
+								//	NULL, //&LLObjectBridge::attachToAvatar, 
+								//	NULL, &attach_label, (void*)attachment));
+							}
+							else
+							{
+	// [RLVa:KB] - Checked: 2009-07-06 (RLVa-1.0.0c)
+								attach_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
+									NULL, //&LLObjectBridge::attachToAvatar,
+									(rlv_handler_t::isEnabled()) ? &rlvAttachToEnabler : NULL,
+									&attach_label, (void*)attachment));
+	// [/RLVa:KB]
+								//attach_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
+								//	NULL, //&LLObjectBridge::attachToAvatar,
+								//	NULL, &attach_label, (void*)attachment));
+							}
 
-						LLSimpleListener* callback = mInventoryPanel->getListenerByName("Inventory.AttachObject");
+							LLSimpleListener* callback = mInventoryPanel->getListenerByName("Inventory.AttachObject");
 
-						if (callback)
-						{
-							new_item->addListener(callback, "on_click", LLSD(attachment->getName()));
+							if (callback)
+							{
+								new_item->addListener(callback, "on_click", LLSD(attachment->getName()));
+							}
 						}
 					}
 				}

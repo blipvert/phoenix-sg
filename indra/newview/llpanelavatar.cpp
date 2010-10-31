@@ -1436,7 +1436,8 @@ void LLPanelAvatar::setOnlineStatus(EOnlineStatus online_status)
 		{
 			mPanelSecondLife->childSetVisible("online_yes", FALSE);
 
-			if(gSavedSettings.getBOOL("PhoenixUseBridgeOnline"))JCLSLBridge::bridgetolsl("online_status|"+mAvatarID.asString(), new JCProfileCallback(mAvatarID));
+			if(gSavedSettings.getBOOL("PhoenixUseBridgeOnline"))
+				JCLSLBridge::instance().bridgetolsl("online_status|"+mAvatarID.asString(), new JCProfileCallback(mAvatarID));
 		}
 	}
 	if(online_status == ONLINE_STATUS_YES)

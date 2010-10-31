@@ -445,8 +445,6 @@ bool idle_startup()
 
 		glggHunSpell->initSettings();
 
-		new JCLSLBridge();
-
 		GrowlManager::InitiateManager();
 
 		PhoenixViewerLink::getInstance()->start_download();
@@ -2788,6 +2786,9 @@ bool idle_startup()
 		{
 			gPipeline.toggleRenderType(LLPipeline::RENDER_TYPE_CLOUDS);
 		}
+
+		//KC: startup the lsl<->viewer bridge
+		JCLSLBridge::instance().Reset();
 
 		// Let the map know about the inventory.
 		if(gFloaterWorldMap)

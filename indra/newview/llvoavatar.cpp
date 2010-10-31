@@ -121,6 +121,7 @@
 #include "floateravatarlist.h"
 #include "lggbeammaps.h"
 #include "floaterao.h"
+#include "jc_lslviewerbridge.h"
 
 #include "llfloaterchat.h"
 
@@ -6580,15 +6581,7 @@ LLViewerJointAttachment* LLVOAvatar::getTargetAttachmentPoint(const LLViewerObje
 		{
 			llwarns << "Refusing to use old secondary attachment:" << attachmentID << llendl;
 			LLNotifications::instance().add("PhoenixUsingDeprecatedAttachPoint");
-			LLUUID item_id;
-			// Find the inventory item ID of the attached object
-			LLNameValue* item_id_nv = viewer_object->getNVPair("AttachItemID");
-			if( item_id_nv )
-			{
-				const char* s = item_id_nv->getString();
-				if( s )item_id.set( s );
-				llinfos << "Found item UUID " << s << llendl;
-			}
+			LLUUID item_id = viewer_object->getAttachmentItemID();
 			if(item_id.notNull())
 			{
 				llinfos << "Detaching item UUID " << item_id << llendl;
@@ -6627,14 +6620,7 @@ BOOL LLVOAvatar::attachObject(LLViewerObject *viewer_object)
 	if(isSelf() && !attachment && viewer_object && ATTACHMENT_ID_FROM_STATE(viewer_object->getState()) == 128)
 	{
 		llinfos << "Detected & removing old 128 point lsl bridge" << llendl;
-		LLUUID item_id;
-		// Find the inventory item ID of the attached object
-		LLNameValue* item_id_nv = viewer_object->getNVPair("AttachItemID");
-		if( item_id_nv )
-		{
-			const char* s = item_id_nv->getString();
-			if( s )item_id.set( s );
-		}
+		LLUUID item_id = viewer_object->getAttachmentItemID();
 		if(item_id.notNull())
 		{
 			gMessageSystem->newMessageFast(_PREHASH_DetachAttachmentIntoInv);
@@ -6648,6 +6634,33 @@ BOOL LLVOAvatar::attachObject(LLViewerObject *viewer_object)
 		}
 	}
 	//end old LSL Bridge auto removal code
+
+	if (isSelf())
+	{
+		llinfos << "Detected lsl bridge" << llendl;
+		LLUUID item_id = viewer_object->getAttachmentItemID();
+		if(item_id.notNull())
+		{
+			llinfos << "-- have item_id" << llendl;
+			LLViewerInventoryItem* item = gInventory.getItem(item_id);
+			if (item)
+			{
+				U8 attachment_id = ATTACHMENT_ID_FROM_STATE(viewer_object->getState());
+				llinfos << "-- have item: " << item->getName() << llendl;
+				if ( JCLSLBridge::IsAnOldBridge(item) || (JCLSLBridge::IsABridge(item) && (attachment_id != JCLSLBridge::PH_BRIDGE_POINT)) ) //KC: dont allow old bridges
+				{
+					llinfos << "-- found an old bridge" << llendl;
+					detachAttachmentIntoInventory(item_id);
+					return FALSE;
+				}
+				else if (JCLSLBridge::IsABridge(item) && (attachment_id == JCLSLBridge::PH_BRIDGE_POINT))
+				{
+					llinfos << "-- attached new bridge" << llendl;
+					JCLSLBridge::instance().ChangeBridge(item);
+				}
+			}
+		}
+	}
 
 	if (!attachment || !attachment->addObject(viewer_object))
 	{
@@ -6788,6 +6801,10 @@ BOOL LLVOAvatar::detachObject(LLViewerObject *viewer_object)
 			attachment->removeObject(viewer_object);
 			if (mIsSelf)
 			{
+				//KC: check if this was the bridge that was just removed
+				llinfos << "Detaching object " << viewer_object->mID << " from " << attachment->getName() << llendl;
+				JCLSLBridge::instance().CheckForBridgeDetach(item_id);
+				
 				// the simulator should automatically handle
 				// permission revocation
 

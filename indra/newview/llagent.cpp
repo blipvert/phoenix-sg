@@ -6591,7 +6591,7 @@ void LLAgent::teleportViaLocation(const LLVector3d& pos_global, bool go_to)
 		if(ml)
 		{
 			gAgent.setControlFlags(AGENT_CONTROL_STAND_UP); //GIT UP
-			JCLSLBridge::bridgetolsl("move|"+strstr.str(),NULL); //o i c wut u did thar.
+			JCLSLBridge::instance().bridgetolsl("move|"+strstr.str(),NULL); //o i c wut u did thar.
 			//I presume this will be the new format instead of a naked vector on a specified channel... -tG
 		}
 	}
@@ -8331,6 +8331,7 @@ void LLAgent::userRemoveAllAttachments( void* userdata )
 	{
 		LLVOAvatar::attachment_map_t::iterator curiter = iter++;
 		LLViewerJointAttachment* attachment = curiter->second;
+		if (attachment->getGroup() == JCLSLBridge::PH_BRIDGE_POINT) continue; //KC: skip the bridge attachment point
 		for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
 			 attachment_iter != attachment->mAttachedObjects.end();
 			 ++attachment_iter)
@@ -8338,9 +8339,12 @@ void LLAgent::userRemoveAllAttachments( void* userdata )
 			LLViewerObject *attached_object = (*attachment_iter);
 //			if (attached_object)
 // [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.1.3b) | Modified: RLVa-1.1.3b
-			if ( (attached_object) && ((!rlv_handler_t::isEnabled()) || (!gRlvAttachmentLocks.isLockedAttachment(attached_object))) )
+			if ( (attached_object) && ((!rlv_handler_t::isEnabled()) || (!gRlvAttachmentLocks.isLockedAttachment(attached_object)))
+				/*&& (attached_object->getAttachmentItemID() != JCLSLBridge::instance().mBridge->getUUID())*/ //KC: dont remove our bridge
+			)
 // [/RLVa:KB]
 			{
+				llinfos << "bridge trying to get removed with everything, keeping" << llendl;
 				objects_to_remove.push_back(attached_object);
 			}
 		}
@@ -8462,12 +8466,25 @@ void LLAgent::userUpdateAttachments(LLInventoryModel::item_array_t& obj_item_arr
 			if (objectp)
 			{
 				LLUUID object_item_id = objectp->getAttachmentItemID();
-				if (requested_item_ids.find(object_item_id) != requested_item_ids.end())
+				if (attachment->getGroup() == JCLSLBridge::PH_BRIDGE_POINT)
+				{
+					if (object_item_id == JCLSLBridge::instance().mBridge->getUUID()) //KC: keep the bridge on
+					{
+						llinfos << "bridge trying to get removed, keeping" << llendl;
+						current_item_ids.insert(object_item_id);
+					}
+					else //KC: remove anything else from the bridge point
+					{
+						objects_to_remove.push_back(objectp);
+					}
+				}
+				else if (requested_item_ids.find(object_item_id) != requested_item_ids.end())
 				{
 					// Object currently worn, was requested.
 					// Flag as currently worn so we won't have to add it again.
 					current_item_ids.insert(object_item_id);
 				}
+				
 				else
 				{
 					// object currently worn, not requested.

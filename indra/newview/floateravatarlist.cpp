@@ -1582,7 +1582,7 @@ void LLFloaterAvatarList::refreshAvatarList()
 		{
 			mlastBridgeCallTime = timeNow;
 			//llinfos << "Sending data to the bridge: " << toSendToBridge << llendl;
-			JCLSLBridge::bridgetolsl("pos"+toSendToBridge, new LggPosCallback(avatarsToSendToBridge));
+			JCLSLBridge::instance().bridgetolsl("pos"+toSendToBridge, new LggPosCallback(avatarsToSendToBridge));
 
 		}
 		
