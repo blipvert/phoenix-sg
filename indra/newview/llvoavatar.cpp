@@ -6577,32 +6577,13 @@ LLViewerJointAttachment* LLVOAvatar::getTargetAttachmentPoint(const LLViewerObje
 
 	if (!attachment)
 	{
-		if(isSelf() && (attachmentID > 38) && (attachmentID <= 70))
-		{
-			llwarns << "Refusing to use old secondary attachment:" << attachmentID << llendl;
-			LLNotifications::instance().add("PhoenixUsingDeprecatedAttachPoint");
-			LLUUID item_id = viewer_object->getAttachmentItemID();
-			if(item_id.notNull())
-			{
-				llinfos << "Detaching item UUID " << item_id << llendl;
-				detachAttachmentIntoInventory(item_id);
-			}
-			else
-			{
-				llinfos << "Unable to detach: null item id" << llendl;
-			}
-			attachment = 0;
-		}
-		else
-		{
-			llwarns << "Object attachment point invalid: " << attachmentID << llendl;
+		llwarns << "Object attachment point invalid: " << attachmentID << llendl;
 //		attachment = get_if_there(mAttachmentPoints, 1, (LLViewerJointAttachment*)NULL); // Arbitrary using 1 (chest)
 // [SL:KB] - Patch: Appearance-LegacyMultiAttachment | Checked: 2010-08-28 (Catznip-2.2.0a) | Added: Catznip2.1.2a
-			S32 idxAttachPt = 1;
-			if ( (!isSelf()) && (gSavedSettings.getBOOL("LegacyMultiAttachmentSupport")) && (attachmentID > 38) && (attachmentID <= 68) )
-				idxAttachPt = attachmentID - 38;
-			attachment = get_if_there(mAttachmentPoints, idxAttachPt, (LLViewerJointAttachment*)NULL);
-		}
+		S32 idxAttachPt = 1;
+		if ( (!isSelf()) && (gSavedSettings.getBOOL("LegacyMultiAttachmentSupport")) && (attachmentID > 38) && (attachmentID <= 68) )
+			idxAttachPt = attachmentID - 38;
+		attachment = get_if_there(mAttachmentPoints, idxAttachPt, (LLViewerJointAttachment*)NULL);
 // [/SL:KB]
 	}
 
@@ -6614,6 +6595,41 @@ LLViewerJointAttachment* LLVOAvatar::getTargetAttachmentPoint(const LLViewerObje
 //-----------------------------------------------------------------------------
 BOOL LLVOAvatar::attachObject(LLViewerObject *viewer_object)
 {
+	// Force-detach attachments using secondary attachment points
+	if ( (isSelf()) && (viewer_object) &&
+		 (ATTACHMENT_ID_FROM_STATE(viewer_object->getState()) > 38) && (ATTACHMENT_ID_FROM_STATE(viewer_object->getState()) <= 70) )
+	{
+		static const std::string cstrAlert("PhoenixUsingDeprecatedAttachPoint");
+
+		// Don't show the notification if it's already visible
+		bool fShowAlert = true; 
+		LLNotificationChannelPtr activeNotifications = LLNotifications::instance().getChannel("AlertModal");
+		for (LLNotificationChannel::Iterator itNotif = activeNotifications->begin(); itNotif != activeNotifications->end(); itNotif++)
+			if ((*itNotif)->getName() == cstrAlert)
+				fShowAlert = false;
+		if (fShowAlert)
+			LLNotifications::instance().add(cstrAlert);
+
+		// Force-detach it on the server side
+		gMessageSystem->newMessage("ObjectDetach");
+		gMessageSystem->nextBlockFast(_PREHASH_AgentData);
+		gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
+		gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+		gMessageSystem->nextBlockFast(_PREHASH_ObjectData);
+		gMessageSystem->addU32Fast(_PREHASH_ObjectLocalID, viewer_object->getLocalID());
+		gMessageSystem->sendReliable(gAgent.getRegionHost());
+
+		// Make sure it doesn't stay stuck in COF since we'll never see it detach
+		const LLUUID& idItem = viewer_object->getAttachmentItemID();
+		if (idItem.notNull())
+			LLCOFMgr::instance().removeAttachment(idItem);
+
+		// Kill it locally
+		gObjectList.killObject(viewer_object);
+
+		return FALSE;
+	}
+
 	LLViewerJointAttachment* attachment = getTargetAttachmentPoint(viewer_object);
 
 	//old LSL Bridge auto removal code
