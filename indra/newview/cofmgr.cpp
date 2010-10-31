@@ -21,7 +21,6 @@
 #include "llerror.h"
 #include "llvoavatar.h"
 #include "rlvviewer2.h"
-#include "jc_lslviewerbridge.h"
 
 // ============================================================================
 // Inventory helper classes
@@ -237,7 +236,7 @@ void LLCOFMgr::addCOFItemLink(const LLUUID& idItem, LLPointer<LLInventoryCallbac
 
 void LLCOFMgr::addCOFItemLink(const LLInventoryItem* pItem, LLPointer<LLInventoryCallback> cb)
 {
-	if ( (!pItem) || (isLinkInCOF(pItem->getLinkedUUID())) || JCLSLBridge::IsABridge((LLViewerInventoryItem*)pItem) ) //KC: Dont put links to bridges in COF
+	if ( (!pItem) || (isLinkInCOF(pItem->getLinkedUUID())) )
 	{
 		return;
 	}
