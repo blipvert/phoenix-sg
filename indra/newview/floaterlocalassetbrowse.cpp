@@ -49,6 +49,9 @@ this feature is still a work in progress.
 #include "llvovolume.h"
 #include "llface.h"
 
+#ifdef LL_DARWIN
+#include "llwindowmacosx-objc.h"
+#endif
 
 /*=======================================*/
 /*     Instantiating manager class       */
@@ -91,7 +94,11 @@ LocalBitmap::LocalBitmap(std::string fullpath)
 		else if (temp_exten == "tga") { this->extension = IMG_EXTEN_TGA; }
 		else if (temp_exten == "jpg" || temp_exten == "jpeg") { this->extension = IMG_EXTEN_JPG; }
 		else if (temp_exten == "png") { this->extension = IMG_EXTEN_PNG; }
-		else { return; } // no valid extension.
+#ifdef LL_DARWIN
+		else if (temp_exten == "psd") { this->extension = IMG_EXTEN_PSD; }
+		else if (temp_exten == "tif" || temp_exten == "tiff") { this->extension = IMG_EXTEN_TIFF; }
+#endif
+ 	 	else { return; } // no valid extension.
 		
 		/* getting file's last modified */
 		const std::time_t time = boost::filesystem::last_write_time( boost::filesystem::path( this->filename ) );
@@ -183,6 +190,13 @@ void LocalBitmap::updateSelf()
 
 bool LocalBitmap::decodeSelf(LLImageRaw* rawimg)
 {
+#ifdef LL_DARWIN
+	if (decodeImageQuartz(filename, rawimg))
+	{
+		rawimg->biasedScaleToPowerOfTwo( LLViewerImage::MAX_IMAGE_SIZE_DEFAULT );
+		return true;
+	}
+#else
 	switch (this->extension)
 	{
 		case IMG_EXTEN_BMP:
@@ -231,6 +245,7 @@ bool LocalBitmap::decodeSelf(LLImageRaw* rawimg)
 		default:
 			break;
 	}
+#endif
 	return false;
 }
 

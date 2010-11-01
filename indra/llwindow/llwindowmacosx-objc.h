@@ -31,7 +31,17 @@
  * $/LicenseInfo$
  */
 
-
+// This #define turns off inclusion of llstring.h. It's not needed in this
+//  module and causes many compile errors. -- TS
+#define LL_LLSTRING_H
+#include "llimagej2c.h"
+#include <Carbon/Carbon.h>
+#ifdef __OBJC__
+#ifdef BOOL
+#undef BOOL
+#endif
+#endif // __OBJC__
+                     
 // This will actually hold an NSCursor*, but that type is only available in objective C.
 typedef void *CursorRef;
 
@@ -41,3 +51,5 @@ CursorRef createImageCursor(const char *fullpath, int hotspotX, int hotspotY);
 OSErr releaseImageCursor(CursorRef ref);
 OSErr setImageCursor(CursorRef ref);
 
+BOOL decodeImageQuartz(std::string filename, LLImageRaw *raw_image);
+BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image);
