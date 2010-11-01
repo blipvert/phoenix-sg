@@ -26,7 +26,7 @@ public:
 	static void toggle(void*); //Toggles interface visibility
 	static void showInstance();
 	static void addMediaURL(const std::string& media_url);
-	void FloaterMediaPlayer::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event);
+	void handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event);
 
 	static FloaterMediaPlayer* getInstance(){ return sInstance; }
 
