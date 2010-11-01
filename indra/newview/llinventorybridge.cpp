@@ -1994,6 +1994,10 @@ LLUIImagePtr LLFolderBridge::getIcon() const
 		{
 			return LLUI::getUIImage("inv_folder_phoenix.tga");
 		}
+		else if(cat->getName() == "#RLV")
+		{
+			return LLUI::getUIImage("inv_folder_RLVa.tga");
+		}
 		preferred_type = cat->getPreferredType();
 	}
 	switch(preferred_type)
