@@ -5060,9 +5060,9 @@ BOOL LLTextEditor::findHTML(const std::string &line, S32 *begin, S32 *end, std::
 		// jurl_types[] maps jiras to urls.
 		// We DO NOT sanity check jurl_types. Make sure there is an entry in jurls for any given type.
 		// (yes, it would be easier to use a map. No, there is no really good reason we don't.)
-		const int jira_count = 5;
-		const char* jiras[] = { "SVC-", "VWR-", "SNOW-", "STORM-", "PHOE-" };
-		int jurl_types[] = { 0, 0, 0, 0, 1 };
+		const int jira_count = 8;
+		const char* jiras[] = { "SVC-", "VWR-", "SNOW-", "STORM-", "PHOE-", "FIRE-", "DN-", "SH-" };
+		int jurl_types[] = { 0, 0, 0, 0, 1, 1, 0, 0 };
 		const char* jurls[] = { "https://jira.secondlife.com/browse/%s", "http://jira.phoenixviewer.com/browse/%s" };
 		for(int j = 0; j < jira_count; ++j)
 		{
@@ -5077,7 +5077,7 @@ BOOL LLTextEditor::findHTML(const std::string &line, S32 *begin, S32 *end, std::
 					ending = line.length() - m1 - jira.length();
 				}
 				// We can't break the loop, because if there's a match later than the first one we find,
-				// (e.g. "EMLD-12 VWR-15" will match VWR-15 first due to the order of jiras[])
+				// (e.g. "PHOE-12 VWR-15" will match VWR-15 first due to the order of jiras[])
 				// the loop calling this function will truncate to the end of the last match we found.
 				// Therefore, we must return the first link of *any* type, which means we must check all jiras,
 				// and return whichever is first (assuming any are found at all). Ew.
@@ -5085,7 +5085,7 @@ BOOL LLTextEditor::findHTML(const std::string &line, S32 *begin, S32 *end, std::
 				{
 					*begin = m1;
 					*end = m1 + jira.length() + ending;
-					// If no key is provided (e.g. EMLD-), use the summary page instead of a specific issue.
+					// If no key is provided (e.g. PHOE-), use the summary page instead of a specific issue.
 					if(ending <= 0)
 					{
 						url = llformat(jurls[jurl_types[j]], line.substr(*begin, *end - m1 - 1).c_str());
