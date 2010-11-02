@@ -43,12 +43,13 @@
  */
 
 #include "llwindowmacosx-objc.h"
+#include "lldir.h"
 
 #if 0
 // This version of the code is specific to OS X 10.5 and above due to the use
 //  of CGDataProviderCopyData(). The 10.4 version of this routine is below.
 //  When 10.4 is no longer supported, that version can be ripped out.
-BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image)
+BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image, std::string ext)
 {
 	CFDataRef theData = CFDataCreate(kCFAllocatorDefault, data, len);
 	CGImageSourceRef srcRef = CGImageSourceCreateWithData(theData, NULL);
@@ -62,7 +63,7 @@ BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image)
 	UInt8* bitmap = (UInt8*)CFDataGetBytePtr(result);
 
 	CGImageAlphaInfo format = CGImageGetAlphaInfo(image_ref);
-	if (format != kCGImageAlphaNone)
+	if (comps == 4)
 	{
 		vImage_Buffer vb;
 		vb.data = bitmap;
@@ -72,30 +73,13 @@ BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image)
 
 		if (format == kCGImageAlphaPremultipliedFirst)
 		{
-			// Ele: ARGB -> BGRA on Intel, need to first reorder the bytes, then unpremultiply as RGBA :)
-			llinfos << "Unpremultiplying BGRA8888" << llendl;
-
-			for (int i=0; i<height; i++)
-			{
-				for (int j=0; j<bytes_per_row; j+=4)
-				{
-					unsigned char tmp[4];
-
-					tmp[0] = bitmap[j+(i*bytes_per_row)+3];
-					tmp[1] = bitmap[j+(i*bytes_per_row)+2];
-					tmp[2] = bitmap[j+(i*bytes_per_row)+1];
-					tmp[3] = bitmap[j+(i*bytes_per_row)];
-
-					memcpy(&bitmap[j+(i*bytes_per_row)],
-						 &tmp, 4);
-				}
-			}
-
-			vImageUnpremultiplyData_RGBA8888(&vb, &vb, 0);
+			// Ele: Skip unpremultiplication for PSD, PNG and TGA files
+			if (ext != std::string("psd") && ext != std::string("tga") && ext != std::string("png"))
+				vImageUnpremultiplyData_ARGB8888(&vb, &vb, 0);
 		}
 		else if (format == kCGImageAlphaPremultipliedLast)
 		{
-			llinfos << "Unpremultiplying RGBA8888" << llendl;
+			// Ele: Photoshop Native Transparency needs unmultiplication
 			vImageUnpremultiplyData_RGBA8888(&vb, &vb, 0);
 		}
 	}
@@ -104,7 +88,6 @@ BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image)
 	memcpy(raw_image->getData(), bitmap, height * bytes_per_row);
 	raw_image->verticalFlip();
 	CFRelease(theData);
-	CFRelease(srcRef);
 	CGImageRelease(image_ref);
 	CFRelease(result);
 	return TRUE;
@@ -115,7 +98,7 @@ BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image)
 //  http://developer.apple.com/library/mac/#qa/qa2007/qa1509.html .
 // Yeah, all this code is ugly. Ugly but working beats clean and broken any
 //  day. -- TS
-BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image)
+BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image, std::string ext)
 {
 	CFDataRef theData = CFDataCreate(kCFAllocatorDefault, data, len);
 	CGImageSourceRef srcRef = CGImageSourceCreateWithData(theData, NULL);
@@ -130,10 +113,10 @@ BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image)
 	size_t bytes_per_row = width * 4; // bytes per output row, not input
 	size_t byte_count = bytes_per_row * height;
 
-	llinfos << "Image height=" << height << " width=" << width <<
-		" components=" << comps << " bytes per row=" <<
-		bytes_per_row << " total output size=" << byte_count <<
-		" format=" << format << llendl;
+	llinfos << "Image extension='" << ext << "' height=" << height <<
+		" width=" << width << " components=" << comps <<
+		" bytes per row=" << bytes_per_row << " total output size=" <<
+		byte_count << " format=" << format << llendl;
 
 	// Get the Systems Profile for the main display
 	if (CMGetSystemProfile(&sysprof) == noErr)
@@ -220,39 +203,42 @@ BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image)
 		return FALSE;
 	}
 
-	if (format == kCGImageAlphaNone)
+	// The image has R and B reversed. Don't ask me how. Byte order
+	//  differences are a pain to deal with. -- TS
+	for (int i=0; i<height; i++)
 	{
-		// The image has R and B reversed. Don't ask me how. Byte order
-		//  differences are a pain to deal with. -- TS
-		for (int i=0; i<height; i++)
+		for (int j=0; j<bytes_per_row; j+=4)
 		{
-			for (int j=0; j<bytes_per_row; j+=4)
-			{
-				unsigned char tmp[4];
+			unsigned char tmp[4];
 
-				tmp[0] = bitmap[j+(i*bytes_per_row)+2];
-				tmp[1] = bitmap[j+(i*bytes_per_row)+1];
-				tmp[2] = bitmap[j+(i*bytes_per_row)];
-				tmp[3] = bitmap[j+(i*bytes_per_row)+3];
+			tmp[0] = bitmap[j+(i*bytes_per_row)+2];
+			tmp[1] = bitmap[j+(i*bytes_per_row)+1];
+			tmp[2] = bitmap[j+(i*bytes_per_row)];
+			tmp[3] = bitmap[j+(i*bytes_per_row)+3];
 
-				memcpy(&bitmap[j+(i*bytes_per_row)], &tmp, comps);
-			}
+			memcpy(&bitmap[j+(i*bytes_per_row)], &tmp, comps);
 		}
 	}
 
 	// If the original image had an alpha channel, unpremultiply it. We
 	//  created it as ARGB8888, so we use that unpremultiply regardless
-	//  of what the original image was.
-	if ((format == kCGImageAlphaPremultipliedFirst) ||
-		(format == kCGImageAlphaPremultipliedLast))
+	//  of what the original image was. The exception is Photoshop:
+	//  even PSDs with native transparency don't need unpremultipication,
+	//  for reasons I'm not entirely sure of.
+	if (comps == 4)
 	{
 		vImage_Buffer vb;
 		vb.data = bitmap;
 		vb.height = height;
 		vb.width = width;
 		vb.rowBytes = bytes_per_row;
-		llinfos << "Unpremultiplying ARGB8888" << llendl;
-		vImageUnpremultiplyData_ARGB8888(&vb, &vb, 0);
+		if (((ext != std::string("psd")) && (ext != std::string("tga")) && 
+			(ext != std::string("png")) &&
+			(format != kCGImageAlphaNoneSkipLast)))
+		{
+			llinfos << "Unpremultiplying ARGB8888" << llendl;
+			vImageUnpremultiplyData_ARGB8888(&vb, &vb, 0);
+		}
 	}
 
 	raw_image->resize(width, height, 4);
@@ -261,7 +247,6 @@ BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image)
 	CGContextRelease(cgctx);
 	free(bitmap);
 	CFRelease(theData);
-	CFRelease(srcRef);
 	CGImageRelease(image_ref);
 	return TRUE;
 }
@@ -272,7 +257,8 @@ BOOL decodeImageQuartz(std::string filename, LLImageRaw *raw_image)
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSURL *url = [[NSURL alloc] initFileURLWithPath:[NSString stringWithCString:filename.c_str()]];
 	NSData *data = [NSData dataWithContentsOfURL:url];
-	BOOL result = decodeImageQuartz((UInt8*)[data bytes], [data length], raw_image);
+	std::string ext = gDirUtilp->getExtension(filename);
+	BOOL result = decodeImageQuartz((UInt8*)[data bytes], [data length], raw_image, ext);
 	[pool release];
 	return result;
 }
