@@ -916,7 +916,7 @@ class Linux_i686Manifest(LinuxManifest):
         if self.prefix("../../libraries/i686-linux/lib_release_client", dst="lib"):
 
             try:
-                self.path("../../fmodapi375linux/api/libfmod-3.75.so", "libfmod-3.75.so");
+                self.path("../../../fmodapi375linux/api/libfmod-3.75.so", "libfmod-3.75.so");
                 pass
             except:
                 print "Skipping libfmod-3.75.so - not found"
