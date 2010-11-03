@@ -93,9 +93,9 @@ RUN_PATH=`dirname "${SCRIPTSRC}" || echo .`
 echo "Running from ${RUN_PATH}"
 cd "${RUN_PATH}"
 
-# This is an added utility script to grab voice components licensed for Phoenix, as well as FMOD.
+# This is an added utility script to grab voice components licensed for Phoenix.
 # This is now automatically run on startup, due to how small the download and unpack time has become.
-# If you object to using voice, Kakadu image decoding, or FMOD audio, comment this script out. ~Disc
+# If you object to using voice, comment this script out. ~Disc
 ./fetch_bins.sh
 
 # Re-register the secondlife:// protocol handler every launch, for now.
