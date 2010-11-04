@@ -59,6 +59,9 @@
 #include "llviewerimagelist.h"
 #include "llstring.h"
 #include "llviewercontrol.h"
+#ifdef LL_DARWIN
+#include "llwindowmacosx-objc.h"
+#endif
 
 //static
 S32 LLFloaterImagePreview::sUploadAmount = 10;
@@ -349,9 +352,23 @@ bool LLFloaterImagePreview::loadImage(const std::string& src_filename)
 	{
 		codec = IMG_CODEC_PNG;
 	}
+#ifdef LL_DARWIN
+	else if( exten == "psd" )
+	{
+		codec = IMG_CODEC_PSD;
+	}
+	else if( exten == "tif" || exten == "tiff" )
+	{
+		codec = IMG_CODEC_TIFF;
+	}
+#endif
 
 	LLPointer<LLImageRaw> raw_image = new LLImageRaw;
 
+#ifdef LL_DARWIN
+	if (! decodeImageQuartz(src_filename, raw_image))
+		return false;
+#else
 	switch (codec)
 	{
 	case IMG_CODEC_BMP:
@@ -424,10 +441,10 @@ bool LLFloaterImagePreview::loadImage(const std::string& src_filename)
 	default:
 		return false;
 	}
+#endif
 
 	raw_image->biasedScaleToPowerOfTwo(1024);
 	mRawImagep = raw_image;
-	
 	return true;
 }
 
