@@ -83,6 +83,8 @@
 #include "llviewerregion.h"
 #include "llviewerstats.h"
 #include "llvoavatar.h"
+#include "llvograss.h"
+#include "llvotree.h"
 #include "llvovolume.h"
 #include "pipeline.h"
 
@@ -837,7 +839,10 @@ void LLSelectMgr::highlightObjectOnly(LLViewerObject* objectp)
 		return;
 	}
 
-	if (objectp->getPCode() != LL_PCODE_VOLUME)
+	if ((objectp->getPCode() != LL_PCODE_VOLUME) &&
+		(objectp->getPCode() != LL_PCODE_LEGACY_TREE) &&
+		(objectp->getPCode() != LL_PCODE_LEGACY_GRASS))
+		
 	{
 		return;
 	}
@@ -885,7 +890,10 @@ void LLSelectMgr::highlightObjectAndFamily(const std::vector<LLViewerObject*>& o
 		{
 			continue;
 		}
-		if (object->getPCode() != LL_PCODE_VOLUME)
+		
+		if ((object->getPCode() != LL_PCODE_VOLUME) &&
+			(object->getPCode() != LL_PCODE_LEGACY_TREE) &&
+			(object->getPCode() != LL_PCODE_LEGACY_GRASS))
 		{
 			continue;
 		}
@@ -905,7 +913,14 @@ void LLSelectMgr::highlightObjectAndFamily(const std::vector<LLViewerObject*>& o
 
 void LLSelectMgr::unhighlightObjectOnly(LLViewerObject* objectp)
 {
-	if (!objectp || (objectp->getPCode() != LL_PCODE_VOLUME))
+	if (!objectp)
+	{
+		return;
+	}
+
+	if ((objectp->getPCode() != LL_PCODE_VOLUME) &&
+		(objectp->getPCode() != LL_PCODE_LEGACY_TREE) &&
+		(objectp->getPCode() != LL_PCODE_LEGACY_GRASS))
 	{
 		return;
 	}
@@ -5031,6 +5046,14 @@ void LLSelectMgr::generateSilhouette(LLSelectNode* nodep, const LLVector3& view_
 	{
 		((LLVOVolume*)objectp)->generateSilhouette(nodep, view_point);
 	}
+	else if (objectp && objectp->getPCode() == LL_PCODE_LEGACY_GRASS)
+	{
+		((LLVOGrass*)objectp)->generateSilhouette(nodep, view_point);
+	}
+	else if (objectp && objectp->getPCode() == LL_PCODE_LEGACY_TREE)
+	{
+		((LLVOTree*)objectp)->generateSilhouette(nodep, view_point);
+	}
 }
 
 //
@@ -5366,8 +5389,8 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 		glMultMatrixf((F32*) objectp->getRenderMatrix().mMatrix);
 	}
 
-	LLVolume *volume = objectp->getVolume();
-	if (volume)
+	// we used to only call this for volumes.  but let's render silhouettes for any node that has them.
+	if (1)
 	{
 		F32 silhouette_thickness;
 		if (is_hud_object && gAgent.getAvatarObject())
