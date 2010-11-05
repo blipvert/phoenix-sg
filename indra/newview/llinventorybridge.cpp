@@ -1034,7 +1034,17 @@ void LLItemBridge::restoreItem()
 	}
 }
 
-void LLItemBridge::restoreToWorld()
+bool LLItemBridge::checkRestoreToWorld(const LLSD& notification, const LLSD& response, LLItemBridge* self)
+{
+	S32 option = LLNotification::getSelectedOption(notification, response);
+	if (option == 0)
+	{
+		self->doRestoreToWorld();
+	}
+	return false;
+}
+
+void LLItemBridge::doRestoreToWorld()
 {
 	LLViewerInventoryItem* itemp = (LLViewerInventoryItem*)getItem();
 	if (itemp)
@@ -1072,6 +1082,22 @@ void LLItemBridge::restoreToWorld()
 	{
 		gInventory.deleteObject(itemp->getUUID());
 		gInventory.notifyObservers();
+	}
+}
+
+
+void LLItemBridge::restoreToWorld()
+{
+	LLViewerInventoryItem* itemp = (LLViewerInventoryItem*)getItem();
+	if(!itemp->getPermissions().allowCopyBy(gAgent.getID()))
+	{
+		LLNotifications::instance().add("ConfirmObjectRestoreNoCopy",
+			LLSD(), LLSD(),
+			boost::bind(&LLItemBridge::checkRestoreToWorld, _1, _2, this));
+	}
+	else
+	{
+		this->doRestoreToWorld();
 	}
 }
 

@@ -287,6 +287,8 @@ public:
 
 	virtual void selectItem();
 	virtual void restoreItem();
+	static bool checkRestoreToWorld(const LLSD& notification, const LLSD& response, LLItemBridge* self);
+	virtual void doRestoreToWorld();
 	virtual void restoreToWorld();
 	virtual void gotoItem(LLFolderView *folder);
 	virtual LLUIImagePtr getIcon() const;

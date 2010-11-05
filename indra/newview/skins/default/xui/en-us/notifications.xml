@@ -2258,6 +2258,23 @@ Are you sure you want to delete these items?
 
   <notification
    icon="alertmodal.tga"
+   name="ConfirmObjectRestoreNoCopy"
+   type="alertmodal">
+At least one of the items you have selected is not copyable.
+
+If you proceed, the object will be removed from your inventory. It is possible that it will be permanently deleted if it is not rezzed aboveground and within the borders of the current region. This is especially likely if the object's last position was as an attachment to your avatar, rather than an object on the ground.
+
+This operation is not likely to do what you intend when applied to an attachment.
+
+Are you sure you want to proceed?
+    <usetemplate
+     name="okcancelbuttons"
+     notext="Cancel"
+     yestext="OK"/>
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
    name="ConfirmObjectTakeLock"
    type="alertmodal">
 At least one object is locked.
