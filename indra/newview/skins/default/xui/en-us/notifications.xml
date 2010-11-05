@@ -2611,7 +2611,7 @@ Can&apos;t add estate owner to estate &apos;Banned Resident&apos; list.
   <notification
    icon="alertmodal.tga"
    name="CanNotChangeAppearanceUntilLoaded"
-   type="alertmodal">
+   type="notifytip">
 Can&apos;t change appearance until clothing and shape are loaded.
   </notification>
 
