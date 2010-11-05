@@ -1025,7 +1025,7 @@
       <text align="left" bg_visible="false" border_drop_shadow_visible="false"
 			     border_visible="false" bottom_delta="-20" drop_shadow_visible="true"
 			     follows="left|top" font="SansSerifSmall" h_pad="0" height="10" left="121"
-			     mouse_opaque="true" name="label_sculpt_type" v_pad="0" visible="false"
+			     mouse_opaque="true" name="label sculpt type" v_pad="0" visible="false"
 			     width="121">
         Stitching type
       </text>
