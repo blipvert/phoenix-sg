@@ -160,17 +160,15 @@ if [ -z $SKIP_INTEL ]; then
                 copy_resources
 
                 echo "Liposuction..."
-                lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/libhunspell-1.2.dylib -output Phoenix\ Viewer.app/Contents/MacOS/libhunspell-1.2.dylib
+                #lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/libhunspell-1.2.dylib -output Phoenix\ Viewer.app/Contents/MacOS/libhunspell-1.2.dylib
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/libndofdev.dylib -output Phoenix\ Viewer.app/Contents/MacOS/libndofdev.dylib
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/libotr.dylib -output Phoenix\ Viewer.app/Contents/MacOS/libotr.dylib
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/7za -output Phoenix\ Viewer.app/Contents/MacOS/7za
 
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/SLVoice -output Phoenix\ Viewer.app/Contents/Resources/SLVoice
-                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libalut.dylib -output Phoenix\ Viewer.app/Contents/Resources/libalut.dylib
-                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libopenal.dylib -output Phoenix\ Viewer.app/Contents/Resources/libopenal.dylib
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libortp.dylib -output Phoenix\ Viewer.app/Contents/Resources/libortp.dylib
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libvivoxsdk.dylib -output Phoenix\ Viewer.app/Contents/Resources/libvivoxsdk.dylib
-                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib -output Phoenix\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib
+                #lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib -output Phoenix\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib
 
                 echo "Packaging..."
                 RESULT="$(make_package Intel)"
