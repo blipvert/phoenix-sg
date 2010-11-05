@@ -7,8 +7,10 @@ DEPENDENCY_DIR=$START_DIR/dependencies
 configure()
 {
         echo "Configuring (for real)..."
-        ./develop.py configure -G Xcode -DCMAKE_OSX_ARCHITECTURES="$1" -DOPENAL:BOOL=FALSE -DFMOD:BOOL=TRUE -DCMAKE_BUILD_TYPE=Release -DGCC_DISABLE_FATAL_WARNINGS:BOOL=TRUE \
-        -DCMAKE_C_FLAGS:STRING="$2" -DCMAKE_CXX_FLAGS:STRING="$2" > /dev/null
+        ./develop.py configure -G Xcode -DCMAKE_OSX_ARCHITECTURES="$1" \
+        -DOPENAL:BOOL=FALSE -DFMOD:BOOL=TRUE -DCMAKE_BUILD_TYPE=Release \
+        -DGCC_DISABLE_FATAL_WARNINGS:BOOL=TRUE -DCMAKE_C_FLAGS:STRING="$2" \
+        -DCMAKE_CXX_FLAGS:STRING="$2" > /dev/null
 }
 
 set_channel()
@@ -26,7 +28,8 @@ set_channel()
 build()
 {
         echo "Building version ${VERSION_VIEWER}.${REVISION}..."
-        xcodebuild -target ALL_BUILD -configuration Release GCC_VERSION=4.0 > /dev/null
+        xcodebuild -target ALL_BUILD -configuration Release \
+        GCC_VERSION=4.0 > /dev/null
 }
 
 copy_resources()
