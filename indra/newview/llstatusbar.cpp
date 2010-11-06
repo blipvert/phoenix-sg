@@ -504,11 +504,48 @@ void LLStatusBar::refresh()
 		mRegionDetails.mPing = region->getNetDetailsForLCD();
 		if (parcel)
 		{
-			location_name = region->getName()
-				+ llformat(" %d, %d, %d (%s) - %s", 
-						   pos_x, pos_y, pos_z,
-						   region->getSimAccessString().c_str(),
-						   parcel->getName().c_str());
+			static LLCachedControl<BOOL> PhoenixShowSimChannel("PhoenixShowSimChannel", 0);
+			if(PhoenixShowSimChannel)
+			{
+				std::istringstream temp(gLastVersionChannel);
+				std::string temp2;
+				if((temp >> temp2) && (temp >> temp2) && ((temp >> temp2) && temp2 == "RC"))
+				{
+					if(temp >> temp2)
+					{
+						location_name = region->getName()
+							+ llformat(" (%s) %d, %d, %d (%s) - %s", 
+								temp2.c_str(),
+								pos_x, pos_y, pos_z,
+								region->getSimAccessString().c_str(),
+								parcel->getName().c_str());
+					}
+					else
+					{
+						location_name = region->getName()
+							+ llformat(" %d, %d, %d (%s) - %s", 
+								pos_x, pos_y, pos_z,
+								region->getSimAccessString().c_str(),
+								parcel->getName().c_str());
+					}
+				}
+				else
+				{
+					location_name = region->getName()
+						+ llformat(" %d, %d, %d (%s) - %s", 
+							pos_x, pos_y, pos_z,
+							region->getSimAccessString().c_str(),
+							parcel->getName().c_str());
+				}
+			}
+			else
+			{
+				location_name = region->getName()
+					+ llformat(" %d, %d, %d (%s) - %s", 
+						pos_x, pos_y, pos_z,
+						region->getSimAccessString().c_str(),
+						parcel->getName().c_str());
+			}
 
 			// keep these around for the LCD to use
 			mRegionDetails.mRegionName = region->getName();

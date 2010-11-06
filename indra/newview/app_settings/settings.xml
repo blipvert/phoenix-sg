@@ -58,6 +58,17 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
+		<key>PhoenixShowSimChannel</key>
+		<map>
+			<key>Comment</key>
+			<string>Show the sim&apos;s channel if it is a RC channel.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>PhoenixDontUseMultipleColorTags</key>
 		<map>
 			<key>Comment</key>
