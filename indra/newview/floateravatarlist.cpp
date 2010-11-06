@@ -432,24 +432,33 @@ BOOL LLFloaterAvatarList::handleKeyHere(KEY key, MASK mask)
 	if (( KEY_RETURN == key ) && (MASK_NONE == mask))
 	{
 		LLFloaterAvatarList* self = getInstance();
- 		LLScrollListItem *item =   self->mAvatarList->getFirstSelected();
-		LLUUID agent_id = item->getUUID();
-		lookAtAvatar(agent_id);
+		if(self)
+		{
+ 			LLScrollListItem *item =   self->mAvatarList->getFirstSelected();
+			if(item)
+			{
+				LLUUID agent_id = item->getUUID();
+				lookAtAvatar(agent_id);
+			}
+		}
 		return TRUE;
 	}
 
 	if (( KEY_RETURN == key ) && (MASK_CONTROL == mask))
 	{
 		LLFloaterAvatarList* avlist = getInstance();
-		LLScrollListItem *item = avlist->mAvatarList->getFirstSelected();
-
-		if ( item )
+		if(avlist)
 		{
-			LLUUID agent_id = item->getUUID();
-			LLAvatarListEntry *ent = avlist->getAvatarEntry(agent_id);
-			if ( ent )
+			LLScrollListItem *item = avlist->mAvatarList->getFirstSelected();
+
+			if ( item )
 			{
-				gAgent.teleportViaLocation( ent->getPosition() );
+				LLUUID agent_id = item->getUUID();
+				LLAvatarListEntry *ent = avlist->getAvatarEntry(agent_id);
+				if ( ent )
+				{
+					gAgent.teleportViaLocation( ent->getPosition() );
+				}
 			}
 		}
 
