@@ -481,18 +481,21 @@ void JCLSLBridge::ChangeBridge(LLViewerInventoryItem* item)
 	if (pAvatar)
 	{
 		LLViewerJointAttachment* attachment = get_if_there(pAvatar->mAttachmentPoints, (S32)PH_BRIDGE_POINT, (LLViewerJointAttachment*)NULL);
-		for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
-			 attachment_iter != attachment->mAttachedObjects.end();
-			 ++attachment_iter)
+		if (attachment)
 		{
-			LLViewerObject *attached_object = (*attachment_iter);
-			if (attached_object)
+			for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
+				 attachment_iter != attachment->mAttachedObjects.end();
+				 ++attachment_iter)
 			{
-				LLUUID item_id = attached_object->getAttachmentItemID();
-				if (item_id.notNull() && (item_id != item->getUUID()))
+				LLViewerObject *attached_object = (*attachment_iter);
+				if (attached_object)
 				{
-					//cmdline_printchat("---removing non active bridge");
-					LLVOAvatar::detachAttachmentIntoInventory(item_id);
+					LLUUID item_id = attached_object->getAttachmentItemID();
+					if (item_id.notNull() && (item_id != item->getUUID()))
+					{
+						//cmdline_printchat("---removing non active bridge");
+						LLVOAvatar::detachAttachmentIntoInventory(item_id);
+					}
 				}
 			}
 		}
