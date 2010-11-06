@@ -2680,10 +2680,14 @@ Versuchen Sie es in einigen Minuten erneut.
 	</notification>
 	<notification name="UserGiveItem">
 		[NAME] hat Ihnen ein [OBJECTTYPE] namens „[OBJECTNAME]“ gegeben.
+
+(Behalten)/(Verwerfen) sendet keine Benachrichtigung an den Absender.
 		<form name="form">
 			<button name="Keep" text="Behalten"/>
 			<button name="Discard" text="Verwerfen"/>
 			<button name="Mute" text="Stummschalten"/>
+			<button name="(Keep)" text="(Behalten)"/>
+			<button name="(Discard)" text="(Verwerfen)"/>
 		</form>
 	</notification>
 	<notification name="GodMessage">
