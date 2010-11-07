@@ -4410,7 +4410,7 @@ The following required components are missing from [FLOATER]:
    type="alertmodal">
 You are attempting to use a secondary attachment point.
 The secondary attachment points in previous versions of the Phoenix Viewer are no longer supported. 
-Phoenix will attempt to reattach your item on the regular attachment point using the new multi-attach "add" feature.
+Phoenix will attempt to add your item to the regular attachment point instead. Once it has done so, you may need to adjust the item's position manually.
   </notification>
 
   <notification
