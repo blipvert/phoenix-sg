@@ -94,12 +94,13 @@ void PhoenixViewerLink::start_download()
 	headers.insert("User-Agent", LLViewerMedia::getCurrentUserAgent());
 	headers.insert("viewer-version", versionid);
 
+	LL_INFOS("Data") << "Downloading msdata." << LL_ENDL;
 	LLHTTPClient::get(url,new ModularSystemsDownloader( PhoenixViewerLink::msdata ),headers);
 	
-	url = "http://phoenixviewer.com/app/blacklist/versionquery.php?v=" + gSavedSettings.getString("PhoenixAssetBlacklistVersion");
+	url = "http://phoenixviewer.com/app/blacklist/blacklist.xml";
 
-	LL_INFOS("MSBlacklist") << "Checking for blacklist updates..." << LL_ENDL;
-	LLHTTPClient::get(url,new ModularSystemsDownloader( PhoenixViewerLink::msblacklistquery ),headers);
+	LL_INFOS("Blacklist") << "Downloading blacklist.xml" << LL_ENDL;
+	LLHTTPClient::get(url,new ModularSystemsDownloader( PhoenixViewerLink::msblacklist ),headers);
 
 	downloadClientTags();
 }
@@ -123,66 +124,36 @@ void PhoenixViewerLink::downloadClientTags()
 	}
 	
 }
-void PhoenixViewerLink::msblacklistquery(U32 status,std::string body)
-{
-	if(body != "0")
-	{	//update with a list of known malicious assets.
-		std::string url = "http://phoenixviewer.com/app/blacklist/" + body + ".xml.gz";
-		LLSD headers;
-		headers.insert("Accept", "application/octet-stream");
-		headers.insert("User-Agent", LLViewerMedia::getCurrentUserAgent());
-		headers.insert("viewer-version", versionid);
-
-		LL_INFOS("MSBlacklist") << "Downloading asset blacklist update " << url << LL_ENDL;
-
-		LLHTTPClient::get(url,new ModularSystemsDownloader( PhoenixViewerLink::msblacklist ),headers);
-		blacklist_version = body;
-	}
-	else
-		LL_INFOS("MSBlacklist") << "Blacklist is up to date." << LL_ENDL;
-}
-
 
 void PhoenixViewerLink::msblacklist(U32 status,std::string body)
 {
 	if(status != 200)
 	{
-		LL_WARNS("MSBlacklist") << "Something went wrong with the blacklist download status code " << status << LL_ENDL;
+		LL_WARNS("Blacklist") << "Something went wrong with the blacklist download status code " << status << LL_ENDL;
 	}
-	llofstream some_filea; 
-	std::string temp_filea = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,boost::lexical_cast<std::string,S32>(rand()) + ".xml.gz");
-	some_filea.open(temp_filea,std::ios_base::binary);
-	some_filea.clear();
-	some_filea.write(body.c_str(),body.size());
-	some_filea.close();
 
-	std::string temp_fileb = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,blacklist_version + ".xml" );
-
-	
-	if(gunzip_file(temp_filea, temp_fileb))
+	std::istringstream istr(body);
+	if (body.size() > 0)
 	{
-		LL_INFOS("MSBlacklist") << "Unzipped blacklist file" << LL_ENDL;
-
-		llifstream istr(temp_fileb);
 		LLSD data;
 		if(LLSDSerialize::fromXML(data,istr) >= 1)
 		{
-			LL_INFOS("MSBlacklist") << body.size() << " bytes received, updating local blacklist" << LL_ENDL;
+			LL_INFOS("Blacklist") << body.size() << " bytes received, updating local blacklist" << LL_ENDL;
 			for(LLSD::map_iterator itr = data.beginMap(); itr != data.endMap(); ++itr)
 			{
 				if(itr->second.has("name"))
 					LLFloaterBlacklist::addEntry(LLUUID(itr->first),itr->second);
 			}
-			gSavedSettings.setString("PhoenixAssetBlacklistVersion",blacklist_version);
 		}
 		else
-			LL_INFOS("MsBlacklist") << "Failed to parse:" << istr << LL_ENDL;
+		{
+			LL_INFOS("Blacklist") << "Failed to parse blacklist.xml" << LL_ENDL;
+		}
 	}
 	else
-		LL_INFOS("MSBlacklist") << "Failed to unzip file." << LL_ENDL;
-
-	LLFile::remove(temp_filea);
-	LLFile::remove(temp_fileb);
+	{
+		LL_INFOS("Blacklist") << "Empty blacklist.xml" << LL_ENDL;
+	}
 }
 
 void PhoenixViewerLink::updateClientTags(U32 status,std::string body)

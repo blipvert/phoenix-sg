@@ -203,17 +203,6 @@
 				<string />
 			</array>
 		</map>
-		<key>PhoenixAssetBlacklistVersion</key>
-		<map>
-			<key>Comment</key>
-			<string>Do not edit this value.</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>String</string>
-			<key>Value</key>
-			<string>0</string>
-		</map>
 		<key>PhoenixSpecialBlacklist</key>
 		<map>
 			<key>Comment</key>
