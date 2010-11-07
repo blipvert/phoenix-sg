@@ -89,6 +89,7 @@
 #include "llkeyframefallmotion.h"
 #include "llkeyframestandmotion.h"
 #include "llkeyframewalkmotion.h"
+#include "llmanip.h" //KC: needed for adjusting the rotation on attachments relocated from 2nd points
 #include "llmutelist.h"
 #include "llnotify.h"
 #include "llquantize.h"
@@ -6595,9 +6596,12 @@ LLViewerJointAttachment* LLVOAvatar::getTargetAttachmentPoint(const LLViewerObje
 //-----------------------------------------------------------------------------
 BOOL LLVOAvatar::attachObject(LLViewerObject *viewer_object)
 {
+	if ( (isSelf()) && (viewer_object) )
+	{
+		const LLUUID& idItem = viewer_object->getAttachmentItemID();
+	
 	// Force-detach attachments using secondary attachment points
-	if ( (isSelf()) && (viewer_object) &&
-		 (ATTACHMENT_ID_FROM_STATE(viewer_object->getState()) > 38) && (ATTACHMENT_ID_FROM_STATE(viewer_object->getState()) <= 70) )
+	if ( (ATTACHMENT_ID_FROM_STATE(viewer_object->getState()) > 38) && (ATTACHMENT_ID_FROM_STATE(viewer_object->getState()) <= 70) )
 	{
 		static const std::string cstrAlert("PhoenixUsingDeprecatedAttachPoint");
 
@@ -6610,6 +6614,22 @@ BOOL LLVOAvatar::attachObject(LLViewerObject *viewer_object)
 		if (fShowAlert)
 			LLNotifications::instance().add(cstrAlert);
 
+		//KC: Save the rot of the object on the secondary attachment point before removing it and queue it for reattachment on the primary
+		if (idItem.notNull())
+		{
+			LLViewerInventoryItem* item;
+			item = (LLViewerInventoryItem*)gInventory.getItem(idItem);
+			if (item)
+			{
+				llinfos << "saving rotation from old attachment point" << llendl;
+				oldAttachmentRots[idItem] = viewer_object->getRotationEdit();
+				
+				S32 idxAttachPt = ATTACHMENT_ID_FROM_STATE(viewer_object->getState()) - 38;
+				LLViewerJointAttachment* attachmentp = get_if_there(mAttachmentPoints, idxAttachPt, (LLViewerJointAttachment*)NULL);
+				rez_attachment(item, attachmentp, FALSE);
+			}
+		}
+		
 		// Force-detach it on the server side
 		gMessageSystem->newMessage("ObjectDetach");
 		gMessageSystem->nextBlockFast(_PREHASH_AgentData);
@@ -6620,7 +6640,6 @@ BOOL LLVOAvatar::attachObject(LLViewerObject *viewer_object)
 		gMessageSystem->sendReliable(gAgent.getRegionHost());
 
 		// Make sure it doesn't stay stuck in COF since we'll never see it detach
-		const LLUUID& idItem = viewer_object->getAttachmentItemID();
 		if (idItem.notNull())
 			LLCOFMgr::instance().removeAttachment(idItem);
 
@@ -6628,6 +6647,17 @@ BOOL LLVOAvatar::attachObject(LLViewerObject *viewer_object)
 		gObjectList.killObject(viewer_object);
 
 		return FALSE;
+	}
+	
+		//KC: now reapply the rotation saved from the 2nd point
+		if ( idItem.notNull() && (oldAttachmentRots.find(idItem) != oldAttachmentRots.end()) )
+		{
+			llinfos << "rerotating item from old attachment point" << llendl;
+			viewer_object->setRotation(oldAttachmentRots[idItem]);
+			LLManip::rebuild(viewer_object);
+			viewer_object->sendRotationUpdate();
+			oldAttachmentRots.erase(idItem);
+		}
 	}
 
 	LLViewerJointAttachment* attachment = getTargetAttachmentPoint(viewer_object);

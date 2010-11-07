@@ -647,6 +647,8 @@ private:
 
 	static void resolveClient(LLColor4& avatar_name_color, std::string& client, LLVOAvatar* avatar);
 	friend class LLFloaterAvatarList;
+	
+	std::map<LLUUID, LLQuaternion> oldAttachmentRots;
 
 protected:
 	LLPointer<LLHUDEffectSpiral> mBeam;
