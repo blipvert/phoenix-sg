@@ -37,6 +37,7 @@
 #include "v3dmath.h"
 #include "lluuid.h"
 #include "llmediactrl.h"
+#include "llavatarnamecache.h"
 
 class LLButton;
 class LLCheckBoxCtrl;

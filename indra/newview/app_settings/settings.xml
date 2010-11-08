@@ -1,6 +1,17 @@
 <?xml version="1.0" ?>
 <llsd>
 	<map>
+    <key>PhoenixNameSystem</key>
+    <map>
+      <key>Comment</key>
+      <string>Use Display Names instead of Legacy Names. 0 = Old Style, 1 = Display Names and Username, 2 = Displayname only</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
 		<key>PhoenixVoiceAnimWhileTyping</key>
 		<map>
 		<key>Comment</key>

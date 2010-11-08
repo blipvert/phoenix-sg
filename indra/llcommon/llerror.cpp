@@ -1213,7 +1213,7 @@ namespace LLError
 		// Now, we go kaboom!
 		int* crash = NULL;
 
-		*crash = 0;
+			*crash = 0;
 
 		while(true)
 		{

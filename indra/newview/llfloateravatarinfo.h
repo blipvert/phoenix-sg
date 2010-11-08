@@ -91,8 +91,10 @@ public:
 
 	static LLFloaterAvatarInfo* getInstance(const LLUUID &id);
 	static void showProfileCallback(S32 option, void *userdata);
-	static void callbackLoadAvatarName(const LLUUID& id,
+	/*static void callbackLoadAvatarName(const LLUUID& id,
 		const std::string& first, const std::string& last, BOOL is_group, void* data);
+	*/
+	static void LLFloaterAvatarInfo::callbackLoadAvatarName(const LLUUID& agent_id, const LLAvatarName& av_name);
 	void resetGroupList();
 
 private:

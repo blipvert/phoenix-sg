@@ -40,6 +40,7 @@
 #include "llstring.h"
 #include "llfontgl.h"
 #include "lllineeditor.h"
+#include "llavatarname.h"
 
 
 class LLNameEditor
@@ -66,7 +67,6 @@ public:
 	static LLView* fromXML(LLXMLNodePtr node, LLView *parent, LLUICtrlFactory *factory);
 
 	void setNameID(const LLUUID& name_id, BOOL is_group);
-
 	void refresh(const LLUUID& id, const std::string& first, const std::string& last, BOOL is_group);
 
 	static void refreshAll(const LLUUID& id, const std::string& firstname,
@@ -79,6 +79,7 @@ public:
 
 private:
 	static std::set<LLNameEditor*> sInstances;
+	static void on_avatar_name_response(const LLUUID& agent_id, const LLAvatarName& av_name, void *userdata);
 
 private:
 	LLUUID mNameID;

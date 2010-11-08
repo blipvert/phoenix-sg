@@ -89,6 +89,7 @@
 #include "llfloatergroups.h"
 #include "llbufferstream.h"
 #include "llsdserialize.h"
+#include "llavatarnamecache.h"
 
 // [RLVa:KB]
 #include "rlvhandler.h"
@@ -1378,8 +1379,12 @@ void LLPanelAvatar::setAvatar(LLViewerObject *avatarp)
 		name.assign("");
 	}
 
+	LLAvatarName av_name;
+	LLAvatarNameCache::get(avatarp->getID(), &av_name);
+
+
 	// If we have an avatar pointer, they must be online.
-	setAvatarID(avatarp->getID(), name, ONLINE_STATUS_YES);
+	setAvatarID(avatarp->getID(), av_name.getCompleteName(), ONLINE_STATUS_YES);
 }
 
 class JCProfileCallback : public JCBridgeCallback

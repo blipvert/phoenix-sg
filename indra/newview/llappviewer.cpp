@@ -168,7 +168,7 @@
 #include "llviewerthrottle.h"
 #include "llparcel.h"
 
-
+#include "llavatarnamecache.h"
 #include "llinventoryview.h"
 
 #include "llcommandlineparser.h"
@@ -1284,9 +1284,11 @@ bool LLAppViewer::cleanup()
 
 	LLPolyMesh::freeAllMeshes();
 
+	LLAvatarNameCache::cleanupClass();
+
 	delete gCacheName;
 	gCacheName = NULL;
-
+	
 	// Note: this is where gLocalSpeakerMgr and gActiveSpeakerMgr used to be deleted.
 
 	LLWorldMap::getInstance()->reset(); // release any images
@@ -3347,6 +3349,15 @@ void LLAppViewer::saveFinalSnapshot()
 
 void LLAppViewer::loadNameCache()
 {
+	// Phoenix: Wolfspirit: Loads the Display Name Cache. And set if we are using Display Names.
+	std::string filename =
+		gDirUtilp->getExpandedFilename(LL_PATH_CACHE, "avatar_name_cache.xml");
+	llifstream name_cache_stream(filename);
+	if(name_cache_stream.is_open())
+	{
+		LLAvatarNameCache::importFile(name_cache_stream);
+	}
+
 	if (!gCacheName) return;
 
 	std::string name_cache;
@@ -3356,6 +3367,8 @@ void LLAppViewer::loadNameCache()
 	{
 		if(gCacheName->importFile(cache_file)) return;
 	}
+	
+
 
 	// Try to load from the legacy format. This should go away after a
 	// while. Phoenix 2008-01-30
@@ -3369,6 +3382,16 @@ void LLAppViewer::loadNameCache()
 
 void LLAppViewer::saveNameCache()
 {
+	// Phoenix: Wolfspirit: Saves the Display Name Cache.
+// display names cache
+	std::string filename =
+		gDirUtilp->getExpandedFilename(LL_PATH_CACHE, "avatar_name_cache.xml");
+	llofstream name_cache_stream(filename);
+	if(name_cache_stream.is_open())
+	{
+		LLAvatarNameCache::exportFile(name_cache_stream);
+	}
+
 	if (!gCacheName) return;
 
 	std::string name_cache;
@@ -3557,6 +3580,9 @@ void LLAppViewer::idle()
 	    // NOTE: Starting at this point, we may still have pointers to "dead" objects
 	    // floating throughout the various object lists.
 	    //
+		
+		// Phoenix: Wolfspirit: Prepare the namecache.
+		idleNameCache();
 
 	    gFrameStats.start(LLFrameStats::IDLE_NETWORK);
 		stop_glerror();
@@ -3848,6 +3874,62 @@ void LLAppViewer::idleShutdown()
 		forceQuit();
 		return;
 	}
+}
+
+void LLAppViewer::idleNameCache()
+{
+	// Neither old nor new name cache can function before agent has a region
+	LLViewerRegion* region = gAgent.getRegion();
+	if (!region) return;
+
+	// deal with any queued name requests and replies.
+	gCacheName->processPending();
+
+	// Can't run the new cache until we have the list of capabilities
+	// for the agent region, and can therefore decide whether to use
+	// display names or fall back to the old name system.
+	if (!region->capabilitiesReceived()) return;
+
+	// Agent may have moved to a different region, so need to update cap URL
+	// for name lookups.  Can't do this in the cap grant code, as caps are
+	// granted to neighbor regions before the main agent gets there.  Can't
+	// do it in the move-into-region code because cap not guaranteed to be
+	// granted yet, for example on teleport.
+	bool had_capability = LLAvatarNameCache::hasNameLookupURL();
+	std::string name_lookup_url;
+	name_lookup_url.reserve(128); // avoid a memory allocation below
+	name_lookup_url = region->getCapability("GetDisplayNames");
+	bool have_capability = !name_lookup_url.empty();
+	if (have_capability)
+	{
+		// we have support for display names, use it
+	    U32 url_size = name_lookup_url.size();
+	    // capabilities require URLs with slashes before query params:
+	    // https://<host>:<port>/cap/<uuid>/?ids=<blah>
+	    // but the caps are granted like:
+	    // https://<host>:<port>/cap/<uuid>
+	    if (url_size > 0 && name_lookup_url[url_size-1] != '/')
+	    {
+		    name_lookup_url += '/';
+	    }
+		LLAvatarNameCache::setNameLookupURL(name_lookup_url);
+	}
+	else
+	{
+		// Display names not available on this region
+		LLAvatarNameCache::setNameLookupURL( std::string() );
+	}
+
+	// Error recovery - did we change state?
+	if (had_capability != have_capability)
+	{
+		// name tags are persistant on screen, so make sure they refresh
+//		LLVOAvatar::invalidateNameTags();
+	}
+	
+
+	// Phoenix: Wolfspirit: Check if we are using Display Names and set it. Then idle the cache.
+	LLAvatarNameCache::idle();
 }
 
 void LLAppViewer::sendLogoutRequest()

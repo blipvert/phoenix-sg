@@ -529,6 +529,8 @@ set(viewer_SOURCE_FILES
     wlfPanel_AdvSettings.cpp
     floaterexploreanimations.cpp
 	floaterblacklist.cpp
+	llviewerdisplayname.cpp
+	llfloaterdisplayname.cpp
     )
 
 # This gets renamed in the packaging step
@@ -1017,6 +1019,8 @@ set(viewer_HEADER_FILES
     wlfPanel_AdvSettings.h
 	floaterblacklist.h
     floaterexploreanimations.h
+	llviewerdisplayname.h
+	llfloaterdisplayname.h
     )
 
 source_group("CMake Rules" FILES ViewerInstall.cmake)
