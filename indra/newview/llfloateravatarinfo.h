@@ -94,7 +94,7 @@ public:
 	/*static void callbackLoadAvatarName(const LLUUID& id,
 		const std::string& first, const std::string& last, BOOL is_group, void* data);
 	*/
-	static void LLFloaterAvatarInfo::callbackLoadAvatarName(const LLUUID& agent_id, const LLAvatarName& av_name);
+	static void callbackLoadAvatarName(const LLUUID& agent_id, const LLAvatarName& av_name);
 	void resetGroupList();
 
 private:
