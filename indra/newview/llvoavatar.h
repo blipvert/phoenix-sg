@@ -672,6 +672,7 @@ protected:
 	BOOL      mRenderGroupTitles;
 	std::string      mRenderedName;
 	std::string      mClientName;
+	S32		  mUsedNameSystem;
 
 	std::string  mDebugText;
 	U64		  mLastRegionHandle;

@@ -789,6 +789,7 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
 	mNameString(),
 	mTitle(),
 	mRenderedName(),
+	mUsedNameSystem(),
 	mClientName(),
 	mNameAway(FALSE),
 	mNameBusy(FALSE),
@@ -3587,6 +3588,7 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 			if (mNameString.empty() ||
 				new_name ||
 				mRenderedName != usedname ||
+				mUsedNameSystem != *sPhoenixNameSystem ||
 				(!title && !mTitle.empty()) ||
 				(title && mTitle != title->getString()) ||
 				(is_away != mNameAway || is_busy != mNameBusy || is_muted != mNameMute)
@@ -3712,6 +3714,7 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 				mNameBusy = is_busy;
 				mNameMute = is_muted;
 				mClientName = client;
+				mUsedNameSystem = *sPhoenixNameSystem;
 				mNameAppearance = is_appearance;
 				mTitle = title ? title->getString() : "";
 				LLStringFn::replace_ascii_controlchars(mTitle,LL_UNKNOWN_CHAR);
