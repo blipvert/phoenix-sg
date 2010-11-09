@@ -48,6 +48,7 @@ const int GROWL_MAX_BODY_LENGTH = 255; // Arbitrary.
 
 class GrowlManager : public LLEventTimer
 {
+	LOG_CLASS(GrowlManager);
 public:
 	
 	GrowlManager();

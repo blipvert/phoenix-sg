@@ -48,6 +48,7 @@ private:
 
 class PhoenixViewerLink
 {
+	LOG_CLASS(PhoenixViewerLink);
 	PhoenixViewerLink();
 	~PhoenixViewerLink();
 	static PhoenixViewerLink* sInstance;
