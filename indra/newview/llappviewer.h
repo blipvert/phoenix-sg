@@ -42,8 +42,8 @@ class LLCommandLineParser;
 
 class LLAppViewer : public LLApp
 {
-	LOG_CLASS(LLAppViewer);
 public:
+	LOG_CLASS(LLAppViewer);
 	LLAppViewer();
 	virtual ~LLAppViewer();
 
