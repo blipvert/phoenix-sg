@@ -48,6 +48,7 @@ private:
 
 class PhoenixViewerLink
 {
+	LOG_CLASS(PhoenixViewerLink);
 	PhoenixViewerLink();
 	~PhoenixViewerLink();
 	static PhoenixViewerLink* sInstance;
@@ -58,7 +59,6 @@ public:
 	void downloadClientTags();
 
 	static void msdata(U32 status, std::string body);
-	static void msblacklistquery(U32 status, std::string body);
 	static void msblacklist(U32 status, std::string body);
 	static void updateClientTags(U32 status,std::string body);
 	static void updateClientTagsLocal();

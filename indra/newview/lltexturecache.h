@@ -44,6 +44,7 @@ class LLTextureCacheWorker;
 
 class LLTextureCache : public LLWorkerThread
 {
+	LOG_CLASS(LLTextureCache);
 	friend class LLTextureCacheWorker;
 	friend class LLTextureCacheRemoteWorker;
 	friend class LLTextureCacheLocalFileWorker;

@@ -35,6 +35,7 @@ extern "C" {
 
 class OTR_Wrapper
 {
+    LOG_CLASS(OTR_Wrapper);
 private:
     OtrlUserState userstate; // Global state of OTR: known public keys etc.
     OtrlMessageAppOps uistate; // UI functions collected into a structure for libotr   

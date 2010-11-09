@@ -58,6 +58,7 @@ class LLSD;
 // Manage GL extensions...
 class LLGLManager
 {
+	LOG_CLASS(LLGLManager);
 public:
 	LLGLManager();
 

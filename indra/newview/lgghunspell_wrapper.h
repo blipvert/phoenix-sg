@@ -26,7 +26,7 @@
 
 class lggHunSpell_Wrapper
 {
-
+	LOG_CLASS(lggHunSpell_Wrapper);
 public:
 	static Hunspell * myHunspell;
 

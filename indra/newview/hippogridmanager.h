@@ -19,6 +19,7 @@ class LLSD;
 
 class HippoGridInfo
 {
+	LOG_CLASS(HippoGridInfo);
 public:
 	enum Platform {
 		PLATFORM_OTHER = 0,
@@ -134,6 +135,7 @@ private:
 
 class HippoGridManager
 {
+	LOG_CLASS(HippoGridManager);
 public:
 	HippoGridManager();
 	~HippoGridManager();

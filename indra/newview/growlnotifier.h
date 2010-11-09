@@ -34,6 +34,7 @@
 
 class GrowlNotifier
 {
+	LOG_CLASS(GrowlNotifier);
 public:
 	GrowlNotifier();
 	virtual ~GrowlNotifier();

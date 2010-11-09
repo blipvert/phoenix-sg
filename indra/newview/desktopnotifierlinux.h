@@ -35,6 +35,7 @@
 
 class DesktopNotifierLinux : public GrowlNotifier
 {
+	LOG_CLASS(DesktopNotifierLinux);
 public:	
 	DesktopNotifierLinux();
 	~DesktopNotifierLinux(){}
