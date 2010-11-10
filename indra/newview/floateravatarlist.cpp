@@ -2160,11 +2160,20 @@ LLColor4 LLFloaterAvatarList::getAvatarColor(LLAvatarListEntry *ent, F32 distanc
 void LLFloaterAvatarList::onDoubleClick(void *userdata)
 {
 	LLFloaterAvatarList *self = (LLFloaterAvatarList*)userdata;
- 	LLScrollListItem *item =   self->mAvatarList->getFirstSelected();
-	LLUUID agent_id = item->getUUID();
+	if(self)
+	{
+ 		LLScrollListItem *item =   self->mAvatarList->getFirstSelected();
+		if(item)
+		{
+			LLUUID agent_id = item->getUUID();
 
-	//gAgent.lookAtObject(agent_id, CAMERA_POSITION_OBJECT);
-	lookAtAvatar(agent_id);
+			//gAgent.lookAtObject(agent_id, CAMERA_POSITION_OBJECT);
+			if(agent_id.notNull())
+			{
+				lookAtAvatar(agent_id);
+			}
+		}
+	}
 }
 
 void LLFloaterAvatarList::lookAtAvatar(LLUUID &uuid)
