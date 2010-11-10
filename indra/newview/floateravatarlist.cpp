@@ -121,7 +121,7 @@ void chat_avatar_status(std::string name, LLUUID key, ERadarAlertType type, bool
 		{
 				chat.mFromName = name;
 				chat.mURL = llformat("secondlife:///app/agent/%s/about",key.asString().c_str());
-				chat.mText = name+" has "+(entering ? "entered" : "left")+" the sim.";// ("+key.asString()+")";
+				chat.mText = name+" has "+(entering ? "entered" : "left")+" the region.";// ("+key.asString()+")";
 		}
 			break;
 		case ALERT_TYPE_DRAW:
