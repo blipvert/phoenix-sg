@@ -36,6 +36,7 @@
  */
 
 #include "linden_common.h"
+#include <set>
 
 #include "volume_catcher.h"
 
