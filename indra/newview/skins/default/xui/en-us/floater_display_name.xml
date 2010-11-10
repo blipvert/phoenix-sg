@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater can_close="true" can_drag_on_left="false" can_minimize="false"
-     can_resize="false" enabled="true" height="220"
+     can_resize="false" enabled="true" height="240"
      mouse_opaque="true" name="Display Name" title="CHANGE DISPLAY NAME" width="400">
 
     <text length="1" bottom_delta="-50" font="SansSerif" height="25" left="20" text_color="AlertTextColor" name="lockout_text" visible="true" width="360"
        wrap="true">
-      Next possible change: [TIME].
+      You may change your Display Name again on [DATE]
+at [TIME] GMT.
     </text>
     
-    <text left="20" bottom_delta="-20" width="360" height="18" font="SansSerif" name="set_name_label">
+    <text length="1" bottom_delta="0" font="SansSerif" height="25" left="20" text_color="AlertTextColor" name="no_lockout_text" visible="true" width="360"
+       wrap="true">
+      You may change your Display Name at any time.
+    </text>
+    
+    <text left="20" bottom_delta="-40" width="360" height="18" font="SansSerif" name="set_name_label">
       New Display Name:
     </text>
     <line_editor max_length="31" name="display_name_editor" width="300" height="20" left="50" bottom_delta="-20" />
