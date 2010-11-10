@@ -3687,7 +3687,7 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 				}
 
 				if(useddn){
-					if(*sPhoenixNameSystem!=2){
+					if((*sPhoenixNameSystem!=2) && (!fRlvShowNames)){
 						line += "\n";
 						line += "("+av_name.mUsername+")";
 					}
