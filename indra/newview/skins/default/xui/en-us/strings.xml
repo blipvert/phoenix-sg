@@ -1064,7 +1064,7 @@ Establishes a hard cut-off radius for audibility of scripted sounds (both attach
   <string name="LSLTipText_llKey2Name">
 string llKey2Name(key id)
 Returns the name of the prim or avatar specified by id.
-(The id must be a valid rezzed prim or avatar key in the current simulator, otherwise an empty string is returned.)
+(The id must be a valid rezzed prim or avatar key in the current region, otherwise an empty string is returned.)
   </string>
   <string name="LSLTipText_llSetTextureAnim">
 llSetTextureAnim(integer mode, integer face, integer sizex, integer sizey, float start, float length, float rate)
