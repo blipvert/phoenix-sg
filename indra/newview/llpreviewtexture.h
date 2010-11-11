@@ -64,12 +64,21 @@ public:
 
 	virtual BOOL		canSaveAs() const;
 	virtual void		saveAs();
+	virtual void		saveAs(bool is_png);
 
 	virtual void		loadAsset();
 	virtual EAssetStatus	getAssetStatus();
 
 	static void			saveToFile(void* userdata);
-	static void			onFileLoadedForSave( 
+	static void			onFileLoadedForSaveTGA( 
+							BOOL success,
+							LLViewerImage *src_vi,
+							LLImageRaw* src, 
+							LLImageRaw* aux_src,
+							S32 discard_level, 
+							BOOL final,
+							void* userdata );
+	static void			onFileLoadedForSavePNG( 
 							BOOL success,
 							LLViewerImage *src_vi,
 							LLImageRaw* src, 

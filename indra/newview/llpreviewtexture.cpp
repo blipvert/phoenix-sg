@@ -383,30 +383,48 @@ BOOL LLPreviewTexture::canSaveAs() const
 	return mIsCopyable && !mLoadingFullImage && mImage.notNull() && !mImage->isMissingAsset();
 }
 
+void LLPreviewTexture::saveAs()
+{
+	saveAs(false);
+}
 
 // virtual
-void LLPreviewTexture::saveAs()
+void LLPreviewTexture::saveAs(bool is_png)
 {
 	if( mLoadingFullImage ) return;
 
 	LLFilePicker& file_picker = LLFilePicker::instance();
 	const LLViewerInventoryItem* item = getItem() ;
-	if( !file_picker.getSaveFile( LLFilePicker::FFSAVE_TGA, item ? LLDir::getScrubbedFileName(item->getName()) : LLStringUtil::null) )
+	loaded_callback_func callback = LLPreviewTexture::onFileLoadedForSaveTGA;
+	if(is_png)
 	{
-		// User canceled or we failed to acquire save file.
-		return;
+		callback = LLPreviewTexture::onFileLoadedForSavePNG;
+		if( !file_picker.getSaveFile( LLFilePicker::FFSAVE_PNG, item ? LLDir::getScrubbedFileName(item->getName()) : LLStringUtil::null) )
+		{
+			// User canceled or we failed to acquire save file.
+			return;
+		}
+	}
+	else
+	{
+		callback = LLPreviewTexture::onFileLoadedForSaveTGA;
+		if( !file_picker.getSaveFile( LLFilePicker::FFSAVE_TGA, item ? LLDir::getScrubbedFileName(item->getName()) : LLStringUtil::null) )
+		{
+			// User canceled or we failed to acquire save file.
+			return;
+		}
 	}
 	// remember the user-approved/edited file name.
 	mSaveFileName = file_picker.getFirstFile();
 	mLoadingFullImage = TRUE;
 	getWindow()->incBusyCount();
-	mImage->setLoadedCallback( LLPreviewTexture::onFileLoadedForSave, 
+	mImage->setLoadedCallback( callback, 
 								0, TRUE, FALSE, new LLUUID( mItemUUID ) );
 }
 
 
 // static
-void LLPreviewTexture::onFileLoadedForSave(BOOL success, 
+void LLPreviewTexture::onFileLoadedForSaveTGA(BOOL success, 
 											LLViewerImage *src_vi,
 											LLImageRaw* src, 
 											LLImageRaw* aux_src, 
@@ -443,6 +461,63 @@ void LLPreviewTexture::onFileLoadedForSave(BOOL success,
 			LLNotifications::instance().add("CannotEncodeFile", args);
 		}
 		else if( !image_tga->save( self->mSaveFileName ) )
+		{
+			LLSD args;
+			args["FILE"] = self->mSaveFileName;
+			LLNotifications::instance().add("CannotWriteFile", args);
+		}
+		else
+		{
+			self->mSavedFileTimer.reset();
+			self->mSavedFileTimer.setTimerExpirySec( SECONDS_TO_SHOW_FILE_SAVED_MSG );
+		}
+
+		self->mSaveFileName.clear();
+	}
+
+	if( self && !success )
+	{
+		LLNotifications::instance().add("CannotDownloadFile");
+	}
+}
+
+void LLPreviewTexture::onFileLoadedForSavePNG(BOOL success, 
+											LLViewerImage *src_vi,
+											LLImageRaw* src, 
+											LLImageRaw* aux_src, 
+											S32 discard_level,
+											BOOL final,
+											void* userdata)
+{
+	LLUUID* item_uuid = (LLUUID*) userdata;
+	LLPreviewTexture* self = NULL;
+	preview_map_t::iterator found_it = LLPreview::sInstances.find(*item_uuid);
+	if(found_it != LLPreview::sInstances.end())
+	{
+		self = (LLPreviewTexture*) found_it->second;
+	}
+
+	if( final || !success )
+	{
+		delete item_uuid;
+
+		if( self )
+		{
+			self->getWindow()->decBusyCount();
+			self->mLoadingFullImage = FALSE;
+		}
+	}
+
+	if( self && final && success )
+	{
+		LLPointer<LLImagePNG> image_png = new LLImagePNG;
+		if( !image_png->encode( src, 0.0 ) )
+		{
+			LLSD args;
+			args["FILE"] = self->mSaveFileName;
+			LLNotifications::instance().add("CannotEncodeFile", args);
+		}
+		else if( !image_png->save( self->mSaveFileName ) )
 		{
 			LLSD args;
 			args["FILE"] = self->mSaveFileName;

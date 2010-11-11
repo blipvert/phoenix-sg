@@ -441,14 +441,27 @@ class LLFileCloseAllWindows : public view_listener_t
 	}
 };
 
-class LLFileSaveTexture : public view_listener_t
+class LLFileSaveTextureTGA : public view_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
 	{
 		LLFloater* top = gFloaterView->getFrontmost();
 		if (top)
 		{
-			top->saveAs();
+			top->saveAs(false);
+		}
+		return true;
+	}
+};
+
+class LLFileSaveTexturePNG : public view_listener_t
+{
+	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
+	{
+		LLFloater* top = gFloaterView->getFrontmost();
+		if (top)
+		{
+			top->saveAs(true);
 		}
 		return true;
 	}
@@ -1213,7 +1226,8 @@ void init_menu_file()
 	(new LLFileCloseAllWindows())->registerListener(gMenuHolder, "File.CloseAllWindows");
 	(new LLFileEnableCloseWindow())->registerListener(gMenuHolder, "File.EnableCloseWindow");
 	(new LLFileEnableCloseAllWindows())->registerListener(gMenuHolder, "File.EnableCloseAllWindows");
-	(new LLFileSaveTexture())->registerListener(gMenuHolder, "File.SaveTexture");
+	(new LLFileSaveTextureTGA())->registerListener(gMenuHolder, "File.SaveTextureTGA");
+	(new LLFileSaveTexturePNG())->registerListener(gMenuHolder, "File.SaveTexturePNG");
 	(new LLFileTakeSnapshot())->registerListener(gMenuHolder, "File.TakeSnapshot");
 	(new LLFileTakeSnapshotToDisk())->registerListener(gMenuHolder, "File.TakeSnapshotToDisk");
 	(new LLFileQuit())->registerListener(gMenuHolder, "File.Quit");
