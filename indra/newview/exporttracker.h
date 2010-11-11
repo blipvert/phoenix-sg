@@ -67,7 +67,7 @@ public:
 	static bool serializeSelection();
 	static void finalize(LLSD data);
 
-	static BOOL mirror(LLInventoryObject* item, LLViewerObject* container = NULL, std::string root = "", std::string iname = "");
+	static BOOL mirror(const LLInventoryItem* item, LLViewerObject* container = NULL, std::string root = "", std::string iname = "");
 
 private:
 	static LLSD subserialize(LLViewerObject* linkset);
