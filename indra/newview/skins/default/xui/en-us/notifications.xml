@@ -6038,6 +6038,10 @@ An object named [OBJECTFROMNAME] owned by (an unknown user) has given you a [OBJ
        index="2"
        name="Ignore"
        text="Ignore"/>
+	   <button
+       index="3"
+       name="Profile"
+       text="Profile"/>
     </form>
   </notification>
 
