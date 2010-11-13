@@ -461,6 +461,7 @@ void LLVOVolume::updateTextureVirtualSize()
 			vsize = area;
 			imagep->setBoostLevel(LLViewerImageBoostLevel::BOOST_HUD);
  			face->setPixelArea(area); // treat as full screen
+			face->setVirtualSize(vsize);
 		}
 		else
 		{
@@ -478,7 +479,6 @@ void LLVOVolume::updateTextureVirtualSize()
 			}
 		}
 		
-		face->setVirtualSize(vsize);
 		if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_TEXTURE_AREA))
 		{
 			if (vsize < min_vsize) min_vsize = vsize;
