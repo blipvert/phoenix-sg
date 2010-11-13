@@ -1131,12 +1131,15 @@ bool LLAppViewer::mainLoop()
 					ms_sleep(500);
 				}
 
-
+				static const F64 FRAME_SLOW_THRESHOLD = 0.5; //2 frames per seconds
 				const F64 min_frame_time = 0.0; //(.0333 - .0010); // max video frame rate = 30 fps
 				const F64 min_idle_time = 0.0; //(.0010); // min idle time = 1 ms
 				const F64 max_idle_time = run_multiple_threads ? min_idle_time : llmin(.005*10.0*gFrameTimeSeconds, 0.005); // 5 ms a second
 				idleTimer.reset();
-				while(1)
+				bool is_slow = (frameTimer.getElapsedTimeF64() > FRAME_SLOW_THRESHOLD) ;
+				S32 total_work_pending = 0;
+				S32 total_io_pending = 0;
+				while(!is_slow)//do not unpause threads if the frame rates are very low.
 				{
 					S32 work_pending = 0;
 					S32 io_pending = 0;
@@ -1150,6 +1153,8 @@ bool LLAppViewer::mainLoop()
 						ms_sleep(llmin(io_pending/100,100)); // give the vfs some time to catch up
 					}
 
+					total_work_pending += work_pending ;
+					total_io_pending += io_pending ;
 					F64 frame_time = frameTimer.getElapsedTimeF64();
 					F64 idle_time = idleTimer.getElapsedTimeF64();
 					if (frame_time >= min_frame_time &&
@@ -1159,23 +1164,32 @@ bool LLAppViewer::mainLoop()
 						break;
 					}
 				}
+				
+				 // Prevent the worker threads from running while rendering.
+				// if (LLThread::processorCount()==1) //pause() should only be required when on a single processor client...
+				if (run_multiple_threads == FALSE)
+				{
+					//LLFastTimer ftm(FTM_PAUSE_THREADS); //not necessary.
+	 				
+					if(!total_work_pending) //pause texture fetching threads if nothing to process.
+					{
+					LLAppViewer::getTextureCache()->pause();
+					LLAppViewer::getImageDecodeThread()->pause();
+						LLAppViewer::getTextureFetch()->pause(); 
+					}
+					if(!total_io_pending) //pause file threads if nothing to process.
+					{
+						LLVFSThread::sLocal->pause(); 
+						LLLFSThread::sLocal->pause(); 
+					}
+				}					
+
 				if ((LLStartUp::getStartupState() >= STATE_CLEANUP) &&
 					(frameTimer.getElapsedTimeF64() > FRAME_STALL_THRESHOLD))
 				{
 					gFrameStalls++;
 				}
 				frameTimer.reset();
-
-				 // Prevent the worker threads from running while rendering.
-				// if (LLThread::processorCount()==1) //pause() should only be required when on a single processor client...
-				if (run_multiple_threads == FALSE)
-				{
-					LLAppViewer::getTextureCache()->pause();
-					LLAppViewer::getImageDecodeThread()->pause();
-					// LLAppViewer::getTextureFetch()->pause(); // Don't pause the fetch (IO) thread
-				}
-				//LLVFSThread::sLocal->pause(); // Prevent the VFS thread from running while rendering.
-				//LLLFSThread::sLocal->pause(); // Prevent the LFS thread from running while rendering.
 
 				resumeMainloopTimeout();
 
@@ -1525,6 +1539,10 @@ bool LLAppViewer::cleanup()
 	sTextureCache->shutdown();
 	sTextureFetch->shutdown();
 	sImageDecodeThread->shutdown();
+	
+	sTextureFetch->shutDownTextureCacheThread() ;
+	sTextureFetch->shutDownImageDecodeThread() ;
+	
 	delete sTextureCache;
     sTextureCache = NULL;
 	delete sTextureFetch;
@@ -2982,26 +3000,34 @@ void LLAppViewer::migrateCacheDirectory()
 #endif // LL_WINDOWS || LL_DARWIN
 }
 
+//static
+S32 LLAppViewer::getCacheVersion() 
+{
+	static const S32 cache_version = 7;
+
+	return cache_version ;
+}
+
 bool LLAppViewer::initCache()
 {
 	mPurgeCache = false;
-	// Purge cache if user requested it
-	if (gSavedSettings.getBOOL("PurgeCacheOnStartup") ||
-		gSavedSettings.getBOOL("PurgeCacheOnNextStartup"))
+	BOOL disable_texture_cache = FALSE ;
+	BOOL read_only = mSecondInstance ? TRUE : FALSE;
+	LLAppViewer::getTextureCache()->setReadOnly(read_only) ;
+
+	if (gSavedSettings.getS32("LocalCacheVersion") != LLAppViewer::getCacheVersion())
 	{
-		gSavedSettings.setBOOL("PurgeCacheOnNextStartup", false);
-		mPurgeCache = true;
-	}
-	// Purge cache if it belongs to an old version
-	else
-	{
-		static const S32 cache_version = 5;
-		if (gSavedSettings.getS32("LocalCacheVersion") != cache_version)
+		if(read_only)
 		{
-			mPurgeCache = true;
-			gSavedSettings.setS32("LocalCacheVersion", cache_version);
+			disable_texture_cache = TRUE ; //if the cache version of this viewer is different from the running one, this viewer can not use the texture cache.
+		}
+		else
+		{
+			mPurgeCache = true; // Purge cache if the version number is different.
+			gSavedSettings.setS32("LocalCacheVersion", LLAppViewer::getCacheVersion());
 		}
 	}
+
 	std::string invcache = gSavedSettings.getString("PhoenixPurgeInvCache");
 	if(invcache != "")
 	{
@@ -3015,32 +3041,43 @@ bool LLAppViewer::initCache()
 		LLFile::remove(inventory_filename);
 		LLFile::remove(gzip_filename);
 	}
-
-	// We have moved the location of the cache directory over time.
-	migrateCacheDirectory();
-
-	if(!gSavedSettings.getBOOL("PhoenixPortableMode"))
+	
+	if(!read_only)
 	{
-
-		// Setup and verify the cache location
-		std::string cache_location = gSavedSettings.getString("CacheLocation");
-		std::string new_cache_location = gSavedSettings.getString("NewCacheLocation");
-		gDirUtilp->mm_setsnddir(gSavedSettings.getString("Phoenixmm_sndcacheloc"));
-		if (new_cache_location != cache_location)
+		// Purge cache if user requested it
+		if (gSavedSettings.getBOOL("PurgeCacheOnStartup") ||
+			gSavedSettings.getBOOL("PurgeCacheOnNextStartup"))
 		{
-			gDirUtilp->setCacheDir(gSavedSettings.getString("CacheLocation"));
-			purgeCache(); // purge old cache
-			gSavedSettings.setString("CacheLocation", new_cache_location);
+			gSavedSettings.setBOOL("PurgeCacheOnNextStartup", false);
+			mPurgeCache = true;
 		}
 
-		if (!gDirUtilp->setCacheDir(gSavedSettings.getString("CacheLocation")))
+		// We have moved the location of the cache directory over time.
+		migrateCacheDirectory();
+
+		if(!gSavedSettings.getBOOL("PhoenixPortableMode"))
 		{
-			LL_WARNS("AppCache") << "Unable to set cache location" << LL_ENDL;
-			gSavedSettings.setString("CacheLocation", "");
+
+			// Setup and verify the cache location
+			std::string cache_location = gSavedSettings.getString("CacheLocation");
+			std::string new_cache_location = gSavedSettings.getString("NewCacheLocation");
+			gDirUtilp->mm_setsnddir(gSavedSettings.getString("Phoenixmm_sndcacheloc"));
+			if (new_cache_location != cache_location)
+			{
+				gDirUtilp->setCacheDir(gSavedSettings.getString("CacheLocation"));
+				purgeCache(); // purge old cache
+				gSavedSettings.setString("CacheLocation", new_cache_location);
+			}
+
+			if (!gDirUtilp->setCacheDir(gSavedSettings.getString("CacheLocation")))
+			{
+				LL_WARNS("AppCache") << "Unable to set cache location" << LL_ENDL;
+				gSavedSettings.setString("CacheLocation", "");
+			}
 		}
 	}
 
-	if (mPurgeCache)
+	if (mPurgeCache && !read_only)
 	{
 		LLSplashScreen::update("Clearing cache...");
 		purgeCache();
@@ -3050,13 +3087,12 @@ bool LLAppViewer::initCache()
 
 	// Init the texture cache
 	// Allocate 80% of the cache size for textures
-	BOOL read_only = mSecondInstance ? TRUE : FALSE;
 	const S32 MB = 1024*1024;
 	S64 cache_size = (S64)(gSavedSettings.getU32("CacheSize")) * MB;
 	const S64 MAX_CACHE_SIZE = 1024*MB;
 	cache_size = llmin(cache_size, MAX_CACHE_SIZE);
 	S64 texture_cache_size = ((cache_size * 8)/10);
-	S64 extra = LLAppViewer::getTextureCache()->initCache(LL_PATH_CACHE, texture_cache_size, read_only);
+	S64 extra = LLAppViewer::getTextureCache()->initCache(LL_PATH_CACHE, texture_cache_size, disable_texture_cache);
 	texture_cache_size -= extra;
 
 	LLSplashScreen::update("Initializing VFS...");

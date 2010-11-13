@@ -93,6 +93,8 @@ public:
 	static LLTextureCache* getTextureCache() { return sTextureCache; }
 	static LLImageDecodeThread* getImageDecodeThread() { return sImageDecodeThread; }
 	static LLTextureFetch* getTextureFetch() { return sTextureFetch; }
+	
+	static S32 getCacheVersion() ;
 
 	const std::string& getSerialNumber() { return mSerialNumber; }
 	
