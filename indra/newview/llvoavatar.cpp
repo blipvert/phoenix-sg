@@ -6686,7 +6686,7 @@ LLViewerJointAttachment* LLVOAvatar::getTargetAttachmentPoint(const LLViewerObje
 
 	if (!attachment)
 	{
-		if(attachmentID != 127 || !((attachmentID > 38) && (attachmentID <= 68)))
+		if(attachmentID != 127 && !((attachmentID > 38) && (attachmentID <= 68)))
 		{
 			llwarns << "Object attachment point invalid: " << attachmentID << llendl;
 		}
