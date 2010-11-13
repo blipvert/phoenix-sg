@@ -1,4 +1,4 @@
-Linden Lab and the Phoenix Viewer Team would like to acknowledge
+Linden Lab and the Phoenix Viewer Project would like to acknowledge
 source code contributions from the following residents.
 The Second Life resident name is given below,
 along with the issue identifier corresponding to the patches we've
