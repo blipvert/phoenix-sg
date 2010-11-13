@@ -85,6 +85,7 @@ void LLFloaterHardwareSettings::refresh()
 	mProbeHardwareOnStartup = gSavedSettings.getBOOL("ProbeHardwareOnStartup");
 
 	childSetValue("fsaa", (LLSD::Integer) mFSAASamples);
+
 	refreshEnabledState();
 }
 
@@ -99,8 +100,17 @@ void LLFloaterHardwareSettings::refreshEnabledState()
 		!gGLManager.mHasVertexBufferObject)
 	{
 		childSetEnabled("vbo", FALSE);
+		//Streaming VBOs -Shyotl
+		childSetEnabled("vbo_stream", FALSE);
 	}
-
+	else
+#if LL_DARWIN
+		childSetEnabled("vbo_stream", FALSE); //Hardcoded disable on mac
+		childSetValue("vbo_stream", (LLSD::Boolean) FALSE); //Hardcoded disable on mac
+#else
+		childSetEnabled("vbo_stream", LLVertexBuffer::sEnableVBOs);
+#endif
+		
 	// if no windlight shaders, turn off nighttime brightness, gamma, and fog distance
 	childSetEnabled("gamma", !gPipeline.canUseWindLightShaders());
 	childSetEnabled("(brightness, lower is brighter)", !gPipeline.canUseWindLightShaders());
