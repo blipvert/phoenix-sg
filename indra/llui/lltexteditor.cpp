@@ -3719,6 +3719,7 @@ void LLTextEditor::clear()
 	std::for_each(mSegments.begin(), mSegments.end(), DeletePointer());
 	mSegments.clear();
 	
+	//KC: clear the formatting too
 	updateLineStartList();
 	needsScroll();
 }
