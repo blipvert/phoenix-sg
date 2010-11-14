@@ -484,7 +484,8 @@ void LLFloaterPay::give(S32 amount)
 					mObjectSelection = NULL;
 
 					// request the object owner in order to check if the owner needs to be unmuted
-					LLMessageSystem* msg = gMessageSystem;
+					LLSelectMgr::registerObjectPropertiesFamilyRequest(mTargetUUID);
+ 					LLMessageSystem* msg = gMessageSystem;
 					msg->newMessageFast(_PREHASH_RequestObjectPropertiesFamily);
 					msg->nextBlockFast(_PREHASH_AgentData);
 					msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
