@@ -212,13 +212,16 @@ public:
 			{
 				LLVOAvatar::attachment_map_t::iterator curiter = iter++;
 				LLViewerJointAttachment* attachment = curiter->second;
-				S32	attachment_pt = curiter->first;	
-				BOOL object_attached = ( attachment->getNumObjects() > 0 );
-				std::string name = std::string("checkbox_") + attachment->getName();
-				mCheckBoxList.push_back(std::make_pair(name,attachment_pt));
-				childSetEnabled(name, object_attached);
-				//KC: Check all by default
-				childSetValue(name,TRUE);
+				S32	attachment_pt = curiter->first;
+				if (attachment_pt < 127)
+				{
+					BOOL object_attached = ( attachment->getNumObjects() > 0 );
+					std::string name = std::string("checkbox_") + attachment->getName();
+					mCheckBoxList.push_back(std::make_pair(name,attachment_pt));
+					childSetEnabled(name, object_attached);
+					//KC: Check all by default
+					childSetValue(name,TRUE);
+				}
 			}
 		}
 
