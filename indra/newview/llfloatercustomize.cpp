@@ -199,6 +199,8 @@ public:
 				std::string name = std::string("checkbox_") + LLWearable::typeToTypeLabel( (EWearableType)i );
 				childSetVisible(name, FALSE);
 			}
+			else //KC: Check all by default
+				childSetValue(name,TRUE);
 		}
 
 		// NOTE: .xml needs to be updated if attachments are added or their names are changed!
@@ -215,6 +217,8 @@ public:
 				std::string name = std::string("checkbox_") + attachment->getName();
 				mCheckBoxList.push_back(std::make_pair(name,attachment_pt));
 				childSetEnabled(name, object_attached);
+				//KC: Check all by default
+				childSetValue(name,TRUE);
 			}
 		}
 
