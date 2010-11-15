@@ -79,6 +79,7 @@ ATI Mobility Radeon HD 2600		.*ATI.*Mobility.*HD.*26.*			3		1
 ATI Mobility Radeon HD 3400		.*ATI.*Mobility.*HD.*34.*			1		1
 ATI Mobility Radeon HD 3600		.*ATI.*Mobility.*HD.*36.*			3		1
 ATI Mobility Radeon HD 3800		.*ATI.*Mobility.*HD.*38.*			3		1
+ATI Mobility Radeon HD 4200		.*ATI.*Mobility.*HD.*42.*			3		1
 ATI Mobility Radeon X1xxx		.*ATI.*Mobility.*X1.*				0		1
 ATI Mobility Radeon X2xxx		.*ATI.*Mobility.*X2.*				0		1
 ATI Mobility Radeon X3xx		.*ATI.*Mobility.*X3.*				1		1
