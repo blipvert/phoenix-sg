@@ -4534,6 +4534,20 @@ Put it in a web page to give others easy access to this location or try it out y
        text="When copying a SLURL to your clipboard"/>
     </form>
   </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="CopyGroupURI"
+   type="alertmodal">
+The following Group URL has been copied to your clipboard:
+ [URI]
+
+Paste it to a friend or someone to give them a quick link to this group.
+    <form name="form">
+      <ignore name="ignore"
+       text="When copying a group URL to your clipboard"/>
+    </form>
+  </notification>
 
   <notification
    icon="alertmodal.tga"
