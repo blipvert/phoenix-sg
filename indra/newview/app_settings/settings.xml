@@ -12,7 +12,45 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-		<key>PhoenixVoiceAnimWhileTyping</key>
+    <key>PhoenixNameTagOldStyle</key>
+    <map>
+      <key>Comment</key>
+      <string>Add (away, busy...) to display/avatar name</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>PhoenixUseCustomUsernameColor</key>
+    <map>
+      <key>Comment</key>
+      <string>If we are using a custom Username Color instead of the one provided.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>PhoenixCustomUsernameColor</key>
+    <map>
+      <key>Comment</key>
+      <string>Color of Usernames</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Color4</string>
+      <key>Value</key>
+      <array>
+        <real>0.996</real>
+        <real>0.396</real>
+        <real>0.121</real>
+        <real>1</real>
+      </array>
+    </map>
+    <key>PhoenixVoiceAnimWhileTyping</key>
 		<map>
 		<key>Comment</key>
 			<string>Play voice animation while typing</string>

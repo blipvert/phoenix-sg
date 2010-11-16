@@ -796,6 +796,11 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
 	mNameMute(FALSE),
 	mRenderGroupTitles(sRenderGroupTitles),
 	mNameAppearance(FALSE),
+	mNameFriend(FALSE),
+	mNameAlpha(0.f),
+	mNameCloud(false),
+	mNameClient(""),
+	mNameTagColor(),
 	mLastRegionHandle(0),
 	mRegionCrossingCount(0),
 	mFirstTEMessageReceived( FALSE ),
@@ -3250,6 +3255,7 @@ void LLVOAvatar::resolveClient(LLColor4& avatar_name_color, std::string& client,
 {
 	LLColor4 colourBackup = avatar_name_color;
 	LLUUID idx = avatar->getTE(0)->getID();
+
 	if(LLVOAvatar::sClientResolutionList.has("isComplete") && LLVOAvatar::sClientResolutionList.has(idx.asString()) && avatar->isReallyFullyLoaded())
 	{
 		LLSD cllsd = LLVOAvatar::sClientResolutionList[idx.asString()];
@@ -3361,38 +3367,34 @@ void LLVOAvatar::resolveClient(LLColor4& avatar_name_color, std::string& client,
 }
 
 
+
+//Phoenix: Wolfspirit Magic: Ported over from Viewer2 for better DN integration.
 void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 {
 	// update chat bubble
 	//--------------------------------------------------------------------
-	// draw text label over characters head
+	// draw text label over character's head
 	//--------------------------------------------------------------------
 	if (mChatTimer.getElapsedTimeF32() > BUBBLE_CHAT_TIME)
 	{
 		mChats.clear();
 	}
-
+	
 	const F32 time_visible = mTimeVisible.getElapsedTimeF32();
-
-	static F32* sRenderNameShowTime = rebind_llcontrol<F32>("RenderNameShowTime", &gSavedSettings, true);
-	static F32* sRenderNameFadeDuration = rebind_llcontrol<F32>("RenderNameFadeDuration", &gSavedSettings, true);
-
-
-	const F32 NAME_SHOW_TIME = *sRenderNameShowTime;	// seconds
-	const F32 FADE_DURATION = *sRenderNameFadeDuration; // seconds
-// [RLVa:KB] - Checked: 2009-07-08 (RLVa-1.0.0e) | Added: RLVa-0.2.0b
+	const F32 NAME_SHOW_TIME = gSavedSettings.getF32("RenderNameShowTime");	// seconds
+	const F32 FADE_DURATION = gSavedSettings.getF32("RenderNameFadeDuration"); // seconds
+// [RLVa:KB] - Checked: 2010-04-04 (RLVa-1.2.2a) | Added: RLVa-0.2.0b
 	bool fRlvShowNames = gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES);
 // [/RLVa:KB]
 	BOOL visible_avatar = isVisible() || mNeedsAnimUpdate;
-	static BOOL* sUseChatBubbles = rebind_llcontrol<BOOL>("UseChatBubbles", &gSavedSettings, true);
-	BOOL visible_chat = *sUseChatBubbles && (mChats.size() || mTyping);
+	BOOL visible_chat = gSavedSettings.getBOOL("UseChatBubbles") && (mChats.size() || mTyping);
 	BOOL render_name =	visible_chat ||
-						(visible_avatar &&
-// [RLVa:KB] - Checked: 2009-08-11 (RLVa-1.0.1h) | Added: RLVa-1.0.0h
+		                (visible_avatar &&
+// [RLVa:KB] - Checked: 2010-04-04 (RLVa-1.2.2a) | Added: RLVa-1.0.0h
 						( (!fRlvShowNames) || (RlvSettings::getShowNameTags()) ) &&
 // [/RLVa:KB]
-						((sRenderName == RENDER_NAME_ALWAYS) ||
-						 (sRenderName == RENDER_NAME_FADE && time_visible < NAME_SHOW_TIME)));
+		                ((sRenderName == RENDER_NAME_ALWAYS) ||
+		                 (sRenderName == RENDER_NAME_FADE && time_visible < NAME_SHOW_TIME)));
 	// If it's your own avatar, don't draw in mouselook, and don't
 	// draw if we're specifically hiding our own name.
 	if (mIsSelf)
@@ -3402,17 +3404,26 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 						&& (visible_chat || !gSavedSettings.getBOOL("RenderNameHideSelf"));
 	}
 
-	if ( render_name )
+	if ( !render_name )
 	{
+		if (mNameText)
+		{
+			// ...clean up old name tag
+			mNameText->markDead();
+			mNameText = NULL;
+			sNumVisibleChatBubbles--;
+		}
+		return;
+	}
+
 		BOOL new_name = FALSE;
 		if (visible_chat != mVisibleChat)
 		{
 			mVisibleChat = visible_chat;
 			new_name = TRUE;
 		}
-
-		static S32 *sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
-// [RLVa:KB] - Checked: 2009-07-08 (RLVa-1.0.0e) | Added: RLVa-0.2.0b
+		
+// [RLVa:KB] - Checked: 2010-04-04 (RLVa-1.2.2a) | Added: RLVa-0.2.0b
 		if (fRlvShowNames)
 		{
 			if (mRenderGroupTitles)
@@ -3429,12 +3440,8 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 			new_name = TRUE;
 		}
 
-		static LLColor4* sAvatarNameColor = rebind_llcontrol<LLColor4>("AvatarNameColor", &gColors, true);
-
-		std::string client;
 		// First Calculate Alpha
 		// If alpha > 0, create mNameText if necessary, otherwise delete it
-		{
 			F32 alpha = 0.f;
 			if (mAppAngle > 5.f)
 			{
@@ -3455,8 +3462,17 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 				alpha = (mAppAngle-2.f)/3.f;
 			}
 
-			if (alpha > 0.f)
+	if (alpha <= 0.f)
 			{
+		if (mNameText)
+		{
+			mNameText->markDead();
+			mNameText = NULL;
+			sNumVisibleChatBubbles--;
+		}
+		return;
+	}
+
 				if (!mNameText)
 				{
 					mNameText = (LLHUDText *)LLHUDObject::addHUDObject(LLHUDObject::LL_HUD_TEXT);
@@ -3470,279 +3486,266 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 					sNumVisibleChatBubbles++;
 					new_name = TRUE;
 				}
+				
+	LLVector3 name_position = idleUpdateNameTagPosition(root_pos_last);
+	mNameText->setPositionAgent(name_position);
+				
+	idleUpdateNameTagText(new_name);
+			
+	idleUpdateNameTagAlpha(new_name, alpha);
+}
 
-				LLColor4 avatar_name_color = (*sAvatarNameColor);
-				if(!mIsSelf)
-					resolveClient(avatar_name_color,client, this);
-				else if(gSavedSettings.getBOOL("PhoenixShowOwnClientColor") && LLVOAvatar::sClientResolutionList.has("isComplete") && LLVOAvatar::sClientResolutionList.has(LLPrimitive::tagstring))
-				{
-						LLSD cllsd = LLVOAvatar::sClientResolutionList[LLPrimitive::tagstring];
-						LLColor4 colour;
-						colour.setValue(cllsd["color"]);
-						if(cllsd["multiple"].asReal() != 0)
-						{
-							avatar_name_color += colour;
-							avatar_name_color *= 1.0/(cllsd["multiple"].asReal()+1.0f);
-						}
-						else
-							avatar_name_color = colour;
-				}
-
-				static BOOL* sPhoenixChangeColorOnClient = rebind_llcontrol<BOOL>("PhoenixChangeColorOnClient", &gSavedSettings, true);
-				static BOOL* sPhoenixClientTagDisplay = rebind_llcontrol<BOOL>("PhoenixClientTagDisplay", &gSavedSettings, true);
-
-				if(!*sPhoenixChangeColorOnClient)
-				{
-					avatar_name_color = (*sAvatarNameColor);
-				}
-				if(!*sPhoenixClientTagDisplay)
-				{
-					client = "";
-				}
-
-				//Phoenix:KC - color friend's name tags
-				static BOOL* sPhoenixColorFriendsNameTags = rebind_llcontrol<BOOL>("PhoenixColorFriendsNameTags", &gSavedSettings, true);
-				if(*sPhoenixColorFriendsNameTags && LLAvatarTracker::instance().isBuddy(getID()))
-				{
-					static LLCachedControl<LLColor4> PhoenixFriendNameColor("PhoenixFriendNameColor", LLColor4(0.447f, 0.784f, 0.663f, 1.f));
-					avatar_name_color = PhoenixFriendNameColor;
-				}
-
-				avatar_name_color.setAlpha(alpha);
-				mNameText->setColor(avatar_name_color);
-
-				LLQuaternion root_rot = mRoot.getWorldRotation();
-				mNameText->setUsePixelSize(TRUE);
-				LLVector3 pixel_right_vec;
-				LLVector3 pixel_up_vec;
-				LLViewerCamera::getInstance()->getPixelVectors(root_pos_last, pixel_up_vec, pixel_right_vec);
-				LLVector3 camera_to_av = root_pos_last - LLViewerCamera::getInstance()->getOrigin();
-				camera_to_av.normalize();
-				LLVector3 local_camera_at = camera_to_av * ~root_rot;
-				LLVector3 local_camera_up = camera_to_av % LLViewerCamera::getInstance()->getLeftAxis();
-				local_camera_up.normalize();
-				local_camera_up = local_camera_up * ~root_rot;
-
-				local_camera_up.scaleVec(mBodySize * 0.5f);
-				local_camera_at.scaleVec(mBodySize * 0.5f);
-
-				LLVector3 name_position = mRoot.getWorldPosition() +
-					(local_camera_up * root_rot) -
-					(projected_vec(local_camera_at * root_rot, camera_to_av));
-				name_position += pixel_up_vec * 15.f;
-				mNameText->setPositionAgent(name_position);
-			}
-			else if (mNameText)
+void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 			{
-				mNameText->markDead();
-				mNameText = NULL;
-				sNumVisibleChatBubbles--;
-			}
-		}
-
 		LLNameValue *title = getNVPair("Title");
 		LLNameValue* firstname = getNVPair("FirstName");
 		LLNameValue* lastname = getNVPair("LastName");
 
+	// Avatars must have a first and last name
+	if (!firstname || !lastname) return;
 
-		if (mNameText.notNull() && firstname && lastname)
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
+	bool fRlvShowNames = gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES);
+// [/RLVa:KB]
+	bool is_away = mSignaledAnimations.find(ANIM_AGENT_AWAY)  != mSignaledAnimations.end();
+	bool is_busy = mSignaledAnimations.find(ANIM_AGENT_BUSY) != mSignaledAnimations.end();
+	bool is_appearance = mSignaledAnimations.find(ANIM_AGENT_CUSTOMIZE) != mSignaledAnimations.end();
+	bool is_muted;
+	if (isSelf())
+	{
+		is_muted = false;
+	}
+	else
 		{
+		is_muted = LLMuteList::getInstance()->isMuted(getID());
+	}
+//	bool is_friend = LLAvatarTracker::instance().isBuddy(getID());
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
+	bool is_friend = (!fRlvShowNames) && (LLAvatarTracker::instance().isBuddy(getID()));
+// [/RLVa:KB]
+	bool is_cloud = getIsCloud();
+
+	static LLColor4* sAvatarNameColor = rebind_llcontrol<LLColor4>("AvatarNameColor", &gColors, true);
+	static BOOL* sPhoenixChangeColorOnClient = rebind_llcontrol<BOOL>("PhoenixChangeColorOnClient", &gSavedSettings, true);
+	static BOOL* sPhoenixClientTagDisplay = rebind_llcontrol<BOOL>("PhoenixClientTagDisplay", &gSavedSettings, true);
+	static BOOL* sPhoenixShowOwnClientColor = rebind_llcontrol<BOOL>("PhoenixShowOwnClientColor", &gSavedSettings, true);
+
+	
+	// Get Clientname + Color
+	std::string client;
+	LLColor4 name_tag_color = *sAvatarNameColor;
+	LLColor4 avatar_name_tag_color;
+
+	if(!isSelf()) resolveClient(avatar_name_tag_color,client, this);
+	else if(*sPhoenixShowOwnClientColor && LLVOAvatar::sClientResolutionList.has("isComplete") && LLVOAvatar::sClientResolutionList.has(LLPrimitive::tagstring))
+	{
+		LLSD cllsd = LLVOAvatar::sClientResolutionList[LLPrimitive::tagstring];
+		LLColor4 colour;
+		colour.setValue(cllsd["color"]);
+		if(cllsd["multiple"].asReal() != 0)
+		{
+			avatar_name_tag_color += colour;
+			avatar_name_tag_color *= 1.0/(cllsd["multiple"].asReal()+1.0f);
+		}
+		else
+			avatar_name_tag_color = colour;
+	}
+
+	if(*sPhoenixChangeColorOnClient && (!isSelf() || *sPhoenixShowOwnClientColor))
+	{
+		name_tag_color = avatar_name_tag_color;
+	}
+	if(!*sPhoenixClientTagDisplay)
+	{
+		client = "";
+	}
+
+	
+	//Phoenix:KC - color friend's name tags
+	static BOOL* sPhoenixColorFriendsNameTags = rebind_llcontrol<BOOL>("PhoenixColorFriendsNameTags", &gSavedSettings, true);
+	static LLCachedControl<LLColor4> PhoenixFriendNameColor("PhoenixFriendNameColor", LLColor4(0.447f, 0.784f, 0.663f, 1.f));
+	if(is_friend && *sPhoenixColorFriendsNameTags) name_tag_color = PhoenixFriendNameColor;
+
+	// Rebuild name tag if state change detected
+	if (mNameString.empty()
+		|| new_name
+		|| (!title && !mTitle.empty())
+		|| (title && mTitle != title->getString())
+		|| is_away != mNameAway 
+		|| is_busy != mNameBusy 
+		|| is_muted != mNameMute
+				|| is_appearance != mNameAppearance 
+		|| is_friend != mNameFriend
+		|| is_cloud != mNameCloud
+		|| client != mNameClient
+		|| name_tag_color != mNameTagColor)
+				{
+
+		clearNameTag();
+
+		static S32* sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
+		static bool* sPhoenixNameTagOldStyle = rebind_llcontrol<bool>("PhoenixNameTagOldStyle", &gSavedSettings, true);
+		static BOOL* sSmallAvatarNames = rebind_llcontrol<BOOL>("SmallAvatarNames", &gSavedSettings, true);
 		
-		/*
-			Phoenix: Wolfspirit:
-				The following part replaces the username with the Displayname, if Displaynames are enabled
+		LLFontGL::StyleFlags style=LLFontGL::NORMAL;
+		if(!*sSmallAvatarNames){
+			style=LLFontGL::BOLD;
+		}
 
-		*/
+		std::string line;
+		if (client!="" || is_away || is_muted || is_busy || is_appearance)
+		{
+			if (is_away)
+			{
+				line += "Away";
+				line += ", ";
+			}
+			if (is_busy)
+			{
+				line += "Busy";
+				line += ", ";
+			}
+			if (is_muted)
+			{
+				line += "Muted";
+				line += ", ";
+			}
+			if (is_appearance)
+			{
+				line += "Appearance";
+				line += ", ";
+			}
+			if (is_cloud)
+			{
+				line += "Rezzing";
+				line += ", ";
+			}
+			if (client!="")
+			{
+				line += client;
+				line += ", ";
+			}
+			// trim last ", "
+			line.resize( line.length() - 2 );
 
+			if(!*sPhoenixNameTagOldStyle)
+			addNameTagLine(line, name_tag_color, style,
+				LLFontGL::getFontSansSerifSmall());
+		}
+
+//		if (sRenderGroupTitles
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
+		if (sRenderGroupTitles && !fRlvShowNames
+// [/RLVa:KB]
+			&& title && title->getString() && title->getString()[0] != '\0')
+						{
+			std::string title_str = title->getString();
+			LLStringFn::replace_ascii_controlchars(title_str,LL_UNKNOWN_CHAR);
+			addNameTagLine(title_str, name_tag_color, style,
+				LLFontGL::getFontSansSerifSmall());
+						}
+
+		bool show_display_names=false;
+		bool show_usernames=false;
+		if(*sPhoenixNameSystem==1) show_usernames=true;
+		if(*sPhoenixNameSystem==1 || *sPhoenixNameSystem==2) show_display_names=true;
+
+		if (LLAvatarNameCache::useDisplayNames())
+		{
 			LLAvatarName av_name;
-			bool dnhasloaded = false;
-			bool useddn = true;
-			if(LLAvatarNameCache::useDisplayNames() && LLAvatarNameCache::get(getID(), &av_name)) dnhasloaded=true;
-			
-			std::string usedname;
-			if(dnhasloaded && !av_name.mIsDisplayNameDefault && !av_name.mIsDummy && av_name.mDisplayName != av_name.getLegacyName()) usedname = av_name.mDisplayName;
-			else {
-				usedname = firstname->getString();
-				usedname += " ";
-				usedname += lastname->getString();
-				dnhasloaded=false;
-				useddn=false;
+			if (!LLAvatarNameCache::get(getID(), &av_name))
+			{
+				// ...call this function back when the name arrives
+				// and force a rebuild
+				LLAvatarNameCache::get(getID(), boost::bind(&LLVOAvatar::invalidateNameTag, _1));
 			}
 
-			BOOL is_away = mSignaledAnimations.find(ANIM_AGENT_AWAY)  != mSignaledAnimations.end();
-			BOOL is_busy = mSignaledAnimations.find(ANIM_AGENT_BUSY) != mSignaledAnimations.end();
-			BOOL is_appearance = mSignaledAnimations.find(ANIM_AGENT_CUSTOMIZE) != mSignaledAnimations.end();
-
-			if((mNameAway && ! is_away) || (mNameBusy && ! is_busy) || (mNameAppearance && ! is_appearance)) mIdleTimer.reset();
-
-			BOOL is_muted;
-			if (mIsSelf)
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
+			if ( (!fRlvShowNames) || (isSelf()) )
 			{
-				is_muted = FALSE;
+// [/RLVa:KB]
+				// Might be blank if name not available yet, that's OK //Wolfspirit: NO it isn't! Display Legacy Name instead!
+				if (show_display_names)
+				{
+					std::string name_str = av_name.mDisplayName;
+					if(name_str=="") {
+												name_str = firstname->getString();
+												name_str += " ";
+												name_str += lastname->getString();
+					}
+					if(*sPhoenixNameTagOldStyle && line!="") name_str += " ("+line+")";
+					addNameTagLine(name_str, name_tag_color, style,
+						LLFontGL::getFontSansSerif());
+				}
+				// Suppress SLID display if display name matches exactly (ugh)
+				if (show_usernames && !av_name.mIsDisplayNameDefault)
+				{
+					// *HACK: Desaturate the color
+					static BOOL* sPhoenixUseCustomUsernameColor = rebind_llcontrol<BOOL>("PhoenixUseCustomUsernameColor", &gSavedSettings, true);
+					
+					LLColor4 username_color = name_tag_color * 0.83f;
+					if(*sPhoenixUseCustomUsernameColor){
+						static LLCachedControl<LLColor4> PhoenixCustomUsernameColor("PhoenixCustomUsernameColor", LLColor4(0.447f, 0.784f, 0.663f, 1.f));
+						username_color = PhoenixCustomUsernameColor;
+					}
+					addNameTagLine(av_name.mUsername, username_color, style,
+						LLFontGL::getFontSansSerifSmall());
+				}
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
 			}
 			else
 			{
-				is_muted = LLMuteList::getInstance()->isMuted(getID());
+				std::string name_str;
+				if(*sPhoenixNameTagOldStyle && line!="") name_str += " ("+line+")";
+				addNameTagLine(RlvStrings::getAnonym(av_name.getLegacyName())+name_str, name_tag_color, style, LLFontGL::getFontSansSerif());
 			}
-
-			if (mNameString.empty() ||
-				new_name ||
-				mRenderedName != usedname ||
-				mUsedNameSystem != *sPhoenixNameSystem ||
-				(!title && !mTitle.empty()) ||
-				(title && mTitle != title->getString()) ||
-				(is_away != mNameAway || is_busy != mNameBusy || is_muted != mNameMute)
-				|| is_appearance != mNameAppearance || client != mClientName)
+// [/RLVa:KB]
+		}
+		else
+		{
+			const LLFontGL* font = LLFontGL::getFontSansSerif();
+			std::string full_name = firstname->getString();
+				full_name += " ";
+				full_name += lastname->getString();
+// [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
+			if ( (fRlvShowNames) && (!isSelf()) )
 			{
-
-				std::string line;
-// [RLVa:KB] - Version: 1.23.4 | Checked: 2009-07-08 (RLVa-1.0.0e) | Added: RLVa-0.2.0b
-				if (!fRlvShowNames)
-				{
+				full_name = RlvStrings::getAnonym(full_name);
+			}
 // [/RLVa:KB]
-					if (!sRenderGroupTitles)
-					{
-						// If all group titles are turned off, stack first name
-						// on a line above last name
-						if(!dnhasloaded){
-							line += firstname->getString();
-							line += "\n";
-							line += lastname->getString();
-						}
-						else
-						{
-							line += usedname;
-						}
-					}
-					else if (title && title->getString() && title->getString()[0] != '\0')
-					{
-						line += title->getString();
-						LLStringFn::replace_ascii_controlchars(line,LL_UNKNOWN_CHAR);
-						line += "\n";
-						if(!dnhasloaded){
-							line += usedname;
-						}
-						else
-						{
-							useddn=true;
-							line += usedname;
-						}
-					}
-					else
-					{
-						if(!dnhasloaded){
-							line += usedname;
-						}
-						else
-						{
-							useddn=true;
-							line += usedname;
-						}
-					}
-// [RLVa:KB] - Version: 1.23.4 | Checked: 2009-07-08 (RLVa-1.0.0e) | Added: RLVa-0.2.0b
-				}
-				else
-				{
-					line = RlvStrings::getAnonym(line.assign(firstname->getString()).append(" ").append(lastname->getString()));
-				}
-// [/RLVa:KB]
-				BOOL need_comma = FALSE;
+			if(*sPhoenixNameTagOldStyle && line!="") full_name += " ("+line+")";
+			addNameTagLine(full_name, name_tag_color, style, font);
+		}
 
-				if (is_away || is_muted || is_busy || client.length() != 0)
-				{
-					line += " (";
-					if (is_away)
-					{
-						line += "Away";
-						need_comma = TRUE;
-					}
-					if (is_busy)
-					{
-						if (need_comma)
-						{
-							line += ", ";
-						}
-						line += "Busy";
-						need_comma = TRUE;
-					}
-					if (is_muted)
-					{
-						if (need_comma)
-						{
-							line += ", ";
-						}
-						line += "Muted";
-						need_comma = TRUE;
-					}
-					if (client.length() != 0)
-					{
-						if (need_comma)
-						{
-							line += ", ";
-						}
-						line += client;
-						need_comma = TRUE;
-					}
-					line += ")";
-				}
-
-				if(useddn){
-					if((*sPhoenixNameSystem!=2) && (!fRlvShowNames)){
-						line += "\n";
-						line += "("+av_name.mUsername+")";
-					}
-					mRenderedName = av_name.mDisplayName;
-				}
-				else
-				{
-					mRenderedName = firstname->getString();
-					mRenderedName += " ";
-					mRenderedName += lastname->getString();
-				}
-
-				if (is_appearance)
-				{
-					line += "\n";
-					line += "(Editing Appearance)";
-				}
-				/*if(!mIsSelf && mIdleTimer.getElapsedTimeF32() > 120)
-				{
-					line += "\n";
-					line += getIdleTime();
-				}*/ //lol broken features
 				mNameAway = is_away;
 				mNameBusy = is_busy;
 				mNameMute = is_muted;
-				mClientName = client;
-				mUsedNameSystem = *sPhoenixNameSystem;
 				mNameAppearance = is_appearance;
+				mNameFriend = is_friend;
+				mNameCloud = is_cloud;
+				mNameClient = client;
+				mNameTagColor = name_tag_color; 
 				mTitle = title ? title->getString() : "";
 				LLStringFn::replace_ascii_controlchars(mTitle,LL_UNKNOWN_CHAR);
-				mNameString = utf8str_to_wstring(line);
 				new_name = TRUE;
 			}
 
-			if (visible_chat)
+	if (mVisibleChat)
 			{
-				mIdleTimer.reset();
-				mNameText->setDropShadow(TRUE);
 				mNameText->setFont(LLFontGL::getFontSansSerif());
 				mNameText->setTextAlignment(LLHUDText::ALIGN_TEXT_LEFT);
 				mNameText->setFadeDistance(CHAT_NORMAL_RADIUS * 2.f, 5.f);
-				if (new_name)
-				{
-					mNameText->setLabel(mNameString);
-				}
-
+			
 				char line[MAX_STRING];		/* Flawfinder: ignore */
 				line[0] = '\0';
 				std::deque<LLChat>::iterator chat_iter = mChats.begin();
 				mNameText->clearString();
 
+				static LLColor4* sAvatarNameColor = rebind_llcontrol<LLColor4>("AvatarNameColor", &gColors, true);
 				LLColor4 new_chat = (*sAvatarNameColor);
 				LLColor4 normal_chat = lerp(new_chat, LLColor4(0.8f, 0.8f, 0.8f, 1.f), 0.7f);
 				LLColor4 old_chat = lerp(normal_chat, LLColor4(0.6f, 0.6f, 0.6f, 1.f), 0.7f);
-				if (mTyping && mChats.size() >= MAX_BUBBLE_CHAT_UTTERANCES)
+				if (mTyping && mChats.size() >= MAX_BUBBLE_CHAT_UTTERANCES) 
 				{
 					++chat_iter;
 				}
@@ -3753,30 +3756,30 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 					LLFontGL::StyleFlags style;
 					switch(chat_iter->mChatType)
 					{
-					case CHAT_TYPE_WHISPER:
-						style = LLFontGL::ITALIC;
-						break;
-					case CHAT_TYPE_SHOUT:
-						style = LLFontGL::BOLD;
-						break;
-					default:
-						style = LLFontGL::NORMAL;
-						break;
+						case CHAT_TYPE_WHISPER:
+							style = LLFontGL::ITALIC;
+							break;
+						case CHAT_TYPE_SHOUT:
+							style = LLFontGL::BOLD;
+							break;
+						default:
+							style = LLFontGL::NORMAL;
+							break;
 					}
 					if (chat_fade_amt < 1.f)
 					{
 						F32 u = clamp_rescale(chat_fade_amt, 0.9f, 1.f, 0.f, 1.f);
-						mNameText->addLine(utf8str_to_wstring(chat_iter->mText), lerp(new_chat, normal_chat, u), style);
+						mNameText->addLine(chat_iter->mText, lerp(new_chat, normal_chat, u), style);
 					}
 					else if (chat_fade_amt < 2.f)
 					{
 						F32 u = clamp_rescale(chat_fade_amt, 1.9f, 2.f, 0.f, 1.f);
-						mNameText->addLine(utf8str_to_wstring(chat_iter->mText), lerp(normal_chat, old_chat, u), style);
+						mNameText->addLine(chat_iter->mText, lerp(normal_chat, old_chat, u), style);
 					}
 					else if (chat_fade_amt < 3.f)
 					{
 						// *NOTE: only remove lines down to minimum number
-						mNameText->addLine(utf8str_to_wstring(chat_iter->mText), old_chat, style);
+						mNameText->addLine(chat_iter->mText, old_chat, style);
 					}
 				}
 				mNameText->setVisibleOffScreen(TRUE);
@@ -3786,47 +3789,41 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 					S32 dot_count = (llfloor(mTypingTimer.getElapsedTimeF32() * 3.f) + 2) % 3 + 1;
 					switch(dot_count)
 					{
-					case 1:
-						mNameText->addLine(".", new_chat);
-						break;
-					case 2:
-						mNameText->addLine("..", new_chat);
-						break;
-					case 3:
-						mNameText->addLine("...", new_chat);
-						break;
+						case 1:
+							mNameText->addLine(".", new_chat);
+							break;
+						case 2:
+							mNameText->addLine("..", new_chat);
+							break;
+						case 3:
+							mNameText->addLine("...", new_chat);
+							break;
 					}
-					mIdleTimer.reset();
+
 				}
 			}
 			else
 			{
-				static BOOL* sSmallAvatarNames = rebind_llcontrol<BOOL>("SmallAvatarNames", &gSavedSettings, true);
-				if (*sSmallAvatarNames)
-				{
-					mNameText->setFont(LLFontGL::getFontSansSerif());
-				}
-				else
-				{
-					mNameText->setFont(LLFontGL::getFontSansSerifBig());
-				}
-				mNameText->setTextAlignment(LLHUDText::ALIGN_TEXT_CENTER);
+		// ...not using chat bubbles, just names
+		mNameText->setTextAlignment(LLHUDText::ALIGN_TEXT_CENTER);
 				mNameText->setFadeDistance(CHAT_NORMAL_RADIUS, 5.f);
 				mNameText->setVisibleOffScreen(FALSE);
-				if (new_name)
-				{
-					mNameText->setLabel("");
-					mNameText->setString(mNameString);
-				}
-			}
-		}
 	}
-	else if (mNameText)
+}
+
+void LLVOAvatar::addNameTagLine(const std::string& line, const LLColor4& color, S32 style, const LLFontGL* font)
+{
+	llassert(mNameText);
+	if (mVisibleChat)
 	{
-		mNameText->markDead();
-		mNameText = NULL;
-		sNumVisibleChatBubbles--;
+		mNameText->addLabel(utf8str_to_wstring(line));
 	}
+	else
+	{
+		mNameText->addLine(utf8str_to_wstring(line), color, (LLFontGL::StyleFlags)style, font);
+	}
+	mNameString += utf8str_to_wstring(line);
+	mNameString += '\n';
 }
 
 /* Phoenix: Wolfspirit: This allows us to replace one specific nametag of a user */
@@ -3867,6 +3864,93 @@ void LLVOAvatar::invalidateNameTags()
 	}
 }
 
+BOOL LLVOAvatar::getIsCloud()
+{
+	// Do we have a shape?		
+	if (visualParamWeightsAreDefault())
+	{
+		return TRUE;
+	}
+
+	if (!isTextureDefined(TEX_LOWER_BAKED) || 
+		!isTextureDefined(TEX_UPPER_BAKED) || 
+		!isTextureDefined(TEX_HEAD_BAKED))
+	{
+		return TRUE;
+	}
+	return FALSE;
+}
+
+
+LLVector3 LLVOAvatar::idleUpdateNameTagPosition(const LLVector3& root_pos_last)
+{
+	LLQuaternion root_rot = mRoot.getWorldRotation();
+	mNameText->setUsePixelSize(TRUE);
+	LLVector3 pixel_right_vec;
+	LLVector3 pixel_up_vec;
+	LLViewerCamera::getInstance()->getPixelVectors(root_pos_last, pixel_up_vec, pixel_right_vec);
+	LLVector3 camera_to_av = root_pos_last - LLViewerCamera::getInstance()->getOrigin();
+	camera_to_av.normalize();
+	LLVector3 local_camera_at = camera_to_av * ~root_rot;
+	LLVector3 local_camera_up = camera_to_av % LLViewerCamera::getInstance()->getLeftAxis();
+	local_camera_up.normalize();
+	local_camera_up = local_camera_up * ~root_rot;
+
+	local_camera_up.scaleVec(mBodySize * 0.5f);
+	local_camera_at.scaleVec(mBodySize * 0.5f);
+
+	LLVector3 name_position = mRoot.getWorldPosition() + 
+		(local_camera_up * root_rot) -
+		(projected_vec(local_camera_at * root_rot, camera_to_av));
+	name_position += pixel_up_vec * 15.f;
+	return name_position;
+		}
+
+void LLVOAvatar::idleUpdateNameTagAlpha(BOOL new_name, F32 alpha)
+{
+	llassert(mNameText);
+
+	if (new_name
+		|| alpha != mNameAlpha)
+	{
+		mNameText->setAlpha(alpha);
+		mNameAlpha = alpha;
+	}
+}
+
+LLColor4 LLVOAvatar::getNameTagColor(bool is_friend)
+{
+
+
+	LLColor4 color_name;
+	
+	// Not needed in any way anmore
+	/*if (*sPhoenixColorFriendsNameTags && is_friend)
+	{
+		color_name = PhoenixFriendNameColor;
+	}
+	else if (LLAvatarNameCache::useDisplayNames())
+	{
+		// ...color based on whether username "matches" a computed display
+		// name
+		LLAvatarName av_name;
+		if (LLAvatarNameCache::get(getID(), &av_name)
+			&& av_name.mIsDisplayNameDefault)
+		{
+			color_name = *sAvatarNameColor;
+		}
+		else
+		{
+			color_name = *sAvatarNameColor;
+		}
+	}
+	else
+	{
+		// ...not using display names
+		color_name = *sAvatarNameColor;
+	}*/
+	return color_name;
+}
 
 void LLVOAvatar::idleUpdateTractorBeam()
 {
@@ -6686,10 +6770,7 @@ LLViewerJointAttachment* LLVOAvatar::getTargetAttachmentPoint(const LLViewerObje
 
 	if (!attachment)
 	{
-		if(attachmentID != 127 && !((attachmentID > 38) && (attachmentID <= 68)))
-		{
-			llwarns << "Object attachment point invalid: " << attachmentID << llendl;
-		}
+		llwarns << "Object attachment point invalid: " << attachmentID << llendl;
 //		attachment = get_if_there(mAttachmentPoints, 1, (LLViewerJointAttachment*)NULL); // Arbitrary using 1 (chest)
 // [SL:KB] - Patch: Appearance-LegacyMultiAttachment | Checked: 2010-08-28 (Catznip-2.2.0a) | Added: Catznip2.1.2a
 		S32 idxAttachPt = 1;

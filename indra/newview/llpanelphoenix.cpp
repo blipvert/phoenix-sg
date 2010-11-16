@@ -75,6 +75,8 @@
 #include "llprimitive.h"
 #include "a_phoenixviewerlink.h"
 
+#include "llvoavatar.h"
+
 ////////begin drop utility/////////////
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Class JCInvDropTarget
@@ -514,6 +516,11 @@ void LLPanelPhoenix::apply()
 	gSavedSettings.setBOOL("PhoenixShadowsToggle", childGetValue("PhoenixShadowsON").asBoolean());
 	gSavedSettings.setU32("PhoenixUseOTR", (U32)childGetValue("PhoenixUseOTR").asReal());
 	gLggBeamMaps.forceUpdate();
+
+	//Update clienttags to make them correct
+
+	LLVOAvatar::invalidateNameTags();
+
 }
 
 void LLPanelPhoenix::cancel()

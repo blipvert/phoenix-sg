@@ -110,11 +110,16 @@ public:
 	void idleUpdateLoadingEffect();
 	void idleUpdateWindEffect();
 	void idleUpdateBoobEffect();
-	void idleUpdateNameTag(const LLVector3& root_pos_last);
+	void 			idleUpdateNameTag(const LLVector3& root_pos_last);
+	void			idleUpdateNameTagText(BOOL new_name);
+	LLVector3		idleUpdateNameTagPosition(const LLVector3& root_pos_last);
+	void			idleUpdateNameTagAlpha(BOOL new_name, F32 alpha);
+	LLColor4		getNameTagColor(bool is_friend);
 	void			clearNameTag();
 	static void		invalidateNameTag(const LLUUID& agent_id);
 	// force all name tags to rebuild, useful when display names turned on/off
 	static void		invalidateNameTags();
+	void			addNameTagLine(const std::string& line, const LLColor4& color, S32 style, const LLFontGL* font);
 	void idleUpdateRenderCost();
 	void idleUpdateTractorBeam();
 	void idleUpdateBelowWater();
@@ -382,6 +387,7 @@ public:
 	BOOL            isFullyLoaded();
 	BOOL			isReallyFullyLoaded();
 	BOOL            updateIsFullyLoaded();
+	virtual BOOL	getIsCloud();
 private:
 	BOOL            mFullyLoaded;
 	BOOL            mPreviousFullyLoaded;
@@ -668,8 +674,13 @@ protected:
 	BOOL	  mNameBusy;
 	BOOL	  mNameMute;
 	BOOL      mNameAppearance;
+	bool	  mNameFriend;
 	BOOL	  mVisibleChat;
+	F32		  mNameAlpha;
+	bool	  mNameCloud;
 	BOOL      mRenderGroupTitles;
+	std::string mNameClient;
+	LLColor4 mNameTagColor;
 	std::string      mRenderedName;
 	std::string      mClientName;
 	S32		  mUsedNameSystem;
