@@ -3534,7 +3534,7 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 	// Get Clientname + Color
 	std::string client;
 	LLColor4 name_tag_color = *sAvatarNameColor;
-	LLColor4 avatar_name_tag_color;
+	LLColor4 avatar_name_tag_color = *sAvatarNameColor;
 
 	if(!isSelf()) resolveClient(avatar_name_tag_color,client, this);
 	else if(*sPhoenixShowOwnClientColor && LLVOAvatar::sClientResolutionList.has("isComplete") && LLVOAvatar::sClientResolutionList.has(LLPrimitive::tagstring))
@@ -3641,8 +3641,8 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 						{
 			std::string title_str = title->getString();
 			LLStringFn::replace_ascii_controlchars(title_str,LL_UNKNOWN_CHAR);
-			addNameTagLine(title_str, name_tag_color, style,
-				LLFontGL::getFontSansSerifSmall());
+			if(!*sPhoenixNameTagOldStyle)	addNameTagLine(title_str, name_tag_color, style, LLFontGL::getFontSansSerifSmall());
+			else	addNameTagLine(title_str, name_tag_color, style, LLFontGL::getFontSansSerif());
 						}
 
 		bool show_display_names=false;
