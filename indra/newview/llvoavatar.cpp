@@ -3380,9 +3380,13 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 		mChats.clear();
 	}
 	
-	const F32 time_visible = mTimeVisible.getElapsedTimeF32();
-	const F32 NAME_SHOW_TIME = gSavedSettings.getF32("RenderNameShowTime");	// seconds
-	const F32 FADE_DURATION = gSavedSettings.getF32("RenderNameFadeDuration"); // seconds
+	const F32 time_visible = mTimeVisible.getElapsedTimeF32();	
+	static F32* sRenderNameShowTime = rebind_llcontrol<F32>("RenderNameShowTime", &gSavedSettings, true);
+	static F32* sRenderNameFadeDuration = rebind_llcontrol<F32>("RenderNameFadeDuration", &gSavedSettings, true);
+
+
+	const F32 NAME_SHOW_TIME = *sRenderNameShowTime;	// seconds
+	const F32 FADE_DURATION = *sRenderNameFadeDuration; // seconds
 // [RLVa:KB] - Checked: 2010-04-04 (RLVa-1.2.2a) | Added: RLVa-0.2.0b
 	bool fRlvShowNames = gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES);
 // [/RLVa:KB]
@@ -3492,7 +3496,8 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 				
 	idleUpdateNameTagText(new_name);
 			
-	idleUpdateNameTagAlpha(new_name, alpha);
+	//idleUpdateNameTagAlpha(new_name, alpha); //Don't do Alpha twice! It's already done in llhudtext.cpp (Viewer 2 bug?)
+	mNameAlpha = alpha;
 }
 
 void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
@@ -3732,16 +3737,17 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 
 	if (mVisibleChat)
 			{
+   				mNameText->setDropShadow(TRUE);
 				mNameText->setFont(LLFontGL::getFontSansSerif());
 				mNameText->setTextAlignment(LLHUDText::ALIGN_TEXT_LEFT);
 				mNameText->setFadeDistance(CHAT_NORMAL_RADIUS * 2.f, 5.f);
+				mNameText->setColor(mNameTagColor);
 			
 				char line[MAX_STRING];		/* Flawfinder: ignore */
 				line[0] = '\0';
 				std::deque<LLChat>::iterator chat_iter = mChats.begin();
 				mNameText->clearString();
 
-				static LLColor4* sAvatarNameColor = rebind_llcontrol<LLColor4>("AvatarNameColor", &gColors, true);
 				LLColor4 new_chat = (*sAvatarNameColor);
 				LLColor4 normal_chat = lerp(new_chat, LLColor4(0.8f, 0.8f, 0.8f, 1.f), 0.7f);
 				LLColor4 old_chat = lerp(normal_chat, LLColor4(0.6f, 0.6f, 0.6f, 1.f), 0.7f);
@@ -3813,6 +3819,7 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 
 void LLVOAvatar::addNameTagLine(const std::string& line, const LLColor4& color, S32 style, const LLFontGL* font)
 {
+	if(line=="") return;
 	llassert(mNameText);
 	if (mVisibleChat)
 	{
