@@ -6770,7 +6770,10 @@ LLViewerJointAttachment* LLVOAvatar::getTargetAttachmentPoint(const LLViewerObje
 
 	if (!attachment)
 	{
-		llwarns << "Object attachment point invalid: " << attachmentID << llendl;
+		if(attachmentID != 127 && !((attachmentID > 38) && (attachmentID <= 68)))
+		{
+			llwarns << "Object attachment point invalid: " << attachmentID << llendl;
+		}
 //		attachment = get_if_there(mAttachmentPoints, 1, (LLViewerJointAttachment*)NULL); // Arbitrary using 1 (chest)
 // [SL:KB] - Patch: Appearance-LegacyMultiAttachment | Checked: 2010-08-28 (Catznip-2.2.0a) | Added: Catznip2.1.2a
 		S32 idxAttachPt = 1;
