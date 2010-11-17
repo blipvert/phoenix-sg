@@ -1379,12 +1379,10 @@ void LLPanelAvatar::setAvatar(LLViewerObject *avatarp)
 		name.assign("");
 	}
 
-	LLAvatarName av_name;
-	LLAvatarNameCache::get(avatarp->getID(), &av_name);
 
 
 	// If we have an avatar pointer, they must be online.
-	setAvatarID(avatarp->getID(), av_name.getCompleteName(), ONLINE_STATUS_YES);
+	setAvatarID(avatarp->getID(), name, ONLINE_STATUS_YES);
 }
 
 class JCProfileCallback : public JCBridgeCallback
@@ -1481,6 +1479,12 @@ void LLPanelAvatar::setOnlineStatus(EOnlineStatus online_status)
 	}*/
 }
 
+void LLPanelAvatar::on_avatar_name_response(const LLUUID& agent_id, const LLAvatarName& av_name, void *userdata){
+	LLPanelAvatar* self = (LLPanelAvatar*)userdata;
+	LLLineEditor* dnname_edit = self->getChild<LLLineEditor>("dnname");
+	if(LLAvatarNameCache::useDisplayNames() && agent_id==self->mAvatarID) dnname_edit->setText(av_name.getCompleteName());
+}
+
 void LLPanelAvatar::setAvatarID(const LLUUID &avatar_id, const std::string &name,
 								EOnlineStatus online_status)
 {
@@ -1530,6 +1534,27 @@ void LLPanelAvatar::setAvatarID(const LLUUID &avatar_id, const std::string &name
 		else
 		{
 			name_edit->setText(name);
+		}
+	}
+	
+	LLLineEditor* dnname_edit = getChild<LLLineEditor>("dnname");
+	LLAvatarName av_name;
+	if(dnname_edit){
+		if(LLAvatarNameCache::useDisplayNames()){
+			if(LLAvatarNameCache::get(avatar_id, &av_name)){
+				dnname_edit->setText(av_name.getCompleteName());
+			}
+			else{
+				dnname_edit->setText(name_edit->getText());
+				LLAvatarNameCache::get(avatar_id, boost::bind(&LLPanelAvatar::on_avatar_name_response, _1, _2, this));			
+			}
+			childSetVisible("dnname",TRUE);
+			childSetVisible("name",FALSE);
+		}
+		else
+		{
+			childSetVisible("dnname",FALSE);
+			childSetVisible("name",TRUE);
 		}
 	}
 
