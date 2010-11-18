@@ -918,6 +918,7 @@ BOOL LLViewerImageList::createUploadFile(const std::string& filename,
 		llinfos << "Saving image with lossless compression" << llendl;
 		reversible = true;
 	}
+	raw_image->biasedScaleToPowerOfTwo(LLViewerImage::MAX_IMAGE_SIZE_DEFAULT);
 	if (!encodeImageQuartz(raw_image,out_filename,reversible))
 		return FALSE;
 #else
@@ -1005,7 +1006,8 @@ BOOL LLViewerImageList::createUploadFile(const std::string& filename,
 	{
 		llinfos << "Created output file " << out_filename << llendl;
 	}
-	
+
+#endif
 	// test to see if the encode and save worked.
 	LLPointer<LLImageJ2C> integrity_test = new LLImageJ2C;
 	if( !integrity_test->loadAndValidate( out_filename ) )
@@ -1013,8 +1015,7 @@ BOOL LLViewerImageList::createUploadFile(const std::string& filename,
 		llinfos << "Image: " << out_filename << " is corrupt." << llendl;
 		return FALSE;
 	}
-#endif
-	
+
 	return TRUE;
 }
 

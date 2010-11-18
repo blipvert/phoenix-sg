@@ -233,7 +233,9 @@ BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image, std::s
 		vb.height = height;
 		vb.width = width;
 		vb.rowBytes = bytes_per_row;
-		if (((ext != std::string("psd")) && (ext != std::string("tga")) && 
+		if ((
+			(ext != std::string("psd")) &&
+			(ext != std::string("tga")) && 
 			(ext != std::string("png")) &&
 			(format != kCGImageAlphaNoneSkipLast)))
 		{
