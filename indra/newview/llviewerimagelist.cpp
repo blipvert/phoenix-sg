@@ -911,6 +911,15 @@ BOOL LLViewerImageList::createUploadFile(const std::string& filename,
 #ifdef LL_DARWIN
 	if (!decodeImageQuartz(filename, raw_image))
 		return FALSE;
+	bool reversible = false;
+	if (gSavedSettings.getBOOL("LosslessJ2CUpload") &&
+		(raw_image->getWidth() * raw_image->getHeight() <= LL_IMAGE_REZ_LOSSLESS_CUTOFF * LL_IMAGE_REZ_LOSSLESS_CUTOFF))
+	{
+		llinfos << "Saving image with lossless compression" << llendl;
+		reversible = true;
+	}
+	if (!encodeImageQuartz(raw_image,out_filename,reversible))
+		return FALSE;
 #else
 	switch (codec)
 	{
@@ -984,13 +993,17 @@ BOOL LLViewerImageList::createUploadFile(const std::string& filename,
 		default:
 			return FALSE;
 	}
-#endif	
+
 	LLPointer<LLImageJ2C> compressedImage = convertToUploadFile(raw_image);
 	
 	if( !compressedImage->save(out_filename) )
 	{
 		llinfos << "Couldn't create output file " << out_filename << llendl;
 		return FALSE;
+	}
+	else
+	{
+		llinfos << "Created output file " << out_filename << llendl;
 	}
 	
 	// test to see if the encode and save worked.
@@ -1000,6 +1013,7 @@ BOOL LLViewerImageList::createUploadFile(const std::string& filename,
 		llinfos << "Image: " << out_filename << " is corrupt." << llendl;
 		return FALSE;
 	}
+#endif
 	
 	return TRUE;
 }
@@ -1013,7 +1027,10 @@ LLPointer<LLImageJ2C> LLViewerImageList::convertToUploadFile(LLPointer<LLImageRa
 	
 	if (gSavedSettings.getBOOL("LosslessJ2CUpload") &&
 		(raw_image->getWidth() * raw_image->getHeight() <= LL_IMAGE_REZ_LOSSLESS_CUTOFF * LL_IMAGE_REZ_LOSSLESS_CUTOFF))
+	{
+		llinfos << "Saving image with lossless compression" << llendl;
 		compressedImage->setReversible(TRUE);
+	}
 	
 	compressedImage->encode(raw_image, 0.0f);
 	

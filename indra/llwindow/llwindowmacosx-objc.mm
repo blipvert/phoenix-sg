@@ -34,6 +34,7 @@
 #include <AppKit/AppKit.h>
 #include <Accelerate/Accelerate.h>
 #include <Quartz/Quartz.h>
+#include <ApplicationServices/ApplicationServices.h>
 
 /*
  * These functions are broken out into a separate file because the
@@ -261,6 +262,180 @@ BOOL decodeImageQuartz(std::string filename, LLImageRaw *raw_image)
 	BOOL result = decodeImageQuartz((UInt8*)[data bytes], [data length], raw_image, ext);
 	[pool release];
 	return result;
+}
+
+BOOL encodeImageQuartz(LLImageRaw *raw_image, std::string filename, bool reversible)
+{
+	// Create a work data object to write the stream into.
+	CFMutableDataRef outdata = CFDataCreateMutable(NULL,0);
+
+	// Create the destination to write the image to.
+	CGImageDestinationRef dest = 
+		CGImageDestinationCreateWithData(outdata,
+			kUTTypeJPEG2000,1,NULL);
+
+	// Set up the color space the same way we did at decode.
+	CGColorSpaceRef colorSpace = NULL;
+	CMProfileRef sysprof = NULL;
+	// Get the Systems Profile for the main display.
+	if (CMGetSystemProfile(&sysprof) == noErr)
+	{
+		// Create a colorspace with the systems profile
+		colorSpace = CGColorSpaceCreateWithPlatformColorSpace(sysprof);
+
+		// Close the profile
+		CMCloseProfile(sysprof);
+	}
+	else
+	{
+		llwarns << "Unable to get system profile for the main display" << llendl;
+		CFRelease(dest);
+		return FALSE;
+	}
+
+	if (colorSpace == NULL)
+	{
+		llwarns << "Error allocating color space" << llendl;
+		CFRelease(dest);
+		return FALSE;
+	}
+
+	// Now, create the bitmap context.
+	size_t width = raw_image->getWidth();
+	size_t height = raw_image->getHeight();
+	size_t comps = raw_image->getComponents();
+	size_t bytes_per_row = width * comps;
+	size_t total_size = bytes_per_row * height;
+	llinfos << "Compressing image: width=" << width << " height=" <<
+		height << " components=" << comps << " bytes per row=" <<
+		bytes_per_row << " total size=" << total_size <<llendl;
+
+	U8 *data = (U8 *)malloc(total_size);
+	raw_image->verticalFlip();
+	memcpy(data, raw_image->getData(), total_size);
+	CGBitmapInfo info = (comps==3) ?
+				kCGImageAlphaNone :
+				kCGImageAlphaPremultipliedLast;
+	CGContextRef bitmap = 
+		CGBitmapContextCreate(data,width,height,8,bytes_per_row,
+					colorSpace,info);
+
+	// We're finished with the color space, so release it no matter what.
+	CGColorSpaceRelease( colorSpace );
+
+	// Crete the image object with the data from the bitmap.
+	CGImageRef image = CGBitmapContextCreateImage(bitmap);
+
+	// Create the dictionary of image properties.
+	CFDictionaryRef properties = NULL;
+
+	// If lossless compression is required, set up the dictionary for it.
+	if (reversible)
+	{
+		CFTypeRef keys[1], values[1];
+		float lossless = 1.0f;
+		keys[0] = kCGImageDestinationLossyCompressionQuality;
+		values[0] = 
+			CFNumberCreate(NULL, kCFNumberFloatType, &lossless);
+		properties = CFDictionaryCreate(NULL, 
+			(const void **)keys, 
+			(const void **)values, 
+			1,  
+			&kCFTypeDictionaryKeyCallBacks,
+			&kCFTypeDictionaryValueCallBacks);
+		CFRelease(values[0]);
+	}
+
+	// Write the image object to the destination URL with the selected
+	//  properties.
+	CGImageDestinationAddImage(dest,image,properties);
+	CGImageDestinationFinalize(dest);
+
+	// Now remove everything but the JPEG2000 codestream from the
+	//  container file.
+	char *outdata_ptr = (char *)CFDataGetMutableBytePtr(outdata);
+	S32 work_index = 0;
+	CFIndex outdata_len = CFDataGetLength(outdata);
+	bool done = (outdata_len < 12);
+	bool found = false;
+	S32 length = 0;
+	char tag[5] = "jp2c";
+	CFRange delete_range;
+	delete_range.location = 0;
+	while (!done)
+	{
+		// stored big-endian, of course
+		length = (outdata_ptr[work_index] << 24) +
+			(outdata_ptr[work_index+1] << 16) +
+			(outdata_ptr[work_index+2] << 8) +
+			outdata_ptr[work_index+3];
+		if (strncmp(outdata_ptr+work_index+4,tag,4) == 0)
+		{
+			found = true;
+			done = true;
+			delete_range.length = work_index+8;
+			// Note that this assumes that the JPEG2000 codestream
+			//  is the last thing in the file. That's true as of
+			//  OS X 10.6; if uploads start breaking, this may
+			//  be why.
+			CFDataDeleteBytes(outdata,delete_range);
+		}
+		else
+		{
+			work_index += length;
+		}
+		done = done || (length == 0);
+	}
+	if (!found)
+	{
+		llwarns << "JPEG2000 codestream not found in compressed data"
+			<< llendl;
+		return FALSE;
+	}
+
+	// Turn the supplied filename into a URL.
+	CFURLRef url =
+		CFURLCreateFromFileSystemRepresentation(NULL,
+			(const U8 *)filename.c_str(),
+			(CFIndex)filename.length(),false);
+
+	// We have the codestream. Save it off to the destination file.
+	CFWriteStreamRef stream = CFWriteStreamCreateWithFile(NULL,url);
+	if (stream != NULL)
+	{
+		if (!CFWriteStreamOpen(stream))
+		{
+			llwarns << "Unable to open output file" << llendl;
+			CGContextRelease(bitmap);
+			CGImageRelease(image);
+			if (properties != NULL)
+			{
+				CFRelease(properties);
+			}
+			CFRelease(stream);
+			CFRelease(dest);
+			CFRelease(url);
+			return FALSE;
+		}
+		UInt8 *file_ptr = (UInt8 *)CFDataGetMutableBytePtr(outdata);
+		CFIndex file_length = CFDataGetLength(outdata);
+		llinfos << "Writing output file " << filename <<
+			" with length " << file_length << llendl;
+		CFWriteStreamWrite(stream,file_ptr,file_length);
+		CFWriteStreamClose(stream);
+	}
+
+	// Clean up after ourselves.
+	CGContextRelease(bitmap);
+	CGImageRelease(image);
+	if (properties != NULL)
+	{
+		CFRelease(properties);
+	}
+	CFRelease(dest);
+	CFRelease(url);
+	CFRelease(stream);
+	return TRUE;
 }
 
 void setupCocoa()
