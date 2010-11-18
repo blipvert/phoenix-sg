@@ -75,6 +75,8 @@
 #include "lggautocorrectfloater.h"
 #include "lggautocorrect.h"
 
+#include "rlvhandler.h"
+
 //#define JC_PROFILE_GSAVED
 
 void cmdline_printchat(std::string message);
@@ -407,7 +409,11 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
                 {
                     std::string object_name;
                     gCacheName->getFullName(targetKey, object_name);
-                    char buffer[DB_IM_MSG_BUF_SIZE * 2]; 
+                    char buffer[DB_IM_MSG_BUF_SIZE * 2];
+					if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))
+					{
+						object_name = RlvStrings::getAnonym(object_name);
+					}
                     snprintf(buffer,sizeof(buffer),"%s: (%s)",targetKey.asString().c_str(), object_name.c_str());
 					cmdline_printchat(std::string(buffer));
                 }
@@ -428,42 +434,45 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 						return false;
 					}
 
-					LLMessageSystem	*msg = gMessageSystem;
-					msg->newMessageFast(_PREHASH_ObjectGrab);
-					msg->nextBlockFast( _PREHASH_AgentData);
-					msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-					msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-					msg->nextBlockFast( _PREHASH_ObjectData);
-					msg->addU32Fast(    _PREHASH_LocalID, myObject->mLocalID);
-					msg->addVector3Fast(_PREHASH_GrabOffset, LLVector3::zero );
-					msg->nextBlock("SurfaceInfo");
-					msg->addVector3("UVCoord", LLVector3::zero);
-					msg->addVector3("STCoord", LLVector3::zero);
-					msg->addS32Fast(_PREHASH_FaceIndex, 0);
-					msg->addVector3("Position", myObject->getPosition());
-					msg->addVector3("Normal", LLVector3::zero);
-					msg->addVector3("Binormal", LLVector3::zero);
-					msg->sendMessage( myObject->getRegion()->getHost());
+					if((!rlv_handler_t::isEnabled()) || (gRlvHandler.canTouch(myObject)))
+					{
+						LLMessageSystem	*msg = gMessageSystem;
+						msg->newMessageFast(_PREHASH_ObjectGrab);
+						msg->nextBlockFast( _PREHASH_AgentData);
+						msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+						msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+						msg->nextBlockFast( _PREHASH_ObjectData);
+						msg->addU32Fast(    _PREHASH_LocalID, myObject->mLocalID);
+						msg->addVector3Fast(_PREHASH_GrabOffset, LLVector3::zero );
+						msg->nextBlock("SurfaceInfo");
+						msg->addVector3("UVCoord", LLVector3::zero);
+						msg->addVector3("STCoord", LLVector3::zero);
+						msg->addS32Fast(_PREHASH_FaceIndex, 0);
+						msg->addVector3("Position", myObject->getPosition());
+						msg->addVector3("Normal", LLVector3::zero);
+						msg->addVector3("Binormal", LLVector3::zero);
+						msg->sendMessage( myObject->getRegion()->getHost());
 
-					// *NOTE: Hope the packets arrive safely and in order or else
-					// there will be some problems.
-					// *TODO: Just fix this bad assumption.
-					msg->newMessageFast(_PREHASH_ObjectDeGrab);
-					msg->nextBlockFast(_PREHASH_AgentData);
-					msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-					msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-					msg->nextBlockFast(_PREHASH_ObjectData);
-					msg->addU32Fast(_PREHASH_LocalID, myObject->mLocalID);
-					msg->nextBlock("SurfaceInfo");
-					msg->addVector3("UVCoord", LLVector3::zero);
-					msg->addVector3("STCoord", LLVector3::zero);
-					msg->addS32Fast(_PREHASH_FaceIndex, 0);
-					msg->addVector3("Position", myObject->getPosition());
-					msg->addVector3("Normal", LLVector3::zero);
-					msg->addVector3("Binormal", LLVector3::zero);
-					msg->sendMessage(myObject->getRegion()->getHost());
-					snprintf(buffer,sizeof(buffer),"Touched object with key %s",targetKey.asString().c_str());
-					cmdline_printchat(std::string(buffer));
+						// *NOTE: Hope the packets arrive safely and in order or else
+						// there will be some problems.
+						// *TODO: Just fix this bad assumption.
+						msg->newMessageFast(_PREHASH_ObjectDeGrab);
+						msg->nextBlockFast(_PREHASH_AgentData);
+						msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+						msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+						msg->nextBlockFast(_PREHASH_ObjectData);
+						msg->addU32Fast(_PREHASH_LocalID, myObject->mLocalID);
+						msg->nextBlock("SurfaceInfo");
+						msg->addVector3("UVCoord", LLVector3::zero);
+						msg->addVector3("STCoord", LLVector3::zero);
+						msg->addS32Fast(_PREHASH_FaceIndex, 0);
+						msg->addVector3("Position", myObject->getPosition());
+						msg->addVector3("Normal", LLVector3::zero);
+						msg->addVector3("Binormal", LLVector3::zero);
+						msg->sendMessage(myObject->getRegion()->getHost());
+						snprintf(buffer,sizeof(buffer),"Touched object with key %s",targetKey.asString().c_str());
+						cmdline_printchat(std::string(buffer));
+					}
                 }
 				return false;
             }
@@ -481,25 +490,31 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 						cmdline_printchat(std::string(buffer));
 						return false;
 					}
-					LLMessageSystem	*msg = gMessageSystem;
-					msg->newMessageFast(_PREHASH_AgentRequestSit);
-					msg->nextBlockFast(_PREHASH_AgentData);
-					msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-					msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-					msg->nextBlockFast(_PREHASH_TargetObject);
-					msg->addUUIDFast(_PREHASH_TargetID, targetKey);
-					msg->addVector3Fast(_PREHASH_Offset, LLVector3::zero);
-					gAgent.getRegion()->sendReliableMessage();
+					if((!rlv_handler_t::isEnabled()) || (gRlvHandler.canSit(myObject, LLVector3::zero)))
+					{
+						LLMessageSystem	*msg = gMessageSystem;
+						msg->newMessageFast(_PREHASH_AgentRequestSit);
+						msg->nextBlockFast(_PREHASH_AgentData);
+						msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+						msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+						msg->nextBlockFast(_PREHASH_TargetObject);
+						msg->addUUIDFast(_PREHASH_TargetID, targetKey);
+						msg->addVector3Fast(_PREHASH_Offset, LLVector3::zero);
+						gAgent.getRegion()->sendReliableMessage();
 
-					snprintf(buffer,sizeof(buffer),"Sat on object with key %s",targetKey.asString().c_str());
-					cmdline_printchat(std::string(buffer));
+						snprintf(buffer,sizeof(buffer),"Sat on object with key %s",targetKey.asString().c_str());
+						cmdline_printchat(std::string(buffer));
+					}
                 }
 				return false;
             }
 			else if(command == "/standup")
             {
-				gAgent.setControlFlags(AGENT_CONTROL_STAND_UP);
-				cmdline_printchat(std::string("Standing up"));
+				if((!rlv_handler_t::isEnabled()) || (gRlvHandler.canStand(	)))
+				{
+					gAgent.setControlFlags(AGENT_CONTROL_STAND_UP);
+					cmdline_printchat(std::string("Standing up"));
+				}
 				return false;
             }
 			else if(command == *sPhoenixCmdLineOfferTp)
@@ -566,9 +581,12 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 				return false;
             }else if(command == *sPhoenixCmdLineRezPlatform)
             {
-				F32 width;
-				if (i >> width) cmdline_rezplat(false, width);
-				else cmdline_rezplat();
+				if(!(gRlvHandler.hasBehaviour(RLV_BHVR_REZ)))
+				{
+					F32 width;
+					if (i >> width) cmdline_rezplat(false, width);
+					else cmdline_rezplat();
+				}
 				return false;
 			}else if(command == *sPhoenixCmdLineMapTo)
 			{
