@@ -3512,10 +3512,10 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 // [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
 	bool fRlvShowNames = gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES);
 // [/RLVa:KB]
-	BOOL is_away = mSignaledAnimations.find(ANIM_AGENT_AWAY)  != mSignaledAnimations.end();
-	BOOL is_busy = mSignaledAnimations.find(ANIM_AGENT_BUSY) != mSignaledAnimations.end();
-	BOOL is_appearance = mSignaledAnimations.find(ANIM_AGENT_CUSTOMIZE) != mSignaledAnimations.end();
-	BOOL is_muted;
+	bool is_away = mSignaledAnimations.find(ANIM_AGENT_AWAY)  != mSignaledAnimations.end();
+	bool is_busy = mSignaledAnimations.find(ANIM_AGENT_BUSY) != mSignaledAnimations.end();
+	bool is_appearance = mSignaledAnimations.find(ANIM_AGENT_CUSTOMIZE) != mSignaledAnimations.end();
+	bool is_muted;
 	if (isSelf())
 	{
 		is_muted = false;
@@ -3570,8 +3570,6 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 	static BOOL* sPhoenixColorFriendsNameTags = rebind_llcontrol<BOOL>("PhoenixColorFriendsNameTags", &gSavedSettings, true);
 	static LLCachedControl<LLColor4> PhoenixFriendNameColor("PhoenixFriendNameColor", LLColor4(0.447f, 0.784f, 0.663f, 1.f));
 	if(is_friend && *sPhoenixColorFriendsNameTags) name_tag_color = PhoenixFriendNameColor;
-	static S32* sPhoenixShowIdleTimeMinutes = rebind_llcontrol<S32>("PhoenixShowIdleTimeMinutes", &gSavedSettings, true);
-
 
 	// Rebuild name tag if state change detected
 	if (mNameString.empty()
@@ -3585,8 +3583,7 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 		|| is_friend != mNameFriend
 		|| is_cloud != mNameCloud
 		|| client != mNameClient
-		|| name_tag_color != mNameTagColor
-		|| (*sPhoenixShowIdleTimeMinutes>-1))
+		|| name_tag_color != mNameTagColor)
 				{
 
 		clearNameTag();
@@ -3628,17 +3625,11 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 				line += "Rezzing";
 				line += ", ";
 			}
-			if (!isSelf() && (*sPhoenixShowIdleTimeMinutes > -1) && (mIdleTimer.getElapsedTimeF32() > (*sPhoenixShowIdleTimeMinutes*60)))
-			{
-				line += getIdleTime();
-				line += ", ";
-			}
 			if (client!="")
 			{
 				line += client;
 				line += ", ";
 			}
-
 			// trim last ", "
 			line.resize( line.length() - 2 );
 

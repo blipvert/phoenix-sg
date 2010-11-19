@@ -1,17 +1,6 @@
 <?xml version="1.0" ?>
 <llsd>
 	<map>
-    <key>PhoenixShowIdleTimeMinutes</key>
-    <map>
-      <key>Comment</key>
-      <string>Show Idle time for others after this Minutes.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>S32</string>
-      <key>Value</key>
-      <integer>-1</integer>
-    </map>
     <key>PhoenixNameSystem</key>
     <map>
       <key>Comment</key>
