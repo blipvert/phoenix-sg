@@ -114,8 +114,8 @@ BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image, std::s
 	size_t bytes_per_row = width * 4; // bytes per output row, not input
 	size_t byte_count = bytes_per_row * height;
 
-	llinfos << "Image extension='" << ext << "' height=" << height <<
-		" width=" << width << " components=" << comps <<
+	llinfos << "Image extension='" << ext << "' width=" << width <<
+		" height=" << height << " components=" << comps <<
 		" bytes per row=" << bytes_per_row << " total output size=" <<
 		byte_count << " format=" << format << llendl;
 
@@ -244,6 +244,9 @@ BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image, std::s
 		}
 	}
 
+	llinfos << "Resizing raw image from width=" << raw_image->getWidth() <<
+		" height=" << raw_image->getHeight() << " to width=" << 
+		width << " height=" << height << llendl;
 	raw_image->resize(width, height, 4);
 	memcpy(raw_image->getData(), bitmap, byte_count);
 	raw_image->verticalFlip();
