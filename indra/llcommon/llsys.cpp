@@ -594,7 +594,7 @@ bool LLCPUInfo::hasSSE2() const
 
 F64 LLCPUInfo::getMHz() const
 {
-	return mCPUMhz;
+	return mCPUMHz;
 }
 
 std::string LLCPUInfo::getCPUString() const
@@ -641,7 +641,7 @@ void LLCPUInfo::stream(std::ostream& s) const
 	s << "->mHasSSE:     " << (U32)mHasSSE << std::endl;
 	s << "->mHasSSE2:    " << (U32)mHasSSE2 << std::endl;
 	s << "->mHasAltivec: " << (U32)mHasAltivec << std::endl;
-	s << "->mCPUMhz:     " << mCPUMhz << std::endl;
+	s << "->mCPUMHz:     " << mCPUMHz << std::endl;
 	s << "->mCPUString:  " << mCPUString << std::endl;
 }
 
