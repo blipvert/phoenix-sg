@@ -220,7 +220,7 @@ bool LLFloaterWater::newPromptCallback(const LLSD& notification, const LLSD& res
 			comboBox->add(text);
 			comboBox->sortByName();
 
-			comboBox->setSelectedByValue(text, true);
+			comboBox->setSimple(text);
 
 			param_mgr->savePreset(text);
 
