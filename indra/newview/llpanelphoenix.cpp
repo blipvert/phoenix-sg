@@ -77,6 +77,8 @@
 
 #include "llvoavatar.h"
 
+#include "llfloaterchat.h"
+
 ////////begin drop utility/////////////
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Class JCInvDropTarget
@@ -373,6 +375,7 @@ BOOL LLPanelPhoenix::postBuild()
 
 	childSetAction("set_includeHDD", onClickSetHDDInclude, this);
 	childSetCommitCallback("include_location", onCommitApplyControl);
+	getChild<LLCheckBoxCtrl>("PhoenixShowChatChannel")->setCommitCallback(onPhoenixShowChatChannel);
 
 	//PhoenixLSLExternalEditor
 	childSetAction("set_xed", onClickSetXed, this);
@@ -831,6 +834,11 @@ void LLPanelPhoenix::onWearInvToggle(LLUICtrl* ctrl, void* userdata)
 	LLPanelPhoenix* self = (LLPanelPhoenix*)ctrl->getParent();
 	const bool Wear_Dbl_Click = gSavedSettings.getBOOL("PhoenixDoubleClickWearInventoryObjects");
 	self->getChild<LLCheckBoxCtrl>("add-inv-toggle")->setEnabled(Wear_Dbl_Click);
+}
+
+void LLPanelPhoenix::onPhoenixShowChatChannel(LLUICtrl* ctrl, void* userdata)
+{
+	LLFloaterChat::updateChatChannelSetting();
 }
 
 void LLPanelPhoenix::onConditionalPreferencesChanged(LLUICtrl* ctrl, void* userdata)
