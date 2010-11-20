@@ -7311,7 +7311,7 @@ The download of [DISPLAY_NAME] failed:
    icon="alertmodal.tga"
    name="KittyWLSaveNotecardAlert"
    type="alertmodal">
-Do you wish to overwrite the saved preset?
+Do you wish to overwrite the saved notecard preset?
     <usetemplate
      name="okcancelbuttons"
      notext="No"
@@ -7414,5 +7414,32 @@ For more details on outfits in Phoenix, please see the Phoenix Viewer Wiki.
     [OLD_NAME] ([SLID]) is now known as [NEW_NAME].
   </notification>
 
+    <notification
+   icon="notify.tga"
+   name="PhoenixWL"
+   type="notify">
+&apos;[PARCEL_NAME]&apos; would like to set your visual environment settings.
+    <form name="form">
+      <button
+       index="0"
+       name="Allow"
+       text="Allow"/>
+      <button
+       index="1"
+       name="Ignore"
+       text="Ignore"/>
+    </form>
+  </notification>
+  
+  <notification
+   icon="notify.tga"
+   name="PhoenixWLClear"
+   type="notify">
+Reset WL settings for &apos;[PARCEL_NAME]&apos; to region default?
+    <usetemplate
+     name="okcancelbuttons"
+     notext="Cancel"
+     yestext="Yes"/>
+  </notification>
 
 </notifications>

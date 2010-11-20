@@ -70,6 +70,8 @@
 #include "lluictrlfactory.h"
 #include "llvoiceclient.h"	// for gVoiceClient
 
+#include "kcwlinterface.h"
+
 #include "lltoolmgr.h"
 #include "llfocusmgr.h"
 #include "llappviewer.h"
@@ -121,6 +123,7 @@ static void onClickBuild(void*);
 static void onClickScripts(void*);
 static void onClickBuyLand(void*);
 static void onClickScriptDebug(void*);
+static void onClickWL(void*);
 
 std::vector<std::string> LLStatusBar::sDays;
 std::vector<std::string> LLStatusBar::sMonths;
@@ -167,6 +170,8 @@ mSquareMetersCommitted(0)
 	childSetAction("no_scripts", onClickScripts, this );
 	childSetAction("restrictpush", onClickPush, this );
 	childSetAction("status_no_voice", onClickVoice, this );
+
+	childSetAction("status_wl", onClickWL, this );
 
 	childSetCommitCallback("search_editor", onCommitSearch, this);
 	childSetAction("search_btn", onClickSearch, this);
@@ -467,6 +472,18 @@ void LLStatusBar::refresh()
 		childGetRect( "buyland", buttonRect );
 		r.setOriginAndSize( x, y, buttonRect.getWidth(), buttonRect.getHeight());
 		childSetRect( "buyland", r );
+		x += buttonRect.getWidth();
+	}
+
+	//KC: icon to show that WL settings are being overridden locally
+	BOOL status_wl = KCWindlightInterface::instance().WLset;
+	childSetVisible("status_wl", status_wl);
+	if (status_wl)
+	{
+		x += 9;
+		childGetRect( "status_wl", buttonRect );
+		r.setOriginAndSize( x, y, buttonRect.getWidth(), buttonRect.getHeight());
+		childSetRect( "status_wl", r );
 		x += buttonRect.getWidth();
 	}
 
@@ -897,6 +914,11 @@ static void onClickBuyLand(void*)
 // [/RLVa:KB]
 	LLViewerParcelMgr::getInstance()->selectParcelAt(gAgent.getPositionGlobal());
 	LLViewerParcelMgr::getInstance()->startBuyLand();
+}
+
+static void onClickWL(void* )
+{
+	KCWindlightInterface::instance().onClickWLStatusButton();
 }
 
 // sets the static variables necessary for the date
