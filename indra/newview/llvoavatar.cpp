@@ -3512,10 +3512,10 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 // [RLVa:KB] - Checked: 2010-10-31 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
 	bool fRlvShowNames = gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES);
 // [/RLVa:KB]
-	bool is_away = mSignaledAnimations.find(ANIM_AGENT_AWAY)  != mSignaledAnimations.end();
-	bool is_busy = mSignaledAnimations.find(ANIM_AGENT_BUSY) != mSignaledAnimations.end();
-	bool is_appearance = mSignaledAnimations.find(ANIM_AGENT_CUSTOMIZE) != mSignaledAnimations.end();
-	bool is_muted;
+	BOOL is_away = mSignaledAnimations.find(ANIM_AGENT_AWAY)  != mSignaledAnimations.end();
+	BOOL is_busy = mSignaledAnimations.find(ANIM_AGENT_BUSY) != mSignaledAnimations.end();
+	BOOL is_appearance = mSignaledAnimations.find(ANIM_AGENT_CUSTOMIZE) != mSignaledAnimations.end();
+	BOOL is_muted;
 	if (isSelf())
 	{
 		is_muted = false;
@@ -3579,7 +3579,7 @@ void LLVOAvatar::idleUpdateNameTagText(BOOL new_name)
 		|| is_away != mNameAway 
 		|| is_busy != mNameBusy 
 		|| is_muted != mNameMute
-				|| is_appearance != mNameAppearance 
+		|| is_appearance != mNameAppearance 
 		|| is_friend != mNameFriend
 		|| is_cloud != mNameCloud
 		|| client != mNameClient
