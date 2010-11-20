@@ -45,6 +45,7 @@ private:
 	static void onClickMPPlay( void* userdata );
 	static void onClickMPPause( void* userdata );
 	static void onClickMPNext( void* userdata );
+	static void onClickMPStop( void* userdata );
 	static void onClickMPAddFile( void* userdata );
 	static void onClickMPAddURL( void* userdata );
 	static void onClickMPRem( void* userdata );

@@ -79,12 +79,7 @@ void FloaterMediaPlayer::onClose(bool app_quitting)
 	sInstance->setVisible(FALSE);
 	if( app_quitting )
 	{
-		if(sMPMediaImpl)
-		{
-			sMPMediaImpl->stop();
-			sMPMediaImpl->destroyMediaSource();
-			sMPMediaImpl = NULL;
-		}
+		onClickMPStop(NULL);
 		destroy();
 	}
 }
@@ -101,6 +96,7 @@ BOOL FloaterMediaPlayer::postBuild()
 	childSetAction("mp_play", onClickMPPlay,this);
 	childSetAction("mp_pause", onClickMPPause,this);
 	childSetAction("mp_next", onClickMPNext,this);
+	childSetAction("mp_stop", onClickMPStop,this);
 	childSetAction("mp_add_file", onClickMPAddFile,this);
 	childSetAction("mp_add_URL", onClickMPAddURL,this);
 	childSetAction("mp_rem", onClickMPRem,this);
@@ -124,6 +120,7 @@ void FloaterMediaPlayer::onClickMPPrev( void* userdata )
 	sInstance->mMPPlayList->selectPrevItem(FALSE);
 	if(sMPMediaImpl)
 	{
+		sInstance->childSetValue("mp_seek",0.0f);
 		mp_url = sInstance->mMPPlayList->getSelectedValue().asString();
 		sMPMediaImpl->navigateTo(mp_url, "video/*");
 		sMPMediaImpl->play();
@@ -164,19 +161,38 @@ void FloaterMediaPlayer::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent 
 	else if(event == MEDIA_EVENT_STATUS_CHANGED)
 	{
 		EMediaStatus status = self->getStatus();
-		if(status == MEDIA_DONE || status == MEDIA_PAUSED)
+		if(status == MEDIA_DONE || status == MEDIA_PAUSED || status == MEDIA_ERROR)
 		{
-			if(status == MEDIA_DONE)
+			if(status == MEDIA_DONE || status == MEDIA_ERROR)
 			{
 				length_check = false;
 			}
-			sInstance->childSetVisible("mp_play",false);
-			sInstance->childSetVisible("mp_pause",true);
-		}
-		else if(status == MEDIA_PLAYING)
-		{
-			sInstance->childSetVisible("mp_play",true);
-			sInstance->childSetVisible("mp_pause",false);
+			if(status == MEDIA_ERROR)
+			{
+				onClickMPStop(NULL);
+			}
+			//else if(status == MEDIA_DONE)
+#if 0
+			{
+				if(sInstance->mMPPlayList->getFirstSelectedIndex() == sInstance->mMPPlayList->getItemCount())
+				{
+					if(1)//Loop (repeat) code
+					{
+						sInstance->mMPPlayList->selectFirstItem();
+						onClickMPPlay(NULL);
+					}
+					else
+					{
+						onClickMPStop(NULL);
+					}
+				}
+				else
+				{
+					onClickMPNext(NULL);
+					onClickMPPlay(NULL);
+				}
+			}
+#endif
 		}
 	}
 	else if(event == MEDIA_EVENT_TIME_DURATION_UPDATED)
@@ -197,9 +213,12 @@ void FloaterMediaPlayer::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent 
 
 void FloaterMediaPlayer::onClickMPPause( void* userdata )
 {
-	sMPMediaImpl->pause();
-	sInstance->childSetVisible("mp_pause",false);
-	sInstance->childSetVisible("mp_play",true);
+	if(sMPMediaImpl)
+	{
+		sMPMediaImpl->pause();
+		sInstance->childSetVisible("mp_pause",false);
+		sInstance->childSetVisible("mp_play",true);
+	}
 }
 
 void FloaterMediaPlayer::onClickMPNext( void* userdata )
@@ -213,6 +232,21 @@ void FloaterMediaPlayer::onClickMPNext( void* userdata )
 		length_check = false;
 		sInstance->childSetVisible("mp_play",false);
 		sInstance->childSetVisible("mp_pause",true);
+		sInstance->childSetValue("mp_seek",0.0f);
+	}
+}
+
+void FloaterMediaPlayer::onClickMPStop( void* userdata )
+{
+	if(sMPMediaImpl)
+	{
+		length_check = false;
+		sInstance->childSetValue("mp_seek",0.0f);
+		sInstance->childSetVisible("mp_pause",false);
+		sInstance->childSetVisible("mp_play",true);
+		sMPMediaImpl->stop();
+		sMPMediaImpl->destroyMediaSource();
+		sMPMediaImpl = NULL;
 	}
 }
 
