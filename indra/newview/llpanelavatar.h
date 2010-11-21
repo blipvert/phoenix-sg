@@ -342,7 +342,7 @@ private:
 	static bool finishUnfreeze(const LLSD& notification, const LLSD& response);
 
 	static void showProfileCallback(S32 option, void *userdata);
-
+	static void on_avatar_name_response(const LLUUID& agent_id, const LLAvatarName& av_name, void *userdata);
 	static	void*	createPanelAvatar(void*	data);
 	static	void*	createFloaterAvatarInfo(void*	data);
 	static	void*	createPanelAvatarSecondLife(void*	data);

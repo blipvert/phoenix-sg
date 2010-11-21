@@ -466,6 +466,13 @@ void LLVOVolume::updateTextureVirtualSize()
 		else
 		{
 			vsize = face->getTextureVirtualSize();
+			if (isAttachment())
+			{
+				// Rez attachments faster and at full details !
+				imagep->setBoostLevel(LLViewerImageBoostLevel::BOOST_HUD);
+// commented out because of PHOE-1654 - TS
+//				imagep->dontDiscard();
+			}
 		}
 
 		mPixelArea = llmax(mPixelArea, face->getPixelArea());		

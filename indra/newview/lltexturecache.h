@@ -157,7 +157,7 @@ private:
 	void readHeaderCache();
 	void clearCorruptedCache();
 	void purgeAllTextures(bool purge_directories);
-	void purgeTextures(bool validate);
+	void purgeTextures(bool validate, bool force = false);
 	LLAPRFile* openHeaderEntriesFile(bool readonly, S32 offset);
 	void closeHeaderEntriesFile();
 	void readEntriesHeader();

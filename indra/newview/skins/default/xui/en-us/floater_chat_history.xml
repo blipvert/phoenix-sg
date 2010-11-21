@@ -66,9 +66,9 @@
   </string>
 
   <layout_stack border="false" bottom="2" follows="left|top|right|bottom" height="255" left="2"
-	     orientation="horizontal" width="430" name="panels">
+	     orientation="horizontal" width="430" name="panels" min_width="275">
 		<layout_panel border="false" bottom="0" default_tab_group="1" height="135" left="0"
-		     min_width="275" name="im_contents_panel" width="305">
+		     name="im_contents_panel" width="305">
 			<combo_box follows="left|top" height="20" label="Gestures" left="5" name="Gesture"
 			     width="120">
 				<combo_item name="Gestures">

@@ -1,3 +1,10 @@
+/*
+	Copyright Chris Rehor (Liny Odell) 2010.
+	Licensed under the artistic license version 2.
+	http://www.perlfoundation.org/artistic_license_2_0
+*/
+
+
 #ifndef FLOATER_MEDIA_PLAYER_H
 #define FLOATER_MEDIA_PLAYER_H
 
@@ -38,6 +45,7 @@ private:
 	static void onClickMPPlay( void* userdata );
 	static void onClickMPPause( void* userdata );
 	static void onClickMPNext( void* userdata );
+	static void onClickMPStop( void* userdata );
 	static void onClickMPAddFile( void* userdata );
 	static void onClickMPAddURL( void* userdata );
 	static void onClickMPRem( void* userdata );

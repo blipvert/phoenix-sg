@@ -216,6 +216,7 @@ default
 	//  to the viewer. 
 	state_entry()
 	{
+		llSetPrimitiveParams([PRIM_TEMP_ON_REZ, TRUE]);//Sets bridge temp.
 		init();
 	} //End state entry
 
@@ -224,6 +225,11 @@ default
 	//  sure the listeners are properly set up.
 	on_rez(integer p)
 	{
+		if(!llGetAttached())
+        {
+            llOwnerSay("The bridge should be worn as an attachment, not rezzed. Deleting from world...");
+            llDie();
+        }
 		init();
 	}// End on rez
 

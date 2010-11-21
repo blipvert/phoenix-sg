@@ -3718,6 +3718,10 @@ void LLTextEditor::clear()
 	setText(LLStringUtil::null);
 	std::for_each(mSegments.begin(), mSegments.end(), DeletePointer());
 	mSegments.clear();
+	
+	//KC: clear the formatting too
+	updateLineStartList();
+	needsScroll();
 }
 
 // Start or stop the editor from accepting text-editing keystrokes

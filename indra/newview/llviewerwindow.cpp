@@ -4387,7 +4387,6 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 	{
 		return FALSE ;
 	}
-
 	if(raw->isBufferInvalid())
 	{
 		return FALSE ;

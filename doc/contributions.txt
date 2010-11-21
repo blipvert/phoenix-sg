@@ -124,7 +124,9 @@ Angus Boyd
 Ann Congrejo
 	CT-193
 Ansariel Hiller
+	PHOE-1125
 	PHOE-1360
+	PHOE-1653
 Archimedes Plutonian
 	SNOW-197
 Ardy Lay
@@ -619,6 +621,7 @@ Shawn Kaufmat
 	SNOW-240
 Shyotl Kuhr
 	PHOE-255
+	PHOE-315
 	PHOE-541
 	PHOE-542
 	PHOE-651

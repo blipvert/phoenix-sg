@@ -75,6 +75,10 @@
 #include "llprimitive.h"
 #include "a_phoenixviewerlink.h"
 
+#include "llvoavatar.h"
+
+#include "llfloaterchat.h"
+
 ////////begin drop utility/////////////
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Class JCInvDropTarget
@@ -371,6 +375,7 @@ BOOL LLPanelPhoenix::postBuild()
 
 	childSetAction("set_includeHDD", onClickSetHDDInclude, this);
 	childSetCommitCallback("include_location", onCommitApplyControl);
+	getChild<LLCheckBoxCtrl>("PhoenixShowChatChannel")->setCommitCallback(onPhoenixShowChatChannel);
 
 	//PhoenixLSLExternalEditor
 	childSetAction("set_xed", onClickSetXed, this);
@@ -514,6 +519,11 @@ void LLPanelPhoenix::apply()
 	gSavedSettings.setBOOL("PhoenixShadowsToggle", childGetValue("PhoenixShadowsON").asBoolean());
 	gSavedSettings.setU32("PhoenixUseOTR", (U32)childGetValue("PhoenixUseOTR").asReal());
 	gLggBeamMaps.forceUpdate();
+
+	//Update clienttags to make them correct
+
+	LLVOAvatar::invalidateNameTags();
+
 }
 
 void LLPanelPhoenix::cancel()
@@ -824,6 +834,11 @@ void LLPanelPhoenix::onWearInvToggle(LLUICtrl* ctrl, void* userdata)
 	LLPanelPhoenix* self = (LLPanelPhoenix*)ctrl->getParent();
 	const bool Wear_Dbl_Click = gSavedSettings.getBOOL("PhoenixDoubleClickWearInventoryObjects");
 	self->getChild<LLCheckBoxCtrl>("add-inv-toggle")->setEnabled(Wear_Dbl_Click);
+}
+
+void LLPanelPhoenix::onPhoenixShowChatChannel(LLUICtrl* ctrl, void* userdata)
+{
+	LLFloaterChat::updateChatChannelSetting();
 }
 
 void LLPanelPhoenix::onConditionalPreferencesChanged(LLUICtrl* ctrl, void* userdata)

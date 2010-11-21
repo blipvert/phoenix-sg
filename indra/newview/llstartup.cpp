@@ -2796,6 +2796,23 @@ bool idle_startup()
 
 		//KC: startup the lsl<->viewer bridge
 		JCLSLBridge::instance().Reset();
+		
+		//KC: restore the last WL setting
+		if (gSavedPerAccountSettings.getBOOL("PhoenixRestoreLastWLsettingsOnLogin"))
+		{
+			std::string last_wl = gSavedPerAccountSettings.getString("PhoenixLastWLsetting");
+			if (!last_wl.empty() && last_wl != "Default")
+			{
+				LLWLParamManager::instance()->mAnimator.mIsRunning = false;
+				LLWLParamManager::instance()->mAnimator.mUseLindenTime = false;
+				LLWLParamManager::instance()->loadPreset(last_wl);
+			}
+			std::string last_ww = gSavedPerAccountSettings.getString("PhoenixLastWWsetting");
+			if (!last_ww.empty() && last_ww != "Default")
+			{
+				LLWaterParamManager::instance()->loadPreset(last_ww, true);
+			}
+		}
 
 		// Let the map know about the inventory.
 		if(gFloaterWorldMap)

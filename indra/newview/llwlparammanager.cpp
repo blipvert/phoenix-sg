@@ -338,6 +338,9 @@ void LLWLParamManager::loadPreset(const std::string & name,bool propagate)
 	{
 		if(propagate)
 		{
+			//KC: save last
+			gSavedPerAccountSettings.setString("PhoenixLastWLsetting", name);
+			
 			getParamSet(name, mCurParams);
 			propagateParameters();
 		}
@@ -380,6 +383,10 @@ void LLWLParamManager::loadPreset(const std::string & name,bool propagate)
 	
 	if(propagate)
 	{
+		//KC: save last
+		gSavedPerAccountSettings.setString("PhoenixLastWLsetting", name);
+		llinfos << "PhoenixLastWLsetting: " << name << llendl;
+		
 		getParamSet(name, mCurParams);
 		propagateParameters();
 	}

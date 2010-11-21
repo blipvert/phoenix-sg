@@ -296,7 +296,7 @@ bool LLFloaterWindLight::newPromptCallback(const LLSD& notification, const LLSD&
 			}
 			comboBox->add(LLStringUtil::null);
 
-			comboBox->setSelectedByValue(text, true);
+			comboBox->setSimple(text);
 			if(LLFloaterDayCycle::isOpen()) 
 			{
 				keyCombo->add(text);

@@ -86,6 +86,7 @@ public:
 	static void loadHistory();
 	static void* createSpeakersPanel(void* data);
 	static void* createChatPanel(void* data);
+	static void updateChatChannelSetting();
 
 	// visibility policy for LLUISingleton
 	static bool visible(LLFloater* instance, const LLSD& key);

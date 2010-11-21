@@ -53,3 +53,4 @@ OSErr setImageCursor(CursorRef ref);
 
 BOOL decodeImageQuartz(std::string filename, LLImageRaw *raw_image);
 BOOL decodeImageQuartz(const UInt8* data, int len, LLImageRaw *raw_image);
+BOOL encodeImageQuartz(LLImageRaw *raw_image, std::string filename, bool reversible);

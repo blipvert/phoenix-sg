@@ -4309,10 +4309,16 @@ void LLSelectMgr::sendListToRegions(const std::string& message_name,
 // Network communications
 //
 
+void LLSelectMgr::registerObjectPropertiesFamilyRequest(const LLUUID& object_id)
+{
+	sObjectPropertiesFamilyRequests.insert(object_id);
+}
+
 void LLSelectMgr::requestObjectPropertiesFamily(LLViewerObject* object)
 {
 	// Remember that we asked the properties of this object.
-	sObjectPropertiesFamilyRequests.insert(object->mID);
+	registerObjectPropertiesFamilyRequest(object->mID);
+
 	//llinfos << "Registered an ObjectPropertiesFamily request for object " << object->mID << llendl;
 
 	LLMessageSystem* msg = gMessageSystem;
