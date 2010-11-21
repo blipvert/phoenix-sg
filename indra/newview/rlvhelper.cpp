@@ -459,9 +459,7 @@ bool RlvForceWear::isForceDetachable(const LLViewerObject* pAttachObj, bool fChe
 	    (pAttachObj) && (pAttachObj->isAttachment())
 		&& ( (idExcept.isNull()) ? (!gRlvAttachmentLocks.isLockedAttachment(pAttachObj))
 								 : (!gRlvAttachmentLocks.isLockedAttachmentExcept(pAttachObj, idExcept)) )
-		#ifdef RLV_EXTENSION_FLAG_NOSTRIP
 		&& (isStrippable(pAttachObj->getAttachmentItemID()))
-		#endif // RLV_EXTENSION_FLAG_NOSTRIP
 		#ifdef RLV_EXPERIMENTAL_COMPOSITEFOLDERS
 		&& ( (!fCheckComposite) || (!RlvSettings::getEnableComposites()) || 
 		     (!gRlvHandler.getCompositeInfo(pAttachPt->getItemID(), NULL, &pFolder)) || (gRlvHandler.canTakeOffComposite(pFolder)) )
@@ -534,9 +532,7 @@ bool RlvForceWear::isForceRemovable(const LLWearable* pWearable, bool fCheckComp
 		(pWearable) && (LLAssetType::AT_CLOTHING == pWearable->getAssetType()) 
 		&& ( (idExcept.isNull()) ? !gRlvWearableLocks.isLockedWearable(pWearable)
 		                         : !gRlvWearableLocks.isLockedWearableExcept(pWearable, idExcept) )
-		#ifdef RLV_EXTENSION_FLAG_NOSTRIP
 		&& (isStrippable(gAgent.getWearableItem(pWearable->getType())))
-		#endif // RLV_EXTENSION_FLAG_NOSTRIP
 		#ifdef RLV_EXPERIMENTAL_COMPOSITEFOLDERS
 		&& ( (!fCheckComposite) || (!RlvSettings::getEnableComposites()) || 
 		     (!gRlvHandler.getCompositeInfo(pWearable->getItemID(), NULL, &pFolder)) || (gRlvHandler.canTakeOffComposite(pFolder)) )
@@ -585,7 +581,6 @@ void RlvForceWear::forceRemove(EWearableType wtType)
 	forceRemove(gAgent.getWearable(wtType));
 }
 
-#ifdef RLV_EXTENSION_FLAG_NOSTRIP
 // Checked: 2010-03-19 (RLVa-1.2.0c) | Modified: RLVa-1.2.0a
 bool RlvForceWear::isStrippable(const LLInventoryItem* pItem)
 {
@@ -618,7 +613,6 @@ bool RlvForceWear::isStrippable(const LLInventoryItem* pItem)
 	}
 	return true;
 }
-#endif // RLV_EXTENSION_FLAG_NOSTRIP
 
 // Checked: 2010-08-30 (RLVa-1.1.3b) | Modified: RLVa-1.2.1c
 void RlvForceWear::addAttachment(const LLViewerInventoryItem* pItem, EWearAction eAction)

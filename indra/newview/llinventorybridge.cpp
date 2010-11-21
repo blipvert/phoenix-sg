@@ -4803,26 +4803,43 @@ void wear_inventory_category_on_avatar_step2( BOOL proceed, void* userdata )
 		//
 		// - Attachments: include COF contents only if appending.
 		//
-		LLInventoryModel::item_array_t obj_items;
-		if (wear_info->mAppend)
-			LLCOFMgr::getDescendentsOfAssetType(idCOF, obj_items, LLAssetType::AT_OBJECT, false);
-// [RLVa:KB] - Checked: 2010-03-05 (RLVa-1.2.0z) | Modified: RLVa-1.2.0b
-		else if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
+		if (!wear_info->mReplace)
 		{
-			// Make sure that all currently locked attachments remain in COF when replacing
-			LLCOFMgr::getDescendentsOfAssetType(idCOF, obj_items, LLAssetType::AT_OBJECT, false);
-			obj_items.erase(std::remove_if(obj_items.begin(), obj_items.end(), rlvPredIsRemovableItem), obj_items.end());
-		}
-// [/RLVa:KB]
-	//	getDescendentsOfAssetType(category, obj_items, LLAssetType::AT_OBJECT, false);
+			LLInventoryModel::item_array_t obj_items;
+			if (wear_info->mAppend)
+				LLCOFMgr::getDescendentsOfAssetType(idCOF, obj_items, LLAssetType::AT_OBJECT, false);
 // [RLVa:KB] - Checked: 2010-03-05 (RLVa-1.2.0z) | Modified: RLVa-1.2.0b
-		// Filter out any new attachments that can't be worn before adding them
-		if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
-			obj_items_new.erase(std::remove_if(obj_items_new.begin(), obj_items_new.end(), rlvPredIsNotWearableItem), obj_items_new.end());
-		obj_items.insert(obj_items.end(), obj_items_new.begin(), obj_items_new.end());
+			else if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
+			{
+				// Make sure that all currently locked attachments remain in COF when replacing
+				LLCOFMgr::getDescendentsOfAssetType(idCOF, obj_items, LLAssetType::AT_OBJECT, false);
+				obj_items.erase(std::remove_if(obj_items.begin(), obj_items.end(), rlvPredCanRemoveItem), obj_items.end());
+			}
+// [/RLVa:KB]
+//			getDescendentsOfAssetType(category, obj_items, LLAssetType::AT_OBJECT, false);
+// [RLVa:KB] - Checked: 2010-03-05 (RLVa-1.2.0z) | Modified: RLVa-1.2.0b
+			// Filter out any new attachments that can't be worn before adding them
+			if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
+				obj_items_new.erase(std::remove_if(obj_items_new.begin(), obj_items_new.end(), RlvPredCanNotWearItem(RLV_WEAR_REPLACE)), obj_items_new.end());
+			obj_items.insert(obj_items.end(), obj_items_new.begin(), obj_items_new.end());
 // [/RLVa:KB]
 
-		LLAgent::userUpdateAttachments(obj_items);
+			LLAgent::userUpdateAttachments(obj_items);
+		}
+		else
+		{
+			for (S32 idxItem = 0, cntItem = obj_items_new.count(); idxItem < cntItem; idxItem++)
+			{
+				LLInventoryItem* pItem = obj_items_new.get(idxItem);
+
+// [RLVa:KB] - Checked: 2010-11-21 (RLVa-1.1.3c) | Added: RLVa-1.1.3c
+				if ( (rlv_handler_t::isEnabled()) && (!(RLV_WEAR_REPLACE & gRlvAttachmentLocks.canAttach(pItem))) )
+					continue;
+// [/RLVa:KB]
+
+				LLAttachmentsMgr::instance().addAttachment(pItem->getLinkedUUID(), 0, false);
+			}
+		}
 
 		if (!wear_info->mAppend)
 			LLCOFMgr::instance().addBOFLink(wear_info->mCategoryID);
