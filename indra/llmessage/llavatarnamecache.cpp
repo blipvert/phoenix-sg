@@ -236,8 +236,8 @@ public:
 				// Wolfspirit: Do not use ???  as username. Try to get a username out of the old legacy name
 				std::string oldname;
 				gCacheName->getFullName(agent_id, oldname);		
-				std::transform(oldname.begin(), oldname.end(),oldname.begin(), std::tolower);
-				std::replace(oldname.begin(), oldname.end(), ' ', '.');
+				LLStringUtil::toLower(oldname);
+				LLStringUtil::replaceString(oldname," ",".");	
 				LLStringUtil::replaceString(oldname,".resident","");	
 				av_name.mUsername = oldname;
 
@@ -272,8 +272,8 @@ public:
 			// Wolfspirit: Do not use ???  as username. Try to get a username out of the old legacy name
 			std::string oldname;
 			gCacheName->getFullName(agent_id, oldname);		
-			std::transform(oldname.begin(), oldname.end(),oldname.begin(), std::tolower);
-			std::replace(oldname.begin(), oldname.end(), ' ', '.');
+			LLStringUtil::toLower(oldname);
+			LLStringUtil::replaceString(oldname," ",".");	
 			LLStringUtil::replaceString(oldname,".resident","");	
 			av_name.mUsername = oldname;
 
