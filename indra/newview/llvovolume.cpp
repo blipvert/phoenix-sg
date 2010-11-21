@@ -470,7 +470,8 @@ void LLVOVolume::updateTextureVirtualSize()
 			{
 				// Rez attachments faster and at full details !
 				imagep->setBoostLevel(LLViewerImageBoostLevel::BOOST_HUD);
-				imagep->dontDiscard();
+// commented out because of PHOE-1654 - TS
+//				imagep->dontDiscard();
 			}
 		}
 
