@@ -10,7 +10,7 @@
 		Auktion
 	</text>
 	<text font="SansSerifSmall" name="land_for_sale_label">
-		Land erh‰ltlich
+		Land erh√§ltlich
 	</text>
 	<button label="Nach Hause" label_selected="Nach Hause" name="Go Home" tool_tip="Nach Hause teleportieren"/>
 	<check_box label="Einwohner" name="people_chk"/>
