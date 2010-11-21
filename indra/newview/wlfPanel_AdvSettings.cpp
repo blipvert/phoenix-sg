@@ -82,8 +82,15 @@ void wlfPanel_AdvSettings::refresh()
 // [RLVa:KB] - Checked: 2009-09-19
 	if ( (rlv_handler_t::isEnabled()) && (gSavedSettings.getBOOL("wlfAdvSettingsPopup")) )
 	{
+		childSetEnabled("EnvAdvancedWaterButton", !gRlvHandler.hasBehaviour(RLV_BHVR_SETENV));
 		childSetEnabled("WWPresetsCombo", !gRlvHandler.hasBehaviour(RLV_BHVR_SETENV));
+		childSetEnabled("WWprev", !gRlvHandler.hasBehaviour(RLV_BHVR_SETENV));
+		childSetEnabled("WWnext", !gRlvHandler.hasBehaviour(RLV_BHVR_SETENV));
+		childSetEnabled("EnvAdvancedSkyButton", !gRlvHandler.hasBehaviour(RLV_BHVR_SETENV));
 		childSetEnabled("WLPresetsCombo", !gRlvHandler.hasBehaviour(RLV_BHVR_SETENV));
+		childSetEnabled("WLprev", !gRlvHandler.hasBehaviour(RLV_BHVR_SETENV));
+		childSetEnabled("WLnext", !gRlvHandler.hasBehaviour(RLV_BHVR_SETENV));
+		childSetEnabled("EnvTimeSlider", !gRlvHandler.hasBehaviour(RLV_BHVR_SETENV));
 	}
 // [/RLVa:KB]
 }
