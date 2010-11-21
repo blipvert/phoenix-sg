@@ -313,6 +313,8 @@ void LLFloaterDayCycle::onUseLindenTime(void* userData)
 
 	LLWLParamManager::instance()->mAnimator.mIsRunning = true;
 	LLWLParamManager::instance()->mAnimator.mUseLindenTime = true;	
+	//KC: reset last to Default
+	gSavedPerAccountSettings.setString("PhoenixLastWLsetting", "Default");
 }
 
 void LLFloaterDayCycle::onLoadDayCycle(void* userData)

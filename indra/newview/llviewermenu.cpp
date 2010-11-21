@@ -8990,6 +8990,8 @@ class LLWorldEnvSettings : public view_listener_t
 		{
 			LLWLParamManager::instance()->mAnimator.mIsRunning = true;
 			LLWLParamManager::instance()->mAnimator.mUseLindenTime = true;	
+			//KC: reset last to Default
+			gSavedPerAccountSettings.setString("PhoenixLastWLsetting", "Default");
 		}
 		return true;
 	}

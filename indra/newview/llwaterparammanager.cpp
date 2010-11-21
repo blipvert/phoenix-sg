@@ -157,6 +157,9 @@ void LLWaterParamManager::loadPreset(const std::string & name,bool propagate)
 	{
 		if(propagate)
 		{
+			//KC: save last
+			gSavedPerAccountSettings.setString("PhoenixLastWWsetting", name);
+			
 			getParamSet(name, mCurParams);
 			propagateParameters();
 		}
@@ -198,6 +201,9 @@ void LLWaterParamManager::loadPreset(const std::string & name,bool propagate)
 
 	if(propagate)
 	{
+		//KC: save last
+		gSavedPerAccountSettings.setString("PhoenixLastWWsetting", name);
+		
 		getParamSet(name, mCurParams);
 		propagateParameters();
 	}

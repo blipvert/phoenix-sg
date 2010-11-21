@@ -25,7 +25,9 @@
 
 #include "kcwlinterface.h"
 
+#include "llstartup.h"
 #include "llparcel.h"
+#include "llviewercontrol.h"
 #include "llviewerparcelmgr.h"
 #include "llwlparammanager.h"
 #include "llwaterparammanager.h"
@@ -42,9 +44,14 @@ void KCWindlightInterface::Clear(S32 local_id)
 {
 	llinfos << "Got WL clear : " << local_id << llendl;
 	//TODO: clear per parcel
-	LLWLParamManager::instance()->mAnimator.mIsRunning = true;
-	LLWLParamManager::instance()->mAnimator.mUseLindenTime = true;
-	WLset = false;
+	if (WLset)
+	{
+		LLWLParamManager::instance()->mAnimator.mIsRunning = true;
+		LLWLParamManager::instance()->mAnimator.mUseLindenTime = true;
+		//KC: reset last to Default
+		gSavedPerAccountSettings.setString("PhoenixLastWLsetting", "Default");
+		WLset = false;
+	}
 }
 
 bool KCWindlightInterface::ChatCommand(std::string message, std::string from_name, LLUUID source_id, LLUUID owner_id)
@@ -110,11 +117,14 @@ bool KCWindlightInterface::ChatCommand(std::string message, std::string from_nam
 
 void KCWindlightInterface::PacelChange()
 {
-	LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
-	llinfos << "agent in new parcel: "<< parcel->getLocalID() << " : "  << parcel->getName() << llendl;
-	
-	//TODO: save settings percel to reuse instead of just clearing
-	Clear(parcel->getLocalID());
+	if(LLStartUp::getStartupState() == STATE_STARTED)
+	{
+		LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+		llinfos << "agent in new parcel: "<< parcel->getLocalID() << " : "  << parcel->getName() << llendl;
+		
+		//TODO: save settings percel to reuse instead of just clearing
+		Clear(parcel->getLocalID());
+	}
 }
 
 void KCWindlightInterface::onClickWLStatusButton()
