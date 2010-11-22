@@ -179,8 +179,8 @@ public:
 				itr!=LLSelectMgr::getInstance()->getSelection()->end();++itr)
 			{
 				LLSelectNode* node = (*itr);
-				LLViewerObject* object = node->getObject();
-				U32 localid=object->getLocalID();
+				LLViewerObject* objectp = node->getObject();
+				U32 localid=objectp->getLocalID();
 				if(mDonePrims.find(localid) == mDonePrims.end())
 				{
 					mDonePrims.insert(localid);
@@ -276,7 +276,7 @@ public:
 					primY = primY.substr(0,zeroClearY);
 					zeroClearZ = primZ.find_last_not_of(".")+1;
 					primZ = primZ.substr(0,zeroClearZ);
-					std::string name = llformat("%sx%sx%s",primX,primY,primZ); 
+					std::string name = llformat("%sx%sx%s",primX.c_str(),primY.c_str(),primZ.c_str()); 
 					msg->newMessageFast(_PREHASH_ObjectName);
 					msg->nextBlockFast(_PREHASH_AgentData);
 					msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
@@ -825,22 +825,30 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 				}
 			}
 			else if(command == "zdrop")
-			{//commented code for unfinished on/off capibility.  This part works i believe, its the above section that needs more work.
-			//	std::string setting;
-			//	if(i >> setting)
-			//	{
-			//		if(setting == "on")
-					//{
-					//	if(ztake != NULL)
-					//	{
-					//		cmdline_printchat("Zdrop is already in progress.");
-					//		return false; //to prevent more than one transfer at once. off will only stop the last iniated transfer
-					//	}
-					//	else
-						{
+			{
+				std::string loldest;
+				if(i >> loldest)
+				{
+					cmdline_printchat("Verifying destination prim is present inworld...");
+					if(loldest.length() != 36)
+					{
+						cmdline_printchat("UUID entered is of an invalid length! (Hint: use the \"copy key\" button in the build menu.)");
+					}
+					else if (gObjectList.findObject(LLUUID(loldest)) == false) 
+					{
+						cmdline_printchat("Unable to locate object.  Please varify the object is rezzed and in view, and that the UUID is correct.");
+					}
+					else
+					{
 						std::string lolfolder;
-						if(i >> lolfolder)
+						std::string tmp;
+						while(i >> tmp)
 						{
+							lolfolder = lolfolder + tmp+ " ";
+						}
+						try
+						{
+							lolfolder = lolfolder.substr(0,lolfolder.length() - 1);
 							cmdline_printchat("Beginning Zdrop.");
 							LLUUID folder = gInventory.findCategoryByName(lolfolder);
 							if(folder.notNull())
@@ -857,84 +865,46 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 								if(lolstack.size())
 								{
 									cmdline_printchat(llformat("Found folder \"%s\".", lolfolder.c_str()));
-									std::string loldest;
-									if(i >> loldest)
-									{
-										cmdline_printchat("Verifying destination prim is present inworld...");
-										if(loldest.length() != 36)
-										{
-											cmdline_printchat("UUID entered is of an invalid length! (Hint: use the \"copy key\" button in the build menu.)");
-										}
-										else if (gObjectList.findObject(LLUUID(loldest)) == false) 
-										{
-											cmdline_printchat("Unable to locate object.  Please varify the object is rezzed and in view, and that the UUID is correct.");
-										}
-										else
-										{//ToDo: convert UUID to prim name for text output
-											//AObjectDetails* details = &sObjectDetails[LLUUID(loldest)];
-											//std::string object_name = details->name;
-											//std::map<LLUUID(loldest), AObjectDetails>
-											//LLUUID object_id = LLUUID(loldest);
-											//LLViewerObject* objectp = gObjectList.findObject(object_id);
-											//if (objectp)
-											//std::string pName = objectp->sObjectDetails[object_id].name;
-											//LLInventoryItem* primName = sObjectDetails. .getObject(LLUUID(loldest.c_str())); 
-											//std::string pName = primName->getName();
-											//LLSelectMgr::getInstance()->selectObjectOnly(viewer_object);
-											//LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstRootNode();
-											//sel_node->mName.c_str();
-											//cmdline_printchat(llformat("Found prim named \"%s\".", name.c_str()));
-											cmdline_printchat(llformat("Found prim \"%s\".", loldest.c_str()));
-											cmdline_printchat(llformat("Transferring inventory items from \"%s\" to prim \"%s\".", lolfolder.c_str(), loldest.c_str()));
-											cmdline_printchat("WARNING: No-copy items will be moved to the destination prim!");
-											cmdline_printchat("Do not have the prim selected while transfer is running to reduce the chances of \"Inventory creation on in-world object failed.\"");
-											LLUUID sdest = LLUUID(loldest);
-											new JCZdrop(lolstack, sdest, lolfolder.c_str(), loldest.c_str(), 2.0f);
-											//ztake = new JCZtake
-										}
-									}
-									else
-									{
-										cmdline_printchat("Please specify an object UUID to copy the items in this folder to.");
-									}
+									//ToDo: convert UUID to prim name for text output
+									//AObjectDetails* details = &sObjectDetails[LLUUID(loldest)];
+									//std::string object_name = details->name;
+									//std::map<LLUUID(loldest), AObjectDetails>
+									//LLUUID object_id = LLUUID(loldest);
+									//LLViewerObject* objectp = gObjectList.findObject(object_id);
+									//if (objectp)
+									//std::string pName = objectp->sObjectDetails[object_id].name;
+									//LLInventoryItem* primName = sObjectDetails. .getObject(LLUUID(loldest.c_str())); 
+									//std::string pName = primName->getName();
+									//LLSelectMgr::getInstance()->selectObjectOnly(viewer_object);
+									//LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstRootNode();
+									//sel_node->mName.c_str();
+									//cmdline_printchat(llformat("Found prim named \"%s\".", name.c_str()));
+									cmdline_printchat(llformat("Found prim \"%s\".", loldest.c_str()));
+									cmdline_printchat(llformat("Transferring inventory items from \"%s\" to prim \"%s\".", lolfolder.c_str(), loldest.c_str()));
+									cmdline_printchat("WARNING: No-copy items will be moved to the destination prim!");
+									cmdline_printchat("Do not have the prim selected while transfer is running to reduce the chances of \"Inventory creation on in-world object failed.\"");
+									LLUUID sdest = LLUUID(loldest);
+									new JCZdrop(lolstack, sdest, lolfolder.c_str(), loldest.c_str(), 2.0f);
+									//ztake = new JCZtake
 								}
 							}
 							else
 							{
 								cmdline_printchat(llformat("\"%s\" folder not found.  Please check the spelling.", lolfolder.c_str()));
-								cmdline_printchat("Zdrop cannot work with folders that have spaces in the name or if the folder is inside another folder.");
+								cmdline_printchat("Zdrop cannot work if the folder is inside another folder.");
 							}
 						}
-						else
+						catch(std::out_of_range e)
 						{
 							cmdline_printchat("The Zdrop command transfers items from your inventory to a rezzed prim without the need to wait for the contents of the prim to load.  No-copy items are moved to the prim. All other items are copied.");
-							cmdline_printchat("Valid command: Zdrop (source inventory folder name) (rezzed prim UUID)");
+							cmdline_printchat("Valid command: Zdrop (rezzed prim UUID) (source inventory folder name)");
 						}
-					//}
-					//else if(setting == "off")
-					//{
-					//	if(zdrop == NULL)
-					//	{
-					//		cmdline_printchat("Zdrop is already deactivated.");
-					//	}
-					//	else
-					//	{
-					//		zdrop->mRunning = TRUE;
-					//		delete zdrop;
-					//		zdrop = NULL;
-					//	}
-					//}
-					//else
-					//{
-					//	cmdline_printchat(llformat("Invalid command: \"%s\".  Valid commands: Zdrop on (source inventory folder) (desitnation prim UUID); Zdrop off", setting.c_str()));
-					//}
-					//return false;
+					}
 				}
-				//else
-				//{
-				//	cmdline_printchat("The Ztake command coppies selected rezzed objects into the folder you specify in your inventory.");
-				//	cmdline_printchat("Valid commands: Ztake on (destination inventory folder name) ; Ztake off");
-				//}
+				else
+				{
+					cmdline_printchat("Please specify an object UUID to copy the items in this folder to.");
+				}
 				return false;
 			}
 			else if(command == "ztake")
@@ -953,8 +923,14 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 							cmdline_printchat("Beginning Ztake.");
 							cmdline_printchat("Verifying folder location...");
 							std::string folder_name;
-							if(i >> folder_name)
+							std::string tmp;
+							while(i >> tmp)
 							{
+								folder_name = folder_name + tmp + " ";
+							}
+							try
+							{
+								folder_name = folder_name.substr(0,folder_name.length() - 1);
 								LLUUID folder = gInventory.findCategoryByName(folder_name);
 								if(folder.notNull())
 								{
@@ -964,10 +940,10 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 								else
 								{
 									cmdline_printchat(llformat("\"%s\" folder not found.  Please check the spelling.", folder_name.c_str()));
-									cmdline_printchat("Ztake cannot work with folders that have spaces in the name or if the folder is inside another folder.");
+									cmdline_printchat("Ztake cannot work if the folder is inside another folder.");
 								}
 							}
-							else
+							catch(std::out_of_range e)
 							{
 								cmdline_printchat("Please specify a destination folder in your inventory.");
 							}
