@@ -172,26 +172,32 @@ BOOL LLImageJ2COJ::decodeImpl(LLImageJ2C &base, LLImageRaw &raw_image, F32 decod
 	// The image decode failed if the return was NULL or the component
 	// count was zero.  The latter is just a sanity check before we
 	// dereference the array.
-	S32 img_components = image->numcomps;
-	if(!image )
+	if(!image) 
 	{
-		llwarns << "ERROR -> decodeImpl: failed to decode image - no image" << llendl;
+		llwarns << "ERROR -> decodeImpl: failed to decode image - no image" << LL_ENDL;
 		return TRUE; // done
 	}
-	if (!img_components)
+
+	S32 img_components = image->numcomps;
+
+	if( !img_components ) // < 1 ||img_components > 4 )
 	{
-		llwarns << "ERROR -> decodeImpl: failed to decode image - wrong number of components: " << img_components << llendl;
-		opj_destroy_cstr_info(&cinfo);
-		opj_image_destroy(image);
+		llwarns << "ERROR -> decodeImpl: failed to decode image wrong number of components: " << img_components << LL_ENDL;
+		if (image)
+		{
+			opj_destroy_cstr_info(&cinfo);
+			opj_image_destroy(image);
+		}
+
 		return TRUE; // done
 	}
 
 	// sometimes we get bad data out of the cache - check to see if the decode succeeded
 	int decompdifference = 0;
-	if (cinfo.numdecompos) // sanity check
+	if (cinfo.numdecompos) // sanity
 	{
 		for (int comp = 0; comp < image->numcomps; comp++)
-		{
+		{	
 			/* get maximum decomposition level difference, first
 			   field is from the COD header and the second
 			   is what is actually met in the codestream, NB: if
@@ -199,24 +205,27 @@ BOOL LLImageJ2COJ::decodeImpl(LLImageJ2C &base, LLImageRaw &raw_image, F32 decod
 			   what was set in the cp_reduce value! */
 			decompdifference = llmax(decompdifference, cinfo.numdecompos[comp] - image->comps[comp].resno_decoded);
 		}
-		if (decompdifference < 0) // more sanity checking
+		if (decompdifference < 0) // sanity
 		{
 			decompdifference = 0;
 		}
 	}
+	
+
+	/* if OpenJPEG failed to decode all requested decomposition levels
+	   the difference will be greater than this level */
 	if (decompdifference > base.getRawDiscardLevel())
 	{
-		// if we didn't get the discard level we're expecting, fail
-		llwarns << "Not enough data for requested discard level. Setting mDecoding to FALSE. Difference: " << (decompdifference - base.getRawDiscardLevel()) << llendl;
+		llwarns << "not enough data for requested discard level, setting mDecoding to FALSE, difference: " << (decompdifference - base.getRawDiscardLevel()) << llendl;
 		opj_destroy_cstr_info(&cinfo);
 		opj_image_destroy(image);
 		base.mDecoding = FALSE;
 		return TRUE;
 	}
-	
+
 	if(img_components <= first_channel)
 	{
-		llwarns << "trying to decode more channels than are present in image: numcomps: " << image->numcomps << " first_channel: " << first_channel << llendl;
+		llwarns << "trying to decode more channels than are present in image: numcomps: " << img_components << " first_channel: " << first_channel << LL_ENDL;
 		if (image)
 		{
 			opj_destroy_cstr_info(&cinfo);
@@ -227,6 +236,7 @@ BOOL LLImageJ2COJ::decodeImpl(LLImageJ2C &base, LLImageRaw &raw_image, F32 decod
 	}
 
 	// Copy image data into our raw image format (instead of the separate channel format
+
 
 	S32 channels = img_components - first_channel;
 	if( channels > max_channel_count )
@@ -274,9 +284,12 @@ BOOL LLImageJ2COJ::decodeImpl(LLImageJ2C &base, LLImageRaw &raw_image, F32 decod
 		}
 	}
 
-	/* free opj data structure */
-	opj_destroy_cstr_info(&cinfo);
-	opj_image_destroy(image);
+	/* free opj data structures */
+	if (image)
+	{
+		opj_destroy_cstr_info(&cinfo);
+		opj_image_destroy(image);
+	}
 
 	return TRUE; // done
 }
