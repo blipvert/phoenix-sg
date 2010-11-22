@@ -36,7 +36,7 @@ public:
 	bool WLset;
 	
 private:
-	bool KCWindlightInterface::callbackParcelWL(const LLSD& notification, const LLSD& response);
-	bool KCWindlightInterface::callbackParcelWLClear(const LLSD& notification, const LLSD& response);
+	bool callbackParcelWL(const LLSD& notification, const LLSD& response);
+	bool callbackParcelWLClear(const LLSD& notification, const LLSD& response);
 	std::set<LLUUID> mAllowedLand;
 };
