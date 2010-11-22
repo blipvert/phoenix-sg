@@ -34,6 +34,8 @@
 
 #include <boost/regex.hpp>
 
+static bool SetDialogVisible = FALSE;
+static bool ClearDialogVisible = FALSE;
 
 KCWindlightInterface::KCWindlightInterface()
 {
@@ -88,97 +90,194 @@ bool KCWindlightInterface::ChatCommand(std::string message, std::string from_nam
 		//TODO: add support for custom settings via notecards or something
 		//TODO: improved data processing, possibly just use LLSD as input instead
 		
-			//const boost::regex Parcel_exp("^(Parcel),WLPreset='(.+)'(,WWPreset='(.+)')?$"); //TODO: this needs improvment ...actually it doesnt work right in sl boost for somereason :/
-			const boost::regex Parcel_exp("^(Parcel),WLPreset='(.+)'$"); //temp hack
+			boost::smatch match2;
+			const boost::regex Parcel_exp("^(Parcel),WLPreset=\"([^\"\\r\\n]+)\"(,WWPreset=\"([^\"\\r\\n]+)\")?$");
 			//([\\w]{8}-[\\w]{4}-[\\w]{4}-[\\w]{4}-[\\w]{12})
-			if(boost::regex_match(data.c_str(), match, Parcel_exp))
+			if(boost::regex_search(data, match2, Parcel_exp))
 			{
-				if (match[1]=="Parcel")
+				if (SetDialogVisible) //TODO: handle this better
+					return true;
+
+				if (match2[1]=="Parcel")
 				{
 					llinfos << "Got Parcel WL : " << match[2] << llendl;
 					
 					LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
 					LLSD payload;
 					payload["local_id"] = parcel->getLocalID();
-					payload["wlpreset"] = std::string(match[2].first, match[2].second);
-					//payload["wwpreset"] = std::string(match[3].first, match[3].second);
+					payload["land_owner"] = parcel->getOwnerID();
+					payload["wlpreset"] = std::string(match2[2].first, match2[2].second);
+					payload["wwpreset"] = std::string(match2[3].first, match2[3].second);
 
 					LLSD args;
 					args["PARCEL_NAME"] = parcel->getName();
 					
-					LLNotifications::instance().add("PhoenixWL", args, payload);
+					LLNotifications::instance().add("PhoenixWL", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWL, this, _1, _2));
+					SetDialogVisible = true;
 				}
 				return true;
 			}
-		//}
+		/*)*/
 	}
 	return false;
 }
 
 void KCWindlightInterface::PacelChange()
 {
-	if(LLStartUp::getStartupState() == STATE_STARTED)
+	LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+
+	if(LLStartUp::getStartupState() == STATE_STARTED) //only clear *after* we've fully logged in
 	{
-		LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
 		llinfos << "agent in new parcel: "<< parcel->getLocalID() << " : "  << parcel->getName() << llendl;
 		
 		//TODO: save settings percel to reuse instead of just clearing
 		Clear(parcel->getLocalID());
 	}
+
+	if (SetDialogVisible) //TODO: handle this better
+		return;
+
+	std::string desc(parcel->getDesc());
+	
+	llinfos << "desc: " << desc << llendl;
+	
+	boost::smatch mat_block;
+	const boost::regex Parcel_exp("\\/\\*([\\s\\S]*?)\\*\\/"); // parcel desc /*[data goes here*/
+	if(boost::regex_search(desc, mat_block, Parcel_exp))
+	{
+		std::string data1(mat_block[1].first, mat_block[1].second);
+		llinfos << "found parcel flags: " << mat_block[1] << llendl;
+		
+		LLSD payload;
+		bool found_settings = false;
+		boost::smatch match;
+		std::string::const_iterator start = mat_block[1].first; //desc.begin();
+		std::string::const_iterator end = mat_block[1].second; //desc.end();
+		const boost::regex key("([0-9_A-Za-z]+):([0-9_A-Za-z]*):\"([^\"\\r\\n]+)\"\\|?");
+		while (boost::regex_search(start, end, match, key, boost::match_default))
+		{
+			llinfos << "parcel flag: " << match[1] << " : " << match[2] << " : " << match[3] << llendl;
+			
+			if (match[1]=="WLPRESET")
+			{
+				payload["wlpreset"] = std::string(match[3]);
+				found_settings = true;
+			}
+			else if (match[1]=="WWPRESET")
+			{
+				payload["wwpreset"] = std::string(match[3]);
+				found_settings = true;
+			}
+			
+			// update search position 
+			start = match[0].second; 
+		}
+
+		//TODO: verify that presets actually exists
+
+		if (found_settings)
+		{
+			//basic auth for now
+			if (mAllowedLand.find(parcel->getOwnerID()) != mAllowedLand.end())
+			{
+				if (!payload["wlpreset"].asString().empty())
+				{
+					llinfos << "WL set : " << parcel->getLocalID() << " : " << payload["wlpreset"] << llendl;
+					LLWLParamManager::instance()->mAnimator.mIsRunning = false;
+					LLWLParamManager::instance()->mAnimator.mUseLindenTime = false;
+					LLWLParamManager::instance()->loadPreset(payload["wlpreset"].asString());
+					WLset = true;
+				}
+				if (!payload["wwpreset"].asString().empty())
+				{
+					llinfos << "WW set : " << parcel->getLocalID() << " : " << payload["wwpreset"] << llendl;
+					LLWaterParamManager::instance()->loadPreset(payload["wwpreset"].asString(), true);
+					WLset = true;
+				}
+			}
+			else
+			{
+				LLSD args;
+				args["PARCEL_NAME"] = parcel->getName();
+				payload["local_id"] = parcel->getLocalID();
+				payload["land_owner"] = parcel->getOwnerID();
+				LLNotifications::instance().add("PhoenixWL", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWL, this, _1, _2));
+				SetDialogVisible = true;
+			}
+		}
+	}
 }
 
 void KCWindlightInterface::onClickWLStatusButton()
 {
+	if (SetDialogVisible) //TODO: handle this better
+		return;
+
 	LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
 	LLSD payload;
 	payload["local_id"] = parcel->getLocalID();
+	payload["owner_id"] = parcel->getOwnerID();
 
 	LLSD args;
 	args["PARCEL_NAME"] = parcel->getName();
 	
-	LLNotifications::instance().add("PhoenixWLClear", args, payload);
+	LLNotifications::instance().add("PhoenixWLClear", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWLClear, this, _1, _2));
+	ClearDialogVisible = true;
 }
 
-bool ph_set_wl_callback(const LLSD& notification, const LLSD& response)
+bool KCWindlightInterface::callbackParcelWL(const LLSD& notification, const LLSD& response)
+//bool ph_set_wl_callback(const LLSD& notification, const LLSD& response)
 {
 	S32 option = LLNotification::getSelectedOption(notification, response);
-	S32 local_id = notification["payload"]["local_id"].asInteger();
-	std::string wlpreset = notification["payload"]["wlpreset"].asString();
-	std::string wwpreset = notification["payload"]["wwpreset"].asString();
+	if (option == 0)
+	{
+		mAllowedLand.insert(notification["payload"]["land_owner"].asUUID());
+		
+		LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+		S32 local_id = notification["payload"]["local_id"].asInteger();
+		if (local_id == parcel->getLocalID())
+		{
+			//TODO: save per parcel
+			std::string wlpreset = notification["payload"]["wlpreset"].asString();
+			std::string wwpreset = notification["payload"]["wwpreset"].asString();
+			if (!wlpreset.empty())
+			{
+				llinfos << "WL set : " << local_id << " : " << wlpreset << llendl;
+				LLWLParamManager::instance()->mAnimator.mIsRunning = false;
+				LLWLParamManager::instance()->mAnimator.mUseLindenTime = false;
+				LLWLParamManager::instance()->loadPreset(wlpreset);
+				WLset = true;
+			}
+			if (!wwpreset.empty())
+			{
+				llinfos << "WW set : " << local_id << " : " << wwpreset << llendl;
+				LLWaterParamManager::instance()->loadPreset(wwpreset, true);
+				WLset = true;
+			}
+		}
+	}
+	SetDialogVisible = false;
+
+	return false;
+}
+
+bool KCWindlightInterface::callbackParcelWLClear(const LLSD& notification, const LLSD& response)
+{
+	S32 option = LLNotification::getSelectedOption(notification, response);
 
 	if (option == 0)
 	{
-		//TODO: save per parcel
-		if (!wlpreset.empty())
-		{
-			llinfos << "WL set : " << local_id << " : " << wlpreset << llendl;
-			LLWLParamManager::instance()->mAnimator.mIsRunning = false;
-			LLWLParamManager::instance()->mAnimator.mUseLindenTime = false;
-			LLWLParamManager::instance()->loadPreset(wlpreset);
-			KCWindlightInterface::instance().WLset = true;
-		}
-		if (!wwpreset.empty())
-		{
-			llinfos << "WW set : " << local_id << " : " << wwpreset << llendl;
-			LLWaterParamManager::instance()->loadPreset(wwpreset, true);
-		}
+		S32 local_id = notification["payload"]["local_id"].asInteger();
+		LLUUID owner_id = notification["payload"]["owner_id"].asUUID();
+
+		mAllowedLand.erase(owner_id);
+		Clear(local_id);
 	}
+
+	ClearDialogVisible = false;
+
 	return false;
 }
-static LLNotificationFunctorRegistration ph_set_wl_callback_reg("PhoenixWL", ph_set_wl_callback);
-
-bool ph_clear_wl_callback(const LLSD& notification, const LLSD& response)
-{
-	S32 option = LLNotification::getSelectedOption(notification, response);
-	S32 local_id = notification["payload"]["local_id"].asInteger();
-
-	if (option == 0)
-	{
-		KCWindlightInterface::instance().Clear(local_id);
-	}
-	return false;
-}
-static LLNotificationFunctorRegistration ph_clear_wl_callback_reg("PhoenixWLClear", ph_clear_wl_callback);
 
 
 //TODO: merge this relay code in to bridge when more final, currently only supports "Parcel,WLPreset='[preset name]'"
