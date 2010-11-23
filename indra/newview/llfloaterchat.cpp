@@ -115,7 +115,7 @@ LLFloaterChat::LLFloaterChat(const LLSD& seed)
 	childSetCommitCallback("translate chat",onClickToggleTranslateChat,this);
 	childSetValue("translate chat", gSavedSettings.getBOOL("TranslateChat"));
 	childSetVisible("Chat History Editor with mute",FALSE);
-	childSetVisible("ChatChannel", gSavedSettings.getBOOL("PhoenixShowChatChannel"));
+	childSetEnabled("ChatChannel", gSavedSettings.getBOOL("PhoenixShowChatChannel"));
 	childSetAction("toggle_active_speakers_btn", onClickToggleActiveSpeakers, this);
 	setDefaultBtn("Chat");
 }
@@ -418,7 +418,7 @@ void LLFloaterChat::updateSettings()
 void LLFloaterChat::updateChatChannelSetting()
 {
 	LLFloaterChat* floater = LLFloaterChat::getInstance(LLSD());
-	floater->childSetVisible("ChatChannel", gSavedSettings.getBOOL("PhoenixShowChatChannel"));
+	floater->childSetEnabled("ChatChannel", gSavedSettings.getBOOL("PhoenixShowChatChannel"));
 }
 
 // Put a line of chat in all the right places
