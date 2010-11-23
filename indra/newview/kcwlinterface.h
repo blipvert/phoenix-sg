@@ -32,7 +32,7 @@ class KCWindlightInterface : public LLSingleton<KCWindlightInterface>,LLEventTim
 public:
 	KCWindlightInterface();
 	virtual BOOL tick();
-	void KCWindlightInterface::ApplySettings(const LLSD& settings);
+	void ApplySettings(const LLSD& settings);
 	void Clear();
 	//bool ChatCommand(std::string message, std::string from_name, LLUUID source_id, LLUUID owner_id);
 	void PacelChange();
@@ -42,7 +42,7 @@ public:
 private:
 	bool callbackParcelWL(const LLSD& notification, const LLSD& response);
 	bool callbackParcelWLClear(const LLSD& notification, const LLSD& response);
-	bool KCWindlightInterface::AllowedLandOwners(const LLUUID& agent_id);
+	bool AllowedLandOwners(const LLUUID& agent_id);
 
 	std::set<LLUUID> mAllowedLand;
 	LLNotificationPtr mSetWLNotification;
