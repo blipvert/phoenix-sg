@@ -106,8 +106,9 @@ class JCZdrop : public LLEventTimer
 public:
 	//BOOL mRunning;
 	
-	JCZdrop(std::stack<LLViewerInventoryItem*> stack, LLUUID dest, std::string sFolder, std::string sUUID, F32 pause) : LLEventTimer(pause)//, mRunning(FALSE)
+	JCZdrop(std::stack<LLViewerInventoryItem*> stack, LLUUID dest, std::string sFolder, std::string sUUID, F32 pause, bool package = false) : LLEventTimer(pause)//, mRunning(FALSE)
 	{
+		mPackage = package;
 		instack = stack;
 		indest = dest;
 		dFolder = sFolder;
@@ -123,7 +124,17 @@ public:
 		}
 		else
 		{
-			cmdline_printchat(llformat("Completed transfer from \"%s\" to \"%s\".",dFolder.c_str(),dUUID.c_str()));
+			if(mPackage)
+			{
+				cmdline_printchat("Packager finished, you may now pick up the prim that contains the objects.");
+				cmdline_printchat(llformat("Packaged what you had selected in world into the folder \"%s\" in your inventory and into the prim with the UUID of \"%s\"",dFolder.c_str(),dUUID.c_str()));
+				cmdline_printchat("Don't wory if you look at the contents of package right now, it may show as empty, it isn't, it's just a bug with Second Life itself.");
+				cmdline_printchat("If you take it into your inventory then rez it back out, all the contents will be there.");
+			}
+			else
+			{
+				cmdline_printchat(llformat("Completed transfer from \"%s\" to \"%s\".",dFolder.c_str(),dUUID.c_str()));
+			}
 		}
 	}
 	BOOL tick()
@@ -154,29 +165,42 @@ private:
 	std::string dFolder;
 	std::string dUUID;
 	int errorCode;
+	bool mPackage;
 };
 
 //JCZdrop *zdrop;
 //
+void doCleanup();
 class JCZtake : public LLEventTimer
 {
 public:
 	BOOL mRunning;
 
-	JCZtake(const LLUUID& target) : LLEventTimer(0.75), mTarget(target), mRunning(FALSE), mCountdown(5)
+	JCZtake(const LLUUID& target, bool package = false, LLUUID destination = LLUUID::null, std::string dtarget = "") : LLEventTimer(0.75), mTarget(target), mRunning(FALSE), mCountdown(5), mPackage(package), mPackageDest(destination)
 	{
-		cmdline_printchat("Ztake activated. Taking selected in-world objects into inventory in: ");
+		mFolderName = dtarget;
+		if(mPackage)
+		{
+			cmdline_printchat("Packager started. Phase 1 (taking in-world objects into inventory) starting in: ");
+		}
+		else
+		{
+			cmdline_printchat("Ztake activated. Taking selected in-world objects into inventory in: ");
+		}
 	}
 	~JCZtake()
 	{
-		cmdline_printchat("Ztake deactivated.");
+		if(!mPackage)
+		{
+			cmdline_printchat("Ztake deactivated.");
+		}
 	}
 	BOOL tick()
 	{
 		{
 			LLMessageSystem *msg = gMessageSystem;
-			for(LLObjectSelection::iterator itr=LLSelectMgr::getInstance()->getSelection()->begin();
-				itr!=LLSelectMgr::getInstance()->getSelection()->end();++itr)
+			for(LLObjectSelection::root_iterator itr=LLSelectMgr::getInstance()->getSelection()->root_begin();
+				itr!=LLSelectMgr::getInstance()->getSelection()->root_end();++itr)
 			{
 				LLSelectNode* node = (*itr);
 				LLViewerObject* objectp = node->getObject();
@@ -211,13 +235,46 @@ public:
 				msg->addU32Fast(_PREHASH_ObjectLocalID, mToTake[0]);
 				gAgent.sendReliableMessage();
 				mToTake.erase(mToTake.begin());
-				if(mToTake.size() % 10 == 0) {
-					if(mToTake.size() == 0) {
-						cmdline_printchat("Ztake has taken all selected objects.  Say \"ztake off\" to deactivate ztake or select more objects to continue.");
+				if(mToTake.size() % 10 == 0)
+				{
+					if(mToTake.size() == 0)
+					{
+						if(mPackage)
+						{
+							cmdline_printchat("Phase 1 of the packager finished.");
+							std::stack<LLViewerInventoryItem*> lolstack;
+							LLDynamicArray<LLPointer<LLViewerInventoryItem> > lolinv = findInventoryInFolder(mFolderName);
+							for(LLDynamicArray<LLPointer<LLViewerInventoryItem> >::iterator it = lolinv.begin(); it != lolinv.end(); ++it)
+							{
+								LLViewerInventoryItem* item = *it;
+								lolstack.push(item);
+							}
+							if(lolstack.size())
+							{
+								cmdline_printchat("Do not have the destination prim selected while transfer is running to reduce the chances of \"Inventory creation on in-world object failed.\"");
+								LLUUID sdest = LLUUID(mPackageDest);
+								new JCZdrop(lolstack, sdest, mFolderName.c_str(), mPackageDest.asString().c_str(), 2.0f, true);
+								//ztake = new JCZtake
+							} 
+							doCleanup();
+							//LOCleanup::LOCleanup();
+							//cmd_line_chat("ztake off", CHAT_TYPE_NORMAL);
+						}
+						else
+						{
+							cmdline_printchat("Ztake has taken all selected objects.  Say \"ztake off\" to deactivate ztake or select more objects to continue.");
+						}
 					} 
 					else
 					{
-						cmdline_printchat(llformat("Ztake: %i objects left to take.", mToTake.size()));
+						if(mPackage)
+						{
+							cmdline_printchat(llformat("Packager: %i objects left to take.", mToTake.size()));
+						}
+						else
+						{
+							cmdline_printchat(llformat("Ztake: %i objects left to take.", mToTake.size()));
+						}
 					}
 				}
 			}
@@ -230,9 +287,35 @@ private:
 	std::vector<U32> mToTake;
 	LLUUID mTarget;
 	int mCountdown;
+	bool mPackage;
+	LLUUID mPackageDest;
+	std::string mFolderName;
 };
 
 JCZtake *ztake;
+
+class LOCleanup: public LLEventTimer
+{
+public:
+	LOCleanup() : LLEventTimer(0.2) //Dont really need this long of a timer, but it cant be to short or tick() below may get called before the packager's tick() returns to the timer system. Things get ugly otherwise.
+	{
+	}
+	~LOCleanup()
+	{
+	}
+	BOOL tick()
+	{
+		ztake->mRunning = TRUE;
+		delete ztake;
+		ztake = NULL;
+		return TRUE;
+	}
+};
+
+void doCleanup()
+{
+	new LOCleanup();
+}
 
 class TMZtake : public LLEventTimer
 {
@@ -855,7 +938,6 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 							{
 								cmdline_printchat("Verifying folder location...");
 								std::stack<LLViewerInventoryItem*> lolstack;
-								std::string msg;
 								LLDynamicArray<LLPointer<LLViewerInventoryItem> > lolinv = findInventoryInFolder(lolfolder);
 								for(LLDynamicArray<LLPointer<LLViewerInventoryItem> >::iterator it = lolinv.begin(); it != lolinv.end(); ++it)
 								{
@@ -865,20 +947,6 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 								if(lolstack.size())
 								{
 									cmdline_printchat(llformat("Found folder \"%s\".", lolfolder.c_str()));
-									//ToDo: convert UUID to prim name for text output
-									//AObjectDetails* details = &sObjectDetails[LLUUID(loldest)];
-									//std::string object_name = details->name;
-									//std::map<LLUUID(loldest), AObjectDetails>
-									//LLUUID object_id = LLUUID(loldest);
-									//LLViewerObject* objectp = gObjectList.findObject(object_id);
-									//if (objectp)
-									//std::string pName = objectp->sObjectDetails[object_id].name;
-									//LLInventoryItem* primName = sObjectDetails. .getObject(LLUUID(loldest.c_str())); 
-									//std::string pName = primName->getName();
-									//LLSelectMgr::getInstance()->selectObjectOnly(viewer_object);
-									//LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstRootNode();
-									//sel_node->mName.c_str();
-									//cmdline_printchat(llformat("Found prim named \"%s\".", name.c_str()));
 									cmdline_printchat(llformat("Found prim \"%s\".", loldest.c_str()));
 									cmdline_printchat(llformat("Transferring inventory items from \"%s\" to prim \"%s\".", lolfolder.c_str(), loldest.c_str()));
 									cmdline_printchat("WARNING: No-copy items will be moved to the destination prim!");
@@ -972,6 +1040,55 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 				{
 					cmdline_printchat("The Ztake command copies selected rezzed objects into the folder you specify in your inventory.");
 					cmdline_printchat("Valid commands: Ztake on (destination inventory folder name) ; Ztake off");
+				}
+				return false;
+			}
+			else if(command == "lpackage")
+			{
+				std::string loldest;
+				if(i >> loldest)
+				{
+					cmdline_printchat("Verifying destination prim is present inworld...");
+					if(loldest.length() != 36)
+					{
+						cmdline_printchat("UUID entered is of an invalid length! (Hint: use the \"copy key\" button in the build menu.)");
+					}
+					else if (gObjectList.findObject(LLUUID(loldest)) == false) 
+					{
+						cmdline_printchat("Unable to locate object.  Please varify the object is rezzed and in view, and that the UUID is correct.");
+					}
+					else
+					{
+						std::string folder_name;
+						std::string tmp;
+						while(i >> tmp)
+						{
+							folder_name = folder_name + tmp + " ";
+						}
+						try
+						{
+							folder_name = folder_name.substr(0,folder_name.length() - 1);
+							LLUUID folder = gInventory.findCategoryByName(folder_name);
+							if(folder.notNull())
+							{
+								cmdline_printchat(llformat("Found destination folder \"%s\".", folder_name.c_str()));
+								ztake = new JCZtake(folder, true, LLUUID(loldest), folder_name);
+							}
+							else
+							{
+								cmdline_printchat(llformat("\"%s\" folder not found.  Please check the spelling.", folder_name.c_str()));
+								cmdline_printchat("The packager cannot work if the folder is inside another folder.");
+							}
+						}
+						catch(std::out_of_range e)
+						{
+							cmdline_printchat("Please specify a destination folder in your inventory.");
+						}
+					}
+				}
+				else
+				{
+					cmdline_printchat(llformat("Packager usage: \"%s destination_prim_UUID inventory folder name\"",command.c_str()));
 				}
 				return false;
 			}
