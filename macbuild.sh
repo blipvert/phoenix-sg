@@ -28,8 +28,7 @@ set_channel()
 build()
 {
         echo "Building version ${VERSION_VIEWER}.${REVISION}..."
-        xcodebuild -target ALL_BUILD -configuration Release \
-        GCC_VERSION=4.0 > /dev/null
+        xcodebuild -target ALL_BUILD -configuration Release > /dev/null
 }
 
 copy_resources()
