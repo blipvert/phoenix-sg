@@ -217,6 +217,8 @@ if (LINUX OR DARWIN)
 
   if (NOT GCC_DISABLE_FATAL_WARNINGS)
     set(GCC_WARNINGS "${GCC_WARNINGS} -Werror")
+    # This line shows the flag to use to turn off a specific warning
+    # set(GCC_WARNINGS "${GCC_WARNINGS} -Werror -fdiagnostics-show-option")
   endif (NOT GCC_DISABLE_FATAL_WARNINGS)
 
   set(GCC_CXX_WARNINGS "${GCC_WARNINGS} -Wno-reorder")

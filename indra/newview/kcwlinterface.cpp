@@ -125,7 +125,8 @@ void KCWindlightInterface::Clear()
 }
 
 //KC: Disabling this for now
-/*bool KCWindlightInterface::ChatCommand(std::string message, std::string from_name, LLUUID source_id, LLUUID owner_id)
+#if 0
+bool KCWindlightInterface::ChatCommand(std::string message, std::string from_name, LLUUID source_id, LLUUID owner_id)
 {
 	boost::cmatch match;
 	const boost::regex prefix_exp("^\\)\\*\\((.*)");
@@ -151,7 +152,7 @@ void KCWindlightInterface::Clear()
 			return true;
 		}
 		else 
-		{* /
+		{*/
 		
 		//TODO: add save settings for reuse instead of just clearing on parcel change
 		//TODO: add support for region wide settings on non-mainland
@@ -186,10 +187,11 @@ void KCWindlightInterface::Clear()
 				}
 				return true;
 			}
-		/*)* /
+		/*}*/
 	}
 	return false;
-}*/
+}
+#endif
 
 void KCWindlightInterface::PacelChange()
 {
