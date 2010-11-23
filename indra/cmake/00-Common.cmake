@@ -216,9 +216,9 @@ if (LINUX OR DARWIN)
   set(GCC_WARNINGS "-Wall -Wno-sign-compare -Wno-trigraphs -Wno-non-virtual-dtor -Woverloaded-virtual -Wno-write-strings -Wno-deprecated-declarations")
 
   if (NOT GCC_DISABLE_FATAL_WARNINGS)
-    set(GCC_WARNINGS "${GCC_WARNINGS} -Werror")
+    # set(GCC_WARNINGS "${GCC_WARNINGS} -Werror")
     # This line shows the flag to use to turn off a specific warning
-    # set(GCC_WARNINGS "${GCC_WARNINGS} -Werror -fdiagnostics-show-option")
+    set(GCC_WARNINGS "${GCC_WARNINGS} -Werror -fdiagnostics-show-option")
   endif (NOT GCC_DISABLE_FATAL_WARNINGS)
 
   set(GCC_CXX_WARNINGS "${GCC_WARNINGS} -Wno-reorder")
