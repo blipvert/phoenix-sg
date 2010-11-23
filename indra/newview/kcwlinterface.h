@@ -42,6 +42,8 @@ public:
 private:
 	bool callbackParcelWL(const LLSD& notification, const LLSD& response);
 	bool callbackParcelWLClear(const LLSD& notification, const LLSD& response);
+	bool KCWindlightInterface::AllowedLandOwners(const LLUUID& agent_id);
+
 	std::set<LLUUID> mAllowedLand;
 	LLNotificationPtr mSetWLNotification;
 	LLNotificationPtr mClearWLNotification;

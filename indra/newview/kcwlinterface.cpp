@@ -25,9 +25,12 @@
 
 #include "kcwlinterface.h"
 
+#include "llagent.h"
+#include "llcallingcard.h" // isBuddy
 #include "llstartup.h"
 #include "llparcel.h"
-#include "llviewercontrol.h"
+#include "llviewercontrol.h" // gSavedSettings, gSavedPerAccountSettings
+#include "llviewermenu.h" // is_agent_friend
 #include "llviewerparcelmgr.h"
 #include "llwlparammanager.h"
 #include "llwaterparammanager.h"
@@ -196,6 +199,8 @@ void KCWindlightInterface::PacelChange()
 	
 	llinfos << "desc: " << desc << llendl;
 	
+	bool found_settings = false;
+	LLSD payload;
 	boost::smatch mat_block;
 	const boost::regex Parcel_exp("\\/\\*([\\s\\S]*?)\\*\\/"); // parcel desc /*[data goes here*/
 	if(boost::regex_search(desc, mat_block, Parcel_exp))
@@ -203,8 +208,6 @@ void KCWindlightInterface::PacelChange()
 		std::string data1(mat_block[1].first, mat_block[1].second);
 		llinfos << "found parcel flags: " << mat_block[1] << llendl;
 		
-		LLSD payload;
-		bool found_settings = false;
 		boost::smatch match;
 		std::string::const_iterator start = mat_block[1].first; //desc.begin();
 		std::string::const_iterator end = mat_block[1].second; //desc.end();
@@ -227,26 +230,30 @@ void KCWindlightInterface::PacelChange()
 			// update search position 
 			start = match[0].second; 
 		}
+	}
 
-		//TODO: verify that presets actually exists
-
-		if (found_settings)
+	//TODO: verify that presets actually exists
+	
+	if (found_settings)
+	{
+		//basic auth for now
+		if (AllowedLandOwners(parcel->getOwnerID()))
 		{
-			//basic auth for now
-			if (mAllowedLand.find(parcel->getOwnerID()) != mAllowedLand.end())
-			{
-				ApplySettings(payload);
-			}
-			else
-			{
-				LLSD args;
-				args["PARCEL_NAME"] = parcel->getName();
-				payload["parcel_name"] = parcel->getName();
-				payload["local_id"] = parcel->getLocalID();
-				payload["land_owner"] = parcel->getOwnerID();
-				mSetWLNotification = LLNotifications::instance().add("PhoenixWL", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWL, this, _1, _2));
-			}
+			ApplySettings(payload);
 		}
+		else
+		{
+			LLSD args;
+			args["PARCEL_NAME"] = parcel->getName();
+			payload["parcel_name"] = parcel->getName();
+			payload["local_id"] = parcel->getLocalID();
+			payload["land_owner"] = parcel->getOwnerID();
+			mSetWLNotification = LLNotifications::instance().add("PhoenixWL", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWL, this, _1, _2));
+		}
+	}
+	else
+	{ //if nothing defined, reset to region settings
+		Clear();
 	}
 }
 
@@ -295,7 +302,8 @@ bool KCWindlightInterface::callbackParcelWLClear(const LLSD& notification, const
 
 	if (option == 0)
 	{
-		S32 local_id = notification["payload"]["local_id"].asInteger();
+		S32 local_id = 0;
+		local_id = notification["payload"]["local_id"].asInteger();
 		LLUUID owner_id = notification["payload"]["owner_id"].asUUID();
 
 		mAllowedLand.erase(owner_id);
@@ -304,6 +312,17 @@ bool KCWindlightInterface::callbackParcelWLClear(const LLSD& notification, const
 	return false;
 }
 
+bool KCWindlightInterface::AllowedLandOwners(const LLUUID& owner_id)
+{
+	if ( (owner_id == gAgent.getID()) || // land is owned by agent
+		(LLAvatarTracker::instance().isBuddy(owner_id) && gSavedSettings.getBOOL("PhoenixWLWhitelistFriends")) || // is friend's land
+		(gAgent.isInGroup(owner_id) && gSavedSettings.getBOOL("PhoenixWLWhitelistGroups")) || // is member of land's group
+		(mAllowedLand.find(owner_id) != mAllowedLand.end()) ) // already on whitelist
+	{
+		return true;
+	}
+	return false;
+}
 
 //KC: this is currently not used
 //TODO: merge this relay code in to bridge when more final, currently only supports "Parcel,WLPreset='[preset name]'"
