@@ -48,6 +48,9 @@ KCWindlightInterface::KCWindlightInterface() :
 
 BOOL KCWindlightInterface::tick()
 {
+	if(LLStartUp::getStartupState() < STATE_STARTED)
+		return FALSE;
+
 	LLParcel *parcel = NULL;
 	S32 this_parcel_id = 0;
 
@@ -247,9 +250,11 @@ void KCWindlightInterface::PacelChange()
 		{
 			LLSD args;
 			args["PARCEL_NAME"] = parcel->getName();
+			args["OWNER_NAME"] = getOwnerName(parcel);
 			payload["parcel_name"] = parcel->getName();
 			payload["local_id"] = parcel->getLocalID();
 			payload["land_owner"] = parcel->getOwnerID();
+
 			mSetWLNotification = LLNotifications::instance().add("PhoenixWL", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWL, this, _1, _2));
 		}
 	}
@@ -324,6 +329,21 @@ bool KCWindlightInterface::AllowedLandOwners(const LLUUID& owner_id)
 		return true;
 	}
 	return false;
+}
+
+std::string KCWindlightInterface::getOwnerName(LLParcel *parcel)
+{
+	//TODO: say if its a group or avatar on notice
+	std::string owner;
+	if (parcel->getIsGroupOwned())
+	{
+		gCacheName->getGroupName(parcel->getGroupID(), owner);
+	}
+	else
+	{
+		gCacheName->getFullName(parcel->getOwnerID(), owner);
+	}
+	return owner;
 }
 
 //KC: this is currently not used

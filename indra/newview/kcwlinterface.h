@@ -23,9 +23,12 @@
 
 #include "llviewerprecompiledheaders.h"
 #include "llmemory.h"	// LLSingleton<>
+#include "lltimer.h"	// LLEventTimer
 #include "llnotifications.h"
-#include "lltimer.h"
 #include <set>
+#include <string>
+
+class LLParcel;
 
 class KCWindlightInterface : public LLSingleton<KCWindlightInterface>,LLEventTimer
 {
@@ -43,6 +46,7 @@ private:
 	bool callbackParcelWL(const LLSD& notification, const LLSD& response);
 	bool callbackParcelWLClear(const LLSD& notification, const LLSD& response);
 	bool AllowedLandOwners(const LLUUID& agent_id);
+	std::string getOwnerName(LLParcel *parcel);
 
 	std::set<LLUUID> mAllowedLand;
 	LLNotificationPtr mSetWLNotification;
