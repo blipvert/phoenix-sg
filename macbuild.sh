@@ -149,8 +149,11 @@ if [ -z $SKIP_INTEL ]; then
         cd $INDRA_DIR
         ./develop.py clean > /dev/null
 
-        configure i386 "-O2 -fomit-frame-pointer -frename-registers -ftree-vectorize -fweb -fexpensive-optimizations -march=i686 \
-                                -msse -mfpmath=sse -msse2 -pipe -DLL_VECTORIZE=1 -DLL_SSE=1 -DLL_SSE2=1"
+        configure i386 "-O2 -fomit-frame-pointer -frename-registers \
+        			-ftree-vectorize -fweb -Wno-deprecated \
+        			-fexpensive-optimizations -march=i686 \
+                                -msse -mfpmath=sse -msse2 -pipe \
+                                -DLL_VECTORIZE=1 -DLL_SSE=1 -DLL_SSE2=1"
 
         cd build-darwin-i386
         set_channel

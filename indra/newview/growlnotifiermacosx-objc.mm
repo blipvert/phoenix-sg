@@ -31,6 +31,8 @@
 #import <Cocoa/Cocoa.h>
 #import "Growl/Growl.h"
 
+@interface PhoenixBridge : NSObject <GrowlApplicationBridgeDelegate>
+
 void growlApplicationBridgeNotify(const std::string& withTitle, const std::string& description, const std::string& notificationName, 
                                 void *iconData, unsigned int iconDataSize, int priority, bool isSticky) {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -47,13 +49,13 @@ void growlApplicationBridgeNotify(const std::string& withTitle, const std::strin
 
 void growlApplicationBridgeInit() {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    [GrowlApplicationBridge setGrowlDelegate:@""];
+//    [GrowlApplicationBridge setGrowlDelegate:@""];
     [pool release];
 }
 
 bool growlApplicationBridgeIsGrowlInstalled() {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    BOOL installed = [GrowlApplicationBridge isGrowlInstalled];
+    bool installed = [GrowlApplicationBridge isGrowlInstalled];
     [pool release];
     return installed;
 }
@@ -72,3 +74,5 @@ void growlApplicationBridgeRegister(const std::string& appname, const std::set<s
                                                     nil]];
     [pool release];
 }
+
+@end
