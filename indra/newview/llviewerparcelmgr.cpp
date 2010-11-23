@@ -71,8 +71,6 @@
 #include "roles_constants.h"
 #include "llweb.h"
 
-#include "kcwlinterface.h"
-
 const F32 PARCEL_COLLISION_DRAW_SECS = 1.f;
 
 
@@ -1516,9 +1514,6 @@ void LLViewerParcelMgr::processParcelProperties(LLMessageSystem *msg, void **use
 
 			LLViewerParcelMgr::getInstance()->writeAgentParcelFromBitmap(bitmap);
 			delete[] bitmap;
-			
-			//KC:
-			KCWindlightInterface::instance().PacelChange();
 		}
 	}
 

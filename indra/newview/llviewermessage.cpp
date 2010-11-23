@@ -3403,7 +3403,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 			case CHAT_TYPE_OWNER:
 				if(DiamondAoInt::AOCommand(mesg))return;
 				if(JCLSLBridge::instance().lsltobridge(mesg, from_name, from_id, owner_id))return;
-				if(KCWindlightInterface::instance().ChatCommand(mesg, from_name, from_id, owner_id))return;
+				//if(KCWindlightInterface::instance().ChatCommand(mesg, from_name, from_id, owner_id))return; //KC: Disabling this for now
 // [RLVa:KB] - Checked: 2010-02-XX (RLVa-1.2.0a) | Modified: RLVa-1.1.0f
 				// TODO-RLVa: [RLVa-1.2.0] consider rewriting this before a RLVa-1.2.0 release
 				if ( (rlv_handler_t::isEnabled()) && (mesg.length() > 3) && (RLV_CMD_PREFIX == mesg[0]) && (CHAT_TYPE_OWNER == chat.mChatType) )

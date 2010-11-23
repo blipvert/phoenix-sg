@@ -34,17 +34,82 @@
 
 #include <boost/regex.hpp>
 
-static bool SetDialogVisible = FALSE;
-static bool ClearDialogVisible = FALSE;
+const F32 PARCEL_WL_CHECK_TIME  = 5;
 
-KCWindlightInterface::KCWindlightInterface()
+KCWindlightInterface::KCWindlightInterface() :
+	LLEventTimer(1),
+	WLset(FALSE),
+	mTimeInParcel(0)
 {
-	WLset = false;
 }
 
-void KCWindlightInterface::Clear(S32 local_id)
+BOOL KCWindlightInterface::tick()
 {
-	llinfos << "Got WL clear : " << local_id << llendl;
+	LLParcel *parcel = NULL;
+	S32 this_parcel_id = 0;
+
+	parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+
+	if (parcel)
+	{
+		this_parcel_id = parcel->getLocalID();
+	}
+
+	if (this_parcel_id != mLastParcelID) //entered new parcel
+	{
+		mTimeInParcel = 0; // reset timer
+		mLastParcelID = this_parcel_id;
+		mChangedParcels = false;
+
+		//clear the last notification if its still open
+		if (mSetWLNotification && !mSetWLNotification->isRespondedTo())
+		{
+			LLSD response = mSetWLNotification->getResponseTemplate();
+			response["Ignore"] = true;
+			mSetWLNotification->respond(response);
+		}
+	}
+
+	mTimeInParcel += mPeriod;
+
+	if (!mChangedParcels && (mTimeInParcel > PARCEL_WL_CHECK_TIME))
+	{
+		llinfos << "agent in new parcel: "<< this_parcel_id << " : "  << parcel->getName() << llendl;
+		mChangedParcels = true;
+		PacelChange();
+	}
+
+	return FALSE;
+}
+
+
+void KCWindlightInterface::ApplySettings(const LLSD& settings)
+{
+	LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+	if (!settings.has("local_id") || (settings["local_id"].asInteger() == parcel->getLocalID()) )
+	{
+		if (settings.has("wlpreset"))
+		{
+			llinfos << "WL set : " << settings["local_id"] << " : " << settings["wlpreset"] << llendl;
+			LLWLParamManager::instance()->mAnimator.mIsRunning = false;
+			LLWLParamManager::instance()->mAnimator.mUseLindenTime = false;
+			LLWLParamManager::instance()->loadPreset(settings["wlpreset"].asString());
+			WLset = true;
+		}
+		if (settings.has("wwpreset"))
+		{
+			llinfos << "WW set : " << settings["local_id"] << " : " << settings["wwpreset"] << llendl;
+			LLWaterParamManager::instance()->loadPreset(settings["wwpreset"].asString(), true);
+			WLset = true;
+		}
+		mCurrentSettings = LLSD(settings);
+	}
+}
+
+
+void KCWindlightInterface::Clear()
+{
+	llinfos << "Got WL clear" << llendl;
 	//TODO: clear per parcel
 	if (WLset)
 	{
@@ -56,7 +121,8 @@ void KCWindlightInterface::Clear(S32 local_id)
 	}
 }
 
-bool KCWindlightInterface::ChatCommand(std::string message, std::string from_name, LLUUID source_id, LLUUID owner_id)
+//KC: Disabling this for now
+/*bool KCWindlightInterface::ChatCommand(std::string message, std::string from_name, LLUUID source_id, LLUUID owner_id)
 {
 	boost::cmatch match;
 	const boost::regex prefix_exp("^\\)\\*\\((.*)");
@@ -82,7 +148,7 @@ bool KCWindlightInterface::ChatCommand(std::string message, std::string from_nam
 			return true;
 		}
 		else 
-		{*/
+		{* /
 		
 		//TODO: add save settings for reuse instead of just clearing on parcel change
 		//TODO: add support for region wide settings on non-mainland
@@ -117,25 +183,14 @@ bool KCWindlightInterface::ChatCommand(std::string message, std::string from_nam
 				}
 				return true;
 			}
-		/*)*/
+		/*)* /
 	}
 	return false;
-}
+}*/
 
 void KCWindlightInterface::PacelChange()
 {
 	LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
-
-	if(LLStartUp::getStartupState() == STATE_STARTED) //only clear *after* we've fully logged in
-	{
-		llinfos << "agent in new parcel: "<< parcel->getLocalID() << " : "  << parcel->getName() << llendl;
-		
-		//TODO: save settings percel to reuse instead of just clearing
-		Clear(parcel->getLocalID());
-	}
-
-	if (SetDialogVisible) //TODO: handle this better
-		return;
 
 	std::string desc(parcel->getDesc());
 	
@@ -180,29 +235,16 @@ void KCWindlightInterface::PacelChange()
 			//basic auth for now
 			if (mAllowedLand.find(parcel->getOwnerID()) != mAllowedLand.end())
 			{
-				if (!payload["wlpreset"].asString().empty())
-				{
-					llinfos << "WL set : " << parcel->getLocalID() << " : " << payload["wlpreset"] << llendl;
-					LLWLParamManager::instance()->mAnimator.mIsRunning = false;
-					LLWLParamManager::instance()->mAnimator.mUseLindenTime = false;
-					LLWLParamManager::instance()->loadPreset(payload["wlpreset"].asString());
-					WLset = true;
-				}
-				if (!payload["wwpreset"].asString().empty())
-				{
-					llinfos << "WW set : " << parcel->getLocalID() << " : " << payload["wwpreset"] << llendl;
-					LLWaterParamManager::instance()->loadPreset(payload["wwpreset"].asString(), true);
-					WLset = true;
-				}
+				ApplySettings(payload);
 			}
 			else
 			{
 				LLSD args;
 				args["PARCEL_NAME"] = parcel->getName();
+				payload["parcel_name"] = parcel->getName();
 				payload["local_id"] = parcel->getLocalID();
 				payload["land_owner"] = parcel->getOwnerID();
-				LLNotifications::instance().add("PhoenixWL", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWL, this, _1, _2));
-				SetDialogVisible = true;
+				mSetWLNotification = LLNotifications::instance().add("PhoenixWL", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWL, this, _1, _2));
 			}
 		}
 	}
@@ -210,54 +252,40 @@ void KCWindlightInterface::PacelChange()
 
 void KCWindlightInterface::onClickWLStatusButton()
 {
-	if (SetDialogVisible) //TODO: handle this better
-		return;
+	//clear the last notification if its still open
+	if (mClearWLNotification && !mClearWLNotification->isRespondedTo())
+	{
+		LLSD response = mClearWLNotification->getResponseTemplate();
+		response["Ignore"] = true;
+		mClearWLNotification->respond(response);
+	}
 
-	LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
-	LLSD payload;
-	payload["local_id"] = parcel->getLocalID();
-	payload["owner_id"] = parcel->getOwnerID();
+	if (WLset)
+	{
+		LLSD payload;
+		payload["local_id"] = mCurrentSettings["local_id"];
+		payload["owner_id"] = mCurrentSettings["owner_id"];
 
-	LLSD args;
-	args["PARCEL_NAME"] = parcel->getName();
-	
-	LLNotifications::instance().add("PhoenixWLClear", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWLClear, this, _1, _2));
-	ClearDialogVisible = true;
+		LLSD args;
+		args["PARCEL_NAME"] = mCurrentSettings["parcel_name"];
+		
+		mClearWLNotification = LLNotifications::instance().add("PhoenixWLClear", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWLClear, this, _1, _2));
+	}
 }
 
 bool KCWindlightInterface::callbackParcelWL(const LLSD& notification, const LLSD& response)
-//bool ph_set_wl_callback(const LLSD& notification, const LLSD& response)
 {
 	S32 option = LLNotification::getSelectedOption(notification, response);
 	if (option == 0)
 	{
 		mAllowedLand.insert(notification["payload"]["land_owner"].asUUID());
 		
-		LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
-		S32 local_id = notification["payload"]["local_id"].asInteger();
-		if (local_id == parcel->getLocalID())
-		{
-			//TODO: save per parcel
-			std::string wlpreset = notification["payload"]["wlpreset"].asString();
-			std::string wwpreset = notification["payload"]["wwpreset"].asString();
-			if (!wlpreset.empty())
-			{
-				llinfos << "WL set : " << local_id << " : " << wlpreset << llendl;
-				LLWLParamManager::instance()->mAnimator.mIsRunning = false;
-				LLWLParamManager::instance()->mAnimator.mUseLindenTime = false;
-				LLWLParamManager::instance()->loadPreset(wlpreset);
-				WLset = true;
-			}
-			if (!wwpreset.empty())
-			{
-				llinfos << "WW set : " << local_id << " : " << wwpreset << llendl;
-				LLWaterParamManager::instance()->loadPreset(wwpreset, true);
-				WLset = true;
-			}
-		}
+		ApplySettings(notification["payload"]);
 	}
-	SetDialogVisible = false;
-
+	else
+	{
+		Clear();
+	}
 	return false;
 }
 
@@ -271,15 +299,13 @@ bool KCWindlightInterface::callbackParcelWLClear(const LLSD& notification, const
 		LLUUID owner_id = notification["payload"]["owner_id"].asUUID();
 
 		mAllowedLand.erase(owner_id);
-		Clear(local_id);
+		Clear();
 	}
-
-	ClearDialogVisible = false;
-
 	return false;
 }
 
 
+//KC: this is currently not used
 //TODO: merge this relay code in to bridge when more final, currently only supports "Parcel,WLPreset='[preset name]'"
 /*
 integer PHOE_WL_CH = -1346916165;

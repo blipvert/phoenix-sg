@@ -23,20 +23,30 @@
 
 #include "llviewerprecompiledheaders.h"
 #include "llmemory.h"	// LLSingleton<>
+#include "llnotifications.h"
+#include "lltimer.h"
+#include <set>
 
-class KCWindlightInterface : public LLSingleton<KCWindlightInterface>
+class KCWindlightInterface : public LLSingleton<KCWindlightInterface>,LLEventTimer
 {
 public:
 	KCWindlightInterface();
-	
-	bool ChatCommand(std::string message, std::string from_name, LLUUID source_id, LLUUID owner_id);
+	virtual BOOL tick();
+	void KCWindlightInterface::ApplySettings(const LLSD& settings);
+	void Clear();
+	//bool ChatCommand(std::string message, std::string from_name, LLUUID source_id, LLUUID owner_id);
 	void PacelChange();
 	void onClickWLStatusButton();
-	void Clear(S32 local_id);
 	bool WLset;
 	
 private:
 	bool callbackParcelWL(const LLSD& notification, const LLSD& response);
 	bool callbackParcelWLClear(const LLSD& notification, const LLSD& response);
 	std::set<LLUUID> mAllowedLand;
+	LLNotificationPtr mSetWLNotification;
+	LLNotificationPtr mClearWLNotification;
+	bool mChangedParcels;
+	S32 mLastParcelID;
+	F32 mTimeInParcel;
+	LLSD mCurrentSettings;
 };
