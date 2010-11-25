@@ -5376,11 +5376,6 @@ void process_money_balance_reply( LLMessageSystem* msg, void** )
 		args["MESSAGE"] = desc;
 		LLNotifications::instance().add("SystemMessage", args);
 
-		if (gSavedSettings.getBOOL("PhoenixShowMoneyChangeInChat"))
-		{
-			LLChat chat(desc);
-			LLFloaterChat::addChat(desc);
-		}
 		// Once the 'recent' container gets large enough, chop some
 		// off the beginning.
 		const U32 MAX_LOOKBACK = 30;
@@ -5392,6 +5387,11 @@ void process_money_balance_reply( LLMessageSystem* msg, void** )
 		}
 		//LL_DEBUGS("Messaging") << "Pushing back transaction " << tid << LL_ENDL;
 		recent.push_back(tid);
+	}
+	if (!desc.empty() && gSavedSettings.getBOOL("PhoenixShowMoneyChangeInChat"))
+	{
+		LLChat chat(desc);
+		LLFloaterChat::addChat(desc);
 	}
 }
 
