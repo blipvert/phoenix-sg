@@ -25,6 +25,7 @@
 #include "llmemory.h"	// LLSingleton<>
 #include "lltimer.h"	// LLEventTimer
 #include "llnotifications.h"
+#include "lluuid.h"
 #include <set>
 #include <string>
 
@@ -34,11 +35,12 @@ class KCWindlightInterface : public LLSingleton<KCWindlightInterface>,LLEventTim
 {
 public:
 	KCWindlightInterface();
+	void ParcelChange();
 	virtual BOOL tick();
 	void ApplySettings(const LLSD& settings);
-	void Clear();
+	void ResetToRegion();
 	//bool ChatCommand(std::string message, std::string from_name, LLUUID source_id, LLUUID owner_id);
-	void PacelChange();
+	void LoadFromPacel(LLParcel *parcel);
 	void onClickWLStatusButton();
 	bool WLset;
 	
@@ -46,13 +48,13 @@ private:
 	bool callbackParcelWL(const LLSD& notification, const LLSD& response);
 	bool callbackParcelWLClear(const LLSD& notification, const LLSD& response);
 	bool AllowedLandOwners(const LLUUID& agent_id);
+	LLUUID getOwnerID(LLParcel *parcel);
 	std::string getOwnerName(LLParcel *parcel);
 
 	std::set<LLUUID> mAllowedLand;
 	LLNotificationPtr mSetWLNotification;
 	LLNotificationPtr mClearWLNotification;
-	bool mChangedParcels;
 	S32 mLastParcelID;
-	F32 mTimeInParcel;
+	std::string mLastParcelDesc; //used to check if its changed
 	LLSD mCurrentSettings;
 };

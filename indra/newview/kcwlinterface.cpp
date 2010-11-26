@@ -40,32 +40,35 @@
 const F32 PARCEL_WL_CHECK_TIME  = 5;
 
 KCWindlightInterface::KCWindlightInterface() :
-	LLEventTimer(1),
-	WLset(FALSE),
-	mTimeInParcel(0)
+	LLEventTimer(PARCEL_WL_CHECK_TIME),
+	WLset(FALSE)
 {
+
 }
 
-BOOL KCWindlightInterface::tick()
+void KCWindlightInterface::ParcelChange()
 {
-	if(LLStartUp::getStartupState() < STATE_STARTED)
-		return FALSE;
+	if (!gSavedSettings.getBOOL("PhoenixWLParcelEnabled"))
+		return;
 
 	LLParcel *parcel = NULL;
 	S32 this_parcel_id = 0;
-
-	parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
-
+	std::string desc;
+ 
+ 	parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+ 
 	if (parcel)
 	{
 		this_parcel_id = parcel->getLocalID();
+		desc = parcel->getDesc();
 	}
 
-	if (this_parcel_id != mLastParcelID) //entered new parcel
+	if ( (this_parcel_id != mLastParcelID) || (mLastParcelDesc != desc) ) //parcel changed
 	{
-		mTimeInParcel = 0; // reset timer
+		llinfos << "agent in new parcel: "<< this_parcel_id << " : "  << parcel->getName() << llendl;
+
 		mLastParcelID = this_parcel_id;
-		mChangedParcels = false;
+		mLastParcelDesc = desc;
 
 		//clear the last notification if its still open
 		if (mSetWLNotification && !mSetWLNotification->isRespondedTo())
@@ -74,15 +77,25 @@ BOOL KCWindlightInterface::tick()
 			response["Ignore"] = true;
 			mSetWLNotification->respond(response);
 		}
+		mEventTimer.reset();
+		mEventTimer.start();
 	}
+}
 
-	mTimeInParcel += mPeriod;
+BOOL KCWindlightInterface::tick()
+{
+	if(LLStartUp::getStartupState() < STATE_STARTED)
+		return FALSE;
 
-	if (!mChangedParcels && (mTimeInParcel > PARCEL_WL_CHECK_TIME))
+	LLParcel *parcel = NULL;
+
+	parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+
+	if (parcel)
 	{
-		llinfos << "agent in new parcel: "<< this_parcel_id << " : "  << parcel->getName() << llendl;
-		mChangedParcels = true;
-		PacelChange();
+		LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+		LoadFromPacel(parcel);
+		mEventTimer.stop();
 	}
 
 	return FALSE;
@@ -113,7 +126,7 @@ void KCWindlightInterface::ApplySettings(const LLSD& settings)
 }
 
 
-void KCWindlightInterface::Clear()
+void KCWindlightInterface::ResetToRegion()
 {
 	llinfos << "Got WL clear" << llendl;
 	//TODO: clear per parcel
@@ -121,8 +134,11 @@ void KCWindlightInterface::Clear()
 	{
 		LLWLParamManager::instance()->mAnimator.mIsRunning = true;
 		LLWLParamManager::instance()->mAnimator.mUseLindenTime = true;
+		LLWLParamManager::instance()->loadPreset("Default", true);
+		LLWaterParamManager::instance()->loadPreset("Default", true);
 		//KC: reset last to Default
 		gSavedPerAccountSettings.setString("PhoenixLastWLsetting", "Default");
+		gSavedPerAccountSettings.setString("PhoenixLastWWsetting", "Default");
 		WLset = false;
 	}
 }
@@ -196,10 +212,8 @@ bool KCWindlightInterface::ChatCommand(std::string message, std::string from_nam
 }
 #endif
 
-void KCWindlightInterface::PacelChange()
+void KCWindlightInterface::LoadFromPacel(LLParcel *parcel)
 {
-	LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
-
 	std::string desc(parcel->getDesc());
 	
 	llinfos << "desc: " << desc << llendl;
@@ -207,42 +221,53 @@ void KCWindlightInterface::PacelChange()
 	bool found_settings = false;
 	LLSD payload;
 	boost::smatch mat_block;
-	const boost::regex Parcel_exp("\\/\\*([\\s\\S]*?)\\*\\/"); // parcel desc /*[data goes here*/
+	//parcel desc /*[data goes here]*/
+	const boost::regex Parcel_exp("(?i)\\/\\*(?:Windlight)?([\\s\\S]*?)\\*\\/");
 	if(boost::regex_search(desc, mat_block, Parcel_exp))
 	{
 		std::string data1(mat_block[1].first, mat_block[1].second);
-		llinfos << "found parcel flags: " << mat_block[1] << llendl;
+		llinfos << "found parcel flags block: " << mat_block[1] << llendl;
 		
 		boost::smatch match;
-		std::string::const_iterator start = mat_block[1].first; //desc.begin();
-		std::string::const_iterator end = mat_block[1].second; //desc.end();
-		const boost::regex key("([0-9_A-Za-z]+):([0-9_A-Za-z]*):\"([^\"\\r\\n]+)\"\\|?");
+		std::string::const_iterator start = mat_block[1].first;
+		std::string::const_iterator end = mat_block[1].second;
+		//Sky: "preset" Water: "preset"
+		const boost::regex key("(?i)(?:(?:(Sky)(?:\\s?@\\s?([\\d])+m?)?)|(Water)):\\s?\"([^\"\\r\\n]+)\"");
 		while (boost::regex_search(start, end, match, key, boost::match_default))
 		{
-			llinfos << "parcel flag: " << match[1] << " : " << match[2] << " : " << match[3] << llendl;
-			
-			if (match[1]=="WLPRESET")
+			llinfos << "parcel flag: " << match[1] << " : " << match[2] << " : " << match[3] << " : " << match[4] << llendl;
+
+			if (match[1].matched)
 			{
-				payload["wlpreset"] = std::string(match[3]);
-				found_settings = true;
+				std::string preset(match[4]);
+				llinfos << "got sky: " << preset << llendl;
+				if(LLWLParamManager::instance()->mParamList.find(preset) != LLWLParamManager::instance()->mParamList.end())
+				{
+					payload["wlpreset"] = preset;
+					found_settings = true;
+				}
 			}
-			else if (match[1]=="WWPRESET")
+			else if (match[3].matched)
 			{
-				payload["wwpreset"] = std::string(match[3]);
-				found_settings = true;
+				std::string preset(match[4]);
+				llinfos << "got water: " << preset << llendl;
+				if(LLWaterParamManager::instance()->mParamList.find(preset) != LLWaterParamManager::instance()->mParamList.end())
+				{
+					payload["wwpreset"] = preset;
+					found_settings = true;
+				}
 			}
 			
 			// update search position 
 			start = match[0].second; 
 		}
 	}
-
-	//TODO: verify that presets actually exists
 	
 	if (found_settings)
 	{
+		const LLUUID owner_id = getOwnerID(parcel);
 		//basic auth for now
-		if (AllowedLandOwners(parcel->getOwnerID()))
+		if (AllowedLandOwners(owner_id))
 		{
 			ApplySettings(payload);
 		}
@@ -253,14 +278,14 @@ void KCWindlightInterface::PacelChange()
 			args["OWNER_NAME"] = getOwnerName(parcel);
 			payload["parcel_name"] = parcel->getName();
 			payload["local_id"] = parcel->getLocalID();
-			payload["land_owner"] = parcel->getOwnerID();
+			payload["land_owner"] = owner_id;
 
 			mSetWLNotification = LLNotifications::instance().add("PhoenixWL", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWL, this, _1, _2));
 		}
 	}
 	else
 	{ //if nothing defined, reset to region settings
-		Clear();
+		ResetToRegion();
 	}
 }
 
@@ -276,14 +301,19 @@ void KCWindlightInterface::onClickWLStatusButton()
 
 	if (WLset)
 	{
-		LLSD payload;
-		payload["local_id"] = mCurrentSettings["local_id"];
-		payload["owner_id"] = mCurrentSettings["owner_id"];
+		LLParcel *parcel = NULL;
+ 		parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+ 		if (parcel)
+		{
+			LLSD payload;
+			payload["local_id"] = mCurrentSettings["local_id"];
+			payload["land_owner"] = getOwnerID(parcel);
 
-		LLSD args;
-		args["PARCEL_NAME"] = mCurrentSettings["parcel_name"];
-		
-		mClearWLNotification = LLNotifications::instance().add("PhoenixWLClear", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWLClear, this, _1, _2));
+			LLSD args;
+			args["PARCEL_NAME"] = mCurrentSettings["parcel_name"];
+			
+			mClearWLNotification = LLNotifications::instance().add("PhoenixWLClear", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWLClear, this, _1, _2));
+		}
 	}
 }
 
@@ -298,7 +328,7 @@ bool KCWindlightInterface::callbackParcelWL(const LLSD& notification, const LLSD
 	}
 	else
 	{
-		Clear();
+		ResetToRegion();
 	}
 	return false;
 }
@@ -309,19 +339,18 @@ bool KCWindlightInterface::callbackParcelWLClear(const LLSD& notification, const
 
 	if (option == 0)
 	{
-		S32 local_id = 0;
-		local_id = notification["payload"]["local_id"].asInteger();
-		LLUUID owner_id = notification["payload"]["owner_id"].asUUID();
+		LLUUID owner_id = notification["payload"]["land_owner"].asUUID();
 
 		mAllowedLand.erase(owner_id);
-		Clear();
+		ResetToRegion();
 	}
 	return false;
 }
 
 bool KCWindlightInterface::AllowedLandOwners(const LLUUID& owner_id)
 {
-	if ( (owner_id == gAgent.getID()) || // land is owned by agent
+	if ( gSavedSettings.getBOOL("PhoenixWLWhitelistAll") ||	// auto all
+		(owner_id == gAgent.getID()) ||						// land is owned by agent
 		(LLAvatarTracker::instance().isBuddy(owner_id) && gSavedSettings.getBOOL("PhoenixWLWhitelistFriends")) || // is friend's land
 		(gAgent.isInGroup(owner_id) && gSavedSettings.getBOOL("PhoenixWLWhitelistGroups")) || // is member of land's group
 		(mAllowedLand.find(owner_id) != mAllowedLand.end()) ) // already on whitelist
@@ -329,6 +358,15 @@ bool KCWindlightInterface::AllowedLandOwners(const LLUUID& owner_id)
 		return true;
 	}
 	return false;
+}
+
+LLUUID KCWindlightInterface::getOwnerID(LLParcel *parcel)
+{
+	if (parcel->getIsGroupOwned())
+	{
+		return parcel->getGroupID();
+	}
+	return parcel->getOwnerID();
 }
 
 std::string KCWindlightInterface::getOwnerName(LLParcel *parcel)

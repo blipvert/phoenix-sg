@@ -15602,6 +15602,17 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
+		<key>PhoenixWLParcelEnabled</key>
+		<map>
+			<key>Comment</key>
+			<string>Enables auto setting WL from parcel desc flags</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
 		<key>PhoenixWLWhitelistFriends</key>
 		<map>
 			<key>Comment</key>
@@ -15623,6 +15634,17 @@
 			<string>Boolean</string>
 			<key>Value</key>
 			<integer>1</integer>
+		</map>
+		<key>PhoenixWLWhitelistAll</key>
+		<map>
+			<key>Comment</key>
+			<string>Allow all land for Phoenix WL sharing</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
 		</map>
 	</map>
 </llsd>
