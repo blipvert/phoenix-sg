@@ -4612,7 +4612,7 @@ void LLFolderViewEventListener::arrangeAndSet(LLFolderViewItem* focus,
 											  BOOL set_selection,
 											  BOOL take_keyboard_focus)
 {
-	if(gSavedSettings.getBOOL("PhoenixFreezeInventoryArrangement"))return;
+	//if(gSavedSettings.getBOOL("PhoenixFreezeInventoryArrangement"))return; //Why the hell was this here? All it does is break pickers.
 	if(!focus) return;
 	LLFolderView* root = focus->getRoot();
 	focus->getParentFolder()->requestArrange();
