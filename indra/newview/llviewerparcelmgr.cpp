@@ -1516,7 +1516,7 @@ void LLViewerParcelMgr::processParcelProperties(LLMessageSystem *msg, void **use
 			LLViewerParcelMgr::getInstance()->writeAgentParcelFromBitmap(bitmap);
 			delete[] bitmap;
 
-			//KC: check for parcel changes
+			//KC: check for parcel changes for WL settings
 			KCWindlightInterface::instance().ParcelChange();
 		}
 	}

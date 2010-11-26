@@ -41,6 +41,7 @@ public:
 	void ResetToRegion();
 	//bool ChatCommand(std::string message, std::string from_name, LLUUID source_id, LLUUID owner_id);
 	void LoadFromPacel(LLParcel *parcel);
+	bool ParsePacelForWLSettings(const std::string& desc, LLSD& settings);
 	void onClickWLStatusButton();
 	bool WLset;
 	
@@ -56,5 +57,4 @@ private:
 	LLNotificationPtr mClearWLNotification;
 	S32 mLastParcelID;
 	std::string mLastParcelDesc; //used to check if its changed
-	LLSD mCurrentSettings;
 };

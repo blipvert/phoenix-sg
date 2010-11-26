@@ -121,7 +121,6 @@ void KCWindlightInterface::ApplySettings(const LLSD& settings)
 			LLWaterParamManager::instance()->loadPreset(settings["wwpreset"].asString(), true);
 			WLset = true;
 		}
-		mCurrentSettings = LLSD(settings);
 	}
 }
 
@@ -214,56 +213,11 @@ bool KCWindlightInterface::ChatCommand(std::string message, std::string from_nam
 
 void KCWindlightInterface::LoadFromPacel(LLParcel *parcel)
 {
-	std::string desc(parcel->getDesc());
-	
-	llinfos << "desc: " << desc << llendl;
-	
-	bool found_settings = false;
-	LLSD payload;
-	boost::smatch mat_block;
-	//parcel desc /*[data goes here]*/
-	const boost::regex Parcel_exp("(?i)\\/\\*(?:Windlight)?([\\s\\S]*?)\\*\\/");
-	if(boost::regex_search(desc, mat_block, Parcel_exp))
-	{
-		std::string data1(mat_block[1].first, mat_block[1].second);
-		llinfos << "found parcel flags block: " << mat_block[1] << llendl;
-		
-		boost::smatch match;
-		std::string::const_iterator start = mat_block[1].first;
-		std::string::const_iterator end = mat_block[1].second;
-		//Sky: "preset" Water: "preset"
-		const boost::regex key("(?i)(?:(?:(Sky)(?:\\s?@\\s?([\\d])+m?)?)|(Water)):\\s?\"([^\"\\r\\n]+)\"");
-		while (boost::regex_search(start, end, match, key, boost::match_default))
-		{
-			llinfos << "parcel flag: " << match[1] << " : " << match[2] << " : " << match[3] << " : " << match[4] << llendl;
+	if (!parcel)
+		return;
 
-			if (match[1].matched)
-			{
-				std::string preset(match[4]);
-				llinfos << "got sky: " << preset << llendl;
-				if(LLWLParamManager::instance()->mParamList.find(preset) != LLWLParamManager::instance()->mParamList.end())
-				{
-					payload["wlpreset"] = preset;
-					found_settings = true;
-				}
-			}
-			else if (match[3].matched)
-			{
-				std::string preset(match[4]);
-				llinfos << "got water: " << preset << llendl;
-				if(LLWaterParamManager::instance()->mParamList.find(preset) != LLWaterParamManager::instance()->mParamList.end())
-				{
-					payload["wwpreset"] = preset;
-					found_settings = true;
-				}
-			}
-			
-			// update search position 
-			start = match[0].second; 
-		}
-	}
-	
-	if (found_settings)
+	LLSD payload;
+	if (ParsePacelForWLSettings(parcel->getDesc(), payload))
 	{
 		const LLUUID owner_id = getOwnerID(parcel);
 		//basic auth for now
@@ -289,6 +243,57 @@ void KCWindlightInterface::LoadFromPacel(LLParcel *parcel)
 	}
 }
 
+bool KCWindlightInterface::ParsePacelForWLSettings(const std::string& desc, LLSD& settings)
+{
+	llinfos << "desc: " << desc << llendl;
+	
+	bool found_settings = false;
+	boost::smatch mat_block;
+	//parcel desc /*[data goes here]*/
+	const boost::regex Parcel_exp("(?i)\\/\\*(?:Windlight)?([\\s\\S]*?)\\*\\/");
+	if(boost::regex_search(desc, mat_block, Parcel_exp))
+	{
+		std::string data1(mat_block[1].first, mat_block[1].second);
+		llinfos << "found parcel flags block: " << mat_block[1] << llendl;
+		
+		boost::smatch match;
+		std::string::const_iterator start = mat_block[1].first;
+		std::string::const_iterator end = mat_block[1].second;
+		//Sky: "preset" Water: "preset"
+		const boost::regex key("(?i)(?:(?:(Sky)(?:\\s?@\\s?([\\d])+m?)?)|(Water)):\\s?\"([^\"\\r\\n]+)\"");
+		while (boost::regex_search(start, end, match, key, boost::match_default))
+		{
+			llinfos << "parcel flag: " << match[1] << " : " << match[2] << " : " << match[3] << " : " << match[4] << llendl;
+
+			if (match[1].matched)
+			{
+				std::string preset(match[4]);
+				llinfos << "got sky: " << preset << llendl;
+				if(LLWLParamManager::instance()->mParamList.find(preset) != LLWLParamManager::instance()->mParamList.end())
+				{
+					settings["wlpreset"] = preset;
+					found_settings = true;
+				}
+			}
+			else if (match[3].matched)
+			{
+				std::string preset(match[4]);
+				llinfos << "got water: " << preset << llendl;
+				if(LLWaterParamManager::instance()->mParamList.find(preset) != LLWaterParamManager::instance()->mParamList.end())
+				{
+					settings["wwpreset"] = preset;
+					found_settings = true;
+				}
+			}
+			
+			// update search position 
+			start = match[0].second; 
+		}
+	}
+
+	return found_settings;
+}
+
 void KCWindlightInterface::onClickWLStatusButton()
 {
 	//clear the last notification if its still open
@@ -305,12 +310,13 @@ void KCWindlightInterface::onClickWLStatusButton()
  		parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
  		if (parcel)
 		{
+			//TODO: this could be better
 			LLSD payload;
-			payload["local_id"] = mCurrentSettings["local_id"];
+			payload["local_id"] = parcel->getLocalID();
 			payload["land_owner"] = getOwnerID(parcel);
 
 			LLSD args;
-			args["PARCEL_NAME"] = mCurrentSettings["parcel_name"];
+			args["PARCEL_NAME"] = parcel->getName();
 			
 			mClearWLNotification = LLNotifications::instance().add("PhoenixWLClear", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWLClear, this, _1, _2));
 		}
