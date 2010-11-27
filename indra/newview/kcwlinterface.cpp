@@ -38,6 +38,7 @@
 #include <boost/regex.hpp>
 
 const F32 PARCEL_WL_CHECK_TIME  = 5;
+const S32 PARCEL_WL_MIN_ALT_CHANGE = 3;
 
 KCWindlightInterface::KCWindlightInterface() :
 	LLEventTimer(PARCEL_WL_CHECK_TIME),
@@ -69,6 +70,11 @@ void KCWindlightInterface::ParcelChange()
 
 		mLastParcelID = this_parcel_id;
 		mLastParcelDesc = desc;
+		mCurrentSpace = -2.f;
+		mCurrentSettings.clear();
+		WLset = false; //clear the status bar icon
+		const LLVector3& agent_pos_region = gAgent.getPositionAgent();
+		mLastZ = lltrunc( agent_pos_region.mV[VZ] );
 
 		//clear the last notification if its still open
 		if (mSetWLNotification && !mSetWLNotification->isRespondedTo())
@@ -77,6 +83,7 @@ void KCWindlightInterface::ParcelChange()
 			response["Ignore"] = true;
 			mSetWLNotification->respond(response);
 		}
+		
 		mEventTimer.reset();
 		mEventTimer.start();
 	}
@@ -86,6 +93,19 @@ BOOL KCWindlightInterface::tick()
 {
 	if(LLStartUp::getStartupState() < STATE_STARTED)
 		return FALSE;
+	
+	//TODO: there has to be a better way of doing this...
+	if (mCurrentSettings.has("sky"))
+	{
+		const LLVector3& agent_pos_region = gAgent.getPositionAgent();
+		S32 z = lltrunc( agent_pos_region.mV[VZ] );
+		if (llabs(z - mLastZ) >= PARCEL_WL_MIN_ALT_CHANGE)
+		{
+			mLastZ = z;
+			ApplySkySettings(mCurrentSettings);
+		}
+		return FALSE;
+	}
 
 	LLParcel *parcel = NULL;
 
@@ -95,7 +115,8 @@ BOOL KCWindlightInterface::tick()
 	{
 		LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
 		LoadFromPacel(parcel);
-		mEventTimer.stop();
+		if (!WLset || !mCurrentSettings.has("sky"))
+			mEventTimer.stop();
 	}
 
 	return FALSE;
@@ -107,38 +128,91 @@ void KCWindlightInterface::ApplySettings(const LLSD& settings)
 	LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
 	if (!settings.has("local_id") || (settings["local_id"].asInteger() == parcel->getLocalID()) )
 	{
-		if (settings.has("wlpreset"))
+		mCurrentSettings = settings;
+
+		ApplySkySettings(settings);
+
+		if (settings.has("water"))
 		{
-			llinfos << "WL set : " << settings["local_id"] << " : " << settings["wlpreset"] << llendl;
-			LLWLParamManager::instance()->mAnimator.mIsRunning = false;
-			LLWLParamManager::instance()->mAnimator.mUseLindenTime = false;
-			LLWLParamManager::instance()->loadPreset(settings["wlpreset"].asString());
-			WLset = true;
-		}
-		if (settings.has("wwpreset"))
-		{
-			llinfos << "WW set : " << settings["local_id"] << " : " << settings["wwpreset"] << llendl;
-			LLWaterParamManager::instance()->loadPreset(settings["wwpreset"].asString(), true);
+			llinfos << "WW set : " << settings["water"] << llendl;
+			LLWaterParamManager::instance()->loadPreset(settings["water"].asString(), true);
 			WLset = true;
 		}
 	}
 }
 
+void KCWindlightInterface::ApplySkySettings(const LLSD& settings)
+{
+	if (settings.has("sky"))
+	{
+		//TODO: there has to be a better way of doing this...
+		mEventTimer.reset();
+		mEventTimer.start();
 
-void KCWindlightInterface::ResetToRegion()
+		const LLVector3& agent_pos_region = gAgent.getPositionAgent();
+		S32 z = lltrunc( agent_pos_region.mV[VZ] );
+		LLSD::array_const_iterator end_it = settings["sky"].endArray();
+		for (LLSD::array_const_iterator space_it = settings["sky"].beginArray(); space_it != end_it; ++space_it)
+		{
+			S32 lower = (*space_it)["lower"].asInteger();
+			S32 upper = (*space_it)["upper"].asInteger();
+			if ( (z >= lower) && (z <= upper) && (lower != mCurrentSpace) )
+			{
+				mCurrentSpace = lower; //use lower as an id
+				llinfos << "WL set : " << z << " " << lower << "-" << upper << " : " << (*space_it)["preset"] << llendl;
+				ApplyWindLightPreset((*space_it)["preset"].asString());
+				return;
+			}
+		}
+	}
+
+	if (mCurrentSpace != -1.f)
+	{
+		mCurrentSpace = -1.f;
+		if (settings.has("sky_default"))
+		{
+			llinfos << "WL set : " << settings["sky_default"] << llendl;
+			ApplyWindLightPreset(settings["sky_default"].asString());
+		}
+		else if (!LLWLParamManager::instance()->mAnimator.mUseLindenTime) //reset to default
+		{
+			ApplyWindLightPreset("Default");
+		}
+	}
+}
+
+void KCWindlightInterface::ApplyWindLightPreset(const std::string& preset)
+{
+	LLWLParamManager* wlprammgr = LLWLParamManager::instance();
+	if ( (preset == "Default") || (wlprammgr->mParamList.find(preset) == wlprammgr->mParamList.end()) )
+	{
+		wlprammgr->mAnimator.mIsRunning = true;
+		wlprammgr->mAnimator.mUseLindenTime = true;
+		wlprammgr->loadPreset("Default", true);
+		//KC: reset last to Default
+		gSavedPerAccountSettings.setString("PhoenixLastWLsetting", "Default");
+		WLset = false;
+	}
+	else
+	{
+		wlprammgr->mAnimator.mIsRunning = false;
+		wlprammgr->mAnimator.mUseLindenTime = false;
+		wlprammgr->loadPreset(preset);
+		WLset = true;
+	}
+}
+
+void KCWindlightInterface::ResetToRegion(bool force)
 {
 	llinfos << "Got WL clear" << llendl;
 	//TODO: clear per parcel
-	if (WLset)
+	if (WLset || force)
 	{
-		LLWLParamManager::instance()->mAnimator.mIsRunning = true;
-		LLWLParamManager::instance()->mAnimator.mUseLindenTime = true;
-		LLWLParamManager::instance()->loadPreset("Default", true);
+		ApplyWindLightPreset("Default");
+
 		LLWaterParamManager::instance()->loadPreset("Default", true);
 		//KC: reset last to Default
-		gSavedPerAccountSettings.setString("PhoenixLastWLsetting", "Default");
 		gSavedPerAccountSettings.setString("PhoenixLastWWsetting", "Default");
-		WLset = false;
 	}
 }
 
@@ -239,7 +313,7 @@ void KCWindlightInterface::LoadFromPacel(LLParcel *parcel)
 	}
 	else
 	{ //if nothing defined, reset to region settings
-		ResetToRegion();
+		ResetToRegion(true);
 	}
 }
 
@@ -248,47 +322,75 @@ bool KCWindlightInterface::ParsePacelForWLSettings(const std::string& desc, LLSD
 	llinfos << "desc: " << desc << llendl;
 	
 	bool found_settings = false;
-	boost::smatch mat_block;
-	//parcel desc /*[data goes here]*/
-	const boost::regex Parcel_exp("(?i)\\/\\*(?:Windlight)?([\\s\\S]*?)\\*\\/");
-	if(boost::regex_search(desc, mat_block, Parcel_exp))
+	try
 	{
-		std::string data1(mat_block[1].first, mat_block[1].second);
-		llinfos << "found parcel flags block: " << mat_block[1] << llendl;
-		
-		boost::smatch match;
-		std::string::const_iterator start = mat_block[1].first;
-		std::string::const_iterator end = mat_block[1].second;
-		//Sky: "preset" Water: "preset"
-		const boost::regex key("(?i)(?:(?:(Sky)(?:\\s?@\\s?([\\d])+m?)?)|(Water)):\\s?\"([^\"\\r\\n]+)\"");
-		while (boost::regex_search(start, end, match, key, boost::match_default))
+		boost::smatch mat_block;
+		//parcel desc /*[data goes here]*/
+		const boost::regex Parcel_exp("(?i)\\/\\*(?:Windlight)?([\\s\\S]*?)\\*\\/");
+		if(boost::regex_search(desc, mat_block, Parcel_exp))
 		{
-			llinfos << "parcel flag: " << match[1] << " : " << match[2] << " : " << match[3] << " : " << match[4] << llendl;
-
-			if (match[1].matched)
-			{
-				std::string preset(match[4]);
-				llinfos << "got sky: " << preset << llendl;
-				if(LLWLParamManager::instance()->mParamList.find(preset) != LLWLParamManager::instance()->mParamList.end())
-				{
-					settings["wlpreset"] = preset;
-					found_settings = true;
-				}
-			}
-			else if (match[3].matched)
-			{
-				std::string preset(match[4]);
-				llinfos << "got water: " << preset << llendl;
-				if(LLWaterParamManager::instance()->mParamList.find(preset) != LLWaterParamManager::instance()->mParamList.end())
-				{
-					settings["wwpreset"] = preset;
-					found_settings = true;
-				}
-			}
+			std::string data1(mat_block[1].first, mat_block[1].second);
+			llinfos << "found parcel flags block: " << mat_block[1] << llendl;
 			
-			// update search position 
-			start = match[0].second; 
+			S32 sky_index = 0;
+			LLWLParamManager* wlprammgr = LLWLParamManager::instance();
+			LLWaterParamManager* wwprammgr = LLWaterParamManager::instance();
+			boost::smatch match;
+			std::string::const_iterator start = mat_block[1].first;
+			std::string::const_iterator end = mat_block[1].second;
+			//Sky: "preset" Water: "preset"
+			//const boost::regex key("(?i)(?:(?:(Sky)(?:\\s?@\\s?([\\d])+m?)?)|(Water)):\\s?\"([^\"\\r\\n]+)\"");
+			const boost::regex key("(?i)(?:(?:(Sky)(?:\\s?@\\s?([\\d]+)m?\\s?(?:to|-)\\s?([\\d]+)m?)?)|(Water))\\s?:\\s?\"([^\"\\r\\n]+)\"");
+			while (boost::regex_search(start, end, match, key, boost::match_default))
+			{
+				if (match[1].matched)
+				{
+					llinfos << "sky flag: " << match[1] << " : " << match[2] << " : " << match[3] << " : " << match[5] << llendl;
+
+					std::string preset(match[5]);
+					if(wlprammgr->mParamList.find(preset) != wlprammgr->mParamList.end())
+					{
+						if (match[2].matched && match[3].matched)
+						{
+							S32 lower = (S32)atoi(std::string(match[2]).c_str());
+							S32 upper = (S32)atoi(std::string(match[3]).c_str());
+							if ( (upper > lower) && (lower >= 0) )
+							{
+								LLSD space;
+								space["lower"] = lower;
+								space["upper"] = upper;
+								space["preset"] = preset;
+								if (!settings.has("sky"))
+									settings["sky"] = LLSD();
+								settings["sky"][sky_index++] = space;
+							}
+						}
+						else
+						{
+							settings["sky_default"] = preset;
+						}
+						found_settings = true;
+					}
+				}
+				else if (match[3].matched)
+				{
+					std::string preset(match[5]);
+					llinfos << "got water: " << preset << llendl;
+					if(wwprammgr->mParamList.find(preset) != wwprammgr->mParamList.end())
+					{
+						settings["water"] = preset;
+						found_settings = true;
+					}
+				}
+				
+				// update search position 
+				start = match[0].second; 
+			}
 		}
+	}
+	catch(...)
+	{
+		found_settings = false;
 	}
 
 	return found_settings;
