@@ -37,6 +37,8 @@
 
 #include <boost/regex.hpp>
 
+#include "rlvhandler.h"
+
 const F32 PARCEL_WL_CHECK_TIME  = 5;
 const S32 PARCEL_WL_MIN_ALT_CHANGE = 3;
 
@@ -52,7 +54,8 @@ KCWindlightInterface::KCWindlightInterface() :
 
 void KCWindlightInterface::ParcelChange()
 {
-	if (!gSavedSettings.getBOOL("PhoenixWLParcelEnabled"))
+	if (!gSavedSettings.getBOOL("PhoenixWLParcelEnabled") ||
+	(rlv_handler_t::isEnabled() && gRlvHandler.hasBehaviour(RLV_BHVR_SETENV)) )
 		return;
 
 	LLParcel *parcel = NULL;
@@ -185,6 +188,9 @@ void KCWindlightInterface::ApplySkySettings(const LLSD& settings)
 
 void KCWindlightInterface::ApplyWindLightPreset(const std::string& preset)
 {
+	if (rlv_handler_t::isEnabled() && gRlvHandler.hasBehaviour(RLV_BHVR_SETENV))
+		return;
+
 	LLWLParamManager* wlprammgr = LLWLParamManager::instance();
 	if ( (preset != "Default") && (wlprammgr->mParamList.find(preset) != wlprammgr->mParamList.end()) )
 	{
@@ -208,6 +214,9 @@ void KCWindlightInterface::ApplyWindLightPreset(const std::string& preset)
 
 void KCWindlightInterface::ResetToRegion(bool force)
 {
+	if (rlv_handler_t::isEnabled() && gRlvHandler.hasBehaviour(RLV_BHVR_SETENV))
+		return;
+
 	//TODO: clear per parcel
 	if (mWeChangedIt || force) //dont reset anything if we didnt do it
 	{
