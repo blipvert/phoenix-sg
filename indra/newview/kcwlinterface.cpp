@@ -1,6 +1,6 @@
 /** 
  * @file kcwlinterface.cpp
- * @brief Windlight Interface
+ * @brief Parcel Windlight Interface
  *
  * Copyright (C) 2010, Kadah Coba
  * 
@@ -66,7 +66,7 @@ void KCWindlightInterface::ParcelChange()
 
 	if ( (this_parcel_id != mLastParcelID) || (mLastParcelDesc != desc) ) //parcel changed
 	{
-		llinfos << "agent in new parcel: "<< this_parcel_id << " : "  << parcel->getName() << llendl;
+		//llinfos << "agent in new parcel: "<< this_parcel_id << " : "  << parcel->getName() << llendl;
 
 		mLastParcelID = this_parcel_id;
 		mLastParcelDesc = desc;
@@ -134,7 +134,6 @@ void KCWindlightInterface::ApplySettings(const LLSD& settings)
 
 		if (settings.has("water"))
 		{
-			llinfos << "WW set : " << settings["water"] << llendl;
 			LLWaterParamManager::instance()->loadPreset(settings["water"].asString(), true);
 			WLset = true;
 		}
@@ -159,7 +158,7 @@ void KCWindlightInterface::ApplySkySettings(const LLSD& settings)
 			if ( (z >= lower) && (z <= upper) && (lower != mCurrentSpace) )
 			{
 				mCurrentSpace = lower; //use lower as an id
-				llinfos << "WL set : " << z << " " << lower << "-" << upper << " : " << (*space_it)["preset"] << llendl;
+				//llinfos << "WL set : " << z << " " << lower << "-" << upper << " : " << (*space_it)["preset"] << llendl;
 				ApplyWindLightPreset((*space_it)["preset"].asString());
 				return;
 			}
@@ -171,11 +170,12 @@ void KCWindlightInterface::ApplySkySettings(const LLSD& settings)
 		mCurrentSpace = -1.f;
 		if (settings.has("sky_default"))
 		{
-			llinfos << "WL set : " << settings["sky_default"] << llendl;
+			//llinfos << "WL set : " << settings["sky_default"] << llendl;
 			ApplyWindLightPreset(settings["sky_default"].asString());
 		}
 		else if (!LLWLParamManager::instance()->mAnimator.mUseLindenTime) //reset to default
 		{
+			//llinfos << "WL set : Default" << llendl;
 			ApplyWindLightPreset("Default");
 		}
 	}
@@ -204,7 +204,6 @@ void KCWindlightInterface::ApplyWindLightPreset(const std::string& preset)
 
 void KCWindlightInterface::ResetToRegion(bool force)
 {
-	llinfos << "Got WL clear" << llendl;
 	//TODO: clear per parcel
 	if (WLset || force)
 	{
@@ -319,8 +318,6 @@ void KCWindlightInterface::LoadFromPacel(LLParcel *parcel)
 
 bool KCWindlightInterface::ParsePacelForWLSettings(const std::string& desc, LLSD& settings)
 {
-	llinfos << "desc: " << desc << llendl;
-	
 	bool found_settings = false;
 	try
 	{
@@ -330,7 +327,7 @@ bool KCWindlightInterface::ParsePacelForWLSettings(const std::string& desc, LLSD
 		if(boost::regex_search(desc, mat_block, Parcel_exp))
 		{
 			std::string data1(mat_block[1].first, mat_block[1].second);
-			llinfos << "found parcel flags block: " << mat_block[1] << llendl;
+			//llinfos << "found parcel flags block: " << mat_block[1] << llendl;
 			
 			S32 sky_index = 0;
 			LLWLParamManager* wlprammgr = LLWLParamManager::instance();
@@ -339,13 +336,12 @@ bool KCWindlightInterface::ParsePacelForWLSettings(const std::string& desc, LLSD
 			std::string::const_iterator start = mat_block[1].first;
 			std::string::const_iterator end = mat_block[1].second;
 			//Sky: "preset" Water: "preset"
-			//const boost::regex key("(?i)(?:(?:(Sky)(?:\\s?@\\s?([\\d])+m?)?)|(Water)):\\s?\"([^\"\\r\\n]+)\"");
 			const boost::regex key("(?i)(?:(?:(Sky)(?:\\s?@\\s?([\\d]+)m?\\s?(?:to|-)\\s?([\\d]+)m?)?)|(Water))\\s?:\\s?\"([^\"\\r\\n]+)\"");
 			while (boost::regex_search(start, end, match, key, boost::match_default))
 			{
 				if (match[1].matched)
 				{
-					llinfos << "sky flag: " << match[1] << " : " << match[2] << " : " << match[3] << " : " << match[5] << llendl;
+					//llinfos << "sky flag: " << match[1] << " : " << match[2] << " : " << match[3] << " : " << match[5] << llendl;
 
 					std::string preset(match[5]);
 					if(wlprammgr->mParamList.find(preset) != wlprammgr->mParamList.end())
@@ -363,19 +359,20 @@ bool KCWindlightInterface::ParsePacelForWLSettings(const std::string& desc, LLSD
 								if (!settings.has("sky"))
 									settings["sky"] = LLSD();
 								settings["sky"][sky_index++] = space;
+								found_settings = true;
 							}
 						}
 						else
 						{
 							settings["sky_default"] = preset;
+							found_settings = true;
 						}
-						found_settings = true;
 					}
 				}
 				else if (match[3].matched)
 				{
 					std::string preset(match[5]);
-					llinfos << "got water: " << preset << llendl;
+					//llinfos << "got water: " << preset << llendl;
 					if(wwprammgr->mParamList.find(preset) != wwprammgr->mParamList.end())
 					{
 						settings["water"] = preset;
