@@ -114,8 +114,7 @@ BOOL KCWindlightInterface::tick()
 	if (parcel)
 	{
 		LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
-		LoadFromPacel(parcel);
-		if (!WLset || !mCurrentSettings.has("sky"))
+		if (!LoadFromPacel(parcel) || !mCurrentSettings.has("sky"))
 			mEventTimer.stop();
 	}
 
@@ -284,10 +283,10 @@ bool KCWindlightInterface::ChatCommand(std::string message, std::string from_nam
 }
 #endif
 
-void KCWindlightInterface::LoadFromPacel(LLParcel *parcel)
+bool KCWindlightInterface::LoadFromPacel(LLParcel *parcel)
 {
 	if (!parcel)
-		return;
+		return false;
 
 	LLSD payload;
 	if (ParsePacelForWLSettings(parcel->getDesc(), payload))
@@ -309,11 +308,13 @@ void KCWindlightInterface::LoadFromPacel(LLParcel *parcel)
 
 			mSetWLNotification = LLNotifications::instance().add("PhoenixWL", args, payload, boost::bind(&KCWindlightInterface::callbackParcelWL, this, _1, _2));
 		}
+		return true;
 	}
-	else
-	{ //if nothing defined, reset to region settings
-		ResetToRegion(true);
-	}
+	
+	//if nothing defined, reset to region settings
+	ResetToRegion(true);
+
+	return false;
 }
 
 bool KCWindlightInterface::ParsePacelForWLSettings(const std::string& desc, LLSD& settings)
