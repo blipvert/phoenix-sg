@@ -42,7 +42,10 @@ const S32 PARCEL_WL_MIN_ALT_CHANGE = 3;
 
 KCWindlightInterface::KCWindlightInterface() :
 	LLEventTimer(PARCEL_WL_CHECK_TIME),
-	WLset(FALSE)
+	WLset(FALSE),
+	mWeChangedIt(false),
+	mCurrentSpace(-2.f),
+	mLastParcelID(-1)
 {
 
 }
@@ -183,7 +186,15 @@ void KCWindlightInterface::ApplySkySettings(const LLSD& settings)
 void KCWindlightInterface::ApplyWindLightPreset(const std::string& preset)
 {
 	LLWLParamManager* wlprammgr = LLWLParamManager::instance();
-	if ( (preset == "Default") || (wlprammgr->mParamList.find(preset) == wlprammgr->mParamList.end()) )
+	if ( (preset != "Default") && (wlprammgr->mParamList.find(preset) != wlprammgr->mParamList.end()) )
+	{
+		wlprammgr->mAnimator.mIsRunning = false;
+		wlprammgr->mAnimator.mUseLindenTime = false;
+		wlprammgr->loadPreset(preset);
+		WLset = true;
+		mWeChangedIt = true;
+	}
+	else
 	{
 		wlprammgr->mAnimator.mIsRunning = true;
 		wlprammgr->mAnimator.mUseLindenTime = true;
@@ -191,20 +202,14 @@ void KCWindlightInterface::ApplyWindLightPreset(const std::string& preset)
 		//KC: reset last to Default
 		gSavedPerAccountSettings.setString("PhoenixLastWLsetting", "Default");
 		WLset = false;
-	}
-	else
-	{
-		wlprammgr->mAnimator.mIsRunning = false;
-		wlprammgr->mAnimator.mUseLindenTime = false;
-		wlprammgr->loadPreset(preset);
-		WLset = true;
+		mWeChangedIt = false;
 	}
 }
 
 void KCWindlightInterface::ResetToRegion(bool force)
 {
 	//TODO: clear per parcel
-	if (WLset || force)
+	if (mWeChangedIt || force) //dont reset anything if we didnt do it
 	{
 		ApplyWindLightPreset("Default");
 
@@ -312,7 +317,7 @@ bool KCWindlightInterface::LoadFromPacel(LLParcel *parcel)
 	}
 	
 	//if nothing defined, reset to region settings
-	ResetToRegion(true);
+	ResetToRegion();
 
 	return false;
 }

@@ -54,6 +54,7 @@ private:
 	LLUUID getOwnerID(LLParcel *parcel);
 	std::string getOwnerName(LLParcel *parcel);
 
+protected:
 	std::set<LLUUID> mAllowedLand;
 	LLNotificationPtr mSetWLNotification;
 	LLNotificationPtr mClearWLNotification;
@@ -62,4 +63,5 @@ private:
 	S32 mCurrentSpace; //we use the lower bound of a space as its id
 	LLSD mCurrentSettings;
 	S32 mLastZ;
+	bool mWeChangedIt; //dont reset anything if we didnt do it
 };
