@@ -58,12 +58,17 @@
 #include "floaterao.h"
 #include "llattachmentsmgr.h"
 #include <boost/regex.hpp>
+#include <string>
 
-//#define phoenix_point (U8)1
+// The old version checking code depends on the version number being the last
+//  thing in the name, separated by something that isn't a digit or a dot; on
+//  the major and minor version numbers being the same in the defines below;
+//  and on it being in the form of "<major>.<minor>". If you change any of
+//  these, you MUST update the IsAnOldBridge function to match. -- TS
 #define phoenix_bridge_name "#LSL<->Client Bridge v0.11"
-#define phoenix_current_version (F32)0.09f
+#define PHOENIX_BRIDGE_MAJOR_VERSION 0
+#define PHOENIX_BRIDGE_MINOR_VERSION 11
 
-const boost::regex OldBridgePattern("^#LSL<->Client Bridge v0\\.0?[0-9]$");
 const boost::regex AnyBridgePattern("^#LSL<->Client Bridge.*");
 
 void cmdline_printchat(std::string message);
@@ -420,7 +425,7 @@ LLViewerInventoryItem* JCLSLBridge::findbridge()
 bool JCLSLBridge::ValidateBridge(LLViewerInventoryItem* item)
 {
 	//cmdline_printchat("--validating bridge");
-	if (item && IsABridge(item) && !IsAnOldBridge(item))
+	if (item && !IsAnOldBridge(item))
 	{
 		//cmdline_printchat("---have item");
 		LLUUID phoenix_category = findCategoryByNameOrCreate(phoenix_category_name);
@@ -466,9 +471,44 @@ void JCLSLBridge::CheckForBridgeDetach(const LLUUID& item_id)
 	}
 }
 
+// This function depends on not being passed a null item. Since it's always
+//  called after making that check, that's not an issue. -- TS
 bool JCLSLBridge::IsAnOldBridge(LLViewerInventoryItem* item)
 {
-	return (item) && boost::regex_match(item->getName(), OldBridgePattern);
+        // Is this even a bridge? If not, don't bother checking.
+        if (!IsABridge(item))
+        {
+                return false;
+        }
+
+        // Extract the version number from the name. Assumes that the name
+        //  ends with the version number, in the form <major>.<minor>.
+        std::string name = item->getName();
+        std::string version_digits ("0123456789.");
+        size_t version_pos = name.find_last_not_of(version_digits);
+        if (version_pos >= name.length())
+        {
+                llinfos <<
+                        "No version number found at end of bridge name string."
+                        << llendl;
+                return false;
+        }
+        std::string version = name.substr(version_pos+1);
+        
+        // Get major and minor version numbers.
+        size_t dot_pos = version.find('.');
+        if (dot_pos == std::string::npos)
+        {
+                llinfos << "No dot found in bridge version number." << llendl;
+                return false;
+        }
+        int major = atoi(version.substr(0,dot_pos).c_str());
+        int minor = atoi(version.substr(dot_pos+1,std::string::npos).c_str());
+
+        // Compare the major and minor versions.
+	return ((major < PHOENIX_BRIDGE_MAJOR_VERSION) ||
+	        ((major == PHOENIX_BRIDGE_MAJOR_VERSION) &&
+	        (minor < PHOENIX_BRIDGE_MINOR_VERSION)));
 }
 
 bool JCLSLBridge::IsABridge(LLViewerInventoryItem* item)
