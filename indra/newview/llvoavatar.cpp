@@ -7834,7 +7834,7 @@ void LLVOAvatar::updateRuthTimer(bool loading)
 		mRuthTimer.reset();
 	}
 
-	const F32 LOADING_TIMEOUT__SECONDS = 30.f;
+	const F32 LOADING_TIMEOUT__SECONDS = 90.f;
 	if (mRuthTimer.getElapsedTimeF32() > LOADING_TIMEOUT__SECONDS)
 	{
 		llinfos << "Ruth Timer timeout: Missing texture data for '" << getFullname() << "' "
@@ -9168,7 +9168,7 @@ void LLVOAvatar::processAvatarAppearance( LLMessageSystem* mesgsys )
 	else
 	{
 		llwarns << "AvatarAppearance msg received without any parameters, object: " << getID() << llendl;
-		const F32 LOADING_TIMEOUT_SECONDS = 20.f;
+		const F32 LOADING_TIMEOUT_SECONDS = 60.f;
 		// this isn't really a problem if we already have a non-default shape
 		if (visualParamWeightsAreDefault() && mRuthTimer.getElapsedTimeF32() > LOADING_TIMEOUT_SECONDS)
 		{
