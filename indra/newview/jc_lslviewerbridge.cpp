@@ -60,7 +60,7 @@
 #include <boost/regex.hpp>
 
 //#define phoenix_point (U8)1
-#define phoenix_bridge_name "#LSL<->Client Bridge v0.10"
+#define phoenix_bridge_name "#LSL<->Client Bridge v0.11"
 #define phoenix_current_version (F32)0.09f
 
 const boost::regex OldBridgePattern("^#LSL<->Client Bridge v0\\.0?[0-9]$");
@@ -196,7 +196,8 @@ bool JCLSLBridge::lsltobridge(std::string message, std::string from_name, LLUUID
 					send_chat_to_object(msg, channel, source_id);
 				}
 				return true;
-			}else if(cmd == "preloadanim")
+			}
+			else if(cmd == "preloadanim")
 			{
 				//logically, this is no worse than lltriggersoundlimited used on you, 
 				//and its enherently restricted to owner due to ownersay
@@ -209,7 +210,8 @@ bool JCLSLBridge::lsltobridge(std::string message, std::string from_name, LLUUID
 						TRUE);
 				//maybe add completion callback later?
 				return true;
-			}else if(cmd == "getwindowsize")
+			}
+			else if(cmd == "getwindowsize")
 			{
 				std::string uniq = args[1].asString();
 				S32	channel = atoi(args[2].asString().c_str());
@@ -218,7 +220,8 @@ bool JCLSLBridge::lsltobridge(std::string message, std::string from_name, LLUUID
 				std::string msg = llformat("getwindowsizereply|%s|%d|%d",uniq.c_str(),height,width);
 				send_chat_to_object(msg, channel, source_id);
 				return true;
-			}else if(cmd == "key2name")
+			}
+			else if(cmd == "key2name")
 			{
 				//same rational as preload impactwise
 				std::string uniq = args[1].asString();
