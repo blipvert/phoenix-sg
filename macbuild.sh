@@ -3,6 +3,7 @@ START_DIR=$(cd $(dirname "$0"); pwd)
 INDRA_DIR=$START_DIR/indra
 OUTPUT_DIR=$START_DIR/builds
 DEPENDENCY_DIR=$START_DIR/dependencies
+LOG_DIR=$START_DIR/logs
 
 configure()
 {
@@ -28,7 +29,9 @@ set_channel()
 build()
 {
         echo "Building version ${VERSION_VIEWER}.${REVISION}..."
-        xcodebuild -target ALL_BUILD -configuration Release > /dev/null
+        LOGFILE=${LOG_DIR}/build_${VERSION_VIEWER}.${REVISION}
+        echo "Build log is in ${LOGFILE} ."
+        xcodebuild -target ALL_BUILD -configuration Release > ${LOGFILE}
 }
 
 copy_resources()

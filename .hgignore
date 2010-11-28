@@ -12,6 +12,7 @@ LICENSES
 fmodapi375win
 fmodapi375mac
 installed.xml
+logs/build*
 glob:indra/newview/browser_profile/*
 glob:indra/newview/fmod.dll
 glob:indra/newview/vivox-runtime/*
