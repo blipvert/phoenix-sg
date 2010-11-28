@@ -6890,7 +6890,7 @@ The URL you clicked cannot be opened from this web browser.
    icon="notify.tga"
    name="QueryBridgeCleanup"
    type="notify">
-    Phoenix has noticed that you have [BRIDGES] in your inventory. Phoenix does not need older bridges. If you do not want these for something else, you should click Yes to have them automatically moved to the trash folder for you. If you have do not want this done, you should click No, and you won't be bothered about it again.
+    Phoenix has noticed that you have [BRIDGES] in your inventory. Phoenix does not need older bridges. If you do not want these for something else, click Yes to have them automatically moved to the trash folder for you. If you do not want this done, click No, and you won't be bothered about it again.
     <form name="form">
       <button
        index="0"
