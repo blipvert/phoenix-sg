@@ -160,11 +160,13 @@ void KCWindlightInterface::ApplySkySettings(const LLSD& settings)
 		{
 			S32 lower = (*space_it)["lower"].asInteger();
 			S32 upper = (*space_it)["upper"].asInteger();
-			if ( (z >= lower) && (z <= upper) && (lower != mCurrentSpace) )
+			if ( (z >= lower) && (z <= upper) )
 			{
-				mCurrentSpace = lower; //use lower as an id
-				//llinfos << "WL set : " << z << " " << lower << "-" << upper << " : " << (*space_it)["preset"] << llendl;
-				ApplyWindLightPreset((*space_it)["preset"].asString());
+				if (lower != mCurrentSpace) //workaround: only apply once
+				{
+					mCurrentSpace = lower; //use lower as an id
+					ApplyWindLightPreset((*space_it)["preset"].asString());
+				}
 				return;
 			}
 		}
