@@ -2,11 +2,16 @@ syntax: glob
 *.pyc
 *.orig
 *.bak
+.DS_Store
 indra/build-vc[0-9]*
+indra/build-darwin*
 indra/test_apps/terrain_mule/*.dll
 libraries
+builds
 LICENSES
 fmodapi375win
+fmodapi375mac
 installed.xml
 glob:indra/newview/browser_profile/*
 glob:indra/newview/fmod.dll
+glob:indra/newview/vivox-runtime/*
