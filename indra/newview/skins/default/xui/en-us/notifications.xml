@@ -7418,7 +7418,9 @@ For more details on outfits in Phoenix, please see the Phoenix Viewer Wiki.
    icon="notify.tga"
    name="PhoenixWL"
    type="notify">
-&apos;[PARCEL_NAME]&apos;, owned by &apos;[OWNER_NAME]&apos;, would like to change your Windlight visual environment settings.
+&apos;[PARCEL_NAME]&apos;
+Owned by &apos;[OWNER_NAME]&apos;
+Would like to change your Windlight visual environment settings.
     <form name="form">
       <button
        index="0"
