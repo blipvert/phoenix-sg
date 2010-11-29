@@ -8,22 +8,25 @@ LOG_DIR=$START_DIR/logs
 configure()
 {
         echo "Configuring (for real)..."
-        ./develop.py configure -G Xcode -DCMAKE_OSX_ARCHITECTURES="$1" \
-        -DOPENAL:BOOL=FALSE -DFMOD:BOOL=TRUE -DCMAKE_BUILD_TYPE=Release \
-        -DGCC_DISABLE_FATAL_WARNINGS:BOOL=TRUE -DCMAKE_C_FLAGS:STRING="$2" \
-        -DCMAKE_CXX_FLAGS:STRING="$2" > /dev/null
+        ./develop.py configure -G Xcode \
+	        -DCMAKE_OSX_ARCHITECTURES="$1" \
+	        -DOPENAL:BOOL=FALSE -DFMOD:BOOL=TRUE \
+        	-DCMAKE_BUILD_TYPE=Release \
+        	-DGCC_DISABLE_FATAL_WARNINGS:BOOL=TRUE \
+		2>&1 > /dev/null
 }
 
 set_channel()
 {
-        if [ -z "$BUILD_RELEASE" ]; then
-                sed -e s/Internal/Beta/ -i '' llcommon/llversionviewer.h
-                echo "Setting beta channel..."
-        else
+        if [ -n "$BUILD_RELEASE" ]; then
                 sed -e s/Internal/Release/ -i '' llcommon/llversionviewer.h
                 echo "Setting release channel..."
+        else
+                sed -e s/Internal/Beta/ -i '' llcommon/llversionviewer.h
+                echo "Setting beta channel..."
         fi
-        sed -e "s/LL_VERSION_BUILD = 0/LL_VERSION_BUILD = $REVISION/" -i '' llcommon/llversionviewer.h
+        sed -e "s/LL_VERSION_BUILD = 0/LL_VERSION_BUILD = $REVISION/" \
+        	-i '' llcommon/llversionviewer.h
 }
 
 build()
@@ -31,21 +34,20 @@ build()
         echo "Building version ${VERSION_VIEWER}.${REVISION}..."
         LOGFILE=${LOG_DIR}/build_${VERSION_VIEWER}.${REVISION}
         echo "Build log is in ${LOGFILE} ."
-        xcodebuild -target ALL_BUILD -configuration Release > ${LOGFILE}
+	${INDRA_DIR}/develop.py build 2>&1 > ${LOGFILE}
 }
 
 copy_resources()
 {
         echo "Copying resources..."
 
-#        cp -R $DEPENDENCY_DIR/cursors_mac Phoenix\ Viewer.app/Contents/Resources/
-
         if [ -n "$BUILD_RELEASE" ]; then
                 SETTINGS_FILE='settings_phoenix.xml'
         else
                 SETTINGS_FILE='settings_phoenixviewerbeta.xml'
         fi
-        echo "--settings $SETTINGS_FILE" > Phoenix\ Viewer.app/Contents/Resources/arguments.txt
+        echo "--settings $SETTINGS_FILE" \
+        	> Phoenix\ Viewer.app/Contents/Resources/arguments.txt
 }
 
 # Sends output file to stdout
@@ -65,18 +67,22 @@ make_disk_image()
         rm -f "$OUTPUT_DIR/$OUTPUT_FILE"
 
         # We store the templates as compressed images, so decompress it now.
-        hdiutil convert "$DEPENDENCY_DIR/$IMAGE" -format UDRW -o temp-image.dmg > /dev/null
-        hdiutil attach -mountpoint "$DEPENDENCY_DIR/build-image" -nobrowse temp-image.dmg > /dev/null
+        hdiutil convert "$DEPENDENCY_DIR/$IMAGE" -format UDRW \
+        	-o temp-image.dmg > /dev/null
+        hdiutil attach -mountpoint "$DEPENDENCY_DIR/build-image" -nobrowse \
+	        temp-image.dmg > /dev/null
 
         # diskutil requires the full mount path.
-        diskutil renameVolume "$DEPENDENCY_DIR/build-image" "$VOLUME_NAME" > /dev/null
+        diskutil renameVolume "$DEPENDENCY_DIR/build-image" "$VOLUME_NAME" \
+        	> /dev/null
 
         # Copy the viewer in
         cp -R Phoenix\ Viewer*.app "$DEPENDENCY_DIR/build-image/" > /dev/null
 
         # Compress/store the image and dispose of the temporary one.
         hdiutil detach "$DEPENDENCY_DIR/build-image" > /dev/null
-        hdiutil convert temp-image.dmg -format UDBZ -o "$OUTPUT_DIR/$OUTPUT_FILE" > /dev/null
+        hdiutil convert temp-image.dmg -format UDBZ \
+        	-o "$OUTPUT_DIR/$OUTPUT_FILE" > /dev/null
         rm temp-image.dmg
         echo "$OUTPUT_DIR/$OUTPUT_FILE";
 }
@@ -151,17 +157,14 @@ if [ -z $SKIP_INTEL ]; then
         cd $INDRA_DIR
         ./develop.py clean > /dev/null
 
-        configure i386 "-O2 -fomit-frame-pointer -frename-registers \
-        			-ftree-vectorize -fweb -Wno-deprecated \
-        			-fexpensive-optimizations -march=i686 \
-                                -msse -mfpmath=sse -msse2 -pipe \
-                                -DLL_VECTORIZE=1 -DLL_SSE=1 -DLL_SSE2=1"
+	configure i386
 
-        cd build-darwin-i386
+        cd $INDRA_DIR/build-darwin-i386
         set_channel
+        cd $INDRA_DIR
         build
         if [ $? -eq 0 ]; then
-                cd newview/Release
+                cd $INDRA_DIR/build-darwin-i386/newview/Release
                 copy_resources
 
                 echo "Liposuction..."
