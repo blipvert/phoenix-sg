@@ -223,6 +223,9 @@ bool LLFloaterWater::newPromptCallback(const LLSD& notification, const LLSD& res
 			comboBox->setSimple(text);
 
 			param_mgr->savePreset(text);
+			
+			//KC: workaround for not selecting the new preset in the combo box
+			param_mgr->loadPreset(text);
 
 		// otherwise, send a message to the user
 		} 

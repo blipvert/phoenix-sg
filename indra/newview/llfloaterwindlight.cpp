@@ -304,6 +304,9 @@ bool LLFloaterWindLight::newPromptCallback(const LLSD& notification, const LLSD&
 			}
 			LLWLParamManager::instance()->savePreset(text);
 
+			//KC: workaround for not selecting the new preset in the combo box
+			LLWLParamManager::instance()->loadPreset(text);
+
 		// otherwise, send a message to the user
 		} 
 		else 
