@@ -18,15 +18,14 @@ configure()
 
 set_channel()
 {
+	cp -f llcommon/llversionviewer.h.in llcommon/llversionviewer.h.in.build
         if [ -n "$BUILD_RELEASE" ]; then
-                sed -e s/Internal/Release/ -i '' llcommon/llversionviewer.h
+                sed -e s/Internal/Release/ -i '' llcommon/llversionviewer.h.in
                 echo "Setting release channel..."
         else
-                sed -e s/Internal/Beta/ -i '' llcommon/llversionviewer.h
+                sed -e s/Internal/Beta/ -i '' llcommon/llversionviewer.h.in
                 echo "Setting beta channel..."
         fi
-        sed -e "s/LL_VERSION_BUILD = 0/LL_VERSION_BUILD = $REVISION/" \
-        	-i '' llcommon/llversionviewer.h
 }
 
 build()
@@ -156,15 +155,11 @@ if [ -z $SKIP_INTEL ]; then
         echo "Cleaning..."
         cd $INDRA_DIR
         ./develop.py clean > /dev/null
-
-	configure i386
-
-        cd $INDRA_DIR/build-darwin-i386
         set_channel
-        cd $INDRA_DIR
+	configure i386
         build
         if [ $? -eq 0 ]; then
-                cd $INDRA_DIR/build-darwin-i386/newview/Release
+                cd build-darwin-i386/newview/Release
                 copy_resources
 
                 echo "Liposuction..."
@@ -191,4 +186,10 @@ fi
 
 # Some cleanup.
 rm installed.xml 2>/dev/null
+if [ -e $INDRA_DIR/llcommon/llversionviewer.h.in.build ]; then
+	mv -f $INDRA_DIR/llcommon/llversionviewer.h.in \
+		$INDRA_DIR/llcommon/llversionviewer.h.in.used
+	mv -f $INDRA_DIR/llcommon/llversionviewer.h.in.build \
+		$INDRA_DIR/llcommon/llversionviewer.h.in
+fi
 echo "Finished."
