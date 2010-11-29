@@ -314,13 +314,13 @@ private:
 
 JCZtake *ztake;
 
-class ZtCleanup: public LLEventTimer
+class LOZtCleanup: public LLEventTimer
 {
 public:
-	ZtCleanup() : LLEventTimer(0.2) //Don't really need this long of a timer, but it can't be to short or tick() below may get called before the packager's tick() returns to the timer system. Things get ugly otherwise.
+	LOZtCleanup() : LLEventTimer(0.2) //Don't really need this long of a timer, but it can't be to short or tick() below may get called before the packager's tick() returns to the timer system. Things get ugly otherwise.
 	{
 	}
-	~ZtCleanup()
+	~LOZtCleanup()
 	{
 	}
 	BOOL tick()
@@ -334,7 +334,7 @@ public:
 
 void doZtCleanup()
 {
-	new ZtCleanup();
+	new LOZtCleanup();
 }
 
 class TMZtake : public LLEventTimer
