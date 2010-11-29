@@ -844,9 +844,14 @@ void LLFloaterWindLight::onSavePreset(LLUICtrl* ctrl, void* userData)
 
 	if (ctrl->getValue().asString() == "save_inventory_item")
 	{
-		// Check if this is already a notecard.
-		if(LLWLParamManager::instance()->mCurParams.mInventoryID.notNull())
-		{
+		// Check if this is already a notecard and that its not in the trash or purged.
+		LLUUID trash_id;
+		trash_id = gInventory.findCategoryUUIDForType(LLAssetType::AT_TRASH);
+		if(LLWLParamManager::instance()->mCurParams.mInventoryID.notNull() 
+			&& !gInventory.isObjectDescendentOf(LLWLParamManager::instance()->mCurParams.mInventoryID, trash_id)
+			&& gInventory.isObjectDescendentOf(LLWLParamManager::instance()->mCurParams.mInventoryID, gAgent.getInventoryRootID())
+		)
+ 		{
 			LLNotifications::instance().add("KittyWLSaveNotecardAlert", LLSD(), LLSD(), saveNotecardCallback);
 		}
 		else
