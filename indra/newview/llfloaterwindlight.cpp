@@ -64,6 +64,8 @@
 #include "llwlparammanager.h"
 #include "llpostprocess.h"
 
+#include "floaterwlskyfinder.h"
+
 #undef max
 
 LLFloaterWindLight* LLFloaterWindLight::sWindLight = NULL;
@@ -223,6 +225,7 @@ void LLFloaterWindLight::initCallbacks(void) {
 	LLComboBox* comboBox = getChild<LLComboBox>("WLPresetsCombo");
 
 	//childSetAction("WLLoadPreset", onLoadPreset, comboBox);
+	childSetAction("phoe_wl_sky_browser_button", onClickFindMore, this);
 	childSetAction("WLNewPreset", onNewPreset, comboBox);
 	childSetAction("WLDeletePreset", onDeletePreset, comboBox);
 	childSetCommitCallback("WLSavePreset", onSavePreset, this);
@@ -1032,6 +1035,11 @@ void LLFloaterWindLight::onChangePresetName(LLUICtrl* ctrl, void * userData)
 void LLFloaterWindLight::onOpenDayCycle(void* userData)
 {
 	LLFloaterDayCycle::show();
+}
+
+void LLFloaterWindLight::onClickFindMore(void* userData)
+{
+	FloaterSkyfinder::showInstance(LLSD());
 }
 
 // Clouds
