@@ -4,7 +4,7 @@
 
 # @return the rev number ie from the change set
 macro(vcs_get_revision _output_variable)
-	MESSAGE(STATUS "-- Checking for Mercurial repository ${PROJECT_SOURCE_DIR}")
+	MESSAGE(STATUS "Checking for Mercurial repository ${PROJECT_SOURCE_DIR}")
 	
 	# Check for the hg directory to see if this is a hg repo
 	IF(IS_DIRECTORY "${PROJECT_SOURCE_DIR}/../.hg")
@@ -14,7 +14,7 @@ macro(vcs_get_revision _output_variable)
 		# Test the return status make sure its found
 		IF(NOT ${_hg} MATCHES "-NOTFOUND")
 			# Output HG success
-			MESSAGE(STATUS "-- Found hg!")
+			MESSAGE(STATUS "Found hg!")
 			
 			# Grab the revision number
 			EXECUTE_PROCESS(COMMAND ${_hg} summary WORKING_DIRECTORY 
@@ -36,17 +36,17 @@ macro(vcs_get_revision _output_variable)
 				endforeach()
 			ELSE ()
 				# give feedback and set the rev to 0
-				MESSAGE("-- Mercurial had an error. Too old version of hg?")
+				MESSAGE("Mercurial had an error. Too old version of hg?")
 				SET(PHOENIX_WC_REVISION 0)
 			ENDIF ()
 		ELSE()
 			# give feedback and set the rev to 0
-			MESSAGE("-- Could not parse Mercurial version. Newer version of hg?")
+			MESSAGE("Could not parse Mercurial version. Newer version of hg?")
 			SET(PHOENIX_WC_REVISION 0)
 		ENDIF()
 	ELSE()
 		# give feedback and set the rev to 0 as teh dirs not found
-		MESSAGE(STATUS "-- Mercurial not used..")
+		MESSAGE(STATUS "Mercurial not used..")
 		SET(PHOENIX_WC_REVISION 0)
 	ENDIF()
 	 
@@ -57,6 +57,6 @@ macro(vcs_get_revision _output_variable)
 	#SET(PHOENIX_DEVELOPMENT_VERSION 1)
 	
 	# Show the version number and complete / return to utility script.
-	MESSAGE(STATUS "-- Current Mercurial revision is ${PHOENIX_WC_REVISION}")
+	MESSAGE(STATUS "Current Mercurial revision is ${PHOENIX_WC_REVISION}")
 	set(${_output_variable} ${PHOENIX_WC_REVISION})
 endmacro(vcs_get_revision)
