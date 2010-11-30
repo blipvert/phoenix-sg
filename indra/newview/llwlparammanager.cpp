@@ -331,7 +331,7 @@ bool LLWLParamManager::savePresetToNotecard(const std::string & name)
 	return true;
 }
 
-void LLWLParamManager::loadPreset(const std::string & name,bool propagate)
+void LLWLParamManager::loadPreset(const std::string & name,bool propagate,bool is_escaped)
 {
 	// Check if we already have the preset before we try loading it again.
 	if(mParamList.find(name) != mParamList.end())
@@ -346,12 +346,19 @@ void LLWLParamManager::loadPreset(const std::string & name,bool propagate)
 		}
 		return;
 	}
-
-	// bugfix for SL-46920: preventing filenames that break stuff.
-	char * curl_str = curl_escape(name.c_str(), name.size());
-	std::string escaped_filename(curl_str);
-	curl_free(curl_str);
-	curl_str = NULL;
+	std::string escaped_filename;
+	if(is_escaped)
+	{
+		escaped_filename = name;
+	}
+	else
+	{
+		// bugfix for SL-46920: preventing filenames that break stuff.
+		char * curl_str = curl_escape(name.c_str(), name.size());
+		escaped_filename = curl_str;
+		curl_free(curl_str);
+		curl_str = NULL;
+	}
 
 	escaped_filename += ".xml";
 

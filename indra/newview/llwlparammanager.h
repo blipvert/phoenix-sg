@@ -147,7 +147,7 @@ public:
 	void savePresets(const std::string & fileName);
 
 	/// load an individual preset into the sky
-	void loadPreset(const std::string & name, bool propogate=true);
+	void loadPreset(const std::string & name, bool propogate=true, bool is_escaped=false);
 
 	/// load an individual preset into the sky from an LLSD stream
 	/// Returns whether the stream was actually reasonable XML to load from.
