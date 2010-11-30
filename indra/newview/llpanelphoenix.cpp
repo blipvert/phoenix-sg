@@ -267,16 +267,21 @@ BOOL LLPanelPhoenix::postBuild()
 	childSetCommitCallback("X Modifier", onCommitAvatarModifier);
 	childSetCommitCallback("Y Modifier", onCommitAvatarModifier);
 	childSetCommitCallback("Z Modifier", onCommitAvatarModifier);
+	childSetCommitCallback("PhoenixShapshotReuseLastDirCheck", onCommitShapshotReuseLastDir);
 	if(gAgent.getID() != LLUUID::null)
 	{
 		getChild<LLSpinCtrl>("X Modifier")->set(gSavedPerAccountSettings.getF32("PhoenixAvatarXModifier"));
 		getChild<LLSpinCtrl>("Y Modifier")->set(gSavedPerAccountSettings.getF32("PhoenixAvatarYModifier"));
 		getChild<LLSpinCtrl>("Z Modifier")->set(gSavedPerAccountSettings.getF32("PhoenixAvatarZModifier"));
+
+		getChild<LLCheckBoxCtrl>("PhoenixShapshotReuseLastDirCheck")->set(gSavedPerAccountSettings.getBOOL("PhoenixShapshotReuseLastDir"));
 	}else
 	{
 		getChild<LLSpinCtrl>("X Modifier")->setEnabled(FALSE);
 		getChild<LLSpinCtrl>("Y Modifier")->setEnabled(FALSE);
 		getChild<LLSpinCtrl>("Z Modifier")->setEnabled(FALSE);
+
+		getChild<LLCheckBoxCtrl>("PhoenixShapshotReuseLastDirCheck")->setEnabled(FALSE);
 	}
 
 
@@ -748,6 +753,12 @@ void LLPanelPhoenix::onCommitAvatarModifier(LLUICtrl* ctrl, void* userdata)
 	gSavedPerAccountSettings.setF32("PhoenixAvatarYModifier", sInstance->getChild<LLSpinCtrl>("Y Modifier")->get());
 	gSavedPerAccountSettings.setF32("PhoenixAvatarZModifier", sInstance->getChild<LLSpinCtrl>("Z Modifier")->get());
 	gAgent.sendAgentSetAppearance();
+}
+
+void LLPanelPhoenix::onCommitShapshotReuseLastDir(LLUICtrl* ctrl, void* userdata)
+{
+	
+	gSavedPerAccountSettings.setBOOL("PhoenixShapshotReuseLastDir", sInstance->getChild<LLCheckBoxCtrl>("PhoenixShapshotReuseLastDirCheck")->getValue().asBoolean());
 }
 
 void LLPanelPhoenix::onClickSetMirror(void* user_data)
