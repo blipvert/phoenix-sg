@@ -8325,12 +8325,13 @@ void LLAgent::userRemoveAllAttachments( void* userdata )
 	{
 		LLVOAvatar::attachment_map_t::iterator curiter = iter++;
 		LLViewerJointAttachment* attachment = curiter->second;
-		if (attachment->getGroup() == JCLSLBridge::PH_BRIDGE_POINT) continue; //KC: skip the bridge attachment point
 		for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
 			 attachment_iter != attachment->mAttachedObjects.end();
 			 ++attachment_iter)
 		{
 			LLViewerObject *attached_object = (*attachment_iter);
+			//KC: skip the bridge attachment point
+			if (ATTACHMENT_ID_FROM_STATE(attached_object->getState()) == (S32)JCLSLBridge::PH_BRIDGE_POINT) continue;
 //			if (attached_object)
 // [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.1.3b) | Modified: RLVa-1.1.3b
 			if ( (attached_object) && ((!rlv_handler_t::isEnabled()) || (!gRlvAttachmentLocks.isLockedAttachment(attached_object)))
@@ -8460,9 +8461,9 @@ void LLAgent::userUpdateAttachments(LLInventoryModel::item_array_t& obj_item_arr
 			if (objectp)
 			{
 				LLUUID object_item_id = objectp->getAttachmentItemID();
-				if (attachment->getGroup() == JCLSLBridge::PH_BRIDGE_POINT)
+				if (ATTACHMENT_ID_FROM_STATE(objectp->getState()) == (S32)JCLSLBridge::PH_BRIDGE_POINT)
 				{
-					if (object_item_id == JCLSLBridge::instance().mBridge->getUUID()) //KC: keep the bridge on
+					if (JCLSLBridge::instance().mBridge && object_item_id == JCLSLBridge::instance().mBridge->getUUID()) //KC: keep the bridge on
 					{
 						llinfos << "bridge trying to get removed, keeping" << llendl;
 						current_item_ids.insert(object_item_id);
