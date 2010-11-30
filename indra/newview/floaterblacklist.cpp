@@ -43,11 +43,9 @@ BOOL LLFloaterBlacklist::postBuild()
 {
 	childSetAction("add_btn", onClickAdd, this);
 	childSetAction("clear_btn", onClickClear, this);
-	childSetAction("copy_uuid_btn", onClickCopyUUID, this);
 	childSetAction("remove_btn", onClickRemove, this);
 	childSetAction("save_btn", onClickSave, this);
 	childSetAction("load_btn", onClickLoad, this);
-	childSetVisible("copy_uuid_btn",false);
 	LLComboBox* box = getChild<LLComboBox>("asset_combo");
 	box->add("Texture",LLSD(0));
 	box->add("Sound",LLSD(1));
@@ -109,11 +107,30 @@ void LLFloaterBlacklist::onClickAdd(void* user_data)
 	addEntry(add_id,indata);
 }
 
+// Debugging dump.
+#if 0
+//static
+void LLFloaterBlacklist::dumpEntries(std::map<LLUUID,LLSD> list)
+{
+	std::map<LLUUID,LLSD>::iterator dump_iter = list.begin();
+	for (; dump_iter != list.end(); ++dump_iter)
+	{
+		llinfos << "Blacklist entry " <<
+			(LLUUID)(dump_iter->first).asString() <<
+			" contains " << (LLSD)(dump_iter->second) << llendl;
+	}
+}
+#endif
+
 //static
 void LLFloaterBlacklist::addEntry(LLUUID key, LLSD data)
 {
 	if(key.notNull())
 	{
+//		llinfos << "Blacklisting asset " << key.asString() <<
+//			" with data " << data << llendl;
+//		llinfos << "Blacklist at entry:" << llendl;
+//		dumpEntries(blacklist_entries);
 		if(!data.has("entry_type")) 
 		{
 			LL_WARNS("FloaterBlacklistAdd") << "addEntry called with no entry type, specify LLAssetType::Etype" << LL_ENDL;
@@ -132,6 +149,21 @@ void LLFloaterBlacklist::addEntry(LLUUID key, LLSD data)
 			input_date.replace(input_date.find("T"),1," ");
 			input_date.resize(input_date.size() - 1);
 			data["entry_date"] = input_date;
+//			llinfos << "Adding entry date, new data " <<
+//				data << llendl;
+		}
+		if(!data.has("ID_hashed"))
+		{
+//			llinfos << "Hashing key, input key " <<
+//				key.asString() << llendl;
+			LLUUID tmp_key;
+			tmp_key.generate(key.asString()+"hash");
+			key = tmp_key;
+//			llinfos << "Hashed output key " <<
+//				key.asString() << llendl;
+			data.insert("ID_hashed",true);
+//			llinfos << "Adding entry hashed flag, new data " <<
+//				data << llendl;
 		}
 		std::string test=data["entry_type"].asString();
 		if(data["entry_type"].asString() == "1")
@@ -148,7 +180,11 @@ void LLFloaterBlacklist::addEntry(LLUUID key, LLSD data)
 		    LLAPRFile::remove(wav_path);
 		  gAudiop->removeAudioData(sound_id);
 		}
+//		llinfos << "Adding blacklist entry with key " <<
+//			key.asString() << " and data " << data << llendl;
 		blacklist_entries.insert(std::pair<LLUUID,LLSD>(key,data));
+//		llinfos << "Blacklist at exit:" << llendl;
+//		dumpEntries(blacklist_entries);
 		updateBlacklists();
 	}
 	else
@@ -160,13 +196,6 @@ void LLFloaterBlacklist::onClickClear(void* user_data)
 {
 	blacklist_entries.clear();
 	updateBlacklists();
-}
-// static
-void LLFloaterBlacklist::onClickCopyUUID(void* user_data)
-{
-	LLFloaterBlacklist* floaterp = (LLFloaterBlacklist*)user_data;
-	LLScrollListCtrl* list = floaterp->getChild<LLScrollListCtrl>("file_list");
-	gViewerWindow->mWindow->copyTextToClipboard(utf8str_to_wstring(list->getFirstSelected()->getColumn(0)->getValue().asString()));
 }
 // static
 void LLFloaterBlacklist::onClickRemove(void* user_data)
@@ -210,17 +239,41 @@ void LLFloaterBlacklist::updateBlacklists()
 	{
 		blacklist_textures.clear();
 		gAssetStorage->mBlackListedAsset.clear();
+		std::map<LLUUID,LLSD> blacklist_entries2;
 		for(std::map<LLUUID,LLSD>::iterator itr = blacklist_entries.begin(); itr != blacklist_entries.end(); ++itr)
 		{
-			if(blacklist_entries[itr->first]["entry_type"].asString() == "0")
+			if(blacklist_entries[itr->first].has("ID_hashed") && (blacklist_entries[itr->first]["ID_hashed"].asBoolean() == true))
 			{
-				blacklist_textures.push_back(LLUUID(itr->first));
+				if(blacklist_entries[itr->first]["entry_type"].asString() == "0")
+				{
+					blacklist_textures.push_back(LLUUID(itr->first));
+				}
+				else
+				{
+					gAssetStorage->mBlackListedAsset.push_back(LLUUID(itr->first));
+				}
+				blacklist_entries2[itr->first] = blacklist_entries[itr->first];
+				blacklist_entries2[itr->second] = blacklist_entries[itr->second];
 			}
 			else
 			{
-				gAssetStorage->mBlackListedAsset.push_back(LLUUID(itr->first));
+				LLUUID tmp;
+				tmp = LLUUID::generateNewID(itr->first.asString()+"hash");
+				if(blacklist_entries[itr->first]["entry_type"].asString() == "0")
+				{
+					blacklist_textures.push_back(LLUUID(tmp));
+				}
+				else
+				{
+					gAssetStorage->mBlackListedAsset.push_back(LLUUID(tmp));
+				}
+				blacklist_entries[itr->first].insert("ID_hashed",true);
+				LLSD tmp2 = blacklist_entries[itr->second];
+				blacklist_entries2[itr->first] = tmp;
+				blacklist_entries2[itr->second] = tmp2;
 			}
 		}
+		blacklist_entries = blacklist_entries2;
 		saveToDisk();
 		LLFloaterBlacklist* instance = LLFloaterBlacklist::getInstance();
 		if(instance)

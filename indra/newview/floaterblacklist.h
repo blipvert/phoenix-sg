@@ -23,7 +23,7 @@ public:
 	as long as you keep the above format.
 	*/
 	static void addEntry(LLUUID key, LLSD data);
-
+	static void dumpEntries(std::map<LLUUID,LLSD> list);
 
 
 
@@ -43,7 +43,6 @@ private:
 	static void onClickClear(void* user_data);
 	static void onClickSave(void* user_data);
 	static void onClickLoad(void* user_data);
-	static void onClickCopyUUID(void* user_data);
 	static void onClickRemove(void* user_data);
 	
 };

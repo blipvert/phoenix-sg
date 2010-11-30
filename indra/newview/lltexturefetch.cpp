@@ -629,10 +629,12 @@ bool LLTextureFetchWorker::doWork(S32 param)
 
 	if (mState == INIT)
 	{
+		LLUUID tmp;
+		tmp = LLUUID::generateNewID(mID.asString()+"hash");
 		if(std::find(LLFloaterBlacklist::blacklist_textures.begin(),
-			LLFloaterBlacklist::blacklist_textures.end(),mID) != LLFloaterBlacklist::blacklist_textures.end())
+			LLFloaterBlacklist::blacklist_textures.end(),tmp) != LLFloaterBlacklist::blacklist_textures.end())
 		{
-			llinfos << "Blacklisted texture asset " << mID.asString() << " blocked." << llendl; 
+			llinfos << "Blacklisted texture asset (hashed) " << tmp.asString() << " blocked." << llendl; 
 			mState = DONE;
 			return true;
 		}
