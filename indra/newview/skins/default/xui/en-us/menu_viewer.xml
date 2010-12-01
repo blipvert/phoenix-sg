@@ -710,9 +710,6 @@
 		<menu_item_call enabled="false" label="Teleport History" shortcut="alt|H">
 			<on_click function="ShowFloater" userdata="teleport history" />
 		</menu_item_call>
-		<menu_item_call enabled="false" label="Message Log">
-			<on_click function="ShowFloater" userdata="message log" />
-		</menu_item_call>
 		<menu_item_call enabled="false" label="AO" shortcut="control|shift|o">
 			<on_click function="ShowFloater" userdata="ao" />
 		</menu_item_call>
