@@ -107,30 +107,11 @@ void LLFloaterBlacklist::onClickAdd(void* user_data)
 	addEntry(add_id,indata);
 }
 
-// Debugging dump.
-#if 0
-//static
-void LLFloaterBlacklist::dumpEntries(std::map<LLUUID,LLSD> list)
-{
-	std::map<LLUUID,LLSD>::iterator dump_iter = list.begin();
-	for (; dump_iter != list.end(); ++dump_iter)
-	{
-		llinfos << "Blacklist entry " <<
-			(LLUUID)(dump_iter->first).asString() <<
-			" contains " << (LLSD)(dump_iter->second) << llendl;
-	}
-}
-#endif
-
 //static
 void LLFloaterBlacklist::addEntry(LLUUID key, LLSD data)
 {
 	if(key.notNull())
 	{
-//		llinfos << "Blacklisting asset " << key.asString() <<
-//			" with data " << data << llendl;
-//		llinfos << "Blacklist at entry:" << llendl;
-//		dumpEntries(blacklist_entries);
 		if(!data.has("entry_type")) 
 		{
 			LL_WARNS("FloaterBlacklistAdd") << "addEntry called with no entry type, specify LLAssetType::Etype" << LL_ENDL;
@@ -149,21 +130,13 @@ void LLFloaterBlacklist::addEntry(LLUUID key, LLSD data)
 			input_date.replace(input_date.find("T"),1," ");
 			input_date.resize(input_date.size() - 1);
 			data["entry_date"] = input_date;
-//			llinfos << "Adding entry date, new data " <<
-//				data << llendl;
 		}
 		if(!data.has("ID_hashed"))
 		{
-//			llinfos << "Hashing key, input key " <<
-//				key.asString() << llendl;
 			LLUUID tmp_key;
 			tmp_key.generate(key.asString()+"hash");
 			key = tmp_key;
-//			llinfos << "Hashed output key " <<
-//				key.asString() << llendl;
 			data.insert("ID_hashed",true);
-//			llinfos << "Adding entry hashed flag, new data " <<
-//				data << llendl;
 		}
 		std::string test=data["entry_type"].asString();
 		if(data["entry_type"].asString() == "1")
@@ -180,11 +153,7 @@ void LLFloaterBlacklist::addEntry(LLUUID key, LLSD data)
 		    LLAPRFile::remove(wav_path);
 		  gAudiop->removeAudioData(sound_id);
 		}
-//		llinfos << "Adding blacklist entry with key " <<
-//			key.asString() << " and data " << data << llendl;
 		blacklist_entries.insert(std::pair<LLUUID,LLSD>(key,data));
-//		llinfos << "Blacklist at exit:" << llendl;
-//		dumpEntries(blacklist_entries);
 		updateBlacklists();
 	}
 	else
