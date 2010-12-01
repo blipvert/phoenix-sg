@@ -3323,7 +3323,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 			{
 				if (CHAT_SOURCE_AGENT == chat.mSourceType)
 				{
-					chat.mFromName = RlvStrings::getAnonym(from_name);
+					chat.mFromName = from_name = RlvStrings::getAnonym(from_name);
 					chat.mRlvNamesFiltered = TRUE;
 				}
 				else if ( (!is_owned_by_me) || (!is_attachment) )
