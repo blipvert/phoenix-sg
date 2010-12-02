@@ -1487,7 +1487,7 @@ void t1_encode_cblks(
 	} /* compno  */
 }
 
-void t1_decode_cblks(
+bool t1_decode_cblks(
 		opj_t1_t* t1,
 		opj_tcd_tilecomp_t* tilec,
 		opj_tccp_t* tccp)
@@ -1557,16 +1557,28 @@ void t1_decode_cblks(
 							}
 						}
 					} else {		/* if (tccp->qmfbid == 0) */
-						float* restrict tiledp = (float*) &tilec->data[(y * tile_w) + x];
-						for (j = 0; j < cblk_h; ++j) {
-							float* restrict tiledp2 = tiledp;
-							for (i = 0; i < cblk_w; ++i) {
-								float tmp = *datap * band->stepsize;
-								*tiledp2 = tmp;
-								datap++;
-								tiledp2++;
+						int chkSize=tilec->datasize - ((y * tile_w)+x);
+						if((chkSize < (cblk_h * cblk_w)) || (chkSize < (((cblk_h -1 ) * tile_w)+cblk_w)))
+						{
+							opj_free(cblk->data);
+							opj_free(cblk->segs);
+							opj_free(precinct->cblks.dec);
+							opj_event_msg(t1->cinfo, EVT_ERROR, "Block does not fit into tile.\n");
+							return false;
+						}
+						else
+						{
+							float* restrict tiledp = (float*) &tilec->data[(y * tile_w) + x];
+							for (j = 0; j < cblk_h; ++j) {
+								float* restrict tiledp2 = tiledp;
+								for (i = 0; i < cblk_w; ++i) {
+									float tmp = *datap * band->stepsize;
+									*tiledp2 = tmp;
+									datap++;
+									tiledp2++;
+								}
+								tiledp += tile_w;
 							}
-							tiledp += tile_w;
 						}
 					}
 					opj_free(cblk->data);
@@ -1576,5 +1588,6 @@ void t1_decode_cblks(
 			} /* precno */
 		} /* bandno */
 	} /* resno */
+	return true;
 }
 
