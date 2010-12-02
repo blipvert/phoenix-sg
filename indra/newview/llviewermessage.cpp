@@ -38,6 +38,7 @@
 #include <deque>
 
 #include "llaudioengine.h"
+#include "llavatarnamecache.h"
 #include "indra_constants.h"
 #include "lscript_byteformat.h"
 #include "mean_collision_data.h"
@@ -3284,7 +3285,38 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 				  last_chatters[from_id.asString()] = 0;
 			  }
 		  }
+		  
+		  // [Ansariel: Display name support]
+		  if (chatter->isAvatar())
+		  {
+#ifdef LL_RRINTERFACE_H //MK
+            if (!gRRenabled || !gAgent.mRRInterface.mContainsShownames)
+			{
+#endif //mk
+				if (LLAvatarNameCache::useDisplayNames())
+				{
+					LLAvatarName avatar_name;
+					if (LLAvatarNameCache::get(from_id, &avatar_name))
+					{
+					    static S32* sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
+						if (*sPhoenixNameSystem == 2 || (*sPhoenixNameSystem == 1 && avatar_name.mIsDisplayNameDefault))
+						{
+							from_name = avatar_name.mDisplayName;
+						}
+						else
+						{
+							from_name = avatar_name.getCompleteName();
+						}
+					}
+					chat.mFromName = from_name;
+				}
+#ifdef LL_RRINTERFACE_H //MK
+			}
+#endif //mk
+		  }
+		  // [/Ansariel: Display name support]
 		}
+		
 		BOOL visible_in_chat_bubble = FALSE;
 		std::string verb;
 

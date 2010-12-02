@@ -9,6 +9,7 @@
 // Copyright: See COPYING file that comes with this distribution
 //
 //
+#include "llavatarname.h"
 #include "llfloater.h"
 #include "llfloaterreporter.h"
 #include "lluuid.h"

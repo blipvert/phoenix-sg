@@ -116,6 +116,8 @@ LLVoiceChannel* LLVoiceChannel::sSuspendedVoiceChannel = NULL;
 
 BOOL LLVoiceChannel::sSuspended = FALSE;
 
+std::set<LLFloaterIMPanel*> LLFloaterIMPanel::sFloaterIMPanels;
+
 void session_starter_helper(
 	const LLUUID& temp_session_id,
 	const LLUUID& other_participant_id,
@@ -1124,6 +1126,10 @@ LLFloaterIMPanel::LLFloaterIMPanel(
 	mFirstKeystrokeTimer(),
 	mLastKeystrokeTimer()
 {
+    // [Ansariel: Display name support]
+    sFloaterIMPanels.insert(this);
+    // [/Ansariel: Display name support]
+
 	init(session_label);
 }
 
@@ -1160,6 +1166,10 @@ LLFloaterIMPanel::LLFloaterIMPanel(
 	mFirstKeystrokeTimer(),
 	mLastKeystrokeTimer()
 {
+    // [Ansariel: Display name support]
+    sFloaterIMPanels.insert(this);
+    // [/Ansariel: Display name support]
+    
 	mSessionInitialTargetIDs = ids;
 	init(session_label);
 }
@@ -1169,6 +1179,10 @@ void LLFloaterIMPanel::init(const std::string& session_label)
 {
 	mSessionLabel = session_label;
 
+    // [Ansariel: Display name support]
+    mProfileButtonEnabled = FALSE;
+    // [/Ansariel: Display name support]
+    
 	std::string xml_filename;
 	switch(mDialog)
 	{
@@ -1239,6 +1253,14 @@ void LLFloaterIMPanel::init(const std::string& session_label)
 								FALSE);
 
 	setTitle(mSessionLabel);
+
+    // [Ansariel: Display name support]
+	if (mProfileButtonEnabled)
+    {
+		lookupName();
+	}	
+    // [/Ansariel: Display name support]
+	
 	// enable line history support for instant message bar
 	mInputEditor->setEnableLineHistory(TRUE);
 
@@ -1293,9 +1315,34 @@ void LLFloaterIMPanel::init(const std::string& session_label)
 	}
 }
 
+// [Ansariel: Display name support]
+void LLFloaterIMPanel::lookupName()
+{
+	LLAvatarNameCache::get(mOtherParticipantUUID, boost::bind(&LLFloaterIMPanel::onAvatarNameLookup, _1, _2, this));
+}
+
+//static
+void LLFloaterIMPanel::onAvatarNameLookup(const LLUUID& id, const LLAvatarName& avatar_name, void* user_data)
+{
+	LLFloaterIMPanel* self = (LLFloaterIMPanel*)user_data;
+
+	if (self && sFloaterIMPanels.count(self) != 0)
+	{
+		std::string title = avatar_name.getCompleteName();
+		if (!title.empty())
+		{
+			self->setTitle(title);
+		}
+	}
+}
+// [/Ansariel: Display name support]
 
 LLFloaterIMPanel::~LLFloaterIMPanel()
 {
+    // [Ansariel: Display name support]
+    sFloaterIMPanels.erase(this);
+    // [/Ansariel: Display name support]
+
 	delete mSpeakers;
 	mSpeakers = NULL;
 
@@ -1716,7 +1763,12 @@ void LLFloaterIMPanel::addHistoryLine(const std::string &utf8msg, LLColor4 incol
 		else
 			histstr = name + utf8msg;
 
-		LLLogChat::saveHistory(getTitle(),histstr);
+		// [Ansariel: Display name support]
+		// Floater title contains display name -> bad idea to use that as filename
+		// mSessionLabel, however, should still be the old legacy name
+		//LLLogChat::saveHistory(getTitle(),histstr);
+		LLLogChat::saveHistory(mSessionLabel, histstr);
+		// [/Ansariel: Display name support]
 	}
 
 	if (!isInVisibleChain())
@@ -1937,7 +1989,10 @@ void LLFloaterIMPanel::onClickHistory( void* userdata )
 	if (self->mOtherParticipantUUID.notNull())
 	{
 		char command[256];
-		std::string fullname(gDirUtilp->getScrubbedFileName(self->getTitle()));
+		// [Ansariel: Display name support]
+		//std::string fullname(gDirUtilp->getScrubbedFileName(self->getTitle()));
+		std::string fullname(gDirUtilp->getScrubbedFileName(self->mSessionLabel));
+		// [/Ansariel: Display name support]
 		sprintf(command, "%s%s%s.txt", gDirUtilp->getPerAccountChatLogsDir().c_str(), gDirUtilp->getDirDelimiter().c_str(), fullname.c_str());
 		gViewerWindow->getWindow()->openFile(command);
 

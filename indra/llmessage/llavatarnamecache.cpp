@@ -586,6 +586,15 @@ void LLAvatarNameCache::buildLegacyName(const std::string& full_name,
 	av_name->mIsDisplayNameDefault = true;
 	av_name->mIsDummy = true;
 	av_name->mExpires = F64_MAX;
+
+	// [Ansariel]
+	// Why ain't those set? In case of disabled display names
+	// we would have to parse LLAvatarName::mDisplayName to get
+	// first and lastname if we need them. So do it already here
+	// for convenience.
+	std::istringstream fname(full_name);
+	fname >> av_name->mLegacyFirstName >> av_name->mLegacyLastName;
+	// [/Ansariel]
 }
 
 // fills in av_name if it has it in the cache, even if expired (can check expiry time)
