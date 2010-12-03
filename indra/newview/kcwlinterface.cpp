@@ -386,7 +386,7 @@ bool KCWindlightInterface::ParsePacelForWLSettings(const std::string& desc, LLSD
 						}
 					}
 				}
-				else if (match[3].matched)
+				else if (match[4].matched)
 				{
 					std::string preset(match[5]);
 					//llinfos << "got water: " << preset << llendl;
