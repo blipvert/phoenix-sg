@@ -112,8 +112,6 @@ public:
 	/// when user hits the save preset button
 	static void onOpenDayCycle(void* userData);
 
-	static void onClickFindMore(void* userData);
-
 	/// handle cloud scrolling
 	static void onCloudScrollXMoved(LLUICtrl* ctrl, void* userData);
 	static void onCloudScrollYMoved(LLUICtrl* ctrl, void* userData);
