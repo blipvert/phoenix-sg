@@ -74,10 +74,10 @@ public:
 	~LLSpeaker() {};
 	void lookupName();
 
-    // [Ansariel: Display name support]
+    // [Ansariel/Henri: Display name support]
 	//static void onAvatarNameLookup(const LLUUID& id, const std::string& first, const std::string& last, BOOL is_group, void* user_data);
     static void onAvatarNameLookup(const LLUUID& id, const LLAvatarName& avatar_name, void* user_data);
-    // [/Ansariel: Display name support]
+    // [/Ansariel/Henri: Display name support]
 
 	ESpeakerStatus	mStatus;			// current activity status in speech group
 	F32				mLastSpokeTime;		// timestamp when this speaker last spoke

@@ -3286,7 +3286,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 			  }
 		  }
 		  
-		  // [Ansariel: Display name support]
+		  // [Ansariel/Henri: Display name support]
 		  if (chatter->isAvatar())
 		  {
 #ifdef LL_RRINTERFACE_H //MK
@@ -3314,7 +3314,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 			}
 #endif //mk
 		  }
-		  // [/Ansariel: Display name support]
+		  // [/Ansariel/Henri: Display name support]
 		}
 		
 		BOOL visible_in_chat_bubble = FALSE;

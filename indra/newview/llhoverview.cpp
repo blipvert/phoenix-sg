@@ -260,7 +260,7 @@ void LLHoverView::updateText()
 				{
 // [/RLVa:KB]
 
-                    // [Ansariel: Display name support]
+                    // [Ansariel/Henri: Display name support]
     				std::string complete_name = firstname->getString();
     				complete_name += " ";
     				complete_name += lastname->getString();
@@ -281,7 +281,7 @@ void LLHoverView::updateText()
     						}
     					}
     				}
-					// [/Ansariel: Display name support]
+					// [/Ansariel/Henri: Display name support]
 
 					if (title)
 					{
@@ -289,9 +289,9 @@ void LLHoverView::updateText()
 						line.append(1, ' ');
 					}
 					
-					// [Ansariel: Display name support]
+					// [Ansariel/Henri: Display name support]
 					line += complete_name;
-					// [/Ansariel: Display name support]
+					// [/Ansariel/Henri: Display name support]
 					
 // [RLVa:KB] - Checked: 2009-07-08 (RLVa-1.0.0e)
 				}
@@ -344,15 +344,15 @@ void LLHoverView::updateText()
 					std::string name;
 					if (!nodep->mPermissions->isGroupOwned())
 					{
-						// [Ansariel: Display name support]
+						// [Ansariel/Henri: Display name support]
 						LLAvatarName avatar_name;
-						// [/Ansariel: Display name support]
+						// [/Ansariel/Henri: Display name support]
 						owner = nodep->mPermissions->getOwner();
 						if (LLUUID::null == owner)
 						{
 							line.append(LLTrans::getString("TooltipPublic"));
 						}
-						// [Ansariel: Display name support]
+						// [Ansariel/Henri: Display name support]
 						//else if(gCacheName->getFullName(owner, name))
 						else if (LLAvatarNameCache::get(owner, &avatar_name))
 						{
@@ -364,7 +364,7 @@ void LLHoverView::updateText()
 								case 2 : name = avatar_name.mDisplayName; break;
 								default : name = avatar_name.getCompleteName(); break;
 							}
-						// [/Ansariel: Display name support]
+						// [/Ansariel/Henri: Display name support]
 // [RLVa:KB] - Checked: 2009-07-08 (RLVa-1.0.0e)
 							if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))
 							{

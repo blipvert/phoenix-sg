@@ -216,10 +216,10 @@ public:
 					 EInstantMessage dialog);
 	virtual ~LLFloaterIMPanel();
 
-    // [Ansariel: Display name support]	
+    // [Ansariel/Henri: Display name support]	
 	void lookupName();
 	static void onAvatarNameLookup(const LLUUID& id, const LLAvatarName& avatar_name, void* user_data);	
-    // [/Ansariel: Display name support]
+    // [/Ansariel/Henri: Display name support]
 
 	/*virtual*/ BOOL postBuild();
 
@@ -432,7 +432,7 @@ private:
 	typedef std::map<LLUUID, LLStyleSP> styleMap;
 	static styleMap mStyleMap;
 	
-	// [Ansariel: Display name support]
+	// [Ansariel/Henri: Display name support]
 	static std::set<LLFloaterIMPanel*> sFloaterIMPanels;
 };
 

@@ -607,7 +607,7 @@ BOOL LLNetMap::handleToolTip( S32 x, S32 y, std::string& msg, LLRect* sticky_rec
 		{
 //			msg.append(fullname);
 // [RLVa:KB] - Version: 1.23.4 | Checked: 2009-07-08 (RLVa-1.0.0e) | Modified: RLVa-0.2.0b
-            // [Ansariel: Display name support]
+            // [Ansariel/Henri: Display name support]
 			// msg.append( (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) ? fullname : RlvStrings::getAnonym(fullname) );
             if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))
             {
@@ -644,7 +644,7 @@ BOOL LLNetMap::handleToolTip( S32 x, S32 y, std::string& msg, LLRect* sticky_rec
 #endif //mk
                 msg.append(fullname);
             }
-            // [/Ansariel: Display name support]
+            // [/Ansariel/Henri: Display name support]
 // [/RLVa:KB]
 			msg.append("\n");
 

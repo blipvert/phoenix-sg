@@ -606,7 +606,7 @@ bool LLFloaterAvatarList::LLAgentIM::handleEvent(LLPointer<LLEvent> event, const
 			// Single avatar
 			LLUUID agent_id = ids[0];
 			char buffer[MAX_STRING];
-			// [Ansariel: Display name support]
+			// [Ansariel/Henri: Display name support]
 			// snprintf(buffer, MAX_STRING, "%s", avlist->mAvatars[agent_id].getName().c_str());
 			LLAvatarName avatar_name;
 			if (LLAvatarNameCache::get(agent_id, &avatar_name))
@@ -615,7 +615,7 @@ bool LLFloaterAvatarList::LLAgentIM::handleEvent(LLPointer<LLEvent> event, const
 				gIMMgr->setFloaterOpen(TRUE);
 				gIMMgr->addSession(buffer,IM_NOTHING_SPECIAL,agent_id);
 			}
-			// [Ansariel: Display name support]
+			// [Ansariel/Henri: Display name support]
 		}
 		else
 		{
@@ -1150,7 +1150,7 @@ void LLFloaterAvatarList::updateAvatarList()
 			// Get avatar data
 			position = gAgent.getPosGlobalFromAgent(avatarp->getCharacterPosition());
 			
-			// [Ansariel: Display name support]
+			// [Ansariel/Henri: Display name support]
 			LLAvatarName avatar_name;
 			if (LLAvatarNameCache::get(avatarp->getID(), &avatar_name))
 			{
@@ -1167,7 +1167,7 @@ void LLFloaterAvatarList::updateAvatarList()
 				last = avatar_name.mLegacyLastName;
 			}
 			else continue;
-			// [/Ansariel: Display name support]
+			// [/Ansariel/Henri: Display name support]
 
 			if (avid.isNull()) continue;
 			if ( mAvatars.count( avid ) > 0 )
@@ -1191,7 +1191,7 @@ void LLFloaterAvatarList::updateAvatarList()
 			}
 			else continue;
 
-			// [Ansariel: Display name support]
+			// [Ansariel/Henri: Display name support]
 			LLAvatarName avatar_name;
 			if (LLAvatarNameCache::get(avid, &avatar_name))
 			{
@@ -1208,7 +1208,7 @@ void LLFloaterAvatarList::updateAvatarList()
 				last = avatar_name.mLegacyLastName;
 			}
 			else continue;
-			// [/Ansariel: Display name support]
+			// [/Ansariel/Henri: Display name support]
 
 			if ( mAvatars.count( avid ) > 0 )
 			{
@@ -1261,7 +1261,7 @@ void LLFloaterAvatarList::updateAvatarListVoice()
 				continue;
 			}
 
-			// [Ansariel: Display name support]
+			// [Ansariel/Henri: Display name support]
 			LLAvatarName avatar_name;
 			if (LLAvatarNameCache::get(participant_id, &avatar_name))
 			{
@@ -1278,7 +1278,7 @@ void LLFloaterAvatarList::updateAvatarListVoice()
 				last = avatar_name.mLegacyLastName;
 			}
 			else continue;
-			// [/Ansariel: Display name support]
+			// [/Ansariel/Henri: Display name support]
 
 			BOOL isLinden = ( strcmp(last.c_str(), "Linden") == 0 || last == "Linden" );
 			LLAvatarListEntry entry(participant_id, name, LLVector3d::zero, isLinden, TRUE);
@@ -1765,7 +1765,7 @@ void LLFloaterAvatarList::onClickIM(void* userdata)
 			// Single avatar
 			LLUUID agent_id = ids[0];
 			char buffer[MAX_STRING];
-			// [Ansariel: Display name support]
+			// [Ansariel/Henri: Display name support]
 			// snprintf(buffer, MAX_STRING, "%s", avlist->mAvatars[agent_id].getName().c_str());
 			LLAvatarName avatar_name;
 			if (LLAvatarNameCache::get(agent_id, &avatar_name))
@@ -1777,7 +1777,7 @@ void LLFloaterAvatarList::onClickIM(void* userdata)
 					IM_NOTHING_SPECIAL,
 					agent_id);
 			}
-			// [Ansariel: Display name support]
+			// [Ansariel/Henri: Display name support]
 		}
 		else
 		{

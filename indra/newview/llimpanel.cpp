@@ -1126,9 +1126,9 @@ LLFloaterIMPanel::LLFloaterIMPanel(
 	mFirstKeystrokeTimer(),
 	mLastKeystrokeTimer()
 {
-    // [Ansariel: Display name support]
+    // [Ansariel/Henri: Display name support]
     sFloaterIMPanels.insert(this);
-    // [/Ansariel: Display name support]
+    // [/Ansariel/Henri: Display name support]
 
 	init(session_label);
 }
@@ -1166,9 +1166,9 @@ LLFloaterIMPanel::LLFloaterIMPanel(
 	mFirstKeystrokeTimer(),
 	mLastKeystrokeTimer()
 {
-    // [Ansariel: Display name support]
+    // [Ansariel/Henri: Display name support]
     sFloaterIMPanels.insert(this);
-    // [/Ansariel: Display name support]
+    // [/Ansariel/Henri: Display name support]
     
 	mSessionInitialTargetIDs = ids;
 	init(session_label);
@@ -1179,9 +1179,9 @@ void LLFloaterIMPanel::init(const std::string& session_label)
 {
 	mSessionLabel = session_label;
 
-    // [Ansariel: Display name support]
+    // [Ansariel/Henri: Display name support]
     mProfileButtonEnabled = FALSE;
-    // [/Ansariel: Display name support]
+    // [/Ansariel/Henri: Display name support]
     
 	std::string xml_filename;
 	switch(mDialog)
@@ -1254,12 +1254,12 @@ void LLFloaterIMPanel::init(const std::string& session_label)
 
 	setTitle(mSessionLabel);
 
-    // [Ansariel: Display name support]
+    // [Ansariel/Henri: Display name support]
 	if (mProfileButtonEnabled)
     {
 		lookupName();
 	}	
-    // [/Ansariel: Display name support]
+    // [/Ansariel/Henri: Display name support]
 	
 	// enable line history support for instant message bar
 	mInputEditor->setEnableLineHistory(TRUE);
@@ -1315,7 +1315,7 @@ void LLFloaterIMPanel::init(const std::string& session_label)
 	}
 }
 
-// [Ansariel: Display name support]
+// [Ansariel/Henri: Display name support]
 void LLFloaterIMPanel::lookupName()
 {
 	LLAvatarNameCache::get(mOtherParticipantUUID, boost::bind(&LLFloaterIMPanel::onAvatarNameLookup, _1, _2, this));
@@ -1335,13 +1335,13 @@ void LLFloaterIMPanel::onAvatarNameLookup(const LLUUID& id, const LLAvatarName& 
 		}
 	}
 }
-// [/Ansariel: Display name support]
+// [/Ansariel/Henri: Display name support]
 
 LLFloaterIMPanel::~LLFloaterIMPanel()
 {
-    // [Ansariel: Display name support]
+    // [Ansariel/Henri: Display name support]
     sFloaterIMPanels.erase(this);
-    // [/Ansariel: Display name support]
+    // [/Ansariel/Henri: Display name support]
 
 	delete mSpeakers;
 	mSpeakers = NULL;
@@ -1763,12 +1763,12 @@ void LLFloaterIMPanel::addHistoryLine(const std::string &utf8msg, LLColor4 incol
 		else
 			histstr = name + utf8msg;
 
-		// [Ansariel: Display name support]
+		// [Ansariel/Henri: Display name support]
 		// Floater title contains display name -> bad idea to use that as filename
 		// mSessionLabel, however, should still be the old legacy name
 		//LLLogChat::saveHistory(getTitle(),histstr);
 		LLLogChat::saveHistory(mSessionLabel, histstr);
-		// [/Ansariel: Display name support]
+		// [/Ansariel/Henri: Display name support]
 	}
 
 	if (!isInVisibleChain())
@@ -1989,10 +1989,10 @@ void LLFloaterIMPanel::onClickHistory( void* userdata )
 	if (self->mOtherParticipantUUID.notNull())
 	{
 		char command[256];
-		// [Ansariel: Display name support]
+		// [Ansariel/Henri: Display name support]
 		//std::string fullname(gDirUtilp->getScrubbedFileName(self->getTitle()));
 		std::string fullname(gDirUtilp->getScrubbedFileName(self->mSessionLabel));
-		// [/Ansariel: Display name support]
+		// [/Ansariel/Henri: Display name support]
 		sprintf(command, "%s%s%s.txt", gDirUtilp->getPerAccountChatLogsDir().c_str(), gDirUtilp->getDirDelimiter().c_str(), fullname.c_str());
 		gViewerWindow->getWindow()->openFile(command);
 
