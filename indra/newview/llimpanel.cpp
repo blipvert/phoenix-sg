@@ -1731,9 +1731,23 @@ void LLFloaterIMPanel::addHistoryLine(const std::string &utf8msg, LLColor4 incol
 		}
 		else
 		{
+			std::string show_name = name;
+			LLAvatarName avatar_name;
+			if ((LLUUID::null != source) &&
+				LLAvatarNameCache::get(source, &avatar_name))
+			{
+				static S32* sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
+				switch (*sPhoenixNameSystem)
+				{
+					case 0 : show_name = avatar_name.getCompleteName(); break;
+					case 1 : show_name = (avatar_name.mIsDisplayNameDefault ? avatar_name.mDisplayName : avatar_name.getCompleteName()); break;
+					case 2 : show_name = avatar_name.mDisplayName; break;
+					default : show_name = avatar_name.getCompleteName(); break;
+				}
+			}
 			// Convert the name to a hotlink and add to message.
 			const LLStyleSP &source_style = LLStyleMap::instance().lookupAgent(source);
-			mHistoryEditor->appendStyledText(name,false,prepend_newline,source_style);
+			mHistoryEditor->appendStyledText(show_name,false,prepend_newline,source_style);
 		}
 		prepend_newline = false;
 	}
