@@ -1149,25 +1149,6 @@ void LLFloaterAvatarList::updateAvatarList()
 
 			// Get avatar data
 			position = gAgent.getPosGlobalFromAgent(avatarp->getCharacterPosition());
-			
-			// [Ansariel/Henri: Display name support]
-			LLAvatarName avatar_name;
-			if (LLAvatarNameCache::get(avatarp->getID(), &avatar_name))
-			{
-				static S32* sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
-				switch (*sPhoenixNameSystem)
-				{
-					case 0 : name = avatar_name.getLegacyName(); break;
-					case 1 : name = (avatar_name.mIsDisplayNameDefault ? avatar_name.mDisplayName : avatar_name.getCompleteName()); break;
-					case 2 : name = avatar_name.mDisplayName; break;
-					default : name = avatar_name.getLegacyName(); break;
-				}
-
-				first = avatar_name.mLegacyFirstName;
-				last = avatar_name.mLegacyLastName;
-			}
-			else continue;
-			// [/Ansariel/Henri: Display name support]
 
 			if (avid.isNull()) continue;
 			if ( mAvatars.count( avid ) > 0 )
@@ -1177,6 +1158,25 @@ void LLFloaterAvatarList::updateAvatarList()
 			}
 			else
 			{
+				// [Ansariel: Display name support]
+				LLAvatarName avatar_name;
+				if (LLAvatarNameCache::get(avatarp->getID(), &avatar_name))
+				{
+					static S32* sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
+					switch (*sPhoenixNameSystem)
+					{
+						case 0 : name = avatar_name.getLegacyName(); break;
+						case 1 : name = (avatar_name.mIsDisplayNameDefault ? avatar_name.mDisplayName : avatar_name.getCompleteName()); break;
+						case 2 : name = avatar_name.mDisplayName; break;
+						default : name = avatar_name.getLegacyName(); break;
+					}
+
+					first = avatar_name.mLegacyFirstName;
+					last = avatar_name.mLegacyLastName;
+				}
+				else continue;
+				// [/Ansariel: Display name support]
+
 				// Avatar not there yet, add it
 				BOOL isLinden = ( strcmp(last.c_str(), "Linden") == 0 || last == "Linden" );
 				LLAvatarListEntry entry(avid, name, position, isLinden, 0);
@@ -1191,25 +1191,6 @@ void LLFloaterAvatarList::updateAvatarList()
 			}
 			else continue;
 
-			// [Ansariel/Henri: Display name support]
-			LLAvatarName avatar_name;
-			if (LLAvatarNameCache::get(avid, &avatar_name))
-			{
-				static S32* sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
-				switch (*sPhoenixNameSystem)
-				{
-					case 0 : name = avatar_name.getLegacyName(); break;
-					case 1 : name = (avatar_name.mIsDisplayNameDefault ? avatar_name.mDisplayName : avatar_name.getCompleteName()); break;
-					case 2 : name = avatar_name.mDisplayName; break;
-					default : name = avatar_name.getLegacyName(); break;
-				}
-
-				first = avatar_name.mLegacyFirstName;
-				last = avatar_name.mLegacyLastName;
-			}
-			else continue;
-			// [/Ansariel/Henri: Display name support]
-
 			if ( mAvatars.count( avid ) > 0 )
 			{
 				// Avatar already in list, update position
@@ -1217,6 +1198,25 @@ void LLFloaterAvatarList::updateAvatarList()
 			}
 			else
 			{
+				// [Ansariel: Display name support]
+				LLAvatarName avatar_name;
+				if (LLAvatarNameCache::get(avid, &avatar_name))
+				{
+					static S32* sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
+					switch (*sPhoenixNameSystem)
+					{
+						case 0 : name = avatar_name.getLegacyName(); break;
+						case 1 : name = (avatar_name.mIsDisplayNameDefault ? avatar_name.mDisplayName : avatar_name.getCompleteName()); break;
+						case 2 : name = avatar_name.mDisplayName; break;
+						default : name = avatar_name.getLegacyName(); break;
+					}
+
+					first = avatar_name.mLegacyFirstName;
+					last = avatar_name.mLegacyLastName;
+				}
+				else continue;
+				// [/Ansariel: Display name support]
+
 				// Avatar not there yet, add it
 				BOOL isLinden = last == "Linden";
 				LLAvatarListEntry entry(avid, name, position, isLinden, 0);
