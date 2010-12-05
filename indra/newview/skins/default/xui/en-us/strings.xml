@@ -1645,6 +1645,57 @@ string llGetHTTPHeader(key request_id, string header)
 Returns the value for header for request_id
   </string>
   <string name="LSLTipText_llSetPrimMediaParams">
+llSetPrimMediaParams(integer face, list params)
+Sets the media params for a particular face on an object. If media is not already on this object, add it.
+List is a set of name/value pairs in no particular order.  Params not specified are unchanged, or if new media is added then set to the default specified.
+The possible names are below, along with the types of values and what they mean.
+  </string>
+  <string name="LSLTipText_llGetPrimMediaParams">
+list llGetPrimMediaParams(integer face, list params)
+Returns the media params for a particular face on an object, given the desired list of names, in the order requested.
+(Returns an empty list if no media exists on the face.)
+  </string>
+  <string name="LSLTipText_llClearPrimMedia">
+llClearPrimMedia(integer face)
+Clears (deletes) the media and all params from the given face.
+  </string>
+  <string name="LSLTipText_llSetLinkPrimitiveParamsFast">
+llSetLinkPrimitiveParamsFast(integer linknumber, list rules)
+Identical to llSetLinkPrimitiveParams() but executes without script delay.
+  </string>
+  <string name="LSLTipText_llGetLinkPrimitiveParams">
+list llGetLinkPrimitiveParams(integer link, list params)
+Similar to llGetPrimitiveParams() but applies to any prim in the link set and without script delay.
+  </string>
+  <string name="LSLTipText_llLinkParticleSystem">
+llLinkParticleSystem(integer link, list params)
+Similar to llParticleSystem() but applies to any prim in the link set.
+  </string>
+  <string name="LSLTipText_llSetLinkTextureAnim">
+llSetLinkTextureAnim(integer link, integer mode, integer face, integer sizex, integer sizey, float start, float length, float rate)
+Similar to llSetTextureAnim() but applies to any prim in the link set.
+  </string>
+  <string name="LSLTipText_llGetLinkNumberOfSides">
+integer llGetLinkNumberOfSides(integer link)
+Similar to llGetNumberOfSides() but applies to any prim in the link set.
+  </string>
+  <string name="LSLTipText_llGetUsername" translate="false">
+string llGetUsername(key id)
+Returns the single-word username of an avatar, iff the avatar is in the current region, otherwise the empty string.
+  </string>
+  <string name="LSLTipText_llRequestUsername" translate="false">
+key llRequestUsername(key id)
+Requests single-word username of an avatar.  When data is available the dataserver event will be raised.
+  </string>
+  <string name="LSLTipText_llGetDisplayName" translate="false">
+string llGetDisplayName(key id)
+Returns the name of an avatar, iff the avatar is in the current simulator, otherwise the empty string.
+  </string>
+  <string name="LSLTipText_llRequestDisplayName" translate="false">
+key llRequestDisplayName(key id)
+Requests name of an avatar.  When data is available the dataserver event will be raised.
+  </string>
+  <string name="LSLTipText_llSetPrimMediaParams">
     integer llSetPrimMediaParams(integer face, list params)
     Returns an integer that is a STATUS_* flag which details the success/failure of the operation(s).
   </string>
