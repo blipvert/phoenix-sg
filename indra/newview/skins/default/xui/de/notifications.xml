@@ -133,7 +133,7 @@ Wählen Sie ein einzelnes Objekt aus und versuchen Sie es erneut.
 	</notification>
 	<notification name="GrantModifyRights">
 		Die Gewährung von Änderungsrechten an andere Einwohner ermöglicht es diesen, JEDES BELIEBIGE Objekt zu ändern oder an sich zu nehmen, das Sie in der Second Life-Welt besitzen. Seien Sie SEHR vorsichtig beim Erteilen dieser Erlaubnis.
-Möchten Sie [FIRST_NAME] [LAST_NAME] Änderungsrechte gewähren?
+Möchten Sie [NAME] Änderungsrechte gewähren?
 		<usetemplate name="okcancelbuttons" notext="Nein" yestext="Ja"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -142,7 +142,7 @@ Möchten Sie den ausgewählten Einwohnern Änderungsrechte gewähren?
 		<usetemplate name="okcancelbuttons" notext="Nein" yestext="Ja"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		Möchten Sie [FIRST_NAME] [LAST_NAME] die Änderungsrechte entziehen?
+		Möchten Sie [NAME] die Änderungsrechte entziehen?
 		<usetemplate name="okcancelbuttons" notext="Nein" yestext="Ja"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -979,7 +979,7 @@ Sie sind nicht berechtigt, Land für die aktive Gruppe zu kaufen.
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		Möchten Sie [FIRST_NAME] [LAST_NAME] aus Ihrer Freundesliste entfernen?
+		Möchten Sie [NAME] aus Ihrer Freundesliste entfernen?
 		<usetemplate name="okcancelbuttons" notext="Abbrechen" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">

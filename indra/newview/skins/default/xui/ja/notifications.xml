@@ -134,7 +134,7 @@
 	<notification name="GrantModifyRights">
 		他の住人に変更権限を与えると、その人はあなたが所有している
 すべてのオブジェクトを変更、削除、または取得することができるようになります。この許可を与えるときは細心の注意を払ってください。
-[FIRST_NAME] [LAST_NAME]に対して変更権限を与えますか？
+[NAME]に対して変更権限を与えますか？
 		<usetemplate name="okcancelbuttons" notext="いいえ" yestext="はい"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -144,7 +144,7 @@
 		<usetemplate name="okcancelbuttons" notext="いいえ" yestext="はい"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		[FIRST_NAME] [LAST_NAME]に対して変更権限を取り消しますか？
+		[NAME]に対して変更権限を取り消しますか？
 		<usetemplate name="okcancelbuttons" notext="いいえ" yestext="はい"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -1035,7 +1035,7 @@ L$は返金されません。
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		[FIRST_NAME] [LAST_NAME]をフレンドリストから削除しますか？
+		[NAME]をフレンドリストから削除しますか？
 		<usetemplate name="okcancelbuttons" notext="取り消し" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">

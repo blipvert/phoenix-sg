@@ -138,7 +138,7 @@ Kérjük csak egy tárgyat válassz ki és próbáld újra.
 	</notification>
 	<notification name="GrantModifyRights">
 		A jogok módosításának átruházása más lakó részére lehetővé teszi a földön lévő BÁRMELY tárgy megváltozatásának jogát. Kérjük kezeld NAGYON figyelmesen ennek az engedélynek a kiosztását.
-Biztos, hogy átruházod a módosítás jogát a következő lakóra: [LAST_NAME] [FIRST_NAME]?
+Biztos, hogy átruházod a módosítás jogát a következő lakóra: [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Nem" yestext="Igen"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -147,7 +147,7 @@ Biztos, hogy át kívánod ruházni a tárgyak módosítására való jogosults�
 		<usetemplate name="okcancelbuttons" notext="Nem" yestext="Igen"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		Visszavonod a módosítás jogát a következő lakótól: [LAST_NAME] [FIRST_NAME]?
+		Visszavonod a módosítás jogát a következő lakótól: [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Nem" yestext="Igen"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -936,7 +936,7 @@ Barátság felajánlása ennek: [NAME]?
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		[FIRST_NAME] [LAST_NAME] eltávolítása a barátok listájáról?
+		[NAME] eltávolítása a barátok listájáról?
 	</notification>
 	<notification name="RemoveMultipleFromFriends">
 		Több barátot szeretnél eltávolítani a listáról?

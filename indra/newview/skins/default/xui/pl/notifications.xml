@@ -140,7 +140,7 @@ Wybierz pojedynczy obiekt i spróbuj jeszcze raz.
 	<notification name="GrantModifyRights">
 		Udzielenie praw modyfikacji innemu Rezydentowi umożliwia modyfikację, usuwanie lub wzięcie JAKIEGOKOLWIEK z Twoich obiektów.
 Używaj tej opcji z rozwagą!
-Czy chcesz dać prawa modyfikacji osobie [FIRST_NAME] [LAST_NAME]?
+Czy chcesz dać prawa modyfikacji osobie [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Nie" yestext="Tak"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -150,7 +150,7 @@ Czy chcesz dać prawa modyfikacji wybranym osobom?
 		<usetemplate name="okcancelbuttons" notext="Nie" yestext="Tak"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		Czy chcesz odebrać prawa modyfikacji Rezydentowi [FIRST_NAME] [LAST_NAME]?
+		Czy chcesz odebrać prawa modyfikacji Rezydentowi [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Nie" yestext="Tak"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -976,7 +976,7 @@ Zaproponować znajomość [NAME]?
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		Chcesz usunąć [FIRST_NAME] [LAST_NAME] z listy Twoich znajomych?
+		Chcesz usunąć [NAME] z listy Twoich znajomych?
 		<usetemplate name="okcancelbuttons" notext="Anuluj" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">

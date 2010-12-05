@@ -139,7 +139,7 @@ Vælg kun en genstand, og prøv igen.
 	</notification>
 	<notification name="GrantModifyRights">
 		At give redigerings rettigheder til en anden beboer, giver dem mulighed for at ændre, slette eller tage alle genstande, du måtte have i verden. Vær meget forsigtig når uddeler denne tilladelse.
-Ønsker du at ændre rettigheder for [FIRST_NAME] [LAST_NAME]?
+Ønsker du at ændre rettigheder for [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Nej" yestext="Ja"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -148,7 +148,7 @@ Vælg kun en genstand, og prøv igen.
 		<usetemplate name="okcancelbuttons" notext="Nej" yestext="Ja"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		Vil du tilbagekalde rettighederne for [FIRST_NAME] [LAST_NAME]?
+		Vil du tilbagekalde rettighederne for [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Nej" yestext="Ja"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">

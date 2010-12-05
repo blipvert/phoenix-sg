@@ -141,7 +141,7 @@
 	<notification name="GrantModifyRights">
 		授予另外一名居民修改的权利，意味着允许他们修改、删除或拿走
 任何你在世界里可能拥有的物品。请在执行这项许可的时候格外小心。
-你真的希望授予[FIRST_NAME] [LAST_NAME]修改权利吗？
+你真的希望授予[NAME]修改权利吗？
 		<usetemplate name="okcancelbuttons" notext="不，我想再考虑一下" yestext="是的，我愿意"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -151,7 +151,7 @@
 		<usetemplate name="okcancelbuttons" notext="不，我想再考虑一下" yestext="是的，我愿意"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		你真的希望撤回[FIRST_NAME] [LAST_NAME]的修改权利吗？
+		你真的希望撤回[NAME]的修改权利吗？
 		<usetemplate name="okcancelbuttons" notext="不，我想再考虑一下" yestext="是的，我愿意"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -1033,7 +1033,7 @@ www.secondlife.com/support
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		你是否要将[FIRST_NAME] [LAST_NAME] 从好友列表中去除？
+		你是否要将[NAME] 从好友列表中去除？
 		<usetemplate name="okcancelbuttons" notext="取消" yestext="移除"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">

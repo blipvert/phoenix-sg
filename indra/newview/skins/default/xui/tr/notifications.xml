@@ -128,7 +128,7 @@ Lütfen sadece bir obje seçiniz ve tekrar deneyiniz.
 	<notification name="GrantModifyRights">
 		Başka bir üyeye modifiye izni vermek,onun sizin iç dünyadaki objelerinizi değiştirmesine, silmesine veya almasına olanak sağlar.
 Bu izni verirken ÇOK dikkatli olunuz.
-[FIRST_NAME] [LAST_NAME] kişisi için modifiye iznini onaylıyor musunuz?
+[NAME] kişisi için modifiye iznini onaylıyor musunuz?
 		<usetemplate name="okcancelbuttons" notext="Hayır" yestext="Evet"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -138,7 +138,7 @@ Seçili üyeler için modifiye izinlerini onaylıyor musunuz?
 		<usetemplate name="okcancelbuttons" notext="Hayır" yestext="Evet"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		[FIRST_NAME] [LAST_NAME] kişisi için modifiye iznini geri almak istiyor musunuz?
+		[NAME] kişisi için modifiye iznini geri almak istiyor musunuz?
 		<usetemplate name="okcancelbuttons" notext="Hayır" yestext="Evet"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -807,7 +807,7 @@ Aktif grubunuz için arazi satın alma izniniz yok.
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		[FIRST_NAME] [LAST_NAME] kişisini arkadaşlar listenizden silmek istiyor musunuz?
+		[NAME] kişisini arkadaşlar listenizden silmek istiyor musunuz?
 		<usetemplate name="okcancelbuttons" notext="İptal" yestext="Tamam"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">

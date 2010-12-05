@@ -48,6 +48,7 @@
 #include "llfloaterpreference.h"
 #include "llavatarnamecache.h"
 #include "llvoavatar.h"
+#include "llcallingcard.h"
 
 LLPanelGeneral::LLPanelGeneral()
 {
@@ -133,6 +134,8 @@ void LLPanelGeneral::apply()
 			if(namesystem_combobox->getCurrentIndex()<=0 || namesystem_combobox->getCurrentIndex()>2) LLAvatarNameCache::setUseDisplayNames(false);
 			else LLAvatarNameCache::setUseDisplayNames(true);
 			LLVOAvatar::invalidateNameTags(); // Remove all clienttags to get them updated
+
+			LLAvatarTracker::instance().updateFriends();
 		}
 	}
 	

@@ -133,7 +133,7 @@ Veuillez ne sélectionner qu&apos;un seul objet.
 	</notification>
 	<notification name="GrantModifyRights">
 		Lorsque vous accordez des droits d&apos;édition à un autre résident, vous lui permettez de changer, supprimer ou prendre n&apos;importe lequel de vos objets dans le Monde. Réfléchissez bien avant d&apos;accorder ces droits.
-Souhaitez-vous accorder des droits d&apos;édition à [FIRST_NAME] [LAST_NAME] ?
+Souhaitez-vous accorder des droits d&apos;édition à [NAME] ?
 		<usetemplate name="okcancelbuttons" notext="Non" yestext="Oui"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -142,7 +142,7 @@ Souhaitez-vous accorder des droits d&apos;édition aux résidents selectionnés�
 		<usetemplate name="okcancelbuttons" notext="Non" yestext="Oui"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		Souhaitez-vous retirer les droits d&apos;édition à [FIRST_NAME] [LAST_NAME] ?
+		Souhaitez-vous retirer les droits d&apos;édition à [NAME] ?
 		<usetemplate name="okcancelbuttons" notext="Non" yestext="Oui"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -969,7 +969,7 @@ Proposer à [NAME] de devenir votre ami(e) ?
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		Voulez-vous supprimer [FIRST_NAME] [LAST_NAME] de votre liste d&apos;amis ?
+		Voulez-vous supprimer [NAME] de votre liste d&apos;amis ?
 		<usetemplate name="okcancelbuttons" notext="Annuler" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">

@@ -137,7 +137,7 @@ Por favor, revise su conexión a internet.
 		<usetemplate canceltext="Cancelar" name="yesnocancelbuttons" notext="No guardarlos" yestext="Guardarlos todos"/>
 	</notification>
 	<notification name="GrantModifyRights">
-		Al conceder derechos de modificación a otro residente le autoriza a cambiar, borrar, o coger CUALQUIER objeto que usted tenga en el mundo. Sea MUY cuidadoso dando este permiso. ¿Quiere conceder derechos de modificación a [FIRST_NAME] [LAST_NAME]?
+		Al conceder derechos de modificación a otro residente le autoriza a cambiar, borrar, o coger CUALQUIER objeto que usted tenga en el mundo. Sea MUY cuidadoso dando este permiso. ¿Quiere conceder derechos de modificación a [NAME]?
 		<usetemplate name="okcancelbuttons" notext="No" yestext="Sí"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -145,7 +145,7 @@ Por favor, revise su conexión a internet.
 		<usetemplate name="okcancelbuttons" notext="No" yestext="Sí"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		¿Quiere revocar los derechos de modificación a [FIRST_NAME] [LAST_NAME]?
+		¿Quiere revocar los derechos de modificación a [NAME]?
 		<usetemplate name="okcancelbuttons" notext="No" yestext="Sí"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -989,7 +989,7 @@ usted no tiene el permiso de comprar terreno para el grupo que tiene activado ac
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		¿Quiere quitar a [FIRST_NAME] [LAST_NAME] de su lista de amigos?
+		¿Quiere quitar a [NAME] de su lista de amigos?
 		<usetemplate name="okcancelbuttons" notext="Cancelar" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">

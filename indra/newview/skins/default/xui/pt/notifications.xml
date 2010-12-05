@@ -139,7 +139,7 @@ Por favor, selecione apenas um objeto e tente novamente.
 	<notification name="GrantModifyRights">
 		Conceder direitos de modificar a outros residentes lhes permite trocar, deletar ou pegar QUAISQUER objetos que você possa ter no mundo.
 Seja MUITO cuidadoso(a) quando passar esta permissão.
-Você deseja conceder direitos de modificar para [FIRST_NAME] [LAST_NAME]?
+Você deseja conceder direitos de modificar para [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Não" yestext="Sim"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -148,7 +148,7 @@ Você deseja permitir que os residentes selecionados tenham direito de edição?
 		<usetemplate name="okcancelbuttons" notext="Não" yestext="Sim"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		Você deseja cancelar os direitos de edição de [FIRST_NAME] [LAST_NAME]?
+		Você deseja cancelar os direitos de edição de [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Não" yestext="Sim"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -979,7 +979,7 @@ Oferecer amizade para [NAME]?
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		Você quer remover [FIRST_NAME] [LAST_NAME] da sua lista de amigos?
+		Você quer remover [NAME] da sua lista de amigos?
 		<usetemplate name="okcancelbuttons" notext="Cancelar" yestext="Remover"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">

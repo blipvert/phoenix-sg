@@ -140,7 +140,7 @@
 	<notification name="GrantModifyRights">
 		Дает право другому резиденту изменять ЛЮБЫЕ Ваши объекты в мире.
 Будьте ОЧЕНЬ осторожны, когда присваиваете такие права.
-Вы уверены в передаче прав на изменение [FIRST_NAME] [LAST_NAME]?
+Вы уверены в передаче прав на изменение [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Нет" yestext="Да"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -150,7 +150,7 @@
 		<usetemplate name="okcancelbuttons" notext="Нет" yestext="Да"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		Хотите отобрать право на изменение у [FIRST_NAME] [LAST_NAME]?
+		Хотите отобрать право на изменение у [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Нет" yestext="Да"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -992,7 +992,7 @@ www.secondlife.com/support
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		Удалить [FIRST_NAME] [LAST_NAME] из списка Друзей?
+		Удалить [NAME] из списка Друзей?
 		<usetemplate name="okcancelbuttons" notext="Отмена" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">
