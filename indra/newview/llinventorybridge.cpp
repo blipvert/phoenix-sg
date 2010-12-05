@@ -4896,7 +4896,7 @@ void wear_inventory_category_on_avatar_step3(LLWearableHoldingPattern* holder, B
 			if( wearable && ((S32)wearable->getType() == i) )
 			{
 				LLViewerInventoryItem* item;
-				item = (LLViewerInventoryItem*)gInventory.getItem(data->mItemID);
+				item = (LLViewerInventoryItem*)gInventory.getLinkedItem(data->mItemID);
 				if( item && (item->getAssetUUID() == wearable->getID()) )
 				{
 				//RN: after discussing with Brashears, I disabled this code
