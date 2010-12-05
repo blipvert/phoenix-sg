@@ -7,7 +7,7 @@
     <panel label="Liste" name="list_tab">
       <scroll_list
           name="avatar_list"
-          tool_tip="Umschalten oder Strg gedrückt halten, um mehrere Avatare auszuwählen">
+          tool_tip="Umschalten oder Strg gedrÃ¼ckt halten, um mehrere Avatare auszuwÃ¤hlen">
         <column name="avatar_name" label="Name" />
         <column name="voice" label="Voice" />
         <column name="distance" label="Distanz" />
@@ -20,26 +20,26 @@
     </panel>	
 	<panel label="Optionen" mouse_opaque="true" name="options_tab">
 		<check_box label="Radar-Warnungen an Chat senden" control_name="PhoenixRadarChatAlerts" />
-		<check_box label="Av betritt / verlässt Simulator" name="radar_chat_sim_toggle" control_name="PhoenixRadarAlertSim" />
-		<check_box label="Av betritt / verlässt Draw Distance" name="radar_chat_draw_toggle" control_name="PhoenixRadarAlertDraw" />
-		<check_box label="Av betritt / verlässt Chat-Reichweite" name="radar_chat_chatrange_toggle" control_name="PhoenixRadarAlertChatRange" />
+		<check_box label="Av betritt / verlÃ¤sst Simulator" name="radar_chat_sim_toggle" control_name="PhoenixRadarAlertSim" />
+		<check_box label="Av betritt / verlÃ¤sst Draw Distance" name="radar_chat_draw_toggle" control_name="PhoenixRadarAlertDraw" />
+		<check_box label="Av betritt / verlÃ¤sst Chat-Reichweite" name="radar_chat_chatrange_toggle" control_name="PhoenixRadarAlertChatRange" />
 		<check_box label="Av Altersalarm" name="agealert" control_name="PhoenixAvatarAgeAlert" tool_tip="Aktiviert Avatar-Altersalarm" />
-		<spinner label_width="64" left_delta="100" name="AgeAlertDays" label="Schwellwert" tool_tip="Schwellwert für Altersalarm" control_name="PhoenixAvatarAgeAlertDays" />
+		<spinner label_width="64" left_delta="100" name="AgeAlertDays" label="Schwellwert" tool_tip="Schwellwert fÃ¼r Altersalarm" control_name="PhoenixAvatarAgeAlertDays" />
 
-		<check_box label="Aktualisieren" name="update_enabled_cb" tool_tip="Auswählen ob die Avatar-Liste aktualisiert werden soll" />
-		<check_box label="Aktualisieren auch wenn geschlossen" name="keep_open" control_name="PhoenixAvatarListKeepOpen" tool_tip="Versteckt das Fenster anstatt es zu schließen, um weiterhin Nachrichten an den Chat zu schicken" />
-		<check_box label="Hole Avatar-Informationen" name="fetch_avdata_enabled_cb" tool_tip="Auswählen ob Informationen zu Avataren geladen werden sollen" />
-		<check_box label="Schlüssel an HUD senden" name="radar_chat_keys" control_name="PhoenixRadarChatKeys" tool_tip="Einstellen ob Schlüssel von Avataren an LSL-Scripte gesendet werden" />
+		<check_box label="Aktualisieren" name="update_enabled_cb" tool_tip="AuswÃ¤hlen ob die Avatar-Liste aktualisiert werden soll" />
+		<check_box label="Aktualisieren auch wenn geschlossen" name="keep_open" control_name="PhoenixAvatarListKeepOpen" tool_tip="Versteckt das Fenster anstatt es zu schlieÃŸen, um weiterhin Nachrichten an den Chat zu schicken" />
+		<check_box label="Hole Avatar-Informationen" name="fetch_avdata_enabled_cb" tool_tip="AuswÃ¤hlen ob Informationen zu Avataren geladen werden sollen" />
+		<check_box label="SchlÃ¼ssel an HUD senden" name="radar_chat_keys" control_name="PhoenixRadarChatKeys" tool_tip="Einstellen ob SchlÃ¼ssel von Avataren an LSL-Scripte gesendet werden" />
 
       <text name="custom_text">
-Sende gewählte AV-Namen/-Schlüssel
+Sende gewÃ¤hlte AV-Namen/-SchlÃ¼ssel
 mit folgendem Befehl an Scripte
 
 Syntax: /&lt;channel&gt; &lt;command text&gt;, 
 Platzhalter sind #k = AV-UUID, #n = AV-Name
       </text>
       <line_editor label="Benutzerdefinierter Befehl." name="customcommand" control_name="PhoenixAvatarlistCustomAction" tool_tip="Benutzerdefinierter Chat-Befehl" />
-      <check_box height="32" label="Freunde und stummg. Avatare einfärben" name="colorfriends" control_name="PhoenixAvatarListColorEntries" tool_tip="Freunde und stummgeschaltete Avatare in extra Farben darstellen" />
+      <check_box height="32" label="Freunde und stummg. Avatare einfÃ¤rben" name="colorfriends" control_name="PhoenixAvatarListColorEntries" tool_tip="Freunde und stummgeschaltete Avatare in extra Farben darstellen" />
 
 
     </panel>

@@ -4,5 +4,5 @@
 		<column name="title" label="Titel" />
 		<column name="group_name" label="Gruppe" />
 	</scroll_list>
-	<button name="activate" label="Aktivieren" tool_tip="Ausgewählten Gruppen-Titel aktivieren"	/>
+	<button name="activate" label="Aktivieren" tool_tip="AusgewÃ¤hlten Gruppen-Titel aktivieren"	/>
 </floater>
