@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Location of the vivox binary
-URL="http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/vivox-3.1.0001.8821-linux-20100529.tar.bz2"
+URL="http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/slvoice-3.2.0002.9361-linux-20101117a.tar.bz2"
 ARCHIVE="${URL##*/}"
 
 if [[ "$1" == "--force" ]]; then
