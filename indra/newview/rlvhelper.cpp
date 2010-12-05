@@ -812,7 +812,7 @@ void RlvForceWear::done()
 				LLViewerInventoryItem* pItem = wearItems.get(0);
 				if ( (pItem) && ((LLAssetType::AT_BODYPART == pItem->getType()) || (LLAssetType::AT_CLOTHING == pItem->getType())) )
 				{
-					LLFoundData* pFound = new LLFoundData(pItem->getUUID(), pItem->getAssetUUID(), pItem->getName(), pItem->getType());
+					LLFoundData* pFound = new LLFoundData(pItem->getLinkedUUID(), pItem->getAssetUUID(), pItem->getName(), pItem->getType());
 					pWearData->mFoundList.push_front(pFound);
 				}
 			}
