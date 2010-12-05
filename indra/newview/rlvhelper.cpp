@@ -366,6 +366,7 @@ void RlvForceWear::forceFolder(const LLViewerInventoryCategory* pFolder, EWearAc
 			case LLAssetType::AT_CLOTHING:
 				if (isWearAction(eAction))
 				{
+					eCurAction = ACTION_WEAR_REPLACE; // 1.X doesn't support multi-wearables so "add" means "replace" for wearables
 					ERlvWearMask eWearMask = gRlvWearableLocks.canWear(pRlvItem);
 					if ( ((ACTION_WEAR_REPLACE == eCurAction) && (eWearMask & RLV_WEAR_REPLACE)) ||
 						 ((ACTION_WEAR_ADD == eCurAction) && (eWearMask & RLV_WEAR_ADD)) )
@@ -688,7 +689,6 @@ void RlvForceWear::remAttachment(const LLViewerObject* pAttachObj)
 // Checked: 2010-08-30 (RLVa-1.1.3b) | Modified: RLVa-1.2.1c
 void RlvForceWear::addWearable(const LLViewerInventoryItem* pItem, EWearAction eAction)
 {
-	eAction = ACTION_WEAR_REPLACE; // 1.X doesn't support multi-wearables so "add" means "replace" for wearables
 	const LLWearable* pWearable = gAgent.getWearableFromWearableItem(pItem->getLinkedUUID());
 	// When replacing remove all currently worn wearables of this type *unless* the item is currently worn
 	if ( (ACTION_WEAR_REPLACE == eAction) && (!pWearable) )
