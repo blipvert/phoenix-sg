@@ -4820,7 +4820,9 @@ void wear_inventory_category_on_avatar_step2( BOOL proceed, void* userdata )
 // [RLVa:KB] - Checked: 2010-03-05 (RLVa-1.2.0z) | Modified: RLVa-1.2.0b
 			// Filter out any new attachments that can't be worn before adding them
 			if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
-				obj_items_new.erase(std::remove_if(obj_items_new.begin(), obj_items_new.end(), RlvPredCanNotWearItem(RLV_WEAR_REPLACE)), obj_items_new.end());
+				obj_items_new.erase(std::remove_if(obj_items_new.begin(), obj_items_new.end(), RlvPredCanNotWearItem(RLV_WEAR_ADD)), obj_items_new.end());
+			for (S32 idxObjNew = 0; idxObjNew < obj_items_new.count(); idxObjNew++)
+				RlvAttachmentLockWatchdog::instance().onWearAttachment(obj_items_new.get(idxObjNew).get() , RLV_WEAR_ADD);
 			obj_items.insert(obj_items.end(), obj_items_new.begin(), obj_items_new.end());
 // [/RLVa:KB]
 
@@ -4896,7 +4898,7 @@ void wear_inventory_category_on_avatar_step3(LLWearableHoldingPattern* holder, B
 			if( wearable && ((S32)wearable->getType() == i) )
 			{
 				LLViewerInventoryItem* item;
-				item = (LLViewerInventoryItem*)gInventory.getItem(data->mItemID);
+				item = (LLViewerInventoryItem*)gInventory.getLinkedItem(data->mItemID);
 				if( item && (item->getAssetUUID() == wearable->getID()) )
 				{
 				//RN: after discussing with Brashears, I disabled this code

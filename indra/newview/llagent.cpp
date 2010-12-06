@@ -8044,7 +8044,7 @@ void LLAgent::setWearableOutfit(
 		{
 			const LLUUID& old_item_id = mWearableEntry[ type ].mItemID;
 			if( (old_wearable->getID() == new_wearable->getID()) &&
-				(old_item_id == new_item->getUUID()) )
+				(old_item_id == new_item->getLinkedUUID()) )
 			{
 				lldebugs << "No change to wearable asset and item: " << LLWearable::typeToTypeName( type ) << llendl;
 				continue;
@@ -8060,7 +8060,7 @@ void LLAgent::setWearableOutfit(
 			}
 		}
 
-		mWearableEntry[ type ].mItemID = new_item->getUUID();
+		mWearableEntry[ type ].mItemID = new_item->getLinkedUUID();
 		mWearableEntry[ type ].mWearable = new_wearable;
 	}
 
@@ -8189,7 +8189,7 @@ void LLAgent::setWearableFinal( LLInventoryItem* new_item, LLWearable* new_weara
 	// Replace the old wearable with a new one.
 	llassert( new_item->getAssetUUID() == new_wearable->getID() );
 	LLUUID old_item_id = mWearableEntry[ type ].mItemID;
-	mWearableEntry[ type ].mItemID = new_item->getUUID();
+	mWearableEntry[ type ].mItemID = new_item->getLinkedUUID();
 	mWearableEntry[ type ].mWearable = new_wearable;
 
 	if (old_item_id.notNull())

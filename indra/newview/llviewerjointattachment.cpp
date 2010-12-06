@@ -39,6 +39,7 @@
 #include "llviewercontrol.h"
 #include "lldrawable.h"
 #include "llgl.h"
+#include "llnotifications.h"
 #include "llrender.h"
 #include "llvoavatar.h"
 #include "llvolume.h"
@@ -164,15 +165,21 @@ void LLViewerJointAttachment::setupDrawable(LLViewerObject *object)
 //-----------------------------------------------------------------------------
 BOOL LLViewerJointAttachment::addObject(LLViewerObject* object)
 {
-	object->extractAttachmentItemID();
+//	object->extractAttachmentItemID();
 
 	if (isObjectAttached(object))
 	{
+		LLSD argsNotify;
+		argsNotify["MESSAGE"] = "Assertion failure: same object re-attached";
+		LLNotifications::instance().add("SystemMessageTip", argsNotify);
+
 		llinfos << "(same object re-attached)" << llendl;
 		removeObject(object);
 		// Pass through anyway to let setupDrawable()
 		// re-connect object to the joint correctly
 	}
+
+	object->extractAttachmentItemID();
 
 	mAttachedObjects.push_back(object);
 	setupDrawable(object);
