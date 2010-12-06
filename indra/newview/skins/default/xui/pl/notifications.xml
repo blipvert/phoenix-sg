@@ -2379,10 +2379,10 @@ Czy chcesz odwiedzić stronę Second Life żeby to zmienić?
 		Temat: [SUBJECT], Treść: [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] jest w Second Life
+		[NAME] jest w Second Life
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] opuszcza Second Life
+		[NAME] opuszcza Second Life
 	</notification>
 	<notification name="AddSelfFriend">
 		Nie możesz dodać siebie do listy znajomych.

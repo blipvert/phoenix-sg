@@ -2622,10 +2622,10 @@ Second Life のウェブサイトにアクセスして、設定しますか？
 		件名： [SUBJECT], ﾒｯｾｰｼﾞ： [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] はオンラインです。
+		[NAME] はオンラインです。
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] はオフラインです。
+		[NAME] はオフラインです。
 	</notification>
 	<notification name="AddSelfFriend">
 		自分自身をフレンドにはできません。

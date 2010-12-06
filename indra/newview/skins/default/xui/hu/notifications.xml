@@ -2022,10 +2022,10 @@ Ennek beállításához meglátogatod ez erre vonatkozó honlapot?
 		Tárgy: [SUBJECT], Üzenet: [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] online
+		[NAME] online
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] offline
+		[NAME] offline
 	</notification>
 	<notification name="AddSelfFriend">
 		Saját magadat nem tudod hozzáadni a barátlistádhoz.

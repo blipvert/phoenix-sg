@@ -2401,10 +2401,10 @@ X і Y задає їх позицію. D (щільність) визначає �
 		Відсутня частина одягу/тіла замінена базовим значенням.
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] Онлайн
+		[NAME] Онлайн
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] вийшов з Second Life
+		[NAME] вийшов з Second Life
 	</notification>
 	<notification name="AddSelfFriend">
 		Ви не можете додати себе до друзів

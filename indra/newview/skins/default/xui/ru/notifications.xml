@@ -2416,10 +2416,10 @@ X и Y задает их позицию. D (плотность) определя
 		Отсутствующая часть одежды/тела заменена базовым значением.
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] Онлайн
+		[NAME] Онлайн
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] вышел из Second Life
+		[NAME] вышел из Second Life
 	</notification>
 	<notification name="AddSelfFriend">
 		Вы не можете добавить себя в друзья

@@ -4824,14 +4824,14 @@ strings.xml에 [STRING_NAME] 문자열이 없습니다.
    
    name="FriendOnline"
    >
-[FIRST] [LAST]님 온라인
+[NAME]님 온라인
   </notification>
 
   <notification
    
    name="FriendOffline"
    >
-[FIRST] [LAST]님 오프라인
+[NAME]님 오프라인
   </notification>
 
   <notification

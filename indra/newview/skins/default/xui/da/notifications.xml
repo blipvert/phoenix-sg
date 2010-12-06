@@ -570,10 +570,10 @@ Linden Lab
 		Erstattet manglende tøj/kropsdele med standard.
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] er Online
+		[NAME] er Online
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] er Offline
+		[NAME] er Offline
 	</notification>
 	<notification name="AddSelfFriend">
 		Du kan ikke tilføje dig selv som ven.

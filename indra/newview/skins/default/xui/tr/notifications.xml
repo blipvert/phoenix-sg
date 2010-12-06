@@ -1480,10 +1480,10 @@ Bunu düzenlemek için Second Life web sitesini ziyaret etmek ister misiniz?
 		Ekleme iptal oldu
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] sistemde
+		[NAME] sistemde
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] sistemde değil
+		[NAME] sistemde değil
 	</notification>
 	<notification name="AddSelfFriend">
 		Kendi kendinizi arkadaş olarak ekleyemezsiniz.

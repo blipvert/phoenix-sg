@@ -2359,10 +2359,10 @@ Voulez-vous aller sur le site de Second Life pour enregistrer ces informations 
 		Sujet : [SUBJECT], Message : [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] est connecté(e)
+		[NAME] est connecté(e)
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] est déconnecté(e)
+		[NAME] est déconnecté(e)
 	</notification>
 	<notification name="AddSelfFriend">
 		Vous ne pouvez pas devenir ami avec vous-même.

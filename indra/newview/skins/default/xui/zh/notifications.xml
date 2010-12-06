@@ -2580,10 +2580,10 @@ http://secondlife.com/community/support.php
 		主题： [SUBJECT], 信息： [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST]上线了。
+		[NAME]上线了。
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST]下线了。
+		[NAME]下线了。
 	</notification>
 	<notification name="AddSelfFriend">
 		您无法将自己添加为好友。

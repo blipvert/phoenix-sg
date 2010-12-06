@@ -2396,10 +2396,10 @@ Gostaria de visitar o site do Second Life para configurá-lo?
 		Assunto: [SUBJECT], Mensagem: [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] está Online
+		[NAME] está Online
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] está Offline
+		[NAME] está Offline
 	</notification>
 	<notification name="AddSelfFriend">
 		Você não pode adicionar a si mesmo como amigo

@@ -2436,10 +2436,10 @@ Vuoi visitare il sito di Second Life per impostarle?
 		Oggetto: [SUBJECT], Messaggio: [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] è Online
+		[NAME] è Online
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] è Offline
+		[NAME] è Offline
 	</notification>
 	<notification name="AddSelfFriend">
 		Non puoi aggiungere te stesso come amico.

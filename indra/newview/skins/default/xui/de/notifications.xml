@@ -2360,10 +2360,10 @@ Möchten Sie die Second Life Website öffnen, um diese Angaben zu hinterlegen?
 		Betreff: [SUBJECT], Nachricht: [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] ist online
+		[NAME] ist online
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] ist offline
+		[NAME] ist offline
 	</notification>
 	<notification name="AddSelfFriend">
 		Sie können sich nicht selbst als Freund hinzufügen.
