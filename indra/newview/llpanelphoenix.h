@@ -112,6 +112,7 @@ private:
 	static void onPhoenixInstantMessageAnnounceIncoming(LLUICtrl* ctrl, void* userdata);
 	static void onWearInvToggle(LLUICtrl* ctrl, void* userdata);
 	static void onPhoenixShowChatChannel(LLUICtrl* ctrl, void* userdata);
+	static void onCommitCopy(LLUICtrl* ctrl, void* data);
 
 private:
 	std::string mSkin;

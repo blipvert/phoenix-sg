@@ -392,6 +392,9 @@ BOOL LLPanelPhoenix::postBuild()
 	
 	getChild<LLColorSwatchCtrl>("friend_tag_color_swatch")->set(gSavedSettings.getColor4("PhoenixFriendNameColor"));
 
+	childSetCommitCallback("next_owner_copy", &onCommitCopy, this);
+	childSetEnabled("next_owner_transfer", gSavedSettings.getBOOL("NextOwnerCopy"));
+
 	refresh();
 	return TRUE;
 }
@@ -881,3 +884,17 @@ void LLPanelPhoenix::onClickSilver(void* data)
 	gSavedSettings.setString("SkinCurrent", "silver");
 	self->getChild<LLRadioGroup>("skin_selection")->setValue("silver");
 }*/
+
+//static 
+void LLPanelPhoenix::onCommitCopy(LLUICtrl* ctrl, void* data)
+{
+	LLPanelPhoenix* self = static_cast<LLPanelPhoenix*>(data);
+	// Implements fair use
+	BOOL copyable = gSavedSettings.getBOOL("NextOwnerCopy");
+	if(!copyable)
+	{
+		gSavedSettings.setBOOL("NextOwnerTransfer", TRUE);
+	}
+	LLCheckBoxCtrl* xfer = self->getChild<LLCheckBoxCtrl>("next_owner_transfer");
+	xfer->setEnabled(copyable);
+}

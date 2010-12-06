@@ -148,7 +148,7 @@ void ImportTracker::get_update(S32 newid, BOOL justCreated, BOOL createSelected)
 {
 	switch (state)
 	{
-		//lgg crap
+		//lgg crap to change remaining prim peramiters from the phoenix build preference tab
 		case WAND:
 			if(justCreated && createSelected)
 			{
@@ -163,7 +163,7 @@ void ImportTracker::get_update(S32 newid, BOOL justCreated, BOOL createSelected)
 				msg->nextBlockFast(_PREHASH_ObjectData);				
 				msg->addU32Fast(_PREHASH_ObjectLocalID,  (U32)newid);
 				msg->addStringFast(_PREHASH_MediaURL, NULL);
-	
+//sets texture stuff
 				LLPrimitive obj;
 				obj.setNumTEs(U8(10));	
 				S32 shinnyLevel = 0;
@@ -194,7 +194,7 @@ void ImportTracker::get_update(S32 newid, BOOL justCreated, BOOL createSelected)
 				obj.packTEMessage(gMessageSystem);
 	
 				msg->sendReliable(gAgent.getRegion()->getHost());
-				
+//sets some object peramiters
 				msg->newMessage("ObjectFlagUpdate");
 				msg->nextBlockFast(_PREHASH_AgentData);
 				msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
@@ -205,7 +205,46 @@ void ImportTracker::get_update(S32 newid, BOOL justCreated, BOOL createSelected)
 				msg->addBOOL("IsPhantom", gSavedSettings.getBOOL("PhoenixBuildPrefs_Phantom") );
 				msg->addBOOL("CastsShadows", true );
 				msg->sendReliable(gAgent.getRegion()->getHost());
+//sets next owner permissions (sections added by TankMaster with help from LGG)
+				msg->newMessage("ObjectPermissions");
+				msg->nextBlockFast(_PREHASH_AgentData);
+				msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
+				msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+				msg->nextBlockFast(_PREHASH_HeaderData);
+				msg->addBOOLFast(_PREHASH_Override, FALSE);
+				msg->nextBlockFast(_PREHASH_ObjectData);
+				msg->addU32Fast(_PREHASH_ObjectLocalID, (U32)newid);
+				msg->addU8Fast(_PREHASH_Field,PERM_NEXT_OWNER);
+				msg->addBOOLFast(_PREHASH_Set,gSavedSettings.getBOOL("NextOwnerCopy"));
+				msg->addU32Fast(_PREHASH_Mask,PERM_COPY);
+				msg->sendReliable(gAgent.getRegion()->getHost());
 
+				msg->newMessage("ObjectPermissions");
+				msg->nextBlockFast(_PREHASH_AgentData);
+				msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
+				msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+				msg->nextBlockFast(_PREHASH_HeaderData);
+				msg->addBOOLFast(_PREHASH_Override, FALSE);
+				msg->nextBlockFast(_PREHASH_ObjectData);
+				msg->addU32Fast(_PREHASH_ObjectLocalID, (U32)newid);
+				msg->addU8Fast(_PREHASH_Field,PERM_NEXT_OWNER);
+				msg->addBOOLFast(_PREHASH_Set,gSavedSettings.getBOOL("NextOwnerModify"));
+				msg->addU32Fast(_PREHASH_Mask,PERM_MODIFY);
+				msg->sendReliable(gAgent.getRegion()->getHost());
+
+				msg->newMessage("ObjectPermissions");
+				msg->nextBlockFast(_PREHASH_AgentData);
+				msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
+				msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+				msg->nextBlockFast(_PREHASH_HeaderData);
+				msg->addBOOLFast(_PREHASH_Override, FALSE);
+				msg->nextBlockFast(_PREHASH_ObjectData);
+				msg->addU32Fast(_PREHASH_ObjectLocalID, (U32)newid);
+				msg->addU8Fast(_PREHASH_Field,PERM_NEXT_OWNER);
+				msg->addBOOLFast(_PREHASH_Set,gSavedSettings.getBOOL("NextOwnerTransfer"));
+				msg->addU32Fast(_PREHASH_Mask,PERM_TRANSFER);
+				msg->sendReliable(gAgent.getRegion()->getHost());
+//copies inventory item
 				if(gSavedSettings.getBOOL("PhoenixBuildPrefs_EmbedItem"))
 				{
 					LLViewerInventoryItem* item = (LLViewerInventoryItem*)gInventory.getItem((LLUUID)gSavedSettings.getString("PhoenixBuildPrefs_Item"));
