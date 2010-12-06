@@ -366,8 +366,11 @@ void RlvUtil::filterNames(std::string& strUTF8Text, bool fFilterLegacy)
 			const std::string& strAnonym = RlvStrings::getAnonym(avName.mDisplayName);
 
 			rlvStringReplace(strUTF8Text, avName.mDisplayName, strAnonym);
-			if ( (fFilterLegacy) && (!avName.mIsDisplayNameDefault) )
+			if ( (fFilterLegacy) && (!avName.mIsDisplayNameDefault) && 
+				 ((!avName.mLegacyFirstName.empty()) && (!avName.mLegacyLastName.empty())) )
+			{
 				rlvStringReplace(strUTF8Text, avName.getLegacyName(), strAnonym);
+			}
 		}
 	}
 }
