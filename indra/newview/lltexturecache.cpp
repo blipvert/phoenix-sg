@@ -1557,9 +1557,9 @@ void LLTextureCache::purgeAllTextures(bool purge_directories)
 void LLTextureCache::purgeTextures(bool validate, bool force)
 {
 	static LLTimer timeout;
-	const S32 min_purge_count = 10;
+	const S32 min_purge_count = 100;
 	const F32 delay_between_passes = 1.0f;
-	F32 max_time_per_pass = 0.05f;
+	static F32 max_time_per_pass = 0.05f;
 
 	if (!force && timeout.getElapsedTimeF32() <= delay_between_passes)
 	{
@@ -1624,25 +1624,33 @@ void LLTextureCache::purgeTextures(bool validate, bool force)
 		validate_idx = gSavedSettings.getU32("CacheValidateCounter");
 		U32 next_idx = (++validate_idx) % 256;
 		gSavedSettings.setU32("CacheValidateCounter", next_idx);
-		LL_DEBUGS("TextureCache") << "TEXTURE CACHE: Validating: " << validate_idx << LL_ENDL;
+		LL_DEBUGS("TextureCache") << "TEXTURE CACHE: Validating: " 
+		        << validate_idx << LL_ENDL;
 	}
 
 	F32 overhead = timeout.getElapsedTimeF32();
 	if (overhead > max_time_per_pass)
 	{
-		max_time_per_pass = llmin(max_time_per_pass, delay_between_passes / 4.0f);
+		max_time_per_pass = llmin(overhead, delay_between_passes / 4.0f);
 	}
 	timeout.reset();
+	llinfos << "Overhead: " << overhead << " Maximum time per pass: " <<
+	        max_time_per_pass << llendl;
 
 	S64 cache_size = mTexturesSizeTotal;
 	S64 purged_cache_size = (sCacheMaxTexturesSize * (S64)((1.f - TEXTURE_CACHE_PURGE_AMOUNT) * 100.f)) / 100;
 	S32 purge_count = 0;
+	F32 elapsed;
 	for (time_idx_set_t::iterator iter = time_idx_set.begin();
 		 iter != time_idx_set.end(); ++iter)
 	{
-		if (!force && !validate && purge_count >= min_purge_count && timeout.getElapsedTimeF32() > max_time_per_pass) 
+		if (!force && !validate && (purge_count >= min_purge_count)
+		        && ((elapsed = timeout.getElapsedTimeF32()) >
+        		        max_time_per_pass))
 		{
-			LL_INFOS("TextureCache") << "Texture cache purge splitted to avoid hickup." << LL_ENDL;
+			LL_INFOS("TextureCache") << 
+			        "Texture cache purge split to avoid hiccup after "
+                                << elapsed << " seconds."<< LL_ENDL;
 			mDoPurge = TRUE;
 			break;
 		}
@@ -1678,13 +1686,15 @@ void LLTextureCache::purgeTextures(bool validate, bool force)
 		if (purge_entry)
 		{
 			purge_count++;
-	 		LL_DEBUGS("TextureCache") << "PURGING: " << filename << LL_ENDL;
+	 		LL_DEBUGS("TextureCache") << "PURGING: "
+	 		        << filename << LL_ENDL;
 			removeEntry(idx, entries[idx], filename) ;
 			cache_size -= entries[idx].mBodySize;
 		}
 	}
 
-	LL_DEBUGS("TextureCache") << "TEXTURE CACHE: Writing Entries: " << num_entries << LL_ENDL;
+	LL_DEBUGS("TextureCache") << "TEXTURE CACHE: Writing Entries: " 
+	        << num_entries << LL_ENDL;
 
 	writeEntriesAndClose(entries);
 	
@@ -1694,8 +1704,11 @@ void LLTextureCache::purgeTextures(bool validate, bool force)
 	LL_INFOS("TextureCache") << "TEXTURE CACHE:"
 			<< " Purged: " << purge_count
 			<< " - Entries: " << num_entries
-			<< " - Cache size: " << mTexturesSizeTotal / 1024*1024 << " MB"
-			<< " - Time used for this purge: " << timeout.getElapsedTimeF32() << "s + " << overhead << "s of overhead."
+			<< " - Cache size: " 
+			        << mTexturesSizeTotal / 1024*1024 << " MB"
+			<< " - Time used for this purge: " 
+			        << timeout.getElapsedTimeF32() << "s + " 
+			        << overhead << "s of overhead."
 			<< LL_ENDL;
 
 	timeout.reset();
