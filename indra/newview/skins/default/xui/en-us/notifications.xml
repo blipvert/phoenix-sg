@@ -6717,6 +6717,7 @@ An error has occurred while trying to connect to voice chat for [VOICE_CHANNEL_N
 The region you have entered is running a different simulator version.
 Current simulator : [NEWVERSION]
 Previous simulator: [OLDVERSION]
+More info at: http://wiki.secondlife.com/wiki/Beta
     <unique>
       <context key="OLDVERSION"/>
       <context key="NEWVERSION"/>
