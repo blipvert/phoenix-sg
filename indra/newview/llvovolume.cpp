@@ -469,9 +469,24 @@ void LLVOVolume::updateTextureVirtualSize()
 			if (isAttachment())
 			{
 				// Rez attachments faster and at full details !
-				imagep->setBoostLevel(LLViewerImageBoostLevel::BOOST_HUD);
-// commented out because of PHOE-1654 - TS
-//				imagep->dontDiscard();
+				if (permYouOwner())
+				{
+					// Our attachments must really rez fast and fully:
+					// we shouldn't have to zoom on them to get the textures
+					// fully loaded !
+					imagep->setBoostLevel(LLViewerImageBoostLevel::BOOST_HUD);
+					imagep->dontDiscard();
+				}
+				else
+				{
+					// Others' can get their texture discarded to avoid
+					// filling up the video buffers in crowded areas...
+					imagep->setBoostLevel(LLViewerImageBoostLevel::BOOST_SELECTED);
+					imagep->setAdditionalDecodePriority(1.5f);
+					vsize = (F32) LLViewerCamera::getInstance()->getScreenPixelArea();
+					face->setPixelArea(vsize); // treat as full screen
+				}
+
 			}
 		}
 
