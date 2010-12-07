@@ -30,13 +30,23 @@ if (WINDOWS)
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO 
       "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Od /Zi /MD"
       CACHE STRING "C++ compiler release-with-debug options" FORCE)
-  set(CMAKE_CXX_FLAGS_RELEASE
-	#sse
-      "${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} -DLL_VECTORIZE=1 /O2 /Zi /MD /arch:SSE2 /MP"
-    #nonsse
-    #"${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /O2 /Zi /MD /MP"
-      CACHE STRING "C++ compiler release options" FORCE)
-
+  
+  if (NOSSE2)
+	  set(CMAKE_CXX_FLAGS_RELEASE
+		#nonsse
+		"${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /O2 /Ot /Zi /MD /MP"
+		  CACHE STRING "C++ compiler release options" FORCE)
+  else (NOSSE2)
+	  set(CMAKE_CXX_FLAGS_RELEASE
+		#sse
+		  "${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} -DLL_VECTORIZE=1 /O2 /Ot /Zi /MD /arch:SSE2 /MP"
+		  CACHE STRING "C++ compiler release options" FORCE)
+  endif (NOSSE2)
+  
+  if (LAA)
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LARGEADDRESSAWARE")
+  endif (LAA)
+  
   set(CMAKE_CXX_STANDARD_LIBRARIES "")
   set(CMAKE_C_STANDARD_LIBRARIES "")
 
