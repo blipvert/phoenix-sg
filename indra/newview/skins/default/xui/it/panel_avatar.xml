@@ -55,7 +55,7 @@
 			<button label="i" label_selected="i" name="partner_info" tool_tip="Clicca per aprire il profilo del partner"/>
 			<button label="?" label_selected="?" name="partner_help"/>
 			<line_editor name="partner_edit" tool_tip="Partner in Second Life. Per maggiori informazioni sulla partnership leggi www.secondlife.com/partner" width="161">
-				[FIRST] [LAST]
+				[NAME]
 			</line_editor>
 			<text name="Photo:">
 				Foto:

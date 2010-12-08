@@ -95,6 +95,8 @@
 #include "rlvhandler.h"
 // [/RLVa:KB]
 
+#include "llavatarname.h"
+
 // Statics
 std::list<LLPanelAvatar*> LLPanelAvatar::sAllPanels;
 BOOL LLPanelAvatar::sAllowFirstLife = FALSE;
@@ -215,13 +217,22 @@ void LLPanelAvatarSecondLife::updatePartnerName()
 {
 	if (mPartnerID.notNull())
 	{
-		std::string first, last;
-		BOOL found = gCacheName->getName(mPartnerID, first, last);
-		if (found)
+		// [Ansariel: Display name support]
+		LLAvatarName avatar_name;
+		if (LLAvatarNameCache::get(mPartnerID, &avatar_name))
 		{
-			childSetTextArg("partner_edit", "[FIRST]", first);
-			childSetTextArg("partner_edit", "[LAST]", last);
+			std::string name;
+			static S32* sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
+			switch (*sPhoenixNameSystem)
+			{
+				case 0 : name = avatar_name.getLegacyName(); break;
+				case 1 : name = (avatar_name.mIsDisplayNameDefault ? avatar_name.mDisplayName : avatar_name.getCompleteName()); break;
+				case 2 : name = avatar_name.mDisplayName; break;
+				default : name = avatar_name.getLegacyName(); break;
+			}
+			childSetTextArg("partner_edit", "[NAME]", name);
 		}
+		// [/Ansariel: Display name support]
 		childSetEnabled("partner_info", TRUE);
 	}
 }
@@ -242,8 +253,9 @@ void LLPanelAvatarSecondLife::clearControls()
 	childSetValue("born", "");
 	childSetValue("acct", "");
 
-	childSetTextArg("partner_edit", "[FIRST]", LLStringUtil::null);
-	childSetTextArg("partner_edit", "[LAST]", LLStringUtil::null);
+	// [Ansariel: Display name support]
+	childSetTextArg("partner_edit", "[NAME]", LLStringUtil::null);
+	// [/Ansariel: Display name support]
 
 	mPartnerID = LLUUID::null;
 	
