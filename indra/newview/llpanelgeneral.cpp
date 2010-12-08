@@ -71,6 +71,7 @@ BOOL LLPanelGeneral::postBuild()
 	childSetValue("show_my_name_checkbox", gSavedSettings.getBOOL("RenderNameHideSelf"));
 	childSetValue("small_avatar_names_checkbox", gSavedSettings.getBOOL("SmallAvatarNames"));
 	childSetValue("show_my_title_checkbox", gSavedSettings.getBOOL("RenderHideGroupTitle"));
+	childSetValue("allow_idle_AFK_checkbox", gSavedSettings.getBOOL("AllowIdleAFK"));
 	childSetValue("afk_timeout_spinner", gSavedSettings.getF32("AFKTimeout"));
 	childSetValue("notify_money_change_checkbox", gSavedSettings.getBOOL("NotifyMoneyChange"));
 
@@ -146,6 +147,7 @@ void LLPanelGeneral::apply()
 	gSavedSettings.setBOOL("RenderNameHideSelf", childGetValue("show_my_name_checkbox"));
 	gSavedSettings.setBOOL("SmallAvatarNames", childGetValue("small_avatar_names_checkbox"));
 	gSavedSettings.setBOOL("RenderHideGroupTitle", childGetValue("show_my_title_checkbox"));
+	gSavedSettings.setBOOL("AllowIdleAFK", childGetValue("allow_idle_AFK_checkbox"));
 	gSavedSettings.setF32("AFKTimeout", childGetValue("afk_timeout_spinner").asReal());
 	gSavedSettings.setBOOL("NotifyMoneyChange", childGetValue("notify_money_change_checkbox"));
 	gSavedSettings.setColor4("EffectColor", childGetValue("effect_color_swatch"));
