@@ -32,15 +32,29 @@ if (WINDOWS)
       CACHE STRING "C++ compiler release-with-debug options" FORCE)
   
   if (NOSSE2)
-	  set(CMAKE_CXX_FLAGS_RELEASE
-		#nonsse
-		"${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /O2 /Ot /Zi /MD /MP"
-		  CACHE STRING "C++ compiler release options" FORCE)
+	  if (LAA)
+		set(CMAKE_CXX_FLAGS_RELEASE
+			#nonsse2 + LAA
+			"${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /O2 /Ot /Zi /MD /MP -DNOSSE2 -DLAA"
+				CACHE STRING "C++ compiler release options" FORCE)
+	  else (LAA)
+		set(CMAKE_CXX_FLAGS_RELEASE
+			#nonsse2
+			"${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /O2 /Ot /Zi /MD /MP -DNOSSE2"
+				CACHE STRING "C++ compiler release options" FORCE)
+	  endif (LAA)
   else (NOSSE2)
-	  set(CMAKE_CXX_FLAGS_RELEASE
-		#sse
-		  "${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} -DLL_VECTORIZE=1 /O2 /Ot /Zi /MD /arch:SSE2 /MP"
-		  CACHE STRING "C++ compiler release options" FORCE)
+ 	  if (LAA)
+		set(CMAKE_CXX_FLAGS_RELEASE
+			#sse2 + LAA
+			"${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} -DLL_VECTORIZE=1 /O2 /Ot /Zi /MD /arch:SSE2 /MP -DSSE2 -DLAA"
+			CACHE STRING "C++ compiler release options" FORCE)
+	  else (LAA)
+		set(CMAKE_CXX_FLAGS_RELEASE
+			#sse2 + LAA
+			"${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} -DLL_VECTORIZE=1 /O2 /Ot /Zi /MD /arch:SSE2 /MP -DSSE2"
+			CACHE STRING "C++ compiler release options" FORCE)
+	  endif (LAA)
   endif (NOSSE2)
   
   if (LAA)
