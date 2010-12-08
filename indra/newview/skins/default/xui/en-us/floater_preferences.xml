@@ -19,10 +19,10 @@
 	     mouse_opaque="true" name="About..." scale_image="true" width="90" />
 	<button bottom="-505" enabled="true" follows="left|bottom" font="SansSerif"
 	     halign="center" height="20"
-	     help_url="http://secondlife.com/app/help/technical/preferences.php"
+	     help_url="http://wiki.phoenixviewer.com/doku.php?id=phoenix_preferences_tab"
 	     label="Help" label_selected="Help" left_delta="93" mouse_opaque="true"
 	     name="Help" scale_image="true" width="90" />
 	<tab_container bottom="-466" enabled="true" follows="left|top|right|bottom" height="445"
 	     left="0" mouse_opaque="false" name="pref core" tab_group="1"
-	     tab_position="left" tab_width="120" width="620" />
+	     tab_position="left" tab_width="120" width="618" />
 </floater>

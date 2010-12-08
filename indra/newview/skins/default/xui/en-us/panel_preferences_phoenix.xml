@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<panel border="true" bottom="-440" enabled="true" follows="left|top|right|bottom" height="440" label="Phoenix" left="102" mouse_opaque="true" name="Phoenix panel" width="517">
-  <tab_container label="Phoenix Prefs" bottom="0" height="440" left="0" mouse_opaque="false" name="tabs" tab_min_width="50" tab_position="top" width="500" bg_opaque_color="0,0,0,0.0">
+<panel border="true" bottom="-440" enabled="true" follows="left|top|right|bottom" height="440" label="Phoenix" left="102" mouse_opaque="true" name="Phoenix panel" width="510">
+  <tab_container label="Phoenix Prefs" bottom="0" height="440" left="0" mouse_opaque="false" name="tabs" tab_min_width="50" tab_position="top" width="495" bg_opaque_color="0,0,0,0.0">
     
 	<!--Page 1-->
 	<tab_container label="Page 1" bottom="0" height="440" left="0" mouse_opaque="false" name="tab" tab_min_width="50" tab_position="top" width="500" bg_opaque_color="0,0,0,0.0">

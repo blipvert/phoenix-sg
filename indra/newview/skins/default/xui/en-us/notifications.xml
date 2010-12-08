@@ -866,6 +866,13 @@ Would you like to disable all popups which can be skipped?
   </notification>
 
   <notification
+ icon="alertmodal.tga"
+ name="Restart4SettingsChange"
+ type="alertmodal">
+Settings will be applied after restarting [SECOND_LIFE].
+  </notification>
+  
+  <notification
    icon="alertmodal.tga"
    name="CacheWillClear"
    type="alertmodal">
