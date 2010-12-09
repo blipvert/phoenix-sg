@@ -68,24 +68,24 @@ void LLFloaterStats::buildStats()
 									"DebugStatModeFPS", TRUE, TRUE);
 	stat_barp->setUnitLabel(" fps");
 	stat_barp->mMinBar = 0.f;
-	stat_barp->mMaxBar = 45.f;
-	stat_barp->mTickSpacing = 7.5f;
-	stat_barp->mLabelSpacing = 15.f;
+	stat_barp->mMaxBar = 60.f;
+	stat_barp->mTickSpacing = 6.f;
+	stat_barp->mLabelSpacing = 12.f;
 	stat_barp->mPrecision = 1;
 
 	stat_barp = stat_viewp->addStat("Bandwidth", &(LLViewerStats::getInstance()->mKBitStat),
 									"DebugStatModeBandwidth", TRUE, FALSE);
 	stat_barp->setUnitLabel(" kbps");
 	stat_barp->mMinBar = 0.f;
-	stat_barp->mMaxBar = 900.f;
-	stat_barp->mTickSpacing = 100.f;
-	stat_barp->mLabelSpacing = 300.f;
+	stat_barp->mMaxBar = 5000.f;
+	stat_barp->mTickSpacing = 500.f;
+	stat_barp->mLabelSpacing = 1000.f;
 
 	stat_barp = stat_viewp->addStat("Packet Loss", &(LLViewerStats::getInstance()->mPacketsLostPercentStat), "DebugStatModePacketLoss");
 	stat_barp->setUnitLabel(" %");
 	stat_barp->mMinBar = 0.f;
 	stat_barp->mMaxBar = 5.f;
-	stat_barp->mTickSpacing = 1.f;
+	stat_barp->mTickSpacing = 0.5f;
 	stat_barp->mLabelSpacing = 1.f;
 	stat_barp->mPerSec = FALSE;
 	stat_barp->mDisplayMean = TRUE;
@@ -94,9 +94,9 @@ void LLFloaterStats::buildStats()
 	stat_barp = stat_viewp->addStat("Ping Sim", &(LLViewerStats::getInstance()->mSimPingStat), "DebugStatMode");
 	stat_barp->setUnitLabel(" msec");
 	stat_barp->mMinBar = 0.f;
-	stat_barp->mMaxBar = 1000.f;
-	stat_barp->mTickSpacing = 100.f;
-	stat_barp->mLabelSpacing = 200.f;
+	stat_barp->mMaxBar = 5000.f;
+	stat_barp->mTickSpacing = 500.f;
+	stat_barp->mLabelSpacing = 1000.f;
 	stat_barp->mPerSec = FALSE;
 	stat_barp->mDisplayMean = FALSE;
 
@@ -104,40 +104,40 @@ void LLFloaterStats::buildStats()
 	stat_viewp = new LLStatView("advanced stat view", "Advanced", "OpenDebugStatAdvanced", rect);
 	addStatView(stat_viewp);
 
-	
+    //advanced section	
 	LLStatView *render_statviewp = stat_viewp->addStatView("render stat view", "Render", "OpenDebugStatRender", rect);
 
-	stat_barp = render_statviewp->addStat("KTris Drawn", &(gPipeline.mTrianglesDrawnStat), "DebugStatModeKTrisDrawnFr");
+	stat_barp = render_statviewp->addStat("KTris Drawn per Frame", &(gPipeline.mTrianglesDrawnStat), "DebugStatModeKTrisDrawnFr");
 	stat_barp->setUnitLabel("/fr");
 	stat_barp->mMinBar = 0.f;
-	stat_barp->mMaxBar = 500.f;
-	stat_barp->mTickSpacing = 100.f;
-	stat_barp->mLabelSpacing = 500.f;
+	stat_barp->mMaxBar = 10000.f;
+	stat_barp->mTickSpacing = 1000.f;
+	stat_barp->mLabelSpacing = 2000.f;
 	stat_barp->mPrecision = 1;
 	stat_barp->mPerSec = FALSE;
 
-	stat_barp = render_statviewp->addStat("KTris Drawn", &(gPipeline.mTrianglesDrawnStat), "DebugStatModeKTrisDrawnSec");
+	stat_barp = render_statviewp->addStat("KTris Drawn per Sec", &(gPipeline.mTrianglesDrawnStat), "DebugStatModeKTrisDrawnSec");
 	stat_barp->setUnitLabel("/sec");
 	stat_barp->mMinBar = 0.f;
-	stat_barp->mMaxBar = 3000.f;
-	stat_barp->mTickSpacing = 250.f;
-	stat_barp->mLabelSpacing = 1000.f;
+	stat_barp->mMaxBar = 200000.f;
+	stat_barp->mTickSpacing = 20000.f;
+	stat_barp->mLabelSpacing = 40000.f;
 	stat_barp->mPrecision = 1;
 
 	stat_barp = render_statviewp->addStat("Total Objs", &(gObjectList.mNumObjectsStat), "DebugStatModeTotalObjs");
 	stat_barp->mMinBar = 0.f;
-	stat_barp->mMaxBar = 10000.f;
-	stat_barp->mTickSpacing = 2500.f;
-	stat_barp->mLabelSpacing = 5000.f;
+	stat_barp->mMaxBar = 50000.f;
+	stat_barp->mTickSpacing = 5000.f;
+	stat_barp->mLabelSpacing = 10000.f;
 	stat_barp->mPerSec = FALSE;
 
 	stat_barp = render_statviewp->addStat("New Objs", &(gObjectList.mNumNewObjectsStat), "DebugStatModeNewObjs");
 	stat_barp->setLabel("New Objs");
 	stat_barp->setUnitLabel("/sec");
 	stat_barp->mMinBar = 0.f;
-	stat_barp->mMaxBar = 1000.f;
-	stat_barp->mTickSpacing = 100.f;
-	stat_barp->mLabelSpacing = 500.f;
+	stat_barp->mMaxBar = 2000.f;
+	stat_barp->mTickSpacing = 200.f;
+	stat_barp->mLabelSpacing = 400.f;
 	stat_barp->mPerSec = TRUE;
 
 
@@ -202,40 +202,61 @@ void LLFloaterStats::buildStats()
 
 	stat_barp = net_statviewp->addStat("Packets In", &(LLViewerStats::getInstance()->mPacketsInStat), "DebugStatModePacketsIn");
 	stat_barp->setUnitLabel("/sec");
+	stat_barp->mMinBar = 0.f;
+	stat_barp->mMaxBar = 1024.f;
+	stat_barp->mTickSpacing = 128.f;
+	stat_barp->mLabelSpacing = 256.f;
 
 	stat_barp = net_statviewp->addStat("Packets Out", &(LLViewerStats::getInstance()->mPacketsOutStat), "DebugStatModePacketsOut");
 	stat_barp->setUnitLabel("/sec");
+	stat_barp->mMinBar = 0.f;
+	stat_barp->mMaxBar = 1024.f;
+	stat_barp->mTickSpacing = 128.f;
+	stat_barp->mLabelSpacing = 256.f;
 
 	stat_barp = net_statviewp->addStat("Objects", &(LLViewerStats::getInstance()->mObjectKBitStat), "DebugStatModeObjects");
-	stat_barp->setUnitLabel(" kbps");
-
-	stat_barp = net_statviewp->addStat("Texture", &(LLViewerStats::getInstance()->mTextureKBitStat), "DebugStatModeTexture");
-	stat_barp->setUnitLabel(" kbps");
-
-	stat_barp = net_statviewp->addStat("Asset", &(LLViewerStats::getInstance()->mAssetKBitStat), "DebugStatModeAsset");
-	stat_barp->setUnitLabel(" kbps");
-
-	stat_barp = net_statviewp->addStat("Layers", &(LLViewerStats::getInstance()->mLayersKBitStat), "DebugStatModeLayers");
-	stat_barp->setUnitLabel(" kbps");
-
-	stat_barp = net_statviewp->addStat("Actual In", &(LLViewerStats::getInstance()->mActualInKBitStat),
-									   "DebugStatModeActualIn", TRUE, FALSE);
 	stat_barp->setUnitLabel(" kbps");
 	stat_barp->mMinBar = 0.f;
 	stat_barp->mMaxBar = 1024.f;
 	stat_barp->mTickSpacing = 128.f;
 	stat_barp->mLabelSpacing = 256.f;
 
-	stat_barp = net_statviewp->addStat("Actual Out", &(LLViewerStats::getInstance()->mActualOutKBitStat),
-									   "DebugStatModeActualOut", TRUE, FALSE);
+	stat_barp = net_statviewp->addStat("Texture", &(LLViewerStats::getInstance()->mTextureKBitStat), "DebugStatModeTexture");
 	stat_barp->setUnitLabel(" kbps");
 	stat_barp->mMinBar = 0.f;
-	stat_barp->mMaxBar = 512.f;
+	stat_barp->mMaxBar = 1024.f;
 	stat_barp->mTickSpacing = 128.f;
 	stat_barp->mLabelSpacing = 256.f;
 
-	stat_barp = net_statviewp->addStat("VFS Pending Ops", &(LLViewerStats::getInstance()->mVFSPendingOperations),
-									   "DebugStatModeVFSPendingOps");
+	stat_barp = net_statviewp->addStat("Asset", &(LLViewerStats::getInstance()->mAssetKBitStat), "DebugStatModeAsset");
+	stat_barp->setUnitLabel(" kbps");
+	stat_barp->mMinBar = 0.f;
+	stat_barp->mMaxBar = 1024.f;
+	stat_barp->mTickSpacing = 128.f;
+	stat_barp->mLabelSpacing = 256.f;
+
+	stat_barp = net_statviewp->addStat("Layers", &(LLViewerStats::getInstance()->mLayersKBitStat), "DebugStatModeLayers");
+	stat_barp->setUnitLabel(" kbps");
+	stat_barp->mMinBar = 0.f;
+	stat_barp->mMaxBar = 1024.f;
+	stat_barp->mTickSpacing = 128.f;
+	stat_barp->mLabelSpacing = 256.f;
+
+	stat_barp = net_statviewp->addStat("Actual In", &(LLViewerStats::getInstance()->mActualInKBitStat), "DebugStatModeActualIn", TRUE, FALSE);
+	stat_barp->setUnitLabel(" kbps");
+	stat_barp->mMinBar = 0.f;
+	stat_barp->mMaxBar = 1024.f;
+	stat_barp->mTickSpacing = 128.f;
+	stat_barp->mLabelSpacing = 256.f;
+
+	stat_barp = net_statviewp->addStat("Actual Out", &(LLViewerStats::getInstance()->mActualOutKBitStat), "DebugStatModeActualOut", TRUE, FALSE);
+	stat_barp->setUnitLabel(" kbps");
+	stat_barp->mMinBar = 0.f;
+	stat_barp->mMaxBar = 1024.f;
+	stat_barp->mTickSpacing = 128.f;
+	stat_barp->mLabelSpacing = 256.f;
+
+	stat_barp = net_statviewp->addStat("VFS Pending Ops", &(LLViewerStats::getInstance()->mVFSPendingOperations), "DebugStatModeVFSPendingOps");
 	stat_barp->setUnitLabel(" ");
 	stat_barp->mPerSec = FALSE;
 
@@ -248,8 +269,8 @@ void LLFloaterStats::buildStats()
 	stat_barp->mPrecision = 2;
 	stat_barp->mMinBar = 0.f;
 	stat_barp->mMaxBar = 1.f;
-	stat_barp->mTickSpacing = 0.25f;
-	stat_barp->mLabelSpacing = 0.5f;
+	stat_barp->mTickSpacing = 0.1666f;
+	stat_barp->mLabelSpacing = 0.3333f;
 	stat_barp->mPerSec = FALSE;
 	stat_barp->mDisplayMean = FALSE;
 
