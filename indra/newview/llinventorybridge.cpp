@@ -1335,7 +1335,9 @@ BOOL LLFolderBridge::isItemMovable()
 	LLInventoryObject* obj = getInventoryObject();
 	if(obj)
 	{
-		return (LLAssetType::AT_NONE == ((LLInventoryCategory*)obj)->getPreferredType());
+		return 
+			(LLAssetType::AT_NONE == ((LLInventoryCategory*)obj)->getPreferredType()) || 
+			(LLAssetType::AT_OUTFIT == ((LLInventoryCategory*)obj)->getPreferredType());
 	}
 	return FALSE;
 }
@@ -1520,7 +1522,7 @@ BOOL LLFolderBridge::dragCategoryIntoFolder(LLInventoryCategory* inv_cat,
 		trash_id = model->findCategoryUUIDForType(LLAssetType::AT_TRASH);
 		BOOL move_is_into_trash = (mUUID == trash_id)
 				|| model->isObjectDescendentOf(mUUID, trash_id);
-		BOOL is_movable = (LLAssetType::AT_NONE == inv_cat->getPreferredType());
+		BOOL is_movable = (LLAssetType::AT_NONE == inv_cat->getPreferredType()) || (LLAssetType::AT_OUTFIT == inv_cat->getPreferredType());
 		if( is_movable )
 		{
 			gInventory.collectDescendents( cat_id, descendent_categories, descendent_items, FALSE );
