@@ -125,10 +125,8 @@ bool LLNotifyBox::onNotification(const LLSD& notify)
 }
 
 //---------------------------------------------------------------------------
-LLNotifyBox::LLNotifyBox(LLNotificationPtr notification,
-						 BOOL layout_script_dialog)
-	:	LLPanel(notification->getName(), LLRect(), BORDER_NO),
-		LLEventTimer(notification->getExpiration() == LLDate() 
+LLNotifyBox::LLNotifyBox(LLNotificationPtr notification, BOOL layout_script_dialog)
+	:	LLPanel(notification->getName(), LLRect(), BORDER_NO), LLEventTimer(notification->getExpiration() == LLDate() 
 			? LLDate(LLDate::now().secondsSinceEpoch() + (F64)gSavedSettings.getF32("NotifyTipDuration")) 
 			: notification->getExpiration()),
 		LLInstanceTracker<LLNotifyBox, LLUUID>(notification->getID()),
@@ -218,12 +216,7 @@ LLNotifyBox::LLNotifyBox(LLNotificationPtr notification,
 	if (mIsCaution && !mIsTip)
 	{
 		S32 caution_height = ((S32)sFont->getLineHeight() * 2) + VPAD;
-		caution_box = new LLTextBox(
-			std::string("caution_box"), 
-			LLRect(x, y, getRect().getWidth() - 2, caution_height), 
-			LLStringUtil::null, 
-			sFont, 
-			FALSE);
+		caution_box = new LLTextBox(std::string("caution_box"), LLRect(x, y, getRect().getWidth() - 2, caution_height), LLStringUtil::null, sFont, FALSE);
 
 		caution_box->setFontStyle(LLFontGL::BOLD);
 		caution_box->setColor(gColors.getColor("NotifyCautionWarnColor"));
@@ -240,24 +233,16 @@ LLNotifyBox::LLNotifyBox(LLNotificationPtr notification,
 		// it appears below the caution textbox
 		y = y - caution_height;
 	}
-	else
+	else if (mIsCaution && mIsTip)	
 	{
 
 		const S32 BTN_TOP = BOTTOM_PAD + (((mNumOptions-1+2)/3)) * (BTN_HEIGHT+VPAD);
 
 		// Tokenization on \n is handled by LLTextBox
 
-		const S32 MAX_LENGTH = 512 + 20 + 
-			DB_FIRST_NAME_BUF_SIZE + 
-			DB_LAST_NAME_BUF_SIZE +
-			DB_INV_ITEM_NAME_BUF_SIZE;  // For script dialogs: add space for title.
+		const S32 MAX_LENGTH = 512 + 20 + DB_FIRST_NAME_BUF_SIZE + DB_LAST_NAME_BUF_SIZE + DB_INV_ITEM_NAME_BUF_SIZE;  // For script dialogs: add space for title.
 
-		text = new LLTextEditor(std::string("box"),
-								LLRect(x, y, getRect().getWidth()-2, mIsTip ? BOTTOM : BTN_TOP+16),
-								MAX_LENGTH,
-								mMessage,
-								sFont,
-								FALSE);
+		text = new LLTextEditor(std::string("box"), LLRect(x, y, getRect().getWidth()-2, mIsTip ? BOTTOM : BTN_TOP+16), MAX_LENGTH, mMessage, sFont, FALSE);
 		text->setWordWrap(TRUE);
 		text->setTabStop(FALSE);
 		text->setMouseOpaque(FALSE);
@@ -267,7 +252,32 @@ LLNotifyBox::LLNotifyBox(LLNotificationPtr notification,
 		text->setReadOnlyBgColor ( LLColor4::transparent ); // the background color of the box is manually 
 															// rendered under the text box, therefore we want 
 															// the actual text box to be transparent
-		text->setReadOnlyFgColor ( gColors.getColor("NotifyTextColor") );
+		text->setReadOnlyFgColor ( gColors.getColor("NotifyCautionWarnColor") ); //sets caution text color for tip notifications
+		text->setEnabled(FALSE); // makes it read-only
+		text->setTabStop(FALSE); // can't tab to it (may be a problem for scrolling via keyboard)
+		addChild(text);
+	}
+
+	else
+	{
+
+		const S32 BTN_TOP = BOTTOM_PAD + (((mNumOptions-1+2)/3)) * (BTN_HEIGHT+VPAD);
+
+		// Tokenization on \n is handled by LLTextBox
+
+		const S32 MAX_LENGTH = 512 + 20 + DB_FIRST_NAME_BUF_SIZE + DB_LAST_NAME_BUF_SIZE + DB_INV_ITEM_NAME_BUF_SIZE;  // For script dialogs: add space for title.
+
+		text = new LLTextEditor(std::string("box"), LLRect(x, y, getRect().getWidth()-2, mIsTip ? BOTTOM : BTN_TOP+16), MAX_LENGTH, mMessage, sFont, FALSE);
+		text->setWordWrap(TRUE);
+		text->setTabStop(FALSE);
+		text->setMouseOpaque(FALSE);
+		text->setBorderVisible(FALSE);
+		text->setTakesNonScrollClicks(FALSE);
+		text->setHideScrollbarForShortDocs(TRUE);
+		text->setReadOnlyBgColor ( LLColor4::transparent ); // the background color of the box is manually 
+															// rendered under the text box, therefore we want 
+															// the actual text box to be transparent
+		text->setReadOnlyFgColor ( gColors.getColor("NotifyTextColor") ); //sets normal text color
 		text->setEnabled(FALSE); // makes it read-only
 		text->setTabStop(FALSE); // can't tab to it (may be a problem for scrolling via keyboard)
 		addChild(text);
@@ -290,14 +300,7 @@ LLNotifyBox::LLNotifyBox(LLNotificationPtr notification,
 	else
 	{
 		LLButton* btn;
-		btn = new LLButton(std::string("next"),
-						   LLRect(getRect().getWidth()-26, BOTTOM_PAD + 20, getRect().getWidth()-2, BOTTOM_PAD),
-						   std::string("notify_next.png"),
-						   std::string("notify_next.png"),
-						   LLStringUtil::null,
-						   onClickNext,
-						   this,
-						   sFont);
+		btn = new LLButton(std::string("next"), LLRect(getRect().getWidth()-26, BOTTOM_PAD + 20, getRect().getWidth()-2, BOTTOM_PAD), std::string("notify_next.png"), std::string("notify_next.png"), LLStringUtil::null, onClickNext, this, sFont);
 		btn->setScaleImage(TRUE);
 		btn->setToolTip(std::string("Next")); // *TODO: Translate
 		addChild(btn);
@@ -323,18 +326,9 @@ LLNotifyBox::LLNotifyBox(LLNotificationPtr notification,
 			S32 button_rows = (layout_script_dialog) ? 2 : 1;
 			
 			LLRect input_rect;
-			input_rect.setOriginAndSize(
-										x,
-										BOTTOM_PAD + button_rows * (BTN_HEIGHT + VPAD),
-										3 * 80 + 4 * HPAD,
-										(button_rows) * (BTN_HEIGHT + VPAD) + BTN_HEIGHT);
+			input_rect.setOriginAndSize( x, BOTTOM_PAD + button_rows * (BTN_HEIGHT + VPAD), 3 * 80 + 4 * HPAD, (button_rows) * (BTN_HEIGHT + VPAD) + BTN_HEIGHT);
 			
-			mUserInputBox = new LLTextEditor(edit_text_name, 
-											 input_rect,
-											 254,
-											 edit_text_contents,
-											 sFont,
-											 FALSE);
+			mUserInputBox = new LLTextEditor(edit_text_name, input_rect, 254, edit_text_contents, sFont, FALSE);
 			mUserInputBox->setBorderVisible(TRUE);
 			mUserInputBox->setTakesNonScrollClicks(TRUE);
 			mUserInputBox->setHideScrollbarForShortDocs(TRUE);
@@ -408,10 +402,7 @@ LLButton* LLNotifyBox::addButton(const std::string& name, const std::string& lab
 		}
 	}
 
-	btn_rect.setOriginAndSize(x + (index % 3) * (btn_width+HPAD+HPAD) + ignore_pad,
-		BOTTOM_PAD + (index / 3) * (BTN_HEIGHT+VPAD),
-		btn_width - 2*ignore_pad,
-		btn_height);
+	btn_rect.setOriginAndSize(x + (index % 3) * (btn_width+HPAD+HPAD) + ignore_pad, BOTTOM_PAD + (index / 3) * (BTN_HEIGHT+VPAD), btn_width - 2*ignore_pad, btn_height);
 
 	InstanceAndS32* userdata = new InstanceAndS32;
 	userdata->mSelf = this;
@@ -798,8 +789,7 @@ void LLNotifyBox::onClickNext(void* data)
 }
 
 
-LLNotifyBoxView::LLNotifyBoxView(const std::string& name, const LLRect& rect, BOOL mouse_opaque, U32 follows)
-	: LLUICtrl(name,rect,mouse_opaque,NULL,NULL,follows) 
+LLNotifyBoxView::LLNotifyBoxView(const std::string& name, const LLRect& rect, BOOL mouse_opaque, U32 follows) : LLUICtrl(name,rect,mouse_opaque,NULL,NULL,follows) 
 {
 }
 

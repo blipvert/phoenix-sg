@@ -58,14 +58,11 @@ void LLFloaterStats::buildStats()
 	//
 	LLStatView *stat_viewp = NULL;
 
-	//
-	// Viewer Basic
-	//
+	//basic section
 	stat_viewp = new LLStatView("basic stat view", "Basic",	"OpenDebugStatBasic", rect);
 	addStatView(stat_viewp);
 
-	stat_barp = stat_viewp->addStat("FPS", &(LLViewerStats::getInstance()->mFPSStat),
-									"DebugStatModeFPS", TRUE, TRUE);
+	stat_barp = stat_viewp->addStat("FPS", &(LLViewerStats::getInstance()->mFPSStat), "DebugStatModeFPS", TRUE, TRUE);
 	stat_barp->setUnitLabel(" fps");
 	stat_barp->mMinBar = 0.f;
 	stat_barp->mMaxBar = 60.f;
@@ -73,8 +70,7 @@ void LLFloaterStats::buildStats()
 	stat_barp->mLabelSpacing = 12.f;
 	stat_barp->mPrecision = 1;
 
-	stat_barp = stat_viewp->addStat("Bandwidth", &(LLViewerStats::getInstance()->mKBitStat),
-									"DebugStatModeBandwidth", TRUE, FALSE);
+	stat_barp = stat_viewp->addStat("Bandwidth", &(LLViewerStats::getInstance()->mKBitStat), "DebugStatModeBandwidth", TRUE, FALSE);
 	stat_barp->setUnitLabel(" kbps");
 	stat_barp->mMinBar = 0.f;
 	stat_barp->mMaxBar = 5000.f;
