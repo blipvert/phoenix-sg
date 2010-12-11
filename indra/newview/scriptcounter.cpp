@@ -41,12 +41,15 @@
 #include "llviewercontrol.h"
 #include "llviewernetwork.h"
 #include "llviewerobject.h"
+#include "jc_lslviewerbridge.h"
 #include <sstream>
 
 ScriptCounter* ScriptCounter::sInstance;
 U32 ScriptCounter::invqueries;
 U32 ScriptCounter::status;
 U32 ScriptCounter::scriptcount;
+U32 ScriptCounter::toCount;
+U32 ScriptCounter::scriptMemory;
 LLUUID ScriptCounter::reqObjectID;
 LLDynamicArray<LLUUID> ScriptCounter::delUUIDS;
 bool ScriptCounter::doDelete;
@@ -78,6 +81,27 @@ void ScriptCounter::init()
 LLVOAvatar* find_avatar_from_object( LLViewerObject* object );
 
 LLVOAvatar* find_avatar_from_object( const LLUUID& object_id );
+void ScriptCounter::checkCount()
+{
+  toCount--;
+  if(!toCount)
+  {
+    gMessageSystem->mPacketRing.setOutBandwidth(0.0);
+    gMessageSystem->mPacketRing.setUseOutThrottle(FALSE);
+    std::string resultStr;
+    resultStr="Scripts Counted: ";
+    sstr.str("");
+    sstr << scriptcount;
+    resultStr+=sstr.str();
+    sstr.str("");
+    sstr << scriptMemory;
+    resultStr+=" [";
+    resultStr+=sstr.str();
+    resultStr+="K]";
+    cmdline_printchat(resultStr);
+    init();
+  }
+}
 
 void ScriptCounter::showResult()
 {
@@ -95,10 +119,7 @@ void ScriptCounter::processObjectPropertiesFamily(LLMessageSystem* msg, void** u
 	if(reqObjectID.notNull())
 	if(object_id == reqObjectID)
 	{
-		if(doDelete)
-			sstr << "Deleted scripts from object "+name+": ";
-		else
-			sstr << "Counted scripts on object "+name+": ";
+		sstr << "Deleted scripts from object "+name+": ";
 		reqObjectID.setNull();
 		if(countingDone)
 			showResult();
@@ -114,16 +135,49 @@ void ScriptCounter::processObjectProperties(LLMessageSystem* msg, void** user_da
 	if(reqObjectID.notNull())
 	if(object_id == reqObjectID)
 	{
-		if(doDelete)
-			sstr << "Deleted scripts from object "+name+": ";
-		else
-			sstr << "Counted scripts on object "+name+": ";
+		sstr << "Deleted scripts from object "+name+": ";
 		reqObjectID.setNull();
 		if(countingDone)
 			showResult();
 	}
 }
+class JCCountCallback : public JCBridgeCallback
+{
+public:
+	JCCountCallback(LLUUID target)
+	{
+		targetID=target;
+	}
 
+	void fire(LLSD data)
+	{
+	    if(ScriptCounter::toCount)
+	    {
+	      count=0;
+	      memory=0;
+		count=atoi(data[0].asString().c_str());
+		memory=atoi(data[1].asString().c_str());
+		ScriptCounter::scriptcount+=count;
+		ScriptCounter::scriptMemory+=memory;
+		ScriptCounter::checkCount();
+	    }
+	}
+
+private:
+	std::stringstream sstr;
+	U32 count;
+	U32 memory;
+	std::string temp;
+	LLUUID targetID;
+};
+
+void ScriptCounter::radarScriptCount(LLUUID target)
+{
+    scriptcount=0;
+    scriptMemory=0;
+    toCount=1;
+    JCLSLBridge::instance().bridgetolsl("script_count|"+target.asString(), new JCCountCallback(target));
+}
 void ScriptCounter::serializeSelection(bool delScript)
 {
 	LLDynamicArray<LLViewerObject*> catfayse;
@@ -132,6 +186,8 @@ void ScriptCounter::serializeSelection(bool delScript)
 	invqueries=0;
 	doDelete=false;
 	scriptcount=0;
+	scriptMemory=0;
+	toCount=0;
 	objIDS.clear();
 	delUUIDS.clear();
 	objectCount=0;
@@ -141,28 +197,15 @@ void ScriptCounter::serializeSelection(bool delScript)
 	{
 		if(foo->isAvatar())
 		{
+			toCount=1;
 			LLVOAvatar* av=find_avatar_from_object(foo);
+			LLUUID avID=av->getID();
 			if(av)
 			{
-				for (LLVOAvatar::attachment_map_t::iterator iter = av->mAttachmentPoints.begin();
-					iter != av->mAttachmentPoints.end();
-					++iter)
-				{
-					LLViewerJointAttachment* attachment = iter->second;
-					if (!attachment->getValid())
-						continue ;
-					for (LLViewerJointAttachment::attachedobjs_vec_t::const_iterator itObj = attachment->mAttachedObjects.begin();
-							itObj != attachment->mAttachedObjects.end(); ++itObj)
-					{
-						LLViewerObject* object = *itObj;
-						if(object)
-						{
-							catfayse.put(object);
-							objectCount++;
-						}
-					}
-				}
+			    toCount=1;
+			    JCLSLBridge::instance().bridgetolsl("script_count|"+avID.asString(), new JCCountCallback(avID));
 			}
+			return;
 		}
 		else
 		{
@@ -175,6 +218,7 @@ void ScriptCounter::serializeSelection(bool delScript)
 				{
 					catfayse.put(object);
 					objectCount++;
+					toCount++;
 				}
 			}
 			doDelete=delScript;
@@ -185,31 +229,17 @@ void ScriptCounter::serializeSelection(bool delScript)
 			gMessageSystem->mPacketRing.setOutBandwidth(128000);
 			gMessageSystem->mPacketRing.setUseOutThrottle(TRUE);
 		}
-		cmdline_printchat("Counting scripts. Please wait.");
-		if((objectCount == 1) && !(foo->isAvatar()))
+		if(doDelete)
+		  cmdline_printchat("Deleting scripts. Please wait.");
+		if(objectCount == 1)
 		{
 			LLViewerObject *reqObject=((LLViewerObject*)foo->getRoot());
-			if(reqObject->isAvatar())
+			if(!doDelete)
 			{
-				for (LLObjectSelection::iterator iter = LLSelectMgr::getInstance()->getSelection()->begin();
-					 iter != LLSelectMgr::getInstance()->getSelection()->end(); iter++ )
-				{			
-					LLSelectNode *nodep = *iter;
-					LLViewerObject* objectp = nodep->getObject();
-					if (objectp->isRootEdit())
-					{
-						reqObjectID=objectp->getID();
-						LLMessageSystem* msg = gMessageSystem;
-						msg->newMessageFast(_PREHASH_ObjectSelect);
-						msg->nextBlockFast(_PREHASH_AgentData);
-						msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-						msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-						msg->nextBlockFast(_PREHASH_ObjectData);
-						msg->addU32Fast(_PREHASH_ObjectLocalID, objectp->getLocalID());
-						msg->sendReliable(gAgent.getRegionHost());
-						break;
-					}
-				}
+			  LLUUID objID=((LLViewerObject*)foo)->getID();
+			  toCount=1;
+			  JCLSLBridge::instance().bridgetolsl("script_count|"+objID.asString(), new JCCountCallback(objID));
+			  return;
 			}
 			else
 			{
@@ -237,6 +267,13 @@ void ScriptCounter::serialize(LLDynamicArray<LLViewerObject*> objects)
 	{
 		LLViewerObject* object = *itr;
 		if (object)
+		  if(!doDelete)
+		  {
+		    LLUUID objID=object->getID(); 
+		    JCLSLBridge::instance().bridgetolsl("script_count|"+objID.asString(), new JCCountCallback(objID));
+		  }
+		  else
+
 			subserialize(object);
 	}
 	if(invqueries == 0)
@@ -277,33 +314,7 @@ void ScriptCounter::completechk()
 		{
 			if(sstr.str() == "")
 			{
-				if(foo->isAvatar())
-				{
-					int valid=1;
-					LLVOAvatar *av=find_avatar_from_object(foo);
-					LLNameValue *firstname;
-					LLNameValue *lastname;
-					if(!av)
-					  valid=0;
-					else
-					{
-					  firstname = av->getNVPair("FirstName");
-					  lastname = av->getNVPair("LastName");
-					  if(!firstname || !lastname)
-						valid=0;
-					  if(valid)
-						  sstr << "Counted scripts from " << objectCount << " attachments on " << firstname->getString() << " " << lastname->getString() << ": ";
-					}
-					if(!valid)
-						sstr << "Counted scripts from " << objectCount << " attachments on avatar: ";
-				}
-				else
-				{
-					if(doDelete)
-						sstr << "Deleted scripts in " << objectCount << " objects: ";
-					else
-						sstr << "Counted scripts in " << objectCount << " objects: ";
-				}
+				sstr << "Deleted scripts in " << objectCount << " objects: ";
 				F32 throttle = gSavedSettings.getF32("OutBandwidth");
 				if(throttle != 0.f)
 				{
@@ -347,20 +358,17 @@ void ScriptCounter::inventoryChanged(LLViewerObject* obj,
 					if(asset->getType() == LLAssetType::AT_LSL_TEXT)
 					{
 						scriptcount+=1;
-						if(doDelete==true)
-							delUUIDS.push_back(asset->getUUID());
+						delUUIDS.push_back(asset->getUUID());
 					}
 				}
 			}
-			if(doDelete==true)
+			while (delUUIDS.count() > 0)
 			{
-				while (delUUIDS.count() > 0)
-				{
-					const LLUUID toDelete=delUUIDS[0];
-					delUUIDS.remove(0);
-					if(toDelete.notNull())
-						obj->removeInventory(toDelete);
-				}
+				const LLUUID toDelete=delUUIDS[0];
+				delUUIDS.remove(0);
+				if(toDelete.notNull())
+					obj->removeInventory(toDelete);
+
 			}
 		}
 		invqueries -= 1;

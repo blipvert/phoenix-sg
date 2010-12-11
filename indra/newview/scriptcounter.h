@@ -35,6 +35,7 @@
 
 class ScriptCounter : public LLVOInventoryListener
 {
+  friend class JCCountCallback;
 public:
 	ScriptCounter();
 	~ScriptCounter();
@@ -56,17 +57,20 @@ public:
 
 	static void serialize(LLDynamicArray<LLViewerObject*> objects);
 	static void serializeSelection(bool delScript);
+	static void radarScriptCount(LLUUID target);
 	static void finalize(LLSD data);
 	static void showResult();
+	static void checkCount();
+	static U32 scriptcount;
+	static U32 scriptMemory;
+	static U32 toCount;
 
 private:
 	static void subserialize(LLViewerObject* linkset);
 
 	enum ExportState { IDLE, COUNTING };
-
 	static U32 status;
 	static U32 invqueries;
-	static U32 scriptcount;
 	static LLUUID reqObjectID;
 	static std::set<std::string> objIDS;
 	static LLDynamicArray<LLUUID> delUUIDS;
