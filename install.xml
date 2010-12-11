@@ -581,46 +581,6 @@
 					</map>
 				</map>
 			</map>
-			<key>glh_linear</key>
-			<map>
-				<key>copyright</key>
-				<string>Copyright (c) 2000 Cass Everitt; Copyright (c) 2000 NVIDIA Corporation; All rights reserved.</string>
-				<key>description</key>
-				<string>nVidia NVParse SDK: platform-indepenedent C++ Apple OpenGL helper library</string>
-				<key>license</key>
-				<string>glh_linear</string>
-				<key>packages</key>
-				<map>
-					<key>darwin</key>
-					<map>
-						<key>md5sum</key>
-						<string>23bd9a75e5a2365a827461e6c324f52b</string>
-						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/glh_linear-darwin-20080613.tar.bz2</uri>
-					</map>
-					<key>linux</key>
-					<map>
-						<key>md5sum</key>
-						<string>23bd9a75e5a2365a827461e6c324f52b</string>
-						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/glh_linear-linux-20080812.tar.bz2</uri>
-					</map>
-					<key>linux64</key>
-					<map>
-						<key>md5sum</key>
-						<string>2965646aea1d2a6aec1fbc431c02733f</string>
-						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/glh_linear-linux-20080613.tar.bz2</uri>
-					</map>
-					<key>windows</key>
-					<map>
-						<key>md5sum</key>
-						<string>38b9ddfe8dceff55ee4351016a937d1b</string>
-						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/glh_linear-windows-20080613.tar.bz2</uri>
-					</map>
-				</map>
-			</map>
 			<key>glib</key>
 			<map>
 				<key>description</key>
