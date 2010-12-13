@@ -619,6 +619,10 @@ void LLAppViewer::setChatSpamTime(const LLSD &data)
 {
         chatSpamTime=data.asReal();
 }
+void LLAppViewer::setHighlights(const LLSD &data)
+{
+	LLSelectMgr::sRenderSelectionHighlights = data.asBoolean();
+}
 bool LLAppViewer::init()
 {
 	//
@@ -945,6 +949,7 @@ bool LLAppViewer::init()
         chatSpamTime = gSavedSettings.getF32("PhoenixChatSpamTime");
         gSavedSettings.getControl("PhoenixChatSpamCount")->getSignal()->connect(&setChatSpamCount);
         chatSpamCount = gSavedSettings.getF32("PhoenixChatSpamCount");
+		gSavedSettings.getControl("PhoenixRenderHighlightSelections")->getSignal()->connect(&setHighlights);
 
 	return true;
 }
