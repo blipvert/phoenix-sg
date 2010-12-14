@@ -1264,6 +1264,15 @@ bool LLOfferInfo::inventory_offer_callback(const LLSD& notification, const LLSD&
 		// send the message
 		msg->sendReliable(mHost);
 
+// [RLVa:KB] - Checked: 2010-09-23 (RLVa-1.2.1e) | Added: RLVa-1.2.1e
+		if (fRlvNotifyAccepted)
+		{
+			std::string::size_type idxToken = mDesc.find("'  ( http://");
+			if (std::string::npos != idxToken)
+				RlvBehaviourNotifyHandler::instance().sendNotification("accepted_in_inv inv_offer " + mDesc.substr(1, idxToken - 1));
+		}
+// [/RLVa:KB]
+
 		//don't spam them if they are getting flooded
 		if (check_offer_throttle(mFromName, true))
 		{
