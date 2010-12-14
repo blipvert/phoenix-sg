@@ -923,6 +923,15 @@ void RlvBehaviourNotifyHandler::changed(const RlvCommand& rlvCmd, bool fInternal
 		default:
 			break;
 	}
+
+	// RLVa-HACK: @notify:<channel>;XXX=add will trigger itself, but shouldn't... this is a bad fix but won't create new bugs, revisit later
+	//   -> it works since the command did succeed and will trigger RlvHandler::notifyBehaviourObservers() which in turn will trigger us
+	//      and cause the code below to run, but meanwhile the code above will not process the @notify because it's not been added yet
+	if (!m_NotificationsDelayed.empty())
+	{
+		m_Notifications.insert(m_NotificationsDelayed.begin(), m_NotificationsDelayed.end());
+		m_NotificationsDelayed.clear();
+	}
 }
 
 // Checked: 2010-09-23 (RLVa-1.2.1e) | Modified: RLVa-1.2.1e
