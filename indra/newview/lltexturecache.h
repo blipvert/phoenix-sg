@@ -112,7 +112,7 @@ public:
 	
 	void purgeCache(ELLPath location);
 	void setReadOnly(BOOL read_only) ;
-	S64 initCache(ELLPath location, S64 maxsize, BOOL disable_texture_cache);
+	S64 initCache(ELLPath location, S64 maxsize, BOOL texture_cache_mismatch);
 
 	handle_t readFromCache(const std::string& local_filename, const LLUUID& id, U32 priority, S32 offset, S32 size,
 						   ReadResponder* responder);
@@ -157,7 +157,7 @@ private:
 	void readHeaderCache();
 	void clearCorruptedCache();
 	void purgeAllTextures(bool purge_directories);
-	void purgeTextures(bool validate);
+	void purgeTextures(bool validate, bool force = false);
 	LLAPRFile* openHeaderEntriesFile(bool readonly, S32 offset);
 	void closeHeaderEntriesFile();
 	void readEntriesHeader();
