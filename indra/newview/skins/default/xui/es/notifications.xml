@@ -94,7 +94,7 @@ Detalles del error: no se ha encontrado en notifications.xml la alerta llamada &
 		<usetemplate name="okcancelbuttons" notext="Cancelar" yestext="Sí"/>
 	</notification>
 	<notification name="BadInstallation">
-		Ha habido un error al actualizar Second Life. Por favor, descargue la última versión desde secondlife.com.
+		Ha habido un error al actualizar Second Life. Por favor, descargue la última versión desde PhoenixViewer.com.
     <usetemplate
      name="okbutton"
      yestext="OK"/>
@@ -137,7 +137,7 @@ Por favor, revise su conexión a internet.
 		<usetemplate canceltext="Cancelar" name="yesnocancelbuttons" notext="No guardarlos" yestext="Guardarlos todos"/>
 	</notification>
 	<notification name="GrantModifyRights">
-		Al conceder derechos de modificación a otro residente le autoriza a cambiar, borrar, o coger CUALQUIER objeto que usted tenga en el mundo. Sea MUY cuidadoso dando este permiso. ¿Quiere conceder derechos de modificación a [FIRST_NAME] [LAST_NAME]?
+		Al conceder derechos de modificación a otro residente le autoriza a cambiar, borrar, o coger CUALQUIER objeto que usted tenga en el mundo. Sea MUY cuidadoso dando este permiso. ¿Quiere conceder derechos de modificación a [NAME]?
 		<usetemplate name="okcancelbuttons" notext="No" yestext="Sí"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -145,7 +145,7 @@ Por favor, revise su conexión a internet.
 		<usetemplate name="okcancelbuttons" notext="No" yestext="Sí"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		¿Quiere revocar los derechos de modificación a [FIRST_NAME] [LAST_NAME]?
+		¿Quiere revocar los derechos de modificación a [NAME]?
 		<usetemplate name="okcancelbuttons" notext="No" yestext="Sí"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -989,7 +989,7 @@ usted no tiene el permiso de comprar terreno para el grupo que tiene activado ac
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		¿Quiere quitar a [FIRST_NAME] [LAST_NAME] de su lista de amigos?
+		¿Quiere quitar a [NAME] de su lista de amigos?
 		<usetemplate name="okcancelbuttons" notext="Cancelar" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">
@@ -2426,10 +2426,10 @@ Pero, vaya, diviértase si quiere.
 		Asunto: [SUBJECT], Mensaje: [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] está conectado
+		[NAME] está conectado
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] no está conectado
+		[NAME] no está conectado
 	</notification>
 	<notification name="AddSelfFriend">
 		No se puede añadir como amigo a usted mismo.
@@ -3042,7 +3042,13 @@ Pulse Aceptar para entrar al chat o Rehusar para declinar la invitación. Pulse 
 		Ha ocurrido un error intentando conectarle al [VOICE_CHANNEL_NAME]. Por favor, inténtelo más tarde.
 	</notification>
 	<notification name="ServerVersionChanged">
-		La región en la que ha entrado se ejecuta en un simulador con una versión diferente. Pulse este mensaje para ver más detalles.
+		La región que ha entrado está utilizando una versión diferente de simulador:
+Actual simulador: [NEWVERSION]
+Anterior simulador: [OLDVERSION]
+		<unique>
+		  <context key="OLDVERSION"/>
+		  <context key="NEWVERSION"/>
+		</unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		No puede abrirse desde este navegador la URL que ha pulsado.

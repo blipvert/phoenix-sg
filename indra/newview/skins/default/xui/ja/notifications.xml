@@ -94,7 +94,7 @@
 		<usetemplate name="okcancelbuttons" notext="取り消し" yestext="はい"/>
 	</notification>
 	<notification name="BadInstallation">
-		Second Life をアップデート中にエラーが発生しました。 secondlife.com から最新バージョンをダウンロードしてください。
+		Second Life をアップデート中にエラーが発生しました。 PheonixViewer.com から最新バージョンをダウンロードしてください。
 		<usetemplate name="okbutton" yestext="OK"/>
 	</notification>
 	<notification name="LoginFailedNoNetwork">
@@ -134,7 +134,7 @@
 	<notification name="GrantModifyRights">
 		他の住人に変更権限を与えると、その人はあなたが所有している
 すべてのオブジェクトを変更、削除、または取得することができるようになります。この許可を与えるときは細心の注意を払ってください。
-[FIRST_NAME] [LAST_NAME]に対して変更権限を与えますか？
+[NAME]に対して変更権限を与えますか？
 		<usetemplate name="okcancelbuttons" notext="いいえ" yestext="はい"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -144,7 +144,7 @@
 		<usetemplate name="okcancelbuttons" notext="いいえ" yestext="はい"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		[FIRST_NAME] [LAST_NAME]に対して変更権限を取り消しますか？
+		[NAME]に対して変更権限を取り消しますか？
 		<usetemplate name="okcancelbuttons" notext="いいえ" yestext="はい"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -1035,7 +1035,7 @@ L$は返金されません。
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		[FIRST_NAME] [LAST_NAME]をフレンドリストから削除しますか？
+		[NAME]をフレンドリストから削除しますか？
 		<usetemplate name="okcancelbuttons" notext="取り消し" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">
@@ -2622,10 +2622,10 @@ Second Life のウェブサイトにアクセスして、設定しますか？
 		件名： [SUBJECT], ﾒｯｾｰｼﾞ： [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] はオンラインです。
+		[NAME] はオンラインです。
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] はオフラインです。
+		[NAME] はオフラインです。
 	</notification>
 	<notification name="AddSelfFriend">
 		自分自身をフレンドにはできません。
@@ -3266,7 +3266,13 @@ Macの場合は、Cmd-Opt-Shift-Dを押してください。
 		[VOICE_CHANNEL_NAME]のボイス・チャットに接続中に、エラーが発生しました。後でもう一度お試しください。
 	</notification>
 	<notification name="ServerVersionChanged">
-		到着した地域は異なるシミュレーターのバージョンで実行されています。 詳細についてはこのメッセージをクリックしてください。
+		到着した地域は異なるシミュレーターのバージョンで実行されています。
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		クリックしたURLはこのウェブブラウザでは開けません

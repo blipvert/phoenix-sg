@@ -82,6 +82,7 @@ class LLAudioEngine
 	friend class LLAudioChannelOpenAL; // bleh. channel needs some listener methods.
 	
 public:
+	LOG_CLASS(LLAudioEngine);
 	enum LLAudioType
 	{
 		AUDIO_TYPE_NONE    = 0,

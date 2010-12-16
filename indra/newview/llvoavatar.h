@@ -48,6 +48,7 @@
 #include "llrendertarget.h"
 #include "llwearable.h"
 #include "llvoavatardefines.h"
+#include "llavatarname.h"
 
 #include "phoenixboobutils.h"
 
@@ -109,7 +110,16 @@ public:
 	void idleUpdateLoadingEffect();
 	void idleUpdateWindEffect();
 	void idleUpdateBoobEffect();
-	void idleUpdateNameTag(const LLVector3& root_pos_last);
+	void 			idleUpdateNameTag(const LLVector3& root_pos_last);
+	void			idleUpdateNameTagText(BOOL new_name);
+	LLVector3		idleUpdateNameTagPosition(const LLVector3& root_pos_last);
+	void			idleUpdateNameTagAlpha(BOOL new_name, F32 alpha);
+	LLColor4		getNameTagColor(bool is_friend);
+	void			clearNameTag();
+	static void		invalidateNameTag(const LLUUID& agent_id);
+	// force all name tags to rebuild, useful when display names turned on/off
+	static void		invalidateNameTags();
+	void			addNameTagLine(const std::string& line, const LLColor4& color, S32 style, const LLFontGL* font);
 	void idleUpdateRenderCost();
 	void idleUpdateTractorBeam();
 	void idleUpdateBelowWater();
@@ -146,6 +156,7 @@ public:
 	void updateAttachmentVisibility(U32 camera_mode);
 	void clampAttachmentPositions();
 	S32 getAttachmentCount(); // Warning: order(N) not order(1)
+	BOOL canAttachMoreObjects() const;
 
 	// HUD functions
 	BOOL hasHUDAttachment() const;
@@ -279,22 +290,27 @@ public:
 	LLPolyMesh* getMesh( LLPolyMeshSharedData *shared_data );
 	void hideSkirt();
 
-	virtual void setParent(LLViewerObject* parent);
+	virtual BOOL setParent(LLViewerObject* parent);
 	virtual void addChild(LLViewerObject *childp);
 	virtual void removeChild(LLViewerObject *childp);
 
-	LLViewerJointAttachment* getTargetAttachmentPoint(LLViewerObject* viewer_object);
+//	LLViewerJointAttachment* getTargetAttachmentPoint(LLViewerObject* viewer_object);
+// [RLVa:KB] - Checked: 2009-12-18 (RLVa-1.1.0i) | Added: RLVa-1.1.0i
+	LLViewerJointAttachment* getTargetAttachmentPoint(const LLViewerObject* viewer_object) const;
+// [/RLVa:KB]
 	BOOL attachObject(LLViewerObject *viewer_object);
 	BOOL detachObject(LLViewerObject *viewer_object);
 	void lazyAttach();
+
+	static BOOL	detachAttachmentIntoInventory(const LLUUID& item_id);
 
 	void sitOnObject(LLViewerObject *sit_object);
 	void getOffObject();
 
 	BOOL isWearingAttachment( const LLUUID& inv_item_id );
 	LLViewerObject* getWornAttachment( const LLUUID& inv_item_id );
-// [RLVa:KB] - Checked: 2009-12-18 (RLVa-1.1.0i) | Added: RLVa-1.1.0i
-	LLViewerJointAttachment* getWornAttachmentPoint(const LLUUID& inv_item_id);
+// [RLVa:KB] - Checked: 2010-03-14 (RLVa-1.2.0a) | Added: RLVa-1.1.0i
+	LLViewerJointAttachment* getWornAttachmentPoint(const LLUUID& inv_item_id) const;
 // [/RLVa:KB]
 	const std::string getAttachedPointName(const LLUUID& inv_item_id);
 
@@ -371,12 +387,16 @@ public:
 	BOOL            isFullyLoaded();
 	BOOL			isReallyFullyLoaded();
 	BOOL            updateIsFullyLoaded();
+	virtual BOOL	getIsCloud();
+protected:
+	void		updateRuthTimer(bool loading);
 private:
 	BOOL            mFullyLoaded;
 	BOOL            mPreviousFullyLoaded;
 	BOOL            mFullyLoadedInitialized;
 	S32             mFullyLoadedFrameCounter;
 	LLFrameTimer    mFullyLoadedTimer;
+	LLFrameTimer    mRuthTimer;
 
 	//--------------------------------------------------------------------
 	// Collision Volumes
@@ -485,6 +505,7 @@ private:
 	std::deque<LLChat>			mChats;
 	BOOL						mTyping;
 	LLFrameTimer				mTypingTimer;
+	static void on_avatar_name_response(const LLUUID& agent_id, const LLAvatarName& av_name, void *userdata);
 
 	//--------------------------------------------------------------------
 	// wind rippling in clothes
@@ -542,6 +563,8 @@ public:
 	typedef std::map<S32, LLViewerJointAttachment*> attachment_map_t;
 	attachment_map_t mAttachmentPoints;
 	std::vector<LLPointer<LLViewerObject> > mPendingAttachment;
+protected:
+	U32					getNumAttachments() const; // O(N), not O(1)
 
 	//--------------------------------------------------------------------
 	// static preferences that are controlled by user settings/menus
@@ -639,6 +662,8 @@ private:
 
 	static void resolveClient(LLColor4& avatar_name_color, std::string& client, LLVOAvatar* avatar);
 	friend class LLFloaterAvatarList;
+	
+	std::map<LLUUID, LLQuaternion> oldAttachmentRots;
 
 protected:
 	LLPointer<LLHUDEffectSpiral> mBeam;
@@ -652,8 +677,16 @@ protected:
 	BOOL	  mNameBusy;
 	BOOL	  mNameMute;
 	BOOL      mNameAppearance;
+	bool	  mNameFriend;
 	BOOL	  mVisibleChat;
+	F32		  mNameAlpha;
+	bool	  mNameCloud;
 	BOOL      mRenderGroupTitles;
+	std::string mNameClient;
+	LLColor4 mNameTagColor;
+	std::string      mRenderedName;
+	std::string      mClientName;
+	S32		  mUsedNameSystem;
 
 	std::string  mDebugText;
 	U64		  mLastRegionHandle;

@@ -52,7 +52,7 @@
 			<button label="i" label_selected="i" name="partner_info" tool_tip="Klik for at åbne partnerens profil"/>
 			<button label="?" label_selected="?" name="partner_help"/>
 			<line_editor name="partner_edit" tool_tip="Second Life partner eller kæreste. For mere info om hvordan, se www.secondlife.com/partner">
-				[FIRST] [LAST]
+				[NAME]
 			</line_editor>
 			<text name="Photo:">
 				Foto:

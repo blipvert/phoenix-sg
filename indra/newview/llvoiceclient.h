@@ -150,6 +150,7 @@ class LLVoiceClient: public LLSingleton<LLVoiceClient>
 		void connectorShutdownResponse(int statusCode, std::string &statusString);
 
 		void accountLoginStateChangeEvent(std::string &accountHandle, int statusCode, std::string &statusString, int state);
+	void mediaCompletionEvent(std::string &sessionGroupHandle, std::string &mediaCompletionType);
 		void mediaStreamUpdatedEvent(std::string &sessionHandle, std::string &sessionGroupHandle, int statusCode, std::string &statusString, int state, bool incoming);
 		void textStreamUpdatedEvent(std::string &sessionHandle, std::string &sessionGroupHandle, bool enabled, int state, bool incoming);
 		void sessionAddedEvent(std::string &uriString, std::string &alias, std::string &sessionHandle, std::string &sessionGroupHandle, bool isChannel, bool incoming, std::string &nameString, std::string &applicationString);
@@ -746,6 +747,14 @@ static	std::string nameFromsipURI(const std::string &uri);
 		typedef std::set<LLFriendObserver*> friend_observer_set_t;
 		friend_observer_set_t mFriendObservers;
 		void notifyFriendObservers();
+		
+	bool mCaptureBufferMode;		// Disconnected from voice channels while using the capture buffer.
+	bool mCaptureBufferRecording;	// A voice sample is being captured.
+	bool mCaptureBufferRecorded;	// A voice sample is captured in the buffer ready to play.
+	bool mCaptureBufferPlaying;		// A voice sample is being played.
+	
+	S32 mPlayRequestCount;
+
 };
 
 extern LLVoiceClient *gVoiceClient;

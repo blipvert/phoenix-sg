@@ -1,4 +1,4 @@
-Linden Lab and the Phoenix Viewer Team would like to acknowledge
+Linden Lab and the Phoenix Viewer Project would like to acknowledge
 source code contributions from the following residents.
 The Second Life resident name is given below,
 along with the issue identifier corresponding to the patches we've
@@ -123,6 +123,12 @@ Angus Boyd
 	VWR-592
 Ann Congrejo
 	CT-193
+Ansariel Hiller
+	PHOE-1125
+	PHOE-1360
+	PHOE-1653
+	PHOE-1718
+	PHOE-1807
 Archimedes Plutonian
 	SNOW-197
 Ardy Lay
@@ -300,6 +306,7 @@ Henri Beauchamp
 	VWR-1320
 	VWR-1406
 	VWR-4157
+	PHOE-1718
 Hikkoshi Sakai
 	VWR-429
 Hiro Sommambulist
@@ -616,8 +623,13 @@ Sergen Davies
 Shawn Kaufmat
 	SNOW-240
 Shyotl Kuhr
+	PHOE-255
+	PHOE-315
 	PHOE-541
 	PHOE-542
+	PHOE-651
+	PHOE-714
+	FIRE-53
 SignpostMarv Martin
 	VWR-153
 	VWR-154

@@ -79,6 +79,10 @@ if (DARWIN)
       PROPERTIES
       COMPILE_FLAGS "-Wno-deprecated-declarations -fpascal-strings"
       )
+
+  find_library(APPSERVICES_LIBRARY ApplicationServices)
+
+  list(APPEND COREIMAGE_LIBRARIES  ${APPSERVICES_LIBRARY})
 endif (DARWIN)
 
 if (LINUX)

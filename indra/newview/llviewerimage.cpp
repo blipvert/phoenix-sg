@@ -309,6 +309,10 @@ LLViewerImage::LLViewerImage(const LLUUID& id, const LLHost& host, BOOL usemipma
 {
 	init(true);
 	sImageCount++;
+	if (host != LLHost::invalid)
+	{
+		mCanUseHTTP = false;	// We must request the image from the provided host sim.
+	}
 }
 
 LLViewerImage::LLViewerImage(const std::string& url, const LLUUID& id, BOOL usemipmaps)
@@ -601,10 +605,12 @@ BOOL LLViewerImage::createTexture(S32 usename/*= 0*/)
 			return FALSE;
 		}
 
-		// <edit>
-		CommentCacheReadResponder* responder = new CommentCacheReadResponder(this);
-		LLAppViewer::getTextureCache()->readFromCache(getID(),LLWorkerThread::PRIORITY_HIGH,0,999999,responder);
-		// </edit>
+		static LLCachedControl<BOOL> PhoenixShowCommentsForAll("PhoenixShowCommentsForAll",0);
+		if(PhoenixShowCommentsForAll)
+		{
+			CommentCacheReadResponder* responder = new CommentCacheReadResponder(this);
+			LLAppViewer::getTextureCache()->readFromCache(getID(),LLWorkerThread::PRIORITY_HIGH,0,999999,responder);
+		}
 
 		res = LLImageGL::createGLTexture(mRawDiscardLevel, mRawImage, usename);
 	}
@@ -1735,15 +1741,17 @@ void LLViewerImage::destroySavedRawImage()
 
 void LLViewerImage::destroyRawImage()
 {
-	if (mRawImage.notNull()) sRawCount--;
 	if (mAuxRawImage.notNull()) sAuxCount--;
 
-	if(mForceToSaveRawImage)
+	if (mRawImage.notNull())
 	{
-		saveRawImage() ;
+		sRawCount--;
+		if(mForceToSaveRawImage)
+		{
+			saveRawImage() ;
+		}
+		setCachedRawImage() ;
 	}
-	
-	setCachedRawImage() ;
 
 	mRawImage = NULL;
 	mAuxRawImage = NULL;
@@ -1798,7 +1806,8 @@ void LLViewerImage::setCachedRawImage()
 			mRawImage->scale(w >> i, h >> i) ;
 		}
 		mCachedRawImage = mRawImage ;
-		mCachedRawDiscardLevel = mRawDiscardLevel + i ;			
+		mRawDiscardLevel += i ;
+		mCachedRawDiscardLevel = mRawDiscardLevel ;
 	}
 }
 

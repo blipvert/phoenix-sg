@@ -38,6 +38,7 @@
 // linden library includes
 #include "lleconomy.h"
 #include "llerror.h"
+#include "llflexibleobject.h"
 #include "llfontgl.h"
 #include "llpermissionsflags.h"
 #include "llstring.h"
@@ -132,6 +133,11 @@ LLVector3 LLPanelObject::mClipboardPos;
 LLVector3 LLPanelObject::mClipboardSize;
 LLVector3 LLPanelObject::mClipboardRot;
 
+LLVolumeParams LLPanelObject::mClipboardVolumeParams;
+BOOL LLPanelObject::hasParamClipboard = FALSE;
+BOOL LLPanelObject::hasFlexiParam = FALSE;
+BOOL LLPanelObject::hasSculptParam = FALSE;
+BOOL LLPanelObject::hasLightParam = FALSE;
 
 
 //*TODO:translate (depricated, so very low priority)
@@ -144,6 +150,9 @@ BOOL	LLPanelObject::postBuild()
 	//--------------------------------------------------------
 	// Top
 	//--------------------------------------------------------
+
+	// Build constant tipsheet
+	childSetAction("build_math_constants",onClickBuildConstants,this);
 
 	// Lock checkbox
 	mCheckLock = getChild<LLCheckBoxCtrl>("checkbox locked");
@@ -192,6 +201,11 @@ BOOL	LLPanelObject::postBuild()
 	mCtrlRotZ = getChild<LLSpinCtrl>("Rot Z");
 	childSetCommitCallback("Rot Z",onCommitRotation,this);
 
+	mBtnLinkObj = getChild<LLButton>("link_obj");
+	childSetAction("link_obj",onLinkObj, this);
+	mBtnUnlinkObj = getChild<LLButton>("unlink_obj");
+	childSetAction("unlink_obj",onUnlinkObj, this);
+
 	mBtnCopyPos = getChild<LLButton>("copypos");
 	childSetAction("copypos",onCopyPos, this);
 	mBtnPastePos = getChild<LLButton>("pastepos");
@@ -213,6 +227,10 @@ BOOL	LLPanelObject::postBuild()
 	mBtnPasteRotClip = getChild<LLButton>("pasterotclip");
 	childSetAction("pasterotclip",onPasteRotClip, this);
 
+	mBtnCopyParams = getChild<LLButton>("copyparams");
+	childSetAction("copyparams",onCopyParams, this);
+	mBtnPasteParams = getChild<LLButton>("pasteparams");
+	childSetAction("pasteparams",onPasteParams, this);
 
 	//--------------------------------------------------------
 
@@ -426,6 +444,7 @@ void LLPanelObject::getState( )
 	BOOL enable_scale	= objectp->permMove() && objectp->permModify();
 	//BOOL enable_rotate	= objectp->permMove() && ( (objectp->permModify() && !objectp->isAttachment()) || !gSavedSettings.getBOOL("EditLinkedParts"));
 	BOOL enable_rotate	= objectp->permMove() /*&& !objectp->isAttachment() */&& (objectp->permModify() || !gSavedSettings.getBOOL("EditLinkedParts"));
+	childSetEnabled("build_math_constants",true);
 
 	S32 selected_count = LLSelectMgr::getInstance()->getSelection()->getObjectCount();
 	BOOL single_volume = (LLSelectMgr::getInstance()->selectionAllPCode( LL_PCODE_VOLUME ))
@@ -473,6 +492,44 @@ void LLPanelObject::getState( )
 	mCtrlPosX->setEnabled(enable_move);
 	mCtrlPosY->setEnabled(enable_move);
 	mCtrlPosZ->setEnabled(enable_move);
+
+	bool enable_link = false;
+	// check if there are at least 2 objects selected, and that the
+	// user can modify at least one of the selected objects.
+	// in component mode, can't link
+	if (!gSavedSettings.getBOOL("EditLinkedParts"))
+	{
+		if(LLSelectMgr::getInstance()->selectGetAllRootsValid() && LLSelectMgr::getInstance()->getSelection()->getRootObjectCount() >= 2)
+		{
+			struct f : public LLSelectedObjectFunctor
+			{
+				virtual bool apply(LLViewerObject* object)
+				{
+					return object->permModify();
+				}
+			} func;
+			const bool firstonly = true;
+			enable_link = LLSelectMgr::getInstance()->getSelection()->applyToRootObjects(&func, firstonly);
+		}
+	}
+	mBtnLinkObj->setEnabled( enable_link );
+
+	bool enable_unlink = LLSelectMgr::getInstance()->selectGetAllRootsValid() &&
+		LLSelectMgr::getInstance()->getSelection()->getFirstEditableObject() &&
+		!LLSelectMgr::getInstance()->getSelection()->getFirstEditableObject()->isAttachment();
+// [RLVa:KB] - Checked: 2009-07-10 (RLVa-1.0.0g) | Modified: RLVa-0.2.0g
+		if ( (enable_unlink) && (gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) && 
+		 (gAgent.getAvatarObject()) && (gAgent.getAvatarObject()->mIsSitting) )
+	{
+		// Allow if the avie isn't sitting on any of the selected objects
+		LLObjectSelectionHandle handleSel = LLSelectMgr::getInstance()->getSelection();
+		RlvSelectIsSittingOn func(gAgent.getAvatarObject()->getRoot());
+		if (handleSel->getFirstRootNode(&func, TRUE))
+			enable_unlink = false;
+	}
+// [/RLVa:KB]
+	mBtnUnlinkObj->setEnabled( enable_unlink );
+
 	mBtnCopyPos->setEnabled(enable_move);
 	mBtnPastePos->setEnabled(enable_move);
 	mBtnPastePosClip->setEnabled(enable_move);
@@ -545,6 +602,8 @@ void LLPanelObject::getState( )
 	mBtnPasteRot->setEnabled( enable_rotate );
 	mBtnPasteRotClip->setEnabled( enable_rotate );
 
+	mBtnCopyParams->setEnabled( single_volume && objectp->permModify() );
+	mBtnPasteParams->setEnabled( single_volume && objectp->permModify() );
 
 	BOOL owners_identical;
 	LLUUID owner_id;
@@ -2231,6 +2290,8 @@ void LLPanelObject::clearCtrls()
 	childSetEnabled("advanced_cut", FALSE);
 	childSetEnabled("advanced_dimple", FALSE);
 	childSetVisible("advanced_slice", FALSE);
+
+	childSetEnabled("build_math_constants",false);
 }
 
 //
@@ -2370,6 +2431,11 @@ void LLPanelObject::onCommitSculptType(LLUICtrl *ctrl, void* userdata)
 	self->sendSculpt();
 }
 
+// static
+void LLPanelObject::onClickBuildConstants(void *)
+{
+	LLNotifications::instance().add("ClickBuildConstants");
+}
 
 std::string shortfloat(F32 in)
 {
@@ -2430,7 +2496,195 @@ void LLPanelObject::onCopyRot(void* user_data)
 	gViewerWindow->mWindow->copyTextToClipboard(utf8str_to_wstring(stringVec));
 }
 
+static LLSD clipboard;
 
+void LLPanelObject::onCopyParams(void* user_data)
+{
+	LLPanelObject* self = (LLPanelObject*) user_data;
+	self->getVolumeParams(mClipboardVolumeParams);
+	hasParamClipboard = TRUE;
+	
+	LLViewerObject* objectp = self->mObject;
+	if (!objectp)
+		return;
+
+	LLVOVolume *volobjp = NULL;
+	if ( objectp && (objectp->getPCode() == LL_PCODE_VOLUME))
+		volobjp = (LLVOVolume *)objectp;
+	
+	hasFlexiParam = FALSE;
+	if(volobjp && volobjp->isFlexible())
+	{
+		LLFlexibleObjectData *attributes = (LLFlexibleObjectData *)objectp->getParameterEntry(LLNetworkData::PARAMS_FLEXIBLE);
+		if (attributes)
+		{
+			clipboard["lod"] = attributes->getSimulateLOD();
+			clipboard["gav"] = attributes->getGravity();
+			clipboard["ten"] = attributes->getTension();
+			clipboard["fri"] = attributes->getAirFriction();
+			clipboard["sen"] = attributes->getWindSensitivity();
+			LLVector3 force = attributes->getUserForce();
+			clipboard["forx"] = force.mV[0];
+			clipboard["fory"] = force.mV[1];
+			clipboard["forz"] = force.mV[2];
+			hasFlexiParam = TRUE;
+		}
+	}
+
+	if (objectp->getParameterEntryInUse(LLNetworkData::PARAMS_SCULPT))
+	{
+		LLSculptParams *sculpt_params = (LLSculptParams *)objectp->getParameterEntry(LLNetworkData::PARAMS_SCULPT);
+
+		LLUUID image_id = sculpt_params->getSculptTexture();
+		BOOL allow_texture = FALSE;
+		if (gInventory.isObjectDescendentOf(image_id, gInventoryLibraryRoot)
+			|| image_id == LLUUID(gSavedSettings.getString( "DefaultObjectTexture" ))
+			|| image_id == LLUUID(gSavedSettings.getString( "UIImgWhiteUUID" ))
+			|| image_id == LLUUID(gSavedSettings.getString( "UIImgInvisibleUUID" ))
+			|| image_id == LLUUID(SCULPT_DEFAULT_TEXTURE)
+		)
+			allow_texture = TRUE;
+		else
+		{
+			LLUUID inventory_item_id;
+			LLViewerInventoryCategory::cat_array_t cats;
+			LLViewerInventoryItem::item_array_t items;
+			LLAssetIDMatches asset_id_matches(image_id);
+			gInventory.collectDescendentsIf(LLUUID::null,
+									cats,
+									items,
+									LLInventoryModel::INCLUDE_TRASH,
+									asset_id_matches);
+
+			if (items.count())
+			{
+				// search for copyable version first
+				for (S32 i = 0; i < items.count(); i++)
+				{
+					LLInventoryItem* itemp = items[i];
+					LLPermissions item_permissions = itemp->getPermissions();
+					if (item_permissions.allowCopyBy(gAgent.getID(), gAgent.getGroupID()))
+					{
+						inventory_item_id = itemp->getUUID();
+						break;
+					}
+				}
+			}
+			if (inventory_item_id.notNull())
+			{
+				LLInventoryItem* itemp = gInventory.getItem(inventory_item_id);
+				if (itemp)
+				{
+					LLPermissions perm = itemp->getPermissions();
+					if ( (perm.getMaskBase() & PERM_ITEM_UNRESTRICTED) == PERM_ITEM_UNRESTRICTED )
+						allow_texture = TRUE;
+				}
+			}
+		}
+		if (allow_texture)
+			clipboard["sculptid"] = image_id;
+		else
+			clipboard["sculptid"] = LLUUID(SCULPT_DEFAULT_TEXTURE);
+
+		clipboard["sculpt_type"] = sculpt_params->getSculptType();
+		hasSculptParam = TRUE;
+	}
+	else
+	{
+		hasSculptParam = FALSE;
+	}
+
+	if (volobjp && volobjp->getIsLight())
+	{
+		clipboard["Light Intensity"] = volobjp->getLightIntensity();
+		clipboard["Light Radius"] = volobjp->getLightRadius();
+		clipboard["Light Falloff"] = volobjp->getLightFalloff();
+		LLColor3 color = volobjp->getLightColor();
+		clipboard["r"] = color.mV[0];
+		clipboard["g"] = color.mV[1];
+		clipboard["b"] = color.mV[2];
+		hasLightParam = TRUE;
+	}
+	else
+	{
+		hasLightParam = FALSE;
+	}
+
+}
+
+void LLPanelObject::onPasteParams(void* user_data)
+{
+	LLPanelObject* self = (LLPanelObject*) user_data;
+	
+	if(hasParamClipboard)
+		self->mObject->updateVolume(mClipboardVolumeParams);
+	
+	LLViewerObject* objectp = self->mObject;
+	if (!objectp)
+		return;
+
+	if (hasFlexiParam && (objectp->getPCode() == LL_PCODE_VOLUME))
+	{
+		LLFlexibleObjectData *attributes = (LLFlexibleObjectData *)objectp->getParameterEntry(LLNetworkData::PARAMS_FLEXIBLE);
+		if (attributes)
+		{
+			LLFlexibleObjectData new_attributes;
+			new_attributes = *attributes;
+
+			new_attributes.setSimulateLOD(clipboard["lod"].asInteger());
+			new_attributes.setGravity(clipboard["gav"].asReal());
+			new_attributes.setTension(clipboard["ten"].asReal());
+			new_attributes.setAirFriction(clipboard["fri"].asReal());
+			new_attributes.setWindSensitivity(clipboard["sen"].asReal());
+			F32 fx = (F32)clipboard["forx"].asReal();
+			F32 fy = (F32)clipboard["fory"].asReal();
+			F32 fz = (F32)clipboard["forz"].asReal();
+			LLVector3 force(fx,fy,fz);
+			new_attributes.setUserForce(force);
+			objectp->setParameterEntry(LLNetworkData::PARAMS_FLEXIBLE, new_attributes, true);
+		}
+	}
+
+	if (hasSculptParam)
+	{
+		LLSculptParams sculpt_params;
+
+		if (clipboard.has("sculptid"))
+			sculpt_params.setSculptTexture(clipboard["sculptid"].asUUID());
+
+		if (clipboard.has("sculptid"))
+			sculpt_params.setSculptType((U8)clipboard["sculpt_type"].asInteger());
+
+		objectp->setParameterEntry(LLNetworkData::PARAMS_SCULPT, sculpt_params, TRUE);
+	}
+	LLVOVolume *volobjp = NULL;
+	if ( objectp && (objectp->getPCode() == LL_PCODE_VOLUME))
+		volobjp = (LLVOVolume *)objectp;
+
+	if (volobjp && hasLightParam)
+	{
+		volobjp->setIsLight(TRUE);
+		volobjp->setLightIntensity((F32)clipboard["Light Intensity"].asReal());
+		volobjp->setLightRadius((F32)clipboard["Light Radius"].asReal());
+		volobjp->setLightFalloff((F32)clipboard["Light Falloff"].asReal());
+		F32 r = (F32)clipboard["r"].asReal();
+		F32 g = (F32)clipboard["g"].asReal();
+		F32 b = (F32)clipboard["b"].asReal();
+		volobjp->setLightColor(LLColor3(r,g,b));
+	}
+}
+
+void LLPanelObject::onLinkObj(void* user_data)
+{
+	llinfos << "Attempting link." << llendl;
+	LLSelectMgr::getInstance()->sendLink();
+}
+
+void LLPanelObject::onUnlinkObj(void* user_data)
+{
+	llinfos << "Attempting unlink." << llendl;
+	LLSelectMgr::getInstance()->sendDelink();
+}
 
 void LLPanelObject::onPastePos(void* user_data)
 {

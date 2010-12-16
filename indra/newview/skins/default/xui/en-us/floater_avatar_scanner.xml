@@ -45,7 +45,7 @@
 		       enabled="true" radio_style="false"
            control_name="PhoenixRadarChatAlerts"/>
       <check_box bottom_delta="-20" enabled="true" follows="top|left" font="SansSerifSmall" height="16"
-					 label="Av entering / leaving simulator" left_delta="10"
+					 label="Av entering / leaving region" left_delta="10"
 					 mouse_opaque="true" name="radar_chat_sim_toggle" radio_style="false" width="270"
 					 control_name="PhoenixRadarAlertSim"/>
       <check_box bottom_delta="-20" enabled="true" follows="top|left" font="SansSerifSmall" height="16"

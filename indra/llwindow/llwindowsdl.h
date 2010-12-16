@@ -54,7 +54,9 @@
 
 class LLWindowSDL : public LLWindow
 {
+	LOG_CLASS(LLWindowSDL);
 public:
+	/*virtual*/ void setWindowTitle(std::string &title);
 	/*virtual*/ void show();
 	/*virtual*/ void hide();
 	/*virtual*/ void close();

@@ -45,6 +45,7 @@
 #include "llurlsimstring.h"
 #include "llweb.h"
 #include "llworldmapmessage.h"
+#include "llviewercontrol.h"
 
 // library includes
 #include "llsd.h"
@@ -401,10 +402,18 @@ public:
 		{
 			url += tokens[i].asString() + "/";
 		}
+		bool should_tp = true; // teleport
+		if(web) //From search or some other trusted web browser
+		{
+			if(!gSavedSettings.getBOOL("PhoenixTPFromSearch"))
+			{
+				should_tp = false;
+			}
+		}
 		LLWorldMapMessage::getInstance()->sendNamedRegionRequest(region_name,
 			LLURLDispatcherImpl::regionHandleCallback,
 			url,
-			true);	// teleport
+			should_tp);
 		return true;
 	}
 };

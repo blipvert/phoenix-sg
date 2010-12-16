@@ -78,7 +78,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   # NOTE: wont have a distributable build unless you add this on the configure line with:
   # -DCMAKE_OSX_ARCHITECTURES:STRING='i386;ppc'
   #set(CMAKE_OSX_ARCHITECTURES i386;ppc)
-  set(CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.4u.sdk)
+  set(CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
   if (CMAKE_OSX_ARCHITECTURES MATCHES "i386" AND CMAKE_OSX_ARCHITECTURES MATCHES "ppc")
     set(ARCH universal)
   else (CMAKE_OSX_ARCHITECTURES MATCHES "i386" AND CMAKE_OSX_ARCHITECTURES MATCHES "ppc")
@@ -124,5 +124,7 @@ Please set one of these values to OFF in your CMake cache file.
 For more information, please see JIRA DEV-14943 - Cmake Linux cannot build both VIEWER and SERVER in one build environment
   ")
 endif (LINUX AND SERVER AND VIEWER)
+
+set(LIBOPENJPEG2 OFF CACHE BOOL "Use libopenjpeg version 2 libraries")
 
 source_group("CMake Rules" FILES CMakeLists.txt)

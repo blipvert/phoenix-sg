@@ -1361,8 +1361,20 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp)
 		}
 		else
 		{
+			// <edit> This
+			int sz = joint_name.size();
+			int i = 0;
+			while (i < sz)
+			{
+				if ('\a' == joint_name[i])
+				{
+					joint_name.replace(i, 1, " ");
+				}
+				i++;
+			}
+			// </edit>
 			llwarns << "joint not found: " << joint_name << llendl;
-			//return FALSE;
+		//return FALSE;
 		}
 
 		joint_motion->mJointName = joint_name;

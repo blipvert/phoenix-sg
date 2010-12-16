@@ -47,6 +47,7 @@
 #include "llagent.h"
 #include "lldrawable.h"
 #include "llface.h"
+#include "llselectmgr.h"
 #include "llviewercamera.h"
 #include "llviewerimagelist.h"
 #include "llviewerobjectlist.h"
@@ -444,23 +445,36 @@ void LLVOTree::render(LLAgent &agent)
 
 void LLVOTree::setPixelAreaAndAngle(LLAgent &agent)
 {
-	// First calculate values as for any other object (for mAppAngle)
-	LLViewerObject::setPixelAreaAndAngle(agent);
-
-	// Re-calculate mPixelArea accurately
+	LLVector3 center = getPositionAgent();//center of tree.
+	LLVector3 viewer_pos_agent = gAgent.getCameraPositionAgent();
+	LLVector3 lookAt = center - viewer_pos_agent;
+	F32 dist = lookAt.normVec() ;	
+	F32 cos_angle_to_view_dir = lookAt * LLViewerCamera::getInstance()->getXAxis() ;	
 	
-	// This should be the camera's center, as soon as we move to all region-local.
-	LLVector3 relative_position = getPositionAgent() - agent.getCameraPositionAgent();
-	F32 range = relative_position.length();				// ugh, square root
+	F32 range = dist - getMinScale()/2;
+	if (range < F_ALMOST_ZERO)		// range == zero
+	{
+		range = 0;
+		mAppAngle = 180.f;
+	}
+	else
+	{
+		mAppAngle = (F32) atan2( getMaxScale(), range) * RAD_TO_DEG;		
+	}
 
 	F32 max_scale = mBillboardScale * getMaxScale();
 	F32 area = max_scale * (max_scale*mBillboardRatio);
-
 	// Compute pixels per meter at the given range
-	F32 pixels_per_meter = LLViewerCamera::getInstance()->getViewHeightInPixels() / 
-						   (tan(LLViewerCamera::getInstance()->getView()) * range);
+	F32 pixels_per_meter = LLViewerCamera::getInstance()->getViewHeightInPixels() / (tan(LLViewerCamera::getInstance()->getView()) * dist);
+	mPixelArea = pixels_per_meter * pixels_per_meter * area ;	
 
-	mPixelArea = (pixels_per_meter) * (pixels_per_meter) * area;
+	F32 importance = LLFace::calcImportanceToCamera(cos_angle_to_view_dir, dist) ;
+	mPixelArea = LLFace::adjustPixelArea(importance, mPixelArea) ;
+	if (mPixelArea > LLViewerCamera::getInstance()->getScreenPixelArea())
+	{
+		mAppAngle = 180.f;
+	}
+
 #if 0
 	// mAppAngle is a bit of voodoo;
 	// use the one calculated LLViewerObject::setPixelAreaAndAngle above
@@ -1314,3 +1328,127 @@ LLTreePartition::LLTreePartition()
 	mLODPeriod = 1;
 }
 
+
+
+void LLVOTree::generateSilhouetteVertices(std::vector<LLVector3> &vertices,
+										  std::vector<LLVector3> &normals,
+										  std::vector<S32> &segments,
+										  const LLVector3& obj_cam_vec,
+										  const LLMatrix4& local_matrix,
+										  const LLMatrix3& normal_matrix)
+{
+	vertices.clear();
+	normals.clear();
+	segments.clear();
+
+	F32 height = mBillboardScale; // *mBillboardRatio * 0.5;
+	F32 width = height * mTrunkAspect;
+	
+	LLVector3 position1 = LLVector3(-width * 0.5,0,0) * local_matrix;
+	LLVector3 position2 = LLVector3(-width * 0.5,0,height) * local_matrix;
+	LLVector3 position3 = LLVector3(+width * 0.5,0,height) * local_matrix;
+	LLVector3 position4 = LLVector3(+width * 0.5,0,0) * local_matrix;
+	
+	LLVector3 position5 = LLVector3(0,-width * 0.5,0) * local_matrix;
+	LLVector3 position6 = LLVector3(0,-width * 0.5,height) * local_matrix;
+	LLVector3 position7 = LLVector3(0,+width * 0.5,height) * local_matrix;
+	LLVector3 position8 = LLVector3(0,+width * 0.5,0) * local_matrix;
+	
+
+	LLVector3 normal = (position1-position2) % (position2-position3);
+	normal.normalize();
+
+	vertices.push_back(position1);
+	normals.push_back(normal);
+	vertices.push_back(position2);
+	normals.push_back(normal);
+	segments.push_back(vertices.size());
+
+	vertices.push_back(position2);
+	normals.push_back(normal);
+	vertices.push_back(position3);
+	normals.push_back(normal);
+	segments.push_back(vertices.size());
+
+	vertices.push_back(position3);
+	normals.push_back(normal);
+	vertices.push_back(position4);
+	normals.push_back(normal);
+	segments.push_back(vertices.size());
+
+	vertices.push_back(position4);
+	normals.push_back(normal);
+	vertices.push_back(position1);
+	normals.push_back(normal);
+	segments.push_back(vertices.size());
+
+	normal = (position5-position6) % (position6-position7);
+	normal.normalize();
+	
+	vertices.push_back(position5);
+	normals.push_back(normal);
+	vertices.push_back(position6);
+	normals.push_back(normal);
+	segments.push_back(vertices.size());
+
+	vertices.push_back(position6);
+	normals.push_back(normal);
+	vertices.push_back(position7);
+	normals.push_back(normal);
+	segments.push_back(vertices.size());
+
+	vertices.push_back(position7);
+	normals.push_back(normal);
+	vertices.push_back(position8);
+	normals.push_back(normal);
+	segments.push_back(vertices.size());
+
+	vertices.push_back(position8);
+	normals.push_back(normal);
+	vertices.push_back(position5);
+	normals.push_back(normal);
+	segments.push_back(vertices.size());
+
+}
+
+
+void LLVOTree::generateSilhouette(LLSelectNode* nodep, const LLVector3& view_point)
+{
+	LLVector3 position;
+	LLQuaternion rotation;
+	
+	if (mDrawable->isActive())
+	{
+		if (mDrawable->isSpatialRoot())
+		{
+			position = LLVector3();
+			rotation = LLQuaternion();
+		}
+		else
+		{
+			position = mDrawable->getPosition();
+			rotation = mDrawable->getRotation();
+		}
+	}
+	else
+	{
+		position = getPosition() + getRegion()->getOriginAgent();;
+		rotation = getRotation();
+	}
+
+	// trees have bizzare scaling rules... because it's cool to make needless exceptions
+	// PS: the trees are the last remaining tidbit of Philip's code.  take a look sometime.
+	F32 radius = getScale().length() * 0.05f;
+	LLVector3 scale = LLVector3(1,1,1) * radius;
+
+	// compose final matrix
+	LLMatrix4 local_matrix;
+	local_matrix.initAll(scale, rotation, position);
+
+	
+	generateSilhouetteVertices(nodep->mSilhouetteVertices, nodep->mSilhouetteNormals,
+							   nodep->mSilhouetteSegments,
+							   LLVector3(0,0,0), local_matrix, LLMatrix3());
+
+	nodep->mSilhouetteExists = TRUE;
+}

@@ -83,10 +83,15 @@
 #include "llviewerregion.h"
 #include "llviewerstats.h"
 #include "llvoavatar.h"
+#include "llvograss.h"
+#include "llvotree.h"
 #include "llvovolume.h"
 #include "pipeline.h"
 
 #include "llglheaders.h"
+
+#include "llparcel.h" // moymod
+#include "llviewerparcelmgr.h" // moymod
 
 // [RLVa:KB]
 #include "rlvhandler.h"
@@ -834,7 +839,10 @@ void LLSelectMgr::highlightObjectOnly(LLViewerObject* objectp)
 		return;
 	}
 
-	if (objectp->getPCode() != LL_PCODE_VOLUME)
+	if ((objectp->getPCode() != LL_PCODE_VOLUME) &&
+		(objectp->getPCode() != LL_PCODE_LEGACY_TREE) &&
+		(objectp->getPCode() != LL_PCODE_LEGACY_GRASS))
+		
 	{
 		return;
 	}
@@ -882,7 +890,10 @@ void LLSelectMgr::highlightObjectAndFamily(const std::vector<LLViewerObject*>& o
 		{
 			continue;
 		}
-		if (object->getPCode() != LL_PCODE_VOLUME)
+		
+		if ((object->getPCode() != LL_PCODE_VOLUME) &&
+			(object->getPCode() != LL_PCODE_LEGACY_TREE) &&
+			(object->getPCode() != LL_PCODE_LEGACY_GRASS))
 		{
 			continue;
 		}
@@ -902,7 +913,14 @@ void LLSelectMgr::highlightObjectAndFamily(const std::vector<LLViewerObject*>& o
 
 void LLSelectMgr::unhighlightObjectOnly(LLViewerObject* objectp)
 {
-	if (!objectp || (objectp->getPCode() != LL_PCODE_VOLUME))
+	if (!objectp)
+	{
+		return;
+	}
+
+	if ((objectp->getPCode() != LL_PCODE_VOLUME) &&
+		(objectp->getPCode() != LL_PCODE_LEGACY_TREE) &&
+		(objectp->getPCode() != LL_PCODE_LEGACY_GRASS))
 	{
 		return;
 	}
@@ -3146,7 +3164,21 @@ void LLSelectMgr::packDuplicateOnRayHead(void *user_data)
 	msg->nextBlockFast(_PREHASH_AgentData);
 	msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
 	msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID() );
-	msg->addUUIDFast(_PREHASH_GroupID, gAgent.getGroupID() );
+	LLUUID group_id = gAgent.getGroupID();
+
+	//KC: lets make sure that shift-copied stuff also gets the right group set >_>
+	//MOYMOD 2009-05, If avatar is in land group/land owner group,
+	//	it rezzes it with it to prevent autoreturn/whatever...
+	if(gSavedSettings.getBOOL("mm_alwaysRezWithLandGroup")){
+		LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+		if(gAgent.isInGroup(parcel->getGroupID())){
+			msg->addUUIDFast(_PREHASH_GroupID, parcel->getGroupID());
+		}else if(gAgent.isInGroup(parcel->getOwnerID())){
+			msg->addUUIDFast(_PREHASH_GroupID, parcel->getOwnerID());
+		}else msg->addUUIDFast(_PREHASH_GroupID, gAgent.getGroupID());
+	}else msg->addUUIDFast(_PREHASH_GroupID, gAgent.getGroupID());
+	
+	msg->addUUIDFast(_PREHASH_GroupID, group_id);
 	msg->addVector3Fast(_PREHASH_RayStart, data->mRayStartRegion );
 	msg->addVector3Fast(_PREHASH_RayEnd, data->mRayEndRegion );
 	msg->addBOOLFast(_PREHASH_BypassRaycast, data->mBypassRaycast );
@@ -3576,6 +3608,13 @@ void LLSelectMgr::sendAttach(U8 attachment_point)
 	if (0 == attachment_point ||
 		get_if_there(gAgent.getAvatarObject()->mAttachmentPoints, (S32)attachment_point, (LLViewerJointAttachment*)NULL))
 	{
+		if (attachment_point != 0)
+		{
+			// If we know the attachment point then we got here by clicking an
+			// "Attach to..." context menu item, so we should add, not replace.
+			attachment_point |= ATTACHMENT_ADD;
+		}
+
 		sendListToRegions(
 			"ObjectAttach",
 			packAgentIDAndSessionAndAttachment, 
@@ -3929,6 +3968,19 @@ void LLSelectMgr::packAgentAndSessionAndGroupID(void* user_data)
 void LLSelectMgr::packDuplicateHeader(void* data)
 {
 	LLUUID group_id(gAgent.getGroupID());
+	
+	//KC: lets make sure that shift-copied stuff also gets the right group set >_>
+	//MOYMOD 2009-05, If avatar is in land group/land owner group,
+	//	it rezzes it with it to prevent autoreturn/whatever...
+	if(gSavedSettings.getBOOL("mm_alwaysRezWithLandGroup")){
+		LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+		if(gAgent.isInGroup(parcel->getGroupID())){
+			group_id = parcel->getGroupID();
+		}else if(gAgent.isInGroup(parcel->getOwnerID())){
+			group_id = parcel->getOwnerID();
+		}
+	}
+	
 	packAgentAndSessionAndGroupID(&group_id);
 
 	LLDuplicateData* dup_data = (LLDuplicateData*) data;
@@ -4257,10 +4309,16 @@ void LLSelectMgr::sendListToRegions(const std::string& message_name,
 // Network communications
 //
 
+void LLSelectMgr::registerObjectPropertiesFamilyRequest(const LLUUID& object_id)
+{
+	sObjectPropertiesFamilyRequests.insert(object_id);
+}
+
 void LLSelectMgr::requestObjectPropertiesFamily(LLViewerObject* object)
 {
 	// Remember that we asked the properties of this object.
-	sObjectPropertiesFamilyRequests.insert(object->mID);
+	registerObjectPropertiesFamilyRequest(object->mID);
+
 	//llinfos << "Registered an ObjectPropertiesFamily request for object " << object->mID << llendl;
 
 	LLMessageSystem* msg = gMessageSystem;
@@ -5001,6 +5059,14 @@ void LLSelectMgr::generateSilhouette(LLSelectNode* nodep, const LLVector3& view_
 	{
 		((LLVOVolume*)objectp)->generateSilhouette(nodep, view_point);
 	}
+	else if (objectp && objectp->getPCode() == LL_PCODE_LEGACY_GRASS)
+	{
+		((LLVOGrass*)objectp)->generateSilhouette(nodep, view_point);
+	}
+	else if (objectp && objectp->getPCode() == LL_PCODE_LEGACY_TREE)
+	{
+		((LLVOTree*)objectp)->generateSilhouette(nodep, view_point);
+	}
 }
 
 //
@@ -5336,8 +5402,8 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 		glMultMatrixf((F32*) objectp->getRenderMatrix().mMatrix);
 	}
 
-	LLVolume *volume = objectp->getVolume();
-	if (volume)
+	// we used to only call this for volumes.  but let's render silhouettes for any node that has them.
+	if (1)
 	{
 		F32 silhouette_thickness;
 		if (is_hud_object && gAgent.getAvatarObject())

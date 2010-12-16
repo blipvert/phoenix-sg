@@ -223,6 +223,7 @@ public:
 	void 			setFgColor( const LLColor4& c )				{ mFgColor = c; }
 	void			setTextDefaultColor( const LLColor4& c )				{ mDefaultColor = c; }
 	void 			setReadOnlyFgColor( const LLColor4& c )		{ mReadOnlyFgColor = c; }
+	LLColor4		getReadOnlyFgColor()						{ return mReadOnlyFgColor; }
 	void 			setWriteableBgColor( const LLColor4& c )	{ mWriteableBgColor = c; }
 	void 			setReadOnlyBgColor( const LLColor4& c )		{ mReadOnlyBgColor = c; }
 	void			setTrackColor( const LLColor4& color );

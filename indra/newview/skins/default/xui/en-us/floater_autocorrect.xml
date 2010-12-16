@@ -7,7 +7,7 @@
 			it will search your writable text entry, and replace any of the search entries with their replacement"/>
   <button bottom_delta="-2" left_delta="150" height="22" width="80" enabled="true" follows="left|top"
 			font="SansSerif" mouse_opaque="true" halign="center" scale_image="true"
-			name="em_ac_loadlist" label="Load List.." tool_tip="Click this to load a previously exported list from a file"/>
+			name="em_ac_loadlist" label="Load List.." tool_tip="Click this to load a previously exported list from a file."/>
   <view_border bottom_delta="-10" left_delta="100" height="40" width="120" follows="left|top"
 			bevel_style="in" mouse_opaque="false" name="em_ac_notecard_target"/>
   <text bottom_delta="18" left_delta="0" height="16" width="120" follows="left|top" halign="center"
@@ -44,26 +44,26 @@
 				>Author Name</text>
   <check_box bottom_delta="-20" left_delta="-32" height="16" width="100" enabled="true" follows="left|top"
 			font="SansSerifSmall" mouse_opaque="true" radio_style="false" label="Enabled, priority:"
-			control_name="em_ac_enabled" name="em_ac_list_enabled" tool_tip="Whether or not you with to use this particular list"/>
+			control_name="em_ac_enabled" name="em_ac_list_enabled" tool_tip="Whether or not you wish to use this particular list."/>
   <spinner bottom_delta="-0" left_delta="120" height="16" width="50" follows="left|top"
       decimal_digits="0" increment="1" min_val="0" max_val="10" mouse_opaque="true"
-      label="" label_width="0" name="em_ac_priority" tool_tip="This number determine what order your list will be used to replace words.  A higher priority means it will be used before lower priority lists"/>
+      label="" label_width="0" name="em_ac_priority" tool_tip="This number determine what order your list will be used to replace words.  A higher priority means it will be used before lower priority lists."/>
   <check_box bottom_delta="-20" left_delta="-120" height="16" width="100" enabled="true" follows="left|top"
 			font="SansSerifSmall" mouse_opaque="true" radio_style="false" label="Show Notifications"
-			control_name="em_ac_list_show" name="em_ac_list_show" tool_tip="having this enabled will make a notification pop up every time a word is replaced"/>
+			control_name="em_ac_list_show" name="em_ac_list_show" tool_tip="Having this enabled will make a notification pop up every time a word is replaced."/>
   <check_box bottom_delta="-20" left_delta="-0" height="16" width="100" enabled="true" follows="left|top"
 			font="SansSerifSmall" mouse_opaque="true" radio_style="false" label="Word Style"
-			control_name="em_ac_list_style" name="em_ac_list_style" tool_tip="having this checked means the list is for full words that should be replaced, unchecked means that it will look within words contents as well"/>
+			control_name="em_ac_list_style" name="em_ac_list_style" tool_tip="Having this checked means the list is for full words that should be replaced, unchecked means that it will look within words contents as well."/>
   <view_border bottom="-405" left="201" height="40" width="0" follows="left|top"
 			bevel_style="none" border_thickness="1" mouse_opaque="false" name="em_divisor2"/>
   <view_border bottom_delta="-0" left="2" height="0" width="396" follows="left|top"
 			bevel_style="none" border_thickness="1" mouse_opaque="false" name="em_divisor3"/>
   <button bottom="-400" left="5" height="22" width="90" enabled="true" follows="left|top"
 			font="SansSerif" mouse_opaque="true" halign="center" scale_image="true"
-			name="em_ac_deletelist" label="Delete List" tool_tip="This will delete the entire list of words and their replacements, it is not undoable"/>
+			name="em_ac_deletelist" label="Delete List" tool_tip="This will delete the entire list of words and their replacements, it is not reversible."/>
   <button bottom_delta="-0" left_delta="95" height="22" width="90" enabled="true" follows="left|top"
 			font="SansSerif" mouse_opaque="true" halign="center" scale_image="true"
-			name="em_ac_exportlist" label="Export List" tool_tip="This will save your current list to a file so you can share it with your friends or edit it"/>
+			name="em_ac_exportlist" label="Export List" tool_tip="This will save your current list to a file so you can share it with your friends or edit it."/>
   <button bottom_delta="0" left_delta="110" height="22" width="90" enabled="true" follows="left|top"
 			font="SansSerif" mouse_opaque="true" halign="center" scale_image="true"
 			name="em_ac_addentry" label="Add Entry"/>

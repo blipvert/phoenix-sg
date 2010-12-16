@@ -833,6 +833,30 @@ void LLMediaCtrl::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event)
 			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_NAME_CHANGED" << LL_ENDL;
 		};
 		break;
+		
+		case MEDIA_EVENT_CLOSE_REQUEST:
+		{
+			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_CLOSE_REQUEST" << LL_ENDL;
+		}
+		break;
+		
+		case MEDIA_EVENT_PICK_FILE_REQUEST:
+		{
+			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_PICK_FILE_REQUEST" << LL_ENDL;
+		}
+		break;
+		
+		case MEDIA_EVENT_GEOMETRY_CHANGE:
+		{
+			LL_DEBUGS("Media") << "Media event:  MEDIA_EVENT_GEOMETRY_CHANGE, uuid is " << self->getClickUUID() << LL_ENDL;
+		}
+		break;
+
+		case MEDIA_EVENT_STATUS_CHANGED:
+		{
+			LL_DEBUGS("Media") << "Media event:  MEDIA_EVENT_STATUS_CHANGED" << LL_ENDL;
+		}
+		break;
 	};
 
 	// chain all events to any potential observers of this object.

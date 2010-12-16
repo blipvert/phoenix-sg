@@ -49,7 +49,6 @@ this feature is still a work in progress.
 #include "llvovolume.h"
 #include "llface.h"
 
-
 /*=======================================*/
 /*     Instantiating manager class       */
 /*    and formally declaring it's list   */
@@ -91,7 +90,7 @@ LocalBitmap::LocalBitmap(std::string fullpath)
 		else if (temp_exten == "tga") { this->extension = IMG_EXTEN_TGA; }
 		else if (temp_exten == "jpg" || temp_exten == "jpeg") { this->extension = IMG_EXTEN_JPG; }
 		else if (temp_exten == "png") { this->extension = IMG_EXTEN_PNG; }
-		else { return; } // no valid extension.
+ 	 	else { return; } // no valid extension.
 		
 		/* getting file's last modified */
 		const std::time_t time = boost::filesystem::last_write_time( boost::filesystem::path( this->filename ) );

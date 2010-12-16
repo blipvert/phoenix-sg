@@ -68,8 +68,7 @@ LLStatView::~LLStatView()
 	}
 }
 
-LLStatBar *LLStatView::addStat(const std::string& name, LLStat *statp,
-							   const std::string& setting, BOOL default_bar, BOOL default_history)
+LLStatBar *LLStatView::addStat(const std::string& name, LLStat *statp, const std::string& setting, BOOL default_bar, BOOL default_history)
 {
 	LLStatBar *stat_barp;
 	LLRect r;

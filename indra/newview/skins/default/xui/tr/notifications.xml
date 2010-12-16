@@ -88,7 +88,7 @@ Hata detayları: &apos;[_NAME]&apos; adındaki uyarı notifications.xml&apos;de 
 		<usetemplate name="okcancelbuttons" notext="İptal" yestext="Evet"/>
 	</notification>
 	<notification name="BadInstallation">
-		Second Life güncellenirken bir hata oluştu. Lütfen secondlife.com&apos;dan en güncel sürümü yükleyiniz.
+		Second Life güncellenirken bir hata oluştu. Lütfen PheonixViewer.com&apos;dan en güncel sürümü yükleyiniz.
 		<usetemplate name="okbutton" yestext="Tamam"/>
 	</notification>
 	<notification name="LoginFailedNoNetwork">
@@ -128,7 +128,7 @@ Lütfen sadece bir obje seçiniz ve tekrar deneyiniz.
 	<notification name="GrantModifyRights">
 		Başka bir üyeye modifiye izni vermek,onun sizin iç dünyadaki objelerinizi değiştirmesine, silmesine veya almasına olanak sağlar.
 Bu izni verirken ÇOK dikkatli olunuz.
-[FIRST_NAME] [LAST_NAME] kişisi için modifiye iznini onaylıyor musunuz?
+[NAME] kişisi için modifiye iznini onaylıyor musunuz?
 		<usetemplate name="okcancelbuttons" notext="Hayır" yestext="Evet"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -138,7 +138,7 @@ Seçili üyeler için modifiye izinlerini onaylıyor musunuz?
 		<usetemplate name="okcancelbuttons" notext="Hayır" yestext="Evet"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		[FIRST_NAME] [LAST_NAME] kişisi için modifiye iznini geri almak istiyor musunuz?
+		[NAME] kişisi için modifiye iznini geri almak istiyor musunuz?
 		<usetemplate name="okcancelbuttons" notext="Hayır" yestext="Evet"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -807,7 +807,7 @@ Aktif grubunuz için arazi satın alma izniniz yok.
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		[FIRST_NAME] [LAST_NAME] kişisini arkadaşlar listenizden silmek istiyor musunuz?
+		[NAME] kişisini arkadaşlar listenizden silmek istiyor musunuz?
 		<usetemplate name="okcancelbuttons" notext="İptal" yestext="Tamam"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">
@@ -1480,10 +1480,10 @@ Bunu düzenlemek için Second Life web sitesini ziyaret etmek ister misiniz?
 		Ekleme iptal oldu
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] sistemde
+		[NAME] sistemde
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] sistemde değil
+		[NAME] sistemde değil
 	</notification>
 	<notification name="AddSelfFriend">
 		Kendi kendinizi arkadaş olarak ekleyemezsiniz.
@@ -2001,7 +2001,13 @@ Sohbete katılmak için Kabul et veya daveti reddetmek için Reddet butonuna tı
 		[VOICE_CHANNEL_NAME] ile sesli sohbet bağlantısı kurulmaya çalışılırken bir hata oluştu.Lütfen daha sonra tekrar deneyiniz.
 	</notification>
 	<notification name="ServerVersionChanged">
-		Girdiğiniz bölge farklı bir simulatör versiyonunda çalıştırılıyor.Detaylar için bu mesaja tıklayınız.
+		Girdiğiniz bölge farklı bir simulatör versiyonunda çalıştırılıyor.
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		Tıkladığınız link bu web tarayıcısında açılamıyor.

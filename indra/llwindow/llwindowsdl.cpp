@@ -413,6 +413,11 @@ static int x11_detect_VRAM_kb()
 }
 #endif // LL_X11
 
+void LLWindowSDL::setWindowTitle(std::string &title)
+{
+	SDL_WM_SetCaption(title.c_str(), title.c_str());
+}
+
 BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, BOOL fullscreen, BOOL disable_vsync)
 {
 	//bool			glneedsinit = false;
@@ -458,7 +463,7 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
 
 	// Set the application icon.
 	SDL_Surface *bmpsurface;
-	bmpsurface = Load_BMP_Resource("snowglobe_icon.BMP");
+	bmpsurface = Load_BMP_Resource("phoenix_icon.BMP");
 	if (bmpsurface)
 	{
 		// This attempts to give a black-keyed mask to the icon.

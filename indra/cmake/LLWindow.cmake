@@ -3,7 +3,7 @@
 include(OpenGL)
 include(Prebuilt)
 
-if (LINUX)
+if (STANDALONE)
   include(FindSDL)
 
   # This should be done by FindSDL.  Sigh.
@@ -12,12 +12,17 @@ if (LINUX)
       SDL_INCLUDE_DIR
       SDL_LIBRARY
       )
-else (LINUX)
+else (STANDALONE)
   use_prebuilt_binary(SDL)
   if (NOT DARWIN)
     use_prebuilt_binary(mesa)
   endif (NOT DARWIN)
-endif (LINUX)
+  if (LINUX AND VIEWER)
+    set (SDL_FOUND TRUE)
+    set (SDL_INCLUDE_DIR ${LIBS_PREBUILT_DIR}/i686-linux)
+    set (SDL_LIBRARY SDL)
+  endif (LINUX AND VIEWER)
+endif (STANDALONE)
 
 if (SDL_FOUND)
   add_definitions(-DLL_SDL=1)

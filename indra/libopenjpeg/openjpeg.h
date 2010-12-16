@@ -535,6 +535,8 @@ typedef struct opj_image_comp {
 	int factor;
 	/** image component data */
 	int *data;
+	/** image datablock size */
+	int datasize;
 } opj_image_comp_t;
 
 /** 

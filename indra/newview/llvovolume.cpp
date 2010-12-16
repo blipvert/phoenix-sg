@@ -63,8 +63,7 @@
 #include "llworld.h"
 #include "llselectmgr.h"
 #include "pipeline.h"
-
-// [RLVa:KB]
+// [RLVa:KB] - Checked: 2010-04-04 (RLVa-1.2.0d)
 #include "rlvhandler.h"
 // [/RLVa:KB]
 
@@ -462,10 +461,33 @@ void LLVOVolume::updateTextureVirtualSize()
 			vsize = area;
 			imagep->setBoostLevel(LLViewerImageBoostLevel::BOOST_HUD);
  			face->setPixelArea(area); // treat as full screen
+			face->setVirtualSize(vsize);
 		}
 		else
 		{
 			vsize = face->getTextureVirtualSize();
+			if (isAttachment())
+			{
+				// Rez attachments faster and at full details !
+				if (permYouOwner())
+				{
+					// Our attachments must really rez fast and fully:
+					// we shouldn't have to zoom on them to get the textures
+					// fully loaded !
+					imagep->setBoostLevel(LLViewerImageBoostLevel::BOOST_HUD);
+					imagep->dontDiscard();
+				}
+				else
+				{
+					// Others' can get their texture discarded to avoid
+					// filling up the video buffers in crowded areas...
+					imagep->setBoostLevel(LLViewerImageBoostLevel::BOOST_SELECTED);
+					imagep->setAdditionalDecodePriority(1.5f);
+					vsize = (F32) LLViewerCamera::getInstance()->getScreenPixelArea();
+					face->setPixelArea(vsize); // treat as full screen
+				}
+
+			}
 		}
 
 		mPixelArea = llmax(mPixelArea, face->getPixelArea());		
@@ -479,7 +501,6 @@ void LLVOVolume::updateTextureVirtualSize()
 			}
 		}
 		
-		face->setVirtualSize(vsize);
 		if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_TEXTURE_AREA))
 		{
 			if (vsize < min_vsize) min_vsize = vsize;
@@ -559,6 +580,32 @@ void LLVOVolume::updateTextureVirtualSize()
 	else if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_FACE_AREA))
 	{
 		setDebugText(llformat("%.0f:%.0f", fsqrtf(min_vsize),fsqrtf(max_vsize)));
+	}else if(gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_TEXTURE_COMMENT))
+	{
+		const S32 num_faces = mDrawable->getNumFaces();
+		std::string allInfo("");
+		for (S32 i = 0; i < num_faces; i++)
+		{
+			LLFace* face = mDrawable->getFace(i);
+			LLViewerImage *imagep = face->getTexture();
+			std::string faceinfo("");
+			if(imagep)
+			{
+				std::map<std::string,std::string>::iterator it;
+				for ( it=imagep->decodedComment.begin() ; it != imagep->decodedComment.end(); it++ )
+				{
+					faceinfo+=llformat("(%d)",i)+(*it).first+" => "+(*it).second+"\n";
+				}
+			}
+			if(faceinfo!="")
+			{
+				allInfo+=faceinfo+"\n";
+			}
+		}
+		if(allInfo!="")
+		{
+			setDebugText(allInfo);
+		}
 	}
 
 	if (mPixelArea == 0)
@@ -754,8 +801,8 @@ void LLVOVolume::sculpt()
 					   
 			sculpt_data = raw_image->getData();
 		}
-		static BOOL* sPhoenixOblongSculptLODHack = rebind_llcontrol<BOOL>("PhoenixOblongSculptLODHack", &gSavedSettings, false);
-		getVolume()->sculpt(sculpt_width, sculpt_height, sculpt_components, sculpt_data, discard_level, *sPhoenixOblongSculptLODHack);
+		static LLCachedControl<bool> sPhoenixOblongSculptLODHack("PhoenixOblongSculptLODHack", 0);
+		getVolume()->sculpt(sculpt_width, sculpt_height, sculpt_components, sculpt_data, discard_level, sPhoenixOblongSculptLODHack);
 	}
 }
 
@@ -888,17 +935,20 @@ void LLVOVolume::updateFaceFlags()
 	}
 }
 
-void LLVOVolume::setParent(LLViewerObject* parent)
+BOOL LLVOVolume::setParent(LLViewerObject* parent)
 {
+	BOOL ret = FALSE ;
 	if (parent != getParent())
 	{
-		LLViewerObject::setParent(parent);
+		ret = LLViewerObject::setParent(parent);
 		if (mDrawable)
 		{
 			gPipeline.markMoved(mDrawable);
 			gPipeline.markRebuild(mDrawable, LLDrawable::REBUILD_VOLUME, TRUE);
 		}
 	}
+
+	return ret ;
 }
 
 // NOTE: regenFaces() MUST be followed by genTriangles()!
@@ -1944,9 +1994,9 @@ BOOL LLVOVolume::lineSegmentIntersect(const LLVector3& start, const LLVector3& e
 {
 	if (!mbCanSelect ||
 //		(gHideSelectedObjects && isSelected()) ||
-// [RLVa:KB] - Checked: 2009-10-10 (RLVa-1.0.5a) | Modified: RLVa-1.0.5a
+// [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.1.3b) | Modified: RLVa-1.1.3b
 		( (gHideSelectedObjects && isSelected()) && 
-		  ((!rlv_handler_t::isEnabled()) || (!isHUDAttachment()) || (!gRlvHandler.isLockedAttachment(this, RLV_LOCK_REMOVE))) ) ||
+		  ((!rlv_handler_t::isEnabled()) || (!isHUDAttachment()) || (!gRlvAttachmentLocks.isLockedAttachment(getRootEdit()))) ) ||
 // [/RLVa:KB]
 			mDrawable->isDead() || 
 			!gPipeline.hasRenderType(mDrawable->getRenderType()))
@@ -2090,17 +2140,14 @@ void LLVolumeGeometryManager::registerFace(LLSpatialGroup* group, LLFace* facep,
 	LLMemType mt(LLMemType::MTYPE_SPACE_PARTITION);
 
 //	if (facep->getViewerObject()->isSelected() && gHideSelectedObjects)
-//	{
-//		return;
-//	}
-// [RLVa:KB] - Checked: 2009-10-10 (RLVa-1.0.5a) | Modified: RLVa-1.0.5a
-	LLViewerObject* pObj = facep->getViewerObject();
+// [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.1.3b) | Modified: RLVa-1.2.1f
+	const LLViewerObject* pObj = facep->getViewerObject();
 	if ( (pObj->isSelected() && gHideSelectedObjects) && 
-		 ((!rlv_handler_t::isEnabled()) || (!pObj->isHUDAttachment()) || (!gRlvHandler.isLockedAttachment(pObj, RLV_LOCK_REMOVE))) )
+		 ((!rlv_handler_t::isEnabled()) || (!pObj->isHUDAttachment()) || (!gRlvAttachmentLocks.isLockedAttachment(pObj->getRootEdit()))) )
+// [/RVLa:KB]
 	{
 		return;
 	}
-// [/RVLa:KB]
 
 	//add face to drawmap
 	LLSpatialGroup::drawmap_elem_t& draw_vec = group->mDrawMap[type];	

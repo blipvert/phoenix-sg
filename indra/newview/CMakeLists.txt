@@ -76,6 +76,7 @@ include_directories(
 )
 
 set(viewer_SOURCE_FILES
+    cofmgr.cpp
 	lggautocorrectfloater.cpp
 	lggautocorrect.cpp
 	lgghunspell_wrapper.cpp
@@ -94,6 +95,7 @@ set(viewer_SOURCE_FILES
 	floateravatarlist.cpp
 	floaterao.cpp
 	floaterexploresounds.cpp
+	floatermediaplayer.cpp
 	hippogridmanager.cpp
 	hippolimits.cpp
 	hipporestrequest.cpp
@@ -120,6 +122,7 @@ set(viewer_SOURCE_FILES
 	lggfloaterirc.cpp
 	floaterskinfinder.cpp
 	lggircthread.cpp
+	kcwlinterface.cpp
     llagent.cpp
     llagentaccess.cpp
     llagentdata.cpp
@@ -129,6 +132,7 @@ set(viewer_SOURCE_FILES
     llappviewer.cpp
     llassetuploadresponders.cpp
     llassetuploadqueue.cpp
+    llattachmentsmgr.cpp
     llaudiosourcevo.cpp
     llbbox.cpp
     llbox.cpp
@@ -255,6 +259,7 @@ set(viewer_SOURCE_FILES
     llfloatertos.cpp
     llfloaterurldisplay.cpp
     llfloaterurlentry.cpp
+	llfloaterurlentry_mp.cpp
     llfloatervoicedevicesettings.cpp
     llfloaterwater.cpp
     llfloaterwindlight.cpp
@@ -513,15 +518,20 @@ set(viewer_SOURCE_FILES
     llxmlrpctransaction.cpp
     noise.cpp
     pipeline.cpp
+	qtoolalign.cpp
     rlvhandler.cpp
     rlvhelper.cpp
     rlvcommon.cpp
-    rlvmultistringsearch.cpp
+    rlvlocks.cpp
+    rlvinventory.cpp
     rlvextensions.cpp
     rlvfloaterbehaviour.cpp
+    rlvviewer2.cpp
     wlfPanel_AdvSettings.cpp
     floaterexploreanimations.cpp
 	floaterblacklist.cpp
+	llviewerdisplayname.cpp
+	llfloaterdisplayname.cpp
     )
 
 # This gets renamed in the packaging step
@@ -545,6 +555,8 @@ endif (LINUX)
 set(viewer_HEADER_FILES
     CMakeLists.txt
     ViewerInstall.cmake
+
+    cofmgr.h
     a_phoenixviewerlink.h
 	chatbar_as_cmdline.h
 	DiamondAoInt.h
@@ -555,6 +567,7 @@ set(viewer_HEADER_FILES
 	floateravatarlist.h
 	floaterao.h
 	floaterexploresounds.h
+	floatermediaplayer.h
 	hippogridmanager.h
 	hippolimits.h
 	hipporestrequest.h
@@ -589,6 +602,7 @@ set(viewer_HEADER_FILES
 	growlnotifier.h
 	streamtitledisplay.h
 	floaterskinfinder.h
+	kcwlinterface.h
     llagent.h
     llagentaccess.h
     llagentdata.h
@@ -599,7 +613,8 @@ set(viewer_HEADER_FILES
     llappviewer.h
     llassetuploadresponders.h
     llassetuploadqueue.h
-    llaudiosourcevo.h
+    llassetuploadqueue.h
+    llattachmentsmgr.h
     llbbox.h
     llbox.h
     llcallbacklist.h
@@ -726,6 +741,7 @@ set(viewer_HEADER_FILES
     llfloatertos.h
     llfloaterurldisplay.h
     llfloaterurlentry.h
+	llfloaterurlentry_mp.h
     llfloatervoicedevicesettings.h
     llfloaterwater.h
     llfloaterwindlight.h
@@ -989,19 +1005,24 @@ set(viewer_HEADER_FILES
     macmain.h
     noise.h
     pipeline.h
+	qtoolalign.h
     randgauss.h
     rlvdefines.h
     rlvhandler.h
     rlvhelper.h
     rlvcommon.h
-    rlvmultistringsearch.h
+    rlvlocks.h
+    rlvinventory.h
     rlvextensions.h
     rlvfloaterbehaviour.h
+    rlvviewer2.h
     VertexCache.h
     VorbisFramework.h
     wlfPanel_AdvSettings.h
 	floaterblacklist.h
     floaterexploreanimations.h
+	llviewerdisplayname.h
+	llfloaterdisplayname.h
     )
 
 source_group("CMake Rules" FILES ViewerInstall.cmake)
@@ -1169,7 +1190,7 @@ if (WINDOWS)
         comdlg32
         ${DINPUT_LIBRARY}
         ${DXGUID_LIBRARY}
-#        fmodvc
+        ${FMOD_LIBRARIES}
         gdi32
         kernel32
         odbc32
@@ -1320,7 +1341,9 @@ add_executable(${VIEWER_BINARY_NAME}
     MACOSX_BUNDLE
     ${viewer_SOURCE_FILES}
     )
-check_message_template(${VIEWER_BINARY_NAME})
+
+# TODO: Remove all related code for message_template check. LL broke it by removing the online copy.
+# check_message_template(${VIEWER_BINARY_NAME})
 
 if (LLKDU_LIBRARY)
   add_dependencies(${VIEWER_BINARY_NAME} ${LLKDU_LIBRARY})

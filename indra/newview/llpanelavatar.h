@@ -37,6 +37,7 @@
 #include "v3dmath.h"
 #include "lluuid.h"
 #include "llmediactrl.h"
+#include "llavatarnamecache.h"
 
 class LLButton;
 class LLCheckBoxCtrl;
@@ -341,7 +342,7 @@ private:
 	static bool finishUnfreeze(const LLSD& notification, const LLSD& response);
 
 	static void showProfileCallback(S32 option, void *userdata);
-
+	static void on_avatar_name_response(const LLUUID& agent_id, const LLAvatarName& av_name, void *userdata);
 	static	void*	createPanelAvatar(void*	data);
 	static	void*	createFloaterAvatarInfo(void*	data);
 	static	void*	createPanelAvatarSecondLife(void*	data);

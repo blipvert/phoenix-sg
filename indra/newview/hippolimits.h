@@ -4,6 +4,7 @@
 
 class HippoLimits
 {
+	LOG_CLASS(HippoLimits);
 public:
 	HippoLimits();
 

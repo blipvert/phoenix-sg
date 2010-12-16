@@ -35,6 +35,8 @@
 
 #include "llviewerobject.h"
 
+#include "llmemory.h"	// LLSingleton<>
+
 #define phoenix_category_name "#Phoenix"
 
 class JCBridgeCallback : public LLRefCount
@@ -43,7 +45,7 @@ public:
 	virtual void fire(LLSD data) = 0;
 };
 
-class JCLSLBridge : public LLEventTimer
+class JCLSLBridge : public LLSingleton<JCLSLBridge>, LLEventTimer
 {
 public:
 	JCLSLBridge();
@@ -63,7 +65,7 @@ public:
 	//3 = finished
 	//4 = failed
 
-	static void	updateBuildBridge(const LLSD &data);
+	static bool	updateBuildBridge();
 	static BOOL sBuildBridge;
 
 	enum BridgeStat
@@ -99,6 +101,21 @@ public:
 
 	static S32 l2c;
 	static bool l2c_inuse;
+	
+	static const U8 PH_BRIDGE_POINT = 127;
+	void CheckForBridgeDetach(const LLUUID& item_id);
+	static bool IsAnOldBridge(LLViewerInventoryItem* item);
+ 	static bool IsABridge(LLViewerInventoryItem* item);
+ 	void ChangeBridge(LLViewerInventoryItem* item);
+	void Reset();
+	static LLViewerInventoryItem*  mBridge;
+	static bool ValidateBridge(LLViewerInventoryItem* item);
+
+private:
+	bool bridgeworn();
+	LLViewerInventoryItem* findbridge();
+	void attachbridge(LLViewerInventoryItem* item);
+	
 };
 /*
 #ifndef LOLPERM

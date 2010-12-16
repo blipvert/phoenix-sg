@@ -115,6 +115,7 @@ LLFloaterChat::LLFloaterChat(const LLSD& seed)
 	childSetCommitCallback("translate chat",onClickToggleTranslateChat,this);
 	childSetValue("translate chat", gSavedSettings.getBOOL("TranslateChat"));
 	childSetVisible("Chat History Editor with mute",FALSE);
+	childSetEnabled("ChatChannel", gSavedSettings.getBOOL("PhoenixShowChatChannel"));
 	childSetAction("toggle_active_speakers_btn", onClickToggleActiveSpeakers, this);
 	setDefaultBtn("Chat");
 }
@@ -254,7 +255,7 @@ void LLFloaterChat::addChatHistory(const LLChat& chat, bool log_to_file)
 		if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC)) && (!chat.mRlvLocFiltered) && (CHAT_SOURCE_AGENT != chat.mSourceType) )
 		{
 			LLChat& rlvChat = const_cast<LLChat&>(chat);
-			gRlvHandler.filterLocation(rlvChat.mText);
+			RlvUtil::filterLocation(rlvChat.mText);
 			rlvChat.mRlvLocFiltered = TRUE;
 		}
 		if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) && (!chat.mRlvNamesFiltered) )
@@ -264,7 +265,7 @@ void LLFloaterChat::addChatHistory(const LLChat& chat, bool log_to_file)
 			if (CHAT_SOURCE_AGENT != chat.mSourceType)
 			{
 				// Filter object and system chat (names are filtered elsewhere to save ourselves an gObjectList lookup)
-				gRlvHandler.filterNames(rlvChat.mText);
+				RlvUtil::filterNames(rlvChat.mText);
 			}
 			rlvChat.mRlvNamesFiltered = TRUE;
 		}
@@ -413,6 +414,13 @@ void LLFloaterChat::updateSettings()
 	LLFloaterChat::getInstance(LLSD())->getChild<LLCheckBoxCtrl>("translate chat")->set(translate_chat);
 }
 
+//static
+void LLFloaterChat::updateChatChannelSetting()
+{
+	LLFloaterChat* floater = LLFloaterChat::getInstance(LLSD());
+	floater->childSetEnabled("ChatChannel", gSavedSettings.getBOOL("PhoenixShowChatChannel"));
+}
+
 // Put a line of chat in all the right places
 void LLFloaterChat::addChat(const LLChat& chat, 
 			  BOOL from_instant_message, 
@@ -433,7 +441,7 @@ void LLFloaterChat::addChat(const LLChat& chat,
 		{
 			LLChat& rlvChat = const_cast<LLChat&>(chat);
 			if (!from_instant_message)
-				gRlvHandler.filterLocation(rlvChat.mText);
+				RlvUtil::filterLocation(rlvChat.mText);
 			rlvChat.mRlvLocFiltered = TRUE;
 		}
 		if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES)) && (!chat.mRlvNamesFiltered) )
@@ -442,7 +450,7 @@ void LLFloaterChat::addChat(const LLChat& chat,
 			if ( (!from_instant_message) && (CHAT_SOURCE_AGENT != chat.mSourceType) )
 			{
 				// Filter object and system chat (names are filtered elsewhere to save ourselves an gObjectList lookup)
-				gRlvHandler.filterNames(rlvChat.mText);
+				RlvUtil::filterNames(rlvChat.mText);
 			}
 			rlvChat.mRlvNamesFiltered = TRUE;
 		}

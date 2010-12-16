@@ -654,9 +654,20 @@ void LLFolderViewItem::preview( void )
 		{
 			LLVOAvatar* avatar = gAgent.getAvatarObject();
 			if(avatar->isWearingAttachment(mListener->getUUID()))
+			{
 				mListener->performAction(NULL, &gInventory, "detach");
+			}
 			else
-				mListener->performAction(NULL, &gInventory, "attach");
+			{
+				if(gSavedSettings.getBOOL("PhoenixDoubleClickAddInventoryObjects"))
+				{
+					mListener->performAction(NULL, &gInventory, "wear_add");
+				}
+				else
+				{
+					mListener->performAction(NULL, &gInventory, "attach");
+				}
+			}
 		}else
 		{
 			mListener->previewItem();
@@ -4601,7 +4612,7 @@ void LLFolderViewEventListener::arrangeAndSet(LLFolderViewItem* focus,
 											  BOOL set_selection,
 											  BOOL take_keyboard_focus)
 {
-	if(gSavedSettings.getBOOL("PhoenixFreezeInventoryArrangement"))return;
+	//if(gSavedSettings.getBOOL("PhoenixFreezeInventoryArrangement"))return; //Why the hell was this here? All it does is break pickers.
 	if(!focus) return;
 	LLFolderView* root = focus->getRoot();
 	focus->getParentFolder()->requestArrange();
@@ -4659,6 +4670,15 @@ LLInventoryFilter::~LLInventoryFilter()
 
 BOOL LLInventoryFilter::check(LLFolderViewItem* item) 
 {
+	LLFolderViewEventListener* listener = item->getListener();
+	const LLUUID& item_id = listener->getUUID();
+	const LLInventoryObject *obj = gInventory.getObject(item_id);
+	if (isActive() && obj && obj->getIsLinkType())
+	{
+		// When filtering is active, omit links.
+		return FALSE;
+	}
+
 	time_t earliest;
 
 	earliest = time_corrected() - mFilterOps.mHoursAgo * 3600;
@@ -4670,8 +4690,6 @@ BOOL LLInventoryFilter::check(LLFolderViewItem* item)
 	{
 		earliest = 0;
 	}
-	LLFolderViewEventListener* listener = item->getListener();
-	const LLUUID& item_id = listener->getUUID();
 	
 	//When searching for all labels, we need to explode the filter string
 	//Into an array, and then compare each string to the label seperately

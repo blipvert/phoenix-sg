@@ -49,9 +49,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>37966f20fde607c52513334d00e0bbbc</string>
+						<string>84eef12ae4c4a303e83cf20c531e8fdf</string>
 						<key>url</key>
-						<uri>http://downloads.phoenixviewer.com/libotr-2.2.0-linux-20100911.tar.bz2</uri>
+						<uri>http://downloads.phoenixviewer.com/libotr-2.2.0-linux-20101018.tar.bz2</uri>
 					</map>
 					<key>darwin</key>
 					<map>
@@ -89,9 +89,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>0d9bc8f051135799f86df230801f33c3</string>
+						<string>af06208ec80b1f170cc560141602e2dc</string>
 						<key>url</key>
-						<uri>http://downloads.phoenixviewer.com/libnotify-0.5.0-linux-20100910.tar.bz2</uri>
+						<uri>http://downloads.phoenixviewer.com/libnotify-0.4.4-linux-20101003.tar.bz2</uri>
 					</map>
 				</map>
 			</map>
@@ -417,9 +417,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>eb25444142d4102b0ce1b7ffaadb071e</string>
+						<string>5a3883730ee2ebd9d1853124b9346443</string>
 						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/dbusglib-linux-20080707.tar.bz2</uri>
+						<uri>http://downloads.phoenixviewer.com/libdbus-glib-0.76-linux-20101003.tar.bz2</uri>
 					</map>
 				</map>
 			</map>
@@ -491,23 +491,23 @@
 					<key>darwin</key>
 					<map>
 						<key>md5sum</key>
-						<string>c7e317bec481b7efa2a0319e163dcc65</string>
+						<string>69011586de5725de08c10611b1a0289a</string>
 						<key>url</key>
-						<uri>scp:install-packages.lindenlab.com:/local/www/install-packages/doc/fmod-3.75-darwin-20080818.tar.bz2</uri>
+						<uri>http://www.fmod.org/files/fmod3/fmodapi375mac.zip</uri>
 					</map>
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>abd2b4ba4ac993f19d82804af387eb7c</string>
+						<string>4fbd42fb8187c37ea454cc66186a1dfa</string>
 						<key>url</key>
-						<uri>scp:install-packages.lindenlab.com:/local/www/install-packages/doc/fmod-3.75-linux-20080818.tar.bz2</uri>
+						<uri>http://www.fmod.org/files/fmod3/fmodapi375linux.tar.gz</uri>
 					</map>
 					<key>windows</key>
 					<map>
 						<key>md5sum</key>
-						<string>1a55dec2907821f5f785648a660126c3</string>
+						<string>4d28a685a92557c0dac06f9ab2567203</string>
 						<key>url</key>
-						<uri>scp:install-packages.lindenlab.com:/local/www/install-packages/doc/fmod-3.75-windows-20080611.tar.bz2</uri>
+						<uri>http://www.fmod.org/files/fmod3/fmodapi375win.zip</uri>
 					</map>
 				</map>
 			</map>
@@ -578,46 +578,6 @@
 						<string>88980fd6d91ac541b62dea877ebe6ba6</string>
 						<key>url</key>
 						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/freetype-2.3.9-windows-20090917.tar.bz2</uri>
-					</map>
-				</map>
-			</map>
-			<key>glh_linear</key>
-			<map>
-				<key>copyright</key>
-				<string>Copyright (c) 2000 Cass Everitt; Copyright (c) 2000 NVIDIA Corporation; All rights reserved.</string>
-				<key>description</key>
-				<string>nVidia NVParse SDK: platform-indepenedent C++ Apple OpenGL helper library</string>
-				<key>license</key>
-				<string>glh_linear</string>
-				<key>packages</key>
-				<map>
-					<key>darwin</key>
-					<map>
-						<key>md5sum</key>
-						<string>23bd9a75e5a2365a827461e6c324f52b</string>
-						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/glh_linear-darwin-20080613.tar.bz2</uri>
-					</map>
-					<key>linux</key>
-					<map>
-						<key>md5sum</key>
-						<string>23bd9a75e5a2365a827461e6c324f52b</string>
-						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/glh_linear-linux-20080812.tar.bz2</uri>
-					</map>
-					<key>linux64</key>
-					<map>
-						<key>md5sum</key>
-						<string>2965646aea1d2a6aec1fbc431c02733f</string>
-						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/glh_linear-linux-20080613.tar.bz2</uri>
-					</map>
-					<key>windows</key>
-					<map>
-						<key>md5sum</key>
-						<string>38b9ddfe8dceff55ee4351016a937d1b</string>
-						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/glh_linear-windows-20080613.tar.bz2</uri>
 					</map>
 				</map>
 			</map>
@@ -724,9 +684,9 @@
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>21c16a74f8fc9a62e3ab944a6eb7403d</string>
+						<string>61973c28541c6a426c18d944c42d7173</string>
 						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/gtk-atk-pango-glib-linux-20080616.tar.bz</uri>
+						<uri>http://downloads.phoenixviewer.com/gtk-atk-pango-glib-linux-20101003.tar.bz2</uri>
 					</map>
 					<key>windows</key>
 					<map>
@@ -987,23 +947,23 @@
 					<key>darwin</key>
 					<map>
 						<key>md5sum</key>
-						<string>becffca6bd8dcb239de284ea2a8b485b</string>
+						<string>34d9e4c93678a422cf80521bf0cd7628</string>
 						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/llqtwebkit-4.6+cookies-darwin-20100617.tar.bz2</uri>
+						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/llqtwebkit-4.6-darwin-20100914.tar.bz2</uri>
 					</map>
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>414d72dd59e3d83c96f0e1531360792e</string>
+						<string>5d743c93b970abe685b185de83001a6e</string>
 						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/llqtwebkit-linux-20100618.tar.bz2</uri>
+						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/llqtwebkit-linux-qt4.6-20100923.tar.bz2</uri>
 					</map>
 					<key>windows</key>
 					<map>
 						<key>md5sum</key>
-						<string>df1bdd683128e060d60e435f65d8f7e8</string>
+						<string>4b8412833c00f8cdaba26808f0ddb404</string>
 						<key>url</key>
-						<uri>http://viewer-source-downloads.s3.amazonaws.com/install_pkgs/llqtwebkit-windows-qt4.6-20100617.tar.bz2</uri>
+						<uri>http://viewer-source-downloads.s3.amazonaws.com/install_pkgs/llqtwebkit-windows-qt4.6-20100916.tar.bz2</uri>
 					</map>
 				</map>
 			</map>
@@ -1218,6 +1178,25 @@
 					</map>
 				</map>
 			</map>
+			<key>pulseaudio</key>
+			<map>
+			<key>copyright</key>
+			  <string>Copyright 2004-2006 Lennart Poettering, Copyright 2006 Pierre Ossman (ossman@cendio.se) for Cendio AB</string>
+			  <key>description</key>
+			  <string>pulseaudio: headers only</string>
+			  <key>license</key>
+			  <string>lgpl</string>
+			  <key>packages</key>
+			  <map>
+			    <key>linux</key>
+			    <map>
+			      <key>md5sum</key>
+			      <string>30cb00069fe2a545fbf7be1070386236</string>
+			      <key>url</key>
+			      <uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/linux-pulse-headers-0.9.14.tar.bz2</uri>
+			    </map>
+			  </map>
+			</map>
 			<key>quicktime</key>
 			<map>
 				<key>copyright</key>
@@ -1319,23 +1298,23 @@
 					<key>darwin</key>
 					<map>
 						<key>md5sum</key>
-						<string>8675b5eedef038b514338b17f0e55961</string>
+						<string>2f9b3528d4b5f858fb8dcee4b6dd5188</string>
 						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/vivox-2.1.3010.6270-darwin-20090309.tar.bz2</uri>
+						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/slvoice-3.2.0002.9361-darwin-20101117a.tar.bz2</uri>
 					</map>
 					<key>linux</key>
 					<map>
 						<key>md5sum</key>
-						<string>01573510dce7f380f44e561ef2f3dd9f</string>
+						<string>cde4728b8a75a76c72a8785815cb769f</string>
 						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/vivox-2.1.3010.6270-linux-20090309.tar.bz2</uri>
+						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/slvoice-3.2.0002.9361-linux-20101117a.tar.bz2</uri>
 					</map>
 					<key>windows</key>
 					<map>
 						<key>md5sum</key>
-						<string>752daa90e07c05202d1f76980cb955eb</string>
+						<string>940ac55a6d0141c958bf2b14939d8474</string>
 						<key>url</key>
-						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/vivox-2.1.3010.6270-windows-20090309.tar.bz2</uri>
+						<uri>http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/slvoice-3.2.0002.9361-windows-20101117a.tar.bz2</uri>
 					</map>
 				</map>
 			</map>

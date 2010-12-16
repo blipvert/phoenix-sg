@@ -58,7 +58,7 @@ void StreamTitleDisplay::checkMetadata()
 		{
 			if(artist.length() > 0)
 			{
-				chat.mText = "Now playing: " + title + " - " + artist;
+				chat.mText = "Now playing: " + artist + " - " + title;
 			}
 			else
 			{

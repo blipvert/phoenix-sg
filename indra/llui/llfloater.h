@@ -216,6 +216,7 @@ public:
 	virtual BOOL	canSaveAs() const { return FALSE; }
 
 	virtual void	saveAs() {}
+	virtual void	saveAs(bool is_png) {}
 
 	// <edit>
 	virtual LLUUID  getItemID() { return LLUUID::null; }

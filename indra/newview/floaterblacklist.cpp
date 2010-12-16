@@ -43,11 +43,9 @@ BOOL LLFloaterBlacklist::postBuild()
 {
 	childSetAction("add_btn", onClickAdd, this);
 	childSetAction("clear_btn", onClickClear, this);
-	childSetAction("copy_uuid_btn", onClickCopyUUID, this);
 	childSetAction("remove_btn", onClickRemove, this);
 	childSetAction("save_btn", onClickSave, this);
 	childSetAction("load_btn", onClickLoad, this);
-	childSetVisible("copy_uuid_btn",false);
 	LLComboBox* box = getChild<LLComboBox>("asset_combo");
 	box->add("Texture",LLSD(0));
 	box->add("Sound",LLSD(1));
@@ -133,6 +131,13 @@ void LLFloaterBlacklist::addEntry(LLUUID key, LLSD data)
 			input_date.resize(input_date.size() - 1);
 			data["entry_date"] = input_date;
 		}
+		if(!data.has("ID_hashed"))
+		{
+			LLUUID tmp_key;
+			tmp_key.generate(key.asString()+"hash");
+			key = tmp_key;
+			data.insert("ID_hashed",true);
+		}
 		std::string test=data["entry_type"].asString();
 		if(data["entry_type"].asString() == "1")
 		{
@@ -160,13 +165,6 @@ void LLFloaterBlacklist::onClickClear(void* user_data)
 {
 	blacklist_entries.clear();
 	updateBlacklists();
-}
-// static
-void LLFloaterBlacklist::onClickCopyUUID(void* user_data)
-{
-	LLFloaterBlacklist* floaterp = (LLFloaterBlacklist*)user_data;
-	LLScrollListCtrl* list = floaterp->getChild<LLScrollListCtrl>("file_list");
-	gViewerWindow->mWindow->copyTextToClipboard(utf8str_to_wstring(list->getFirstSelected()->getColumn(0)->getValue().asString()));
 }
 // static
 void LLFloaterBlacklist::onClickRemove(void* user_data)
@@ -210,17 +208,41 @@ void LLFloaterBlacklist::updateBlacklists()
 	{
 		blacklist_textures.clear();
 		gAssetStorage->mBlackListedAsset.clear();
+		std::map<LLUUID,LLSD> blacklist_entries2;
 		for(std::map<LLUUID,LLSD>::iterator itr = blacklist_entries.begin(); itr != blacklist_entries.end(); ++itr)
 		{
-			if(blacklist_entries[itr->first]["entry_type"].asString() == "0")
+			if(blacklist_entries[itr->first].has("ID_hashed") && (blacklist_entries[itr->first]["ID_hashed"].asBoolean() == true))
 			{
-				blacklist_textures.push_back(LLUUID(itr->first));
+				if(blacklist_entries[itr->first]["entry_type"].asString() == "0")
+				{
+					blacklist_textures.push_back(LLUUID(itr->first));
+				}
+				else
+				{
+					gAssetStorage->mBlackListedAsset.push_back(LLUUID(itr->first));
+				}
+				blacklist_entries2[itr->first] = blacklist_entries[itr->first];
+				blacklist_entries2[itr->second] = blacklist_entries[itr->second];
 			}
 			else
 			{
-				gAssetStorage->mBlackListedAsset.push_back(LLUUID(itr->first));
+				LLUUID tmp;
+				tmp = LLUUID::generateNewID(itr->first.asString()+"hash");
+				if(blacklist_entries[itr->first]["entry_type"].asString() == "0")
+				{
+					blacklist_textures.push_back(LLUUID(tmp));
+				}
+				else
+				{
+					gAssetStorage->mBlackListedAsset.push_back(LLUUID(tmp));
+				}
+				blacklist_entries[itr->first].insert("ID_hashed",true);
+				LLSD tmp2 = blacklist_entries[itr->second];
+				blacklist_entries2[itr->first] = tmp;
+				blacklist_entries2[itr->second] = tmp2;
 			}
 		}
+		blacklist_entries = blacklist_entries2;
 		saveToDisk();
 		LLFloaterBlacklist* instance = LLFloaterBlacklist::getInstance();
 		if(instance)

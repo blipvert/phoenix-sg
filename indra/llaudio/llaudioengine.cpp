@@ -982,54 +982,42 @@ LLAudioData * LLAudioEngine::getAudioData(const LLUUID &audio_uuid)
 
 void LLAudioEngine::removeAudioData(LLUUID &audio_uuid)
 {
-  data_map::iterator iter;
-  iter = mAllData.find(audio_uuid);
-  if(iter != mAllData.end())
-  {
-    source_map::iterator iter2;
-    for (iter2 = mAllSources.begin(); iter2 != mAllSources.end();)
-    {
-      LLAudioSource *sourcep = iter2->second;
-      if(sourcep)
-      {
-	if(sourcep->getCurrentData())
+	if(audio_uuid.isNull())
+		return;
+	data_map::iterator iter = mAllData.find(audio_uuid);
+	if(iter != mAllData.end())
 	{
-	  if(!(sourcep->getCurrentData()->getID().isNull()))
-	  {
-	    if(sourcep->getCurrentData()->getID().asString() == audio_uuid.asString())
-	    {
-	      LLAudioChannel* chan=sourcep->getChannel();
-	      delete sourcep;
-	      mAllSources.erase(iter2++);
-	      if(chan)
-		chan->cleanup();
-	    }
-	    else
-	      iter2++;
-	  }
-	  else
-	    iter2++;
+	for (source_map::iterator iter2 = mAllSources.begin(); iter2 != mAllSources.end();)
+		{
+			LLAudioSource *sourcep = iter2->second;
+			if(	sourcep && sourcep->getCurrentData() && sourcep->getCurrentData()->getID() == audio_uuid )
+			{
+				LLAudioChannel* chan=sourcep->getChannel();
+				delete sourcep;
+				mAllSources.erase(iter2++);
+				if(chan)
+					chan->cleanup();
+			}
+			else
+				iter2++;
+		}
+		if(iter->second) //Shouldn't happen, but playing it safe.
+		{
+			LLAudioBuffer* buf=((LLAudioData*)iter->second)->getBuffer();
+			if(buf)
+			{
+				S32 i;
+				for (i = 0; i < MAX_BUFFERS; i++)
+				{
+					if(mBuffers[i] == buf)
+						mBuffers[i] = NULL;
+				}
+				delete buf;
+			}
+			delete iter->second;
+		}
+		mAllData.erase(iter); //was mAllData[audio_uuid] = NULL which is wrong.
 	}
-	else
-	  iter2++;
-      }
-      else
-	iter2++;
-    }
-    LLAudioBuffer* buf=((LLAudioData*)iter->second)->getBuffer();
-    if(buf)
-    {
-	S32 i;
-	for (i = 0; i < MAX_BUFFERS; i++)
-	{
-	  if(mBuffers[i] == buf)
-		mBuffers[i] = NULL;
-	}
-	delete buf;
-    }
-    delete iter->second;
-    mAllData[audio_uuid] = NULL;
-  }
 }
 
 void LLAudioEngine::addAudioSource(LLAudioSource *asp)

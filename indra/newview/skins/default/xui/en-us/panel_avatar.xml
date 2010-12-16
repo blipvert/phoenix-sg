@@ -63,7 +63,12 @@ Phoenix Support
 			     border_thickness="1" bottom="-48" enabled="false" follows="left|top"
 			     font="SansSerifSmall" height="16" is_unicode="false" left_delta="75"
 			     max_length="254" mouse_opaque="false" name="name"
-			     width="180" />
+			     width="180" visible="false" />
+      <line_editor bevel_style="in" border_style="line"
+     border_thickness="1" bottom="-48" enabled="false" follows="left|top"
+     font="SansSerifSmall" height="16" is_unicode="false" left_delta="0"
+     max_length="254" mouse_opaque="false" name="dnname"
+     width="180" />
       <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 			     bottom="-48" drop_shadow_visible="true" follows="left|top"
 			     font="SansSerifsmall" h_pad="0" halign="left" height="16" left="279"
@@ -114,7 +119,7 @@ Phoenix Support
 			     max_length="254" mouse_opaque="false" name="partner_edit"
 			     tool_tip="Second Life partner. For more info on how to set, see www.secondlife.com/partner"
 			     width="121">
-        [FIRST] [LAST]
+        [NAME]
       </line_editor>
       <button bottom_delta="0" follows="left|top" left="40"  bottom="-42" height="20" halign="center"
               label="&lt; &lt;" label_selected="&gt; &gt;" name="bigimg" tool_tip="Open Full Size." width="40" />

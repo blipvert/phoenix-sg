@@ -101,9 +101,6 @@ class ViewerManifest(LLManifest):
                         self.path("*.png")
                         self.path("textures.xml")
                         self.end_prefix("*/textures")
-                self.exclude("default/xui/en_us/mime_types_windows.xml")
-                self.exclude("default/xui/en_us/mime_types_mac.xml")
-                self.exclude("default/xui/en_us/mime_types_linux.xml")
                 self.path("*/xui/*/*.xml")
                 self.path("*/*.xml")
                 
@@ -211,7 +208,7 @@ class WindowsManifest(ViewerManifest):
         # This is used to test that no manifest for the msvcrt exists.
         # It is used as a temporary override during the construct method
         from indra.util.test_win32_manifest import test_assembly_binding
-        from indra.util.test_win32_manifest import NoManifestException, NoMatchingAssemblyException
+        from indra.util.test_win32_manifest import NoManifestException, NoMatchingAssemblyException, UnexpectedVersionException
         if src and (os.path.exists(src) or os.path.islink(src)):
             # ensure that destination path exists
             self.cmakedirs(os.path.dirname(dst))
@@ -226,6 +223,8 @@ class WindowsManifest(ViewerManifest):
                 except NoManifestException, err:
                     pass
                 except NoMatchingAssemblyException, err:
+                    pass
+                except UnexpectedVersionException, err:
                     pass
                     
                 self.ccopy(src,dst)
@@ -309,17 +308,19 @@ class WindowsManifest(ViewerManifest):
 
         try:
             # For using FMOD for sound... DJS
-            self.path("fmod.dll")
+            self.path("../../fmodapi375win/api/fmod.dll", "fmod.dll");
         except:
             print("Skipping FMOD not found")
         
         # Vivox runtimes
         if self.prefix(src="vivox-runtime/i686-win32", dst=""):
             self.path("SLVoice.exe")
-            self.path("alut.dll")
             self.path("vivoxsdk.dll")
             self.path("ortp.dll")
-            self.path("wrap_oal.dll")
+            self.path("libsndfile-1.dll")
+            self.path("zlib1.dll")
+            self.path("vivoxplatform.dll")
+            self.path("vivoxoal.dll")
             self.end_prefix()
 
         self.enable_no_crt_manifest_check()
@@ -398,9 +399,6 @@ class WindowsManifest(ViewerManifest):
                 self.end_prefix()
 
         self.disable_manifest_check()
-
-        # Per platform MIME config on the cheap.  See SNOW-307 / DEV-41388
-        self.path("skins/default/xui/en-us/mime_types_windows.xml", "skins/default/xui/en-us/mime_types.xml")
 
         # The config file name needs to match the exe's name.
         self.path(src="%s/secondlife-bin.exe.config" % self.args['configuration'], dst=self.final_exe() + ".config")
@@ -589,6 +587,10 @@ class DarwinManifest(ViewerManifest):
 
                 # Translations
                 self.path("English.lproj")
+                # I have no idea why it's picking up the uncustomized version
+                #  of this file, but that's what it's doing, so instead just
+                #  copy it manually.
+                self.path("English.lproj/InfoPlist.strings", "English.lproj/InfoPlist.strings")
                 self.path("German.lproj")
                 self.path("Japanese.lproj")
                 self.path("Korean.lproj")
@@ -606,10 +608,11 @@ class DarwinManifest(ViewerManifest):
                 self.path("zh-Hans.lproj")
                 
                 # SLVoice and vivox lols
-                self.path("vivox-runtime/universal-darwin/libalut.dylib", "libalut.dylib")
-                self.path("vivox-runtime/universal-darwin/libopenal.dylib", "libopenal.dylib")
+                self.path("vivox-runtime/universal-darwin/libsndfile.dylib", "libsndfile.dylib")
+                self.path("vivox-runtime/universal-darwin/libvivoxoal.dylib", "libvivoxoal.dylib")
                 self.path("vivox-runtime/universal-darwin/libortp.dylib", "libortp.dylib")
                 self.path("vivox-runtime/universal-darwin/libvivoxsdk.dylib", "libvivoxsdk.dylib")
+                self.path("vivox-runtime/universal-darwin/libvivoxplatform.dylib", "libvivoxplatform.dylib")
                 self.path("vivox-runtime/universal-darwin/SLVoice", "SLVoice")
 
                 libdir = "../../libraries/universal-darwin/lib_release"
@@ -675,9 +678,6 @@ class DarwinManifest(ViewerManifest):
                     self.path("../../libraries/universal-darwin/lib_release/libllqtwebkit.dylib", "libllqtwebkit.dylib")
 
                     self.end_prefix("llplugin")
-
-                # Per platform MIME config on the cheap.  See SNOW-307 / DEV-41388
-                self.path("skins/default/xui/en-us/mime_types_mac.xml", "skins/default/xui/en-us/mime_types.xml")
 
                 # command line arguments for connecting to the proper grid
                 self.put_in_file(self.flags_list(), 'arguments.txt')
@@ -841,9 +841,6 @@ class LinuxManifest(ViewerManifest):
             self.path("../media_plugins/gstreamer010/libmedia_plugin_gstreamer010.so", "libmedia_plugin_gstreamer.so")
             self.end_prefix("bin/llplugin")
 
-        # Per platform MIME config on the cheap.  See SNOW-307 / DEV-41388
-        self.path("skins/default/xui/en-us/mime_types_linux.xml", "skins/default/xui/en-us/mime_types.xml")
-
         self.path("../llcommon/libllcommon.so", "lib/libllcommon.so")
 
         self.path("featuretable_linux.txt")
@@ -863,7 +860,7 @@ class LinuxManifest(ViewerManifest):
     
     def icon_name(self):
         mapping={"secondlife":"secondlife_icon.png",
-                 "snowglobe":"snowglobe_icon.png"}
+                 "snowglobe":"phoenix_icon.png"}
         return mapping[self.viewer_branding_id()]
 
     def package_finish(self):
@@ -916,33 +913,14 @@ class Linux_i686Manifest(LinuxManifest):
     def construct(self):
         super(Linux_i686Manifest, self).construct()
 
-        # install either the libllkdu we just built, or a prebuilt one, in
-        # decreasing order of preference.  for linux package, this goes to bin/
-#        try:
-#            self.path(self.find_existing_file('../llkdu/libllkdu.so',
-#                '../../libraries/i686-linux/lib_release_client/libllkdu.so'), 
-#                  dst='bin/libllkdu.so')
-            # keep this one to preserve syntax, open source mangling removes previous lines
-#            pass
-#        except:
-#            print "Skipping libllkdu.so - not found"
-#            pass
-
         if self.prefix("../../libraries/i686-linux/lib_release_client", dst="lib"):
 
-#            try:
-#                self.path("libkdu_v42R.so", "libkdu.so")
-#                pass
-#            except:
-#                print "Skipping libkdu_v42R.so - not found"
-#                pass
-
-#            try:
-#                self.path("libfmod-3.75.so")
-#                pass
-#            except:
-#                print "Skipping libfmod-3.75.so - not found"
-#                pass
+            try:
+                self.path("../../../fmodapi375linux/api/libfmod-3.75.so", "libfmod-3.75.so");
+                pass
+            except:
+                print "Skipping libfmod-3.75.so - not found"
+                pass
 
             self.path("libapr-1.so.0")
             self.path("libaprutil-1.so.0")
@@ -955,14 +933,15 @@ class Linux_i686Manifest(LinuxManifest):
             self.path("libELFIO.so")
             self.path("libalut.so")
             self.path("libopenal.so", "libopenal.so.1")
+#            self.path("libopenal.so", "libvivoxoal.so.1") # vivox's sdk expects this soname
             
             # Phoenix-specific addons
             self.path("libotr.so.2.2.0", "libotr.so.2")
 #            self.path("libhunspell-1.2.so.0.0.0", "libhunspell-1.2.so.0")
-#            self.path("libnotify.so.1.1.2", "libnotify.so.1")
-#            self.path("libdirect-1.0.so.0.1.0", "libdirect-1.0.so.0")
-#            self.path("libdirectfb-1.0.so.0.1.0", "libdirectfb-1.0.so.0")
-#            self.path("libfusion-1.0.so.0.1.0", "libfusion-1.0.so.0")
+            self.path("libnotify.so.1.1.2", "libnotify.so.1")
+            self.path("libdirect-1.0.so.0.1.0", "libdirect-1.0.so.0")
+            self.path("libdirectfb-1.0.so.0.1.0", "libdirectfb-1.0.so.0")
+            self.path("libfusion-1.0.so.0.1.0", "libfusion-1.0.so.0")
             
             self.end_prefix("lib")
 
@@ -972,7 +951,10 @@ class Linux_i686Manifest(LinuxManifest):
 #                    self.end_prefix()
 #            if self.prefix(src="vivox-runtime/i686-linux", dst="lib"):
 #                    self.path("libortp.so")
+#                    self.path("libsndfile.so.1")
+                     #self.path("libvivoxoal.so.1") # no - we'll re-use the viewer's own OpenAL lib
 #                    self.path("libvivoxsdk.so")
+#                    self.path("libvivoxplatform.so")
 #                    self.end_prefix("lib")
 
 class Linux_x86_64Manifest(LinuxManifest):

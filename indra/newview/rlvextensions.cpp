@@ -54,19 +54,19 @@ RlvExtGetSet::RlvExtGetSet()
 }
 
 // Checked: 2009-05-17 (RLVa-0.2.0a)
-bool RlvExtGetSet::onForceCommand(const LLUUID& idObj, const RlvCommand& rlvCmd, ERlvCmdRet& cmdRet)
+bool RlvExtGetSet::onForceCommand(const RlvCommand& rlvCmd, ERlvCmdRet& cmdRet)
 {
-	return processCommand(idObj, rlvCmd, cmdRet);
+	return processCommand(rlvCmd, cmdRet);
 }
 
 // Checked: 2009-05-17 (RLVa-0.2.0a)
-bool RlvExtGetSet::onReplyCommand(const LLUUID& idObj, const RlvCommand& rlvCmd, ERlvCmdRet& cmdRet)
+bool RlvExtGetSet::onReplyCommand(const RlvCommand& rlvCmd, ERlvCmdRet& cmdRet)
 {
-	return processCommand(idObj, rlvCmd, cmdRet);
+	return processCommand(rlvCmd, cmdRet);
 }
 
 // Checked: 2009-12-23 (RLVa-1.1.0k) | Modified: RLVa-1.1.0k
-bool RlvExtGetSet::processCommand(const LLUUID& idObj, const RlvCommand& rlvCmd, ERlvCmdRet& eRet)
+bool RlvExtGetSet::processCommand(const RlvCommand& rlvCmd, ERlvCmdRet& eRet)
 {
 	std::string strBehaviour = rlvCmd.getBehaviour(), strGetSet, strSetting;
 	int idxSetting = strBehaviour.find('_');
@@ -82,14 +82,16 @@ bool RlvExtGetSet::processCommand(const LLUUID& idObj, const RlvCommand& rlvCmd,
 		{
 			if ( ("get" == strGetSet) && (RLV_TYPE_REPLY == rlvCmd.getParamType()) )
 			{
-				rlvSendChatReply(rlvCmd.getParam(), onGetDebug(strSetting));
+				RlvUtil::sendChatReply(rlvCmd.getParam(), onGetDebug(strSetting));
 				eRet = RLV_RET_SUCCESS;
 				return true;
 			}
 			else if ( ("set" == strGetSet) && (RLV_TYPE_FORCE == rlvCmd.getParamType()) )
 			{
-				if (!gRlvHandler.hasBehaviourExcept(RLV_BHVR_SETDEBUG, idObj))
+				if (!gRlvHandler.hasBehaviourExcept(RLV_BHVR_SETDEBUG, rlvCmd.getObjectID()))
 					eRet = onSetDebug(strSetting, rlvCmd.getOption());
+				else
+					eRet = RLV_RET_FAILED_LOCK;
 				return true;
 			}
 		}
@@ -97,14 +99,16 @@ bool RlvExtGetSet::processCommand(const LLUUID& idObj, const RlvCommand& rlvCmd,
 		{
 			if ( ("get" == strGetSet) && (RLV_TYPE_REPLY == rlvCmd.getParamType()) )
 			{
-				rlvSendChatReply(rlvCmd.getParam(), onGetEnv(strSetting));
+				RlvUtil::sendChatReply(rlvCmd.getParam(), onGetEnv(strSetting));
 				eRet = RLV_RET_SUCCESS;
 				return true;
 			}
 			else if ( ("set" == strGetSet) && (RLV_TYPE_FORCE == rlvCmd.getParamType()) )
 			{
-				if (!gRlvHandler.hasBehaviourExcept(RLV_BHVR_SETENV, idObj))
+				if (!gRlvHandler.hasBehaviourExcept(RLV_BHVR_SETENV, rlvCmd.getObjectID()))
 					eRet = onSetEnv(strSetting, rlvCmd.getOption());
+				else
+					eRet = RLV_RET_FAILED_LOCK;
 				return true;
 			}
 		}
@@ -127,7 +131,9 @@ bool RlvExtGetSet::processCommand(const LLUUID& idObj, const RlvCommand& rlvCmd,
 			eRet = RLV_RET_SUCCESS;
 		}
 		else
+		{
 			eRet = RLV_RET_FAILED_OPTION;
+		}
 		return true;
 	}
 	return false;

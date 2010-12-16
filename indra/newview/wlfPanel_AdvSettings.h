@@ -46,11 +46,19 @@ public:
 	static void fixPanel();
 
 	static void onClickExpandBtn(void* user_data);
-	static void onChangePresetName(LLUICtrl* ctrl, void* userData);
+	static void onChangeWWPresetName(LLUICtrl* ctrl, void* userData);
+	static void onChangeWLPresetName(LLUICtrl* ctrl, void* userData);
 
 protected:
 	void build();
 
+	static void onClickWWNext(void* user_data);
+	static void onClickWWPrev(void* user_data);
+	static void onClickWLNext(void* user_data);
+	static void onClickWLPrev(void* user_data);
+	static void onOpenAdvancedSky(void* userData);
+	static void onOpenAdvancedWater(void* userData);
+	static void onChangeDayTime(LLUICtrl* ctrl, void* userData);
 };
 
 #endif // LL_wlfPanel_AdvSettings_H

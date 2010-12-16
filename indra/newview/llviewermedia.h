@@ -151,6 +151,8 @@ public:
 	bool isMediaPlaying();
 	bool isMediaPaused();
 	bool hasMedia();
+	
+	void resetPreviousMediaState();
 
 	// utility function to create a ready-to-use media instance from a desired media type.
 	static LLPluginClassMedia* newSourceFromMediaType(std::string media_type, LLPluginClassMediaOwner *owner /* may be NULL */, S32 default_width, S32 default_height);
@@ -198,6 +200,26 @@ public:
 	/*virtual*/ void	paste();
 	/*virtual*/ BOOL	canPaste() const;
 	
+	typedef enum 
+	{
+		MEDIANAVSTATE_NONE,										// State is outside what we need to track for navigation.
+		MEDIANAVSTATE_BEGUN,									// a MEDIA_EVENT_NAVIGATE_BEGIN has been received which was not server-directed
+		MEDIANAVSTATE_FIRST_LOCATION_CHANGED,					// first LOCATION_CHANGED event after a non-server-directed BEGIN
+		MEDIANAVSTATE_FIRST_LOCATION_CHANGED_SPURIOUS,			// Same as above, but the new URL is identical to the previously navigated URL.
+		MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED,			// we received a NAVIGATE_COMPLETE event before the first LOCATION_CHANGED
+		MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED_SPURIOUS,// Same as above, but the new URL is identical to the previously navigated URL.
+		MEDIANAVSTATE_SERVER_SENT,								// server-directed nav has been requested, but MEDIA_EVENT_NAVIGATE_BEGIN hasn't been received yet
+		MEDIANAVSTATE_SERVER_BEGUN,								// MEDIA_EVENT_NAVIGATE_BEGIN has been received which was server-directed
+		MEDIANAVSTATE_SERVER_FIRST_LOCATION_CHANGED,			// first LOCATION_CHANGED event after a server-directed BEGIN
+		MEDIANAVSTATE_SERVER_COMPLETE_BEFORE_LOCATION_CHANGED	// we received a NAVIGATE_COMPLETE event before the first LOCATION_CHANGED
+		
+	}EMediaNavState;
+    
+	// Returns the current nav state of the media.
+	// note that this will be updated BEFORE listeners and objects receive media messages 
+	EMediaNavState getNavState() { return mMediaNavState; }
+	void setNavState(EMediaNavState state);
+	
 public:
 	// a single media url with some data and an impl.
 	LLPluginClassMedia* mMediaSource;
@@ -206,6 +228,10 @@ public:
 	std::string mMediaURL;
 	std::string mHomeURL;
 	std::string mMimeType;
+
+	std::string mCurrentMediaURL;	// The most current media url from the plugin (via the "location changed" or "navigate complete" events).
+	std::string mCurrentMimeType;	// The MIME type that caused the currently loaded plugin to be loaded.
+
 	S32 mLastMouseX;	// save the last mouse coord we get, so when we lose capture we can simulate a mouseup at that point.
 	S32 mLastMouseY;
 	S32 mMediaWidth;
@@ -215,6 +241,13 @@ public:
 	bool mNeedsNewTexture;
 	bool mSuspendUpdates;
 	bool mVisible;
+	
+	ECursorType mLastSetCursor;
+	EMediaNavState mMediaNavState;
+	int mPreviousMediaState;
+	F64 mPreviousMediaTime;
+	bool mMediaSourceFailed;
+	bool mTrustedBrowser;
 
 
 private:

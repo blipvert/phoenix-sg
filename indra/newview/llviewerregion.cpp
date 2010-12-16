@@ -126,6 +126,8 @@ public:
 				mRegion->showReleaseNotes();
 			}
 		}
+
+		mRegion->setCapabilitiesReceived(true);
 		
 		if (STATE_SEED_GRANTED_WAIT == LLStartUp::getStartupState())
 		{
@@ -1410,6 +1412,7 @@ void LLViewerRegion::setSeedCapability(const std::string& url)
 	capabilityNames.append("FetchLibDescendents");
 	capabilityNames.append("GetTexture");
 	capabilityNames.append("GroupProposalBallot");
+	capabilityNames.append("GetDisplayNames");
 	capabilityNames.append("HomeLocation");
 	capabilityNames.append("MapLayer");
 	capabilityNames.append("MapLayerGod");
@@ -1426,6 +1429,7 @@ void LLViewerRegion::setSeedCapability(const std::string& url)
 	capabilityNames.append("SearchStatTracking");
 	capabilityNames.append("SendPostcard");
 	capabilityNames.append("SendUserReport");
+	capabilityNames.append("SetDisplayName");
 	capabilityNames.append("SendUserReportWithScreenshot");
 	capabilityNames.append("ServerReleaseNotes");
 	capabilityNames.append("StartGroupProposal");
@@ -1486,6 +1490,16 @@ std::string LLViewerRegion::getCapability(const std::string& name) const
 		return "";
 	}
 	return iter->second;
+}
+
+bool LLViewerRegion::capabilitiesReceived() const
+{
+	return mCapabilitiesReceived;
+}
+
+void LLViewerRegion::setCapabilitiesReceived(bool received)
+{
+	mCapabilitiesReceived = received;
 }
 
 void LLViewerRegion::logActiveCapabilities() const

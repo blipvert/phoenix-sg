@@ -32,6 +32,9 @@
  */
 
 #include <AppKit/AppKit.h>
+#include <Accelerate/Accelerate.h>
+#include <Quartz/Quartz.h>
+#include <ApplicationServices/ApplicationServices.h>
 
 /*
  * These functions are broken out into a separate file because the
@@ -41,6 +44,7 @@
  */
 
 #include "llwindowmacosx-objc.h"
+#include "lldir.h"
 
 void setupCocoa()
 {

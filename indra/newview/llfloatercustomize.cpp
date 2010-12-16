@@ -199,6 +199,8 @@ public:
 				std::string name = std::string("checkbox_") + LLWearable::typeToTypeLabel( (EWearableType)i );
 				childSetVisible(name, FALSE);
 			}
+			else //KC: Check all by default
+				childSetValue(name,TRUE);
 		}
 
 		// NOTE: .xml needs to be updated if attachments are added or their names are changed!
@@ -210,11 +212,16 @@ public:
 			{
 				LLVOAvatar::attachment_map_t::iterator curiter = iter++;
 				LLViewerJointAttachment* attachment = curiter->second;
-				S32	attachment_pt = curiter->first;	
-				BOOL object_attached = ( attachment->getNumObjects() > 0 );
-				std::string name = std::string("checkbox_") + attachment->getName();
-				mCheckBoxList.push_back(std::make_pair(name,attachment_pt));
-				childSetEnabled(name, object_attached);
+				S32	attachment_pt = curiter->first;
+				if (attachment_pt < 127)
+				{
+					BOOL object_attached = ( attachment->getNumObjects() > 0 );
+					std::string name = std::string("checkbox_") + attachment->getName();
+					mCheckBoxList.push_back(std::make_pair(name,attachment_pt));
+					childSetEnabled(name, object_attached);
+					//KC: Check all by default
+					childSetValue(name,TRUE);
+				}
 			}
 		}
 
@@ -222,6 +229,11 @@ public:
 		childSetAction("Cancel", onCancel, this ); 
 		childSetAction("Check All", onCheckAll, this );
 		childSetAction("Uncheck All", onUncheckAll, this );
+		childSetAction("OutfitHelp", onClickHelp, this);
+
+		LLCheckBoxCtrl* pOutfitFoldersCtrl = getChild<LLCheckBoxCtrl>("checkbox_use_outfits");
+		pOutfitFoldersCtrl->setCommitCallback(&LLMakeOutfitDialog::onOutfitFoldersToggle);
+		pOutfitFoldersCtrl->setCallbackUserData(this);
 	}
 
 	BOOL getRenameClothing()
@@ -250,9 +262,11 @@ public:
 
 	void setWearableToInclude( S32 wearable, S32 enabled, S32 selected )
 	{
-		if( (0 <= wearable) && (wearable < WT_COUNT) )
+		EWearableType wtType = (EWearableType)wearable;
+		if ( ( (0 <= wtType) && (wtType < WT_COUNT) ) && 
+			 ( (LLAssetType::AT_BODYPART != LLWearable::typeToAssetType(wtType)) || (!gSavedSettings.getBOOL("UseOutfitFolders")) ) )
 		{
-			std::string name = std::string("checkbox_") + LLWearable::typeToTypeLabel( (EWearableType)wearable );
+			std::string name = std::string("checkbox_") + LLWearable::typeToTypeLabel(wtType);
 			childSetEnabled(name, enabled);
 			childSetValue(name, selected);
 		}
@@ -321,6 +335,44 @@ public:
 			std::string name = self->mCheckBoxList[i].first;
 			if(self->childIsEnabled(name))self->childSetValue(name,FALSE);
 		}
+	}
+	
+	static void onClickHelp( void* userdata )
+	{
+		LLNotifications::instance().add("ClickOutfitHelp");
+	}
+
+	BOOL postBuild()
+	{
+		refresh();
+		return TRUE;
+	}
+
+	void refresh()
+	{
+		BOOL fUseOutfits = gSavedSettings.getBOOL("UseOutfitFolders");
+
+		for (S32 idxType = 0; idxType < WT_COUNT; idxType++ )
+		{
+			EWearableType wtType = (EWearableType)idxType;
+			if (LLAssetType::AT_BODYPART != LLWearable::typeToAssetType(wtType))
+				continue;
+			LLCheckBoxCtrl* pCheckCtrl = getChild<LLCheckBoxCtrl>(std::string("checkbox_") + LLWearable::typeToTypeLabel(wtType));
+			if (!pCheckCtrl)
+				continue;
+
+			pCheckCtrl->setEnabled(!fUseOutfits);
+			if (fUseOutfits)
+				pCheckCtrl->setValue(TRUE);
+		}
+		childSetEnabled("checkbox_use_links", !fUseOutfits);
+	}
+
+	static void onOutfitFoldersToggle(LLUICtrl*, void* pParam)
+	{
+		LLMakeOutfitDialog* pSelf = (LLMakeOutfitDialog*)pParam;
+		if (pSelf)
+			pSelf->refresh();
 	}
 };
 
@@ -449,9 +501,8 @@ LLPanelEditWearable::LLPanelEditWearable( EWearableType type )
 BOOL LLPanelEditWearable::postBuild()
 {
 	LLAssetType::EType asset_type = LLWearable::typeToAssetType( mType );
-	std::string icon_name = (asset_type == LLAssetType::AT_CLOTHING ?
-										 "inv_item_clothing.tga" :
-										 "inv_item_skin.tga" );
+	std::string icon_name = get_item_icon_name(asset_type,LLInventoryType::IT_WEARABLE,mType,FALSE);
+
 	childSetValue("icon", icon_name);
 
 	childSetAction("Create New", LLPanelEditWearable::onBtnCreateNew, this );
@@ -544,7 +595,7 @@ void LLPanelEditWearable::setSubpart( ESubpart subpart )
 			param = (LLViewerVisualParam *)avatar->getNextVisualParam())
 		{
 			if (param->getID() == -1
-				|| param->getGroup() != VISUAL_PARAM_GROUP_TWEAKABLE 
+				|| !param->isTweakable() 
 				|| param->getEditGroup() != part->mEditGroup 
 				|| !(param->getSex() & avatar_sex))
 			{
@@ -2176,7 +2227,7 @@ void LLFloaterCustomize::initWearablePanels()
 		part->mTargetOffset.setVec(0.f, 0.f, 0.1f);
 		part->mCameraOffset.setVec(-2.5f, 0.5f, 0.8f);
 		panel->addSubpart(LLStringUtil::null, SUBPART_TATTOO, part);
-
+		panel->addColorSwatch(TEX_LOWER_TATTOO, "Color/Tint");
 		panel->addTextureDropTarget(TEX_LOWER_TATTOO, "Lower Tattoo",
 									LLUUID::null,
 									TRUE);

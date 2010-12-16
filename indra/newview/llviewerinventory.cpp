@@ -44,6 +44,7 @@
 #include "llimview.h"
 #include "llgesturemgr.h"
 
+#include "llinventorybridge.h"
 #include "llinventoryview.h"
 
 #include "llviewerregion.h"
@@ -341,6 +342,22 @@ void LLViewerInventoryItem::updateParentOnServer(BOOL restamp) const
 //	return mClones;
 //}
 
+// [RLVa:KB] - Checked: 2010-09-27 (RLVa-1.1.3a) | Added: RLVa-1.1.3a
+bool LLViewerInventoryItem::isWearableType() const
+{
+	return (getInventoryType() == LLInventoryType::IT_WEARABLE);
+}
+
+EWearableType LLViewerInventoryItem::getWearableType() const
+{
+	if (!isWearableType())
+	{
+		return WT_INVALID;
+	}
+	return EWearableType(getFlags() & II_FLAGS_WEARABLES_MASK);
+}
+// [/RLVa:KB]
+
 ///----------------------------------------------------------------------------
 /// Class LLViewerInventoryCategory
 ///----------------------------------------------------------------------------
@@ -403,7 +420,7 @@ void LLViewerInventoryCategory::updateParentOnServer(BOOL restamp) const
 void LLViewerInventoryCategory::updateServer(BOOL is_new) const
 {
 	// communicate that change with the server.
-	if(LLAssetType::AT_NONE != mPreferredType)
+	if ( (LLAssetType::AT_NONE != mPreferredType) && (LLAssetType::AT_OUTFIT != mPreferredType) )
 	{
 		LLNotifications::instance().add("CannotModifyProtectedCategories");
 		return;
@@ -427,7 +444,7 @@ void LLViewerInventoryCategory::removeFromServer( void )
 	llinfos << "Removing inventory category " << mUUID << " from server."
 			<< llendl;
 	// communicate that change with the server.
-	if(LLAssetType::AT_NONE != mPreferredType)
+	if ( (LLAssetType::AT_NONE != mPreferredType) && (LLAssetType::AT_OUTFIT != mPreferredType) )
 	{
 		LLNotifications::instance().add("CannotRemoveProtectedCategories");
 		return;
@@ -451,6 +468,7 @@ bool LLViewerInventoryCategory::fetchDescendents()
 	if((VERSION_UNKNOWN == mVersion)
 	   && mDescendentsRequested.hasExpired())	//Expired check prevents multiple downloads.
 	{
+		LL_DEBUGS("InventoryFetch") << "Fetching category children: " << mName << ", UUID: " << mUUID << LL_ENDL;
 		const F32 FETCH_TIMER_EXPIRY = 10.0f;
 		mDescendentsRequested.reset();
 		mDescendentsRequested.setTimerExpirySec(FETCH_TIMER_EXPIRY);
@@ -466,7 +484,14 @@ bool LLViewerInventoryCategory::fetchDescendents()
 		if (url.empty()) //OGPX : agent/inventory Capability not found on agent domain.  See if the region has one.
 		{
 			//llinfos << " agent/inventory not on AD, checking fallback to region " << llendl; //OGPX
-			url = gAgent.getRegion()->getCapability("WebFetchInventoryDescendents");
+			if (gAgent.getRegion())
+			{
+				url = gAgent.getRegion()->getCapability("WebFetchInventoryDescendents");
+			}
+			else
+			{
+				llwarns << "agent region is null" << llendl;
+			}
 		}
 		if (!url.empty()) //Capability found.  Build up LLSD and use it.
 		{
@@ -685,9 +710,10 @@ void WearOnAvatarCallback::fire(const LLUUID& inv_item)
 	}
 }
 
-RezAttachmentCallback::RezAttachmentCallback(LLViewerJointAttachment *attachmentp)
+RezAttachmentCallback::RezAttachmentCallback(LLViewerJointAttachment *attachmentp, bool replace)
 {
 	mAttach = attachmentp;
+	mReplace = replace;
 }
 RezAttachmentCallback::~RezAttachmentCallback()
 {
@@ -701,7 +727,7 @@ void RezAttachmentCallback::fire(const LLUUID& inv_item)
 	LLViewerInventoryItem *item = gInventory.getItem(inv_item);
 	if (item)
 	{
-		rez_attachment(item, mAttach);
+		rez_attachment(item, mAttach, mReplace);
 	}
 }
 
@@ -785,6 +811,72 @@ void copy_inventory_item(
 	gAgent.sendReliableMessage();
 }
 
+void link_inventory_item(
+	const LLUUID& agent_id,
+	const LLUUID& item_id,
+	const LLUUID& parent_id,
+	const std::string& new_name,
+	const std::string& new_description,
+	const LLAssetType::EType asset_type,
+	LLPointer<LLInventoryCallback> cb)
+{
+	const LLInventoryObject *baseobj = gInventory.getObject(item_id);
+	if (!baseobj)
+	{
+		llwarns << "attempt to link to unknown item, linked-to-item's itemID " << item_id << llendl;
+		return;
+	}
+	if (baseobj && baseobj->getIsLinkType())
+	{
+		llwarns << "attempt to create a link to a link, linked-to-item's itemID " << item_id << llendl;
+		return;
+	}
+
+	if (baseobj && !LLAssetType::lookupCanLink(baseobj->getType()))
+	{
+		// Fail if item can be found but is of a type that can't be linked.
+		// Arguably should fail if the item can't be found too, but that could
+		// be a larger behavioral change.
+		llwarns << "attempt to link an unlinkable item, type = " << baseobj->getActualType() << llendl;
+		return;
+	}
+	
+	LLUUID transaction_id;
+	LLInventoryType::EType inv_type = LLInventoryType::IT_NONE;
+	if (dynamic_cast<const LLInventoryCategory *>(baseobj))
+	{
+		inv_type = LLInventoryType::IT_CATEGORY;
+	}
+	else
+	{
+		const LLViewerInventoryItem *baseitem = dynamic_cast<const LLViewerInventoryItem *>(baseobj);
+		if (baseitem)
+		{
+			inv_type = baseitem->getInventoryType();
+		}
+	}
+
+	LLMessageSystem* msg = gMessageSystem;
+	msg->newMessageFast(_PREHASH_LinkInventoryItem);
+	msg->nextBlock(_PREHASH_AgentData);
+	{
+		msg->addUUIDFast(_PREHASH_AgentID, agent_id);
+		msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+	}
+	msg->nextBlock(_PREHASH_InventoryBlock);
+	{
+		msg->addU32Fast(_PREHASH_CallbackID, gInventoryCallbacks.registerCB(cb));
+		msg->addUUIDFast(_PREHASH_FolderID, parent_id);
+		msg->addUUIDFast(_PREHASH_TransactionID, transaction_id);
+		msg->addUUIDFast(_PREHASH_OldItemID, item_id);
+		msg->addS8Fast(_PREHASH_Type, (S8)asset_type);
+		msg->addS8Fast(_PREHASH_InvType, (S8)inv_type);
+		msg->addStringFast(_PREHASH_Name, new_name);
+		msg->addStringFast(_PREHASH_Description, new_description);
+	}
+	gAgent.sendReliableMessage();
+}
+
 void move_inventory_item(
 	const LLUUID& agent_id,
 	const LLUUID& session_id,
@@ -858,4 +950,141 @@ void copy_inventory_from_notecard(const LLUUID& object_id, const LLUUID& notecar
 			LLHTTPClient::post(url, body, new LLCopyInventoryFromNotecardResponder());
 		}
 	}
+}
+
+
+LLAssetType::EType LLViewerInventoryItem::getType() const
+{
+	if (const LLViewerInventoryItem *linked_item = getLinkedItem())
+	{
+		return linked_item->getType();
+	}
+	if (const LLViewerInventoryCategory *linked_category = getLinkedCategory())
+	{
+		return linked_category->getType();
+	}	
+	return LLInventoryItem::getType();
+}
+
+const LLUUID& LLViewerInventoryItem::getAssetUUID() const
+{
+	if (const LLViewerInventoryItem *linked_item = getLinkedItem())
+	{
+		return linked_item->getAssetUUID();
+	}
+
+	return LLInventoryItem::getAssetUUID();
+}
+
+const std::string& LLViewerInventoryItem::getName() const
+{
+	if (const LLViewerInventoryItem *linked_item = getLinkedItem())
+	{
+		return linked_item->getName();
+	}
+	if (const LLViewerInventoryCategory *linked_category = getLinkedCategory())
+	{
+		return linked_category->getName();
+	}
+
+	return  LLInventoryItem::getName();
+}
+
+const LLPermissions& LLViewerInventoryItem::getPermissions() const
+{
+	// Use the actual permissions of the symlink, not its parent.
+	return LLInventoryItem::getPermissions();	
+}
+
+const LLUUID& LLViewerInventoryItem::getCreatorUUID() const
+{
+	if (const LLViewerInventoryItem *linked_item = getLinkedItem())
+	{
+		return linked_item->getCreatorUUID();
+	}
+
+	return LLInventoryItem::getCreatorUUID();
+}
+
+const std::string& LLViewerInventoryItem::getDescription() const
+{
+	if (const LLViewerInventoryItem *linked_item = getLinkedItem())
+	{
+		return linked_item->getDescription();
+	}
+
+	return LLInventoryItem::getDescription();
+}
+
+const LLSaleInfo& LLViewerInventoryItem::getSaleInfo() const
+{	
+	if (const LLViewerInventoryItem *linked_item = getLinkedItem())
+	{
+		return linked_item->getSaleInfo();
+	}
+
+	return LLInventoryItem::getSaleInfo();
+}
+
+LLInventoryType::EType LLViewerInventoryItem::getInventoryType() const
+{
+	if (const LLViewerInventoryItem *linked_item = getLinkedItem())
+	{
+		return linked_item->getInventoryType();
+	}
+
+	// Categories don't have types.  If this item is an AT_FOLDER_LINK,
+	// treat it as a category.
+	if (getLinkedCategory())
+	{
+		return LLInventoryType::IT_CATEGORY;
+	}
+
+	return LLInventoryItem::getInventoryType();
+}
+
+U32 LLViewerInventoryItem::getFlags() const
+{
+	if (const LLViewerInventoryItem *linked_item = getLinkedItem())
+	{
+		return linked_item->getFlags();
+	}
+	return LLInventoryItem::getFlags();
+}
+
+
+// This returns true if the item that this item points to 
+// doesn't exist in memory (i.e. LLInventoryModel).  The baseitem
+// might still be in the database but just not loaded yet.
+bool LLViewerInventoryItem::getIsBrokenLink() const
+{
+	// If the item's type resolves to be a link, that means either:
+	// A. It wasn't able to perform indirection, i.e. the baseobj doesn't exist in memory.
+	// B. It's pointing to another link, which is illegal.
+	return LLAssetType::lookupIsLinkType(getType());
+}
+
+LLViewerInventoryItem *LLViewerInventoryItem::getLinkedItem() const
+{
+	if (mType == LLAssetType::AT_LINK)
+	{
+		LLViewerInventoryItem *linked_item = gInventory.getItem(mAssetUUID);
+		if (linked_item && linked_item->getIsLinkType())
+		{
+			llwarns << "Warning: Accessing link to link" << llendl;
+			return NULL;
+		}
+		return linked_item;
+	}
+	return NULL;
+}
+
+LLViewerInventoryCategory *LLViewerInventoryItem::getLinkedCategory() const
+{
+	if (mType == LLAssetType::AT_LINK_FOLDER)
+	{
+		LLViewerInventoryCategory *linked_category = gInventory.getCategory(mAssetUUID);
+		return linked_category;
+	}
+	return NULL;
 }

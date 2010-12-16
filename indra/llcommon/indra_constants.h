@@ -255,6 +255,10 @@ const U8 SIM_ACCESS_MAX 	= SIM_ACCESS_ADULT;
 // group constants
 const S32 MAX_AGENT_GROUPS = 25;
 
+// attachment constants
+const S32 MAX_AGENT_ATTACHMENTS = 38;
+const U8  ATTACHMENT_ADD = 0x80;
+
 // god levels
 const U8 GOD_MAINTENANCE = 250;
 const U8 GOD_FULL = 200;
@@ -289,6 +293,7 @@ const U8 UPD_UNIFORM 		= 0x10;	// used with UPD_SCALE
 // Agent Update Flags (U8)
 const U8 AU_FLAGS_NONE      		= 0x00;
 const U8 AU_FLAGS_HIDETITLE      	= 0x01;
+const U8 AU_FLAGS_CLIENT_AUTOPILOT	= 0x02;
 
 // start location constants
 const U32 START_LOCATION_ID_LAST 		= 0;

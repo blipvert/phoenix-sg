@@ -221,7 +221,20 @@ std::string LLFloaterAbout::get_viewer_build_version()
 	std::string support;
 
 #if LL_MSVC
-	support.append(llformat("Built with MSVC version %d\n\n", _MSC_VER));
+	std::string flags;
+#if defined(LAA) || defined(SSE2)
+	flags += " (";
+#ifdef SSE2
+	flags += "SSE2";
+#ifdef LAA
+	flags += ", LAA";
+#endif //LAA
+	flags += ")";
+#else defined(LAA)
+	flags += "LAA)";
+#endif //SSE2
+#endif //LAA || SSE2
+	support.append(llformat("Built with MSVC version %d%s\n\n", _MSC_VER, flags.c_str()));
 #endif
 
 #if LL_GNUC

@@ -92,7 +92,8 @@ public:
 		FFLOAD_SLOBJECT = 7,
 		FFLOAD_RAW = 8,
 		FFLOAD_APP = 9,
-		FFLOAD_BLACKLIST = 10
+		FFLOAD_BLACKLIST = 10,
+		FFLOAD_MEDIA = 11
 	};
 
 	enum ESaveFilter

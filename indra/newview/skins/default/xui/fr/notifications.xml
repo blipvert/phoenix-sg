@@ -94,7 +94,7 @@ Détails de l&apos;erreur : L&apos;alerte, appelée &apos;[_NAME]&apos; est int
 		<usetemplate name="okcancelbuttons" notext="Annuler" yestext="Oui"/>
 	</notification>
 	<notification name="BadInstallation">
-		Une erreur est survenue lors de la mise à jour de Second Life. Veuillez télécharger la dernière version depuis secondlife.com.
+		Une erreur est survenue lors de la mise à jour de Second Life. Veuillez télécharger la dernière version depuis PheonixViewer.com.
 		<usetemplate name="okbutton" yestext="OK"/>
 	</notification>
 	<notification name="LoginFailedNoNetwork">
@@ -133,7 +133,7 @@ Veuillez ne sélectionner qu&apos;un seul objet.
 	</notification>
 	<notification name="GrantModifyRights">
 		Lorsque vous accordez des droits d&apos;édition à un autre résident, vous lui permettez de changer, supprimer ou prendre n&apos;importe lequel de vos objets dans le Monde. Réfléchissez bien avant d&apos;accorder ces droits.
-Souhaitez-vous accorder des droits d&apos;édition à [FIRST_NAME] [LAST_NAME] ?
+Souhaitez-vous accorder des droits d&apos;édition à [NAME] ?
 		<usetemplate name="okcancelbuttons" notext="Non" yestext="Oui"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -142,7 +142,7 @@ Souhaitez-vous accorder des droits d&apos;édition aux résidents selectionnés�
 		<usetemplate name="okcancelbuttons" notext="Non" yestext="Oui"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		Souhaitez-vous retirer les droits d&apos;édition à [FIRST_NAME] [LAST_NAME] ?
+		Souhaitez-vous retirer les droits d&apos;édition à [NAME] ?
 		<usetemplate name="okcancelbuttons" notext="Non" yestext="Oui"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -969,7 +969,7 @@ Proposer à [NAME] de devenir votre ami(e) ?
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		Voulez-vous supprimer [FIRST_NAME] [LAST_NAME] de votre liste d&apos;amis ?
+		Voulez-vous supprimer [NAME] de votre liste d&apos;amis ?
 		<usetemplate name="okcancelbuttons" notext="Annuler" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">
@@ -2359,10 +2359,10 @@ Voulez-vous aller sur le site de Second Life pour enregistrer ces informations 
 		Sujet : [SUBJECT], Message : [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] est connecté(e)
+		[NAME] est connecté(e)
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] est déconnecté(e)
+		[NAME] est déconnecté(e)
 	</notification>
 	<notification name="AddSelfFriend">
 		Vous ne pouvez pas devenir ami avec vous-même.
@@ -2975,7 +2975,13 @@ Pour y participer, cliquez sur Accepter. Sinon, cliquez sur Refuser. Pour ignore
 		Une erreur est survenue pendant la connexion au chat vocal pour [VOICE_CHANNEL_NAME]. Veuillez réessayer ultérieurement.
 	</notification>
 	<notification name="ServerVersionChanged">
-		La région dans laquelle vous avez pénétré utilise une version de simulateur différente. Pour plus de détails, cliquez sur ce message.
+		La région dans laquelle vous avez pénétré utilise une version de simulateur différente.
+Simulateur actuel: [NEWVERSION]
+Précédant simulateur: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		L&apos;URL sur laquelle vous avez cliqué ne peut pas être ouverte dans ce navigateur.

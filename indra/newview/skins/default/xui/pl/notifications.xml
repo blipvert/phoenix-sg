@@ -94,7 +94,7 @@ Szczegóły błędu: Błąd o nazwie &apos;[_NAME]&apos; nie został odnaleziony
 		<usetemplate name="okcancelbuttons" notext="Anuluj" yestext="Tak"/>
 	</notification>
 	<notification name="BadInstallation">
-		Podczas aktualizacji klienta Second Life wystąpił błąd. Proszę odwiedzić stronę secondlife.com by ściągnąć najnowszą wersje klienta.
+		Podczas aktualizacji klienta Second Life wystąpił błąd. Proszę odwiedzić stronę PheonixViewer.com by ściągnąć najnowszą wersje klienta.
     <usetemplate
      name="okbutton"
      yestext="OK"/>
@@ -140,7 +140,7 @@ Wybierz pojedynczy obiekt i spróbuj jeszcze raz.
 	<notification name="GrantModifyRights">
 		Udzielenie praw modyfikacji innemu Rezydentowi umożliwia modyfikację, usuwanie lub wzięcie JAKIEGOKOLWIEK z Twoich obiektów.
 Używaj tej opcji z rozwagą!
-Czy chcesz dać prawa modyfikacji osobie [FIRST_NAME] [LAST_NAME]?
+Czy chcesz dać prawa modyfikacji osobie [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Nie" yestext="Tak"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -150,7 +150,7 @@ Czy chcesz dać prawa modyfikacji wybranym osobom?
 		<usetemplate name="okcancelbuttons" notext="Nie" yestext="Tak"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		Czy chcesz odebrać prawa modyfikacji Rezydentowi [FIRST_NAME] [LAST_NAME]?
+		Czy chcesz odebrać prawa modyfikacji Rezydentowi [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Nie" yestext="Tak"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -976,7 +976,7 @@ Zaproponować znajomość [NAME]?
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		Chcesz usunąć [FIRST_NAME] [LAST_NAME] z listy Twoich znajomych?
+		Chcesz usunąć [NAME] z listy Twoich znajomych?
 		<usetemplate name="okcancelbuttons" notext="Anuluj" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">
@@ -2379,10 +2379,10 @@ Czy chcesz odwiedzić stronę Second Life żeby to zmienić?
 		Temat: [SUBJECT], Treść: [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] jest w Second Life
+		[NAME] jest w Second Life
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] opuszcza Second Life
+		[NAME] opuszcza Second Life
 	</notification>
 	<notification name="AddSelfFriend">
 		Nie możesz dodać siebie do listy znajomych.
@@ -3003,7 +3003,13 @@ Wybierz Wycisz żeby wyciszyć tą osobę.
 		Błąd podczas łączenia z rozmową [VOICE_CHANNEL_NAME]. Spróbuj póżniej.
 	</notification>
 	<notification name="ServerVersionChanged">
-		Ten region używa innej wersji symulatora. Kliknij na tą wiadomość żeby uzyskać więcej informacji.
+		Ten region używa innej wersji symulatora.
+Current simulator : [NEWVERSION]
+Previous simulator: [OLDVERSION]
+    <unique>
+      <context key="OLDVERSION"/>
+      <context key="NEWVERSION"/>
+    </unique>
 	</notification>
 	<notification name="UnableToOpenCommandURL">
 		Wybrany link nie daje się otworzyć z tej przeglądarki.

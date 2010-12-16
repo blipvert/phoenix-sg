@@ -513,14 +513,14 @@ plugin_init (GstPlugin * plugin)
    so we provide an explicit plugin init function.
  */
 #define PACKAGE (gchar*)"packagehack"
-	// this macro quietly refers to PACKAGE internally
-		GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
-				  GST_VERSION_MINOR,
-				  (gchar*)"private-slvideoplugin",
-				  (gchar*)"SL Video sink plugin",
-				  plugin_init, (gchar*)"0.1", (gchar*)GST_LICENSE_UNKNOWN,
-				  (gchar*)"Second Life",
-				  (gchar*)"http://www.secondlife.com/");
+// this macro quietly refers to PACKAGE internally
+GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
+		   GST_VERSION_MINOR,
+		   (gchar*)"private-slvideoplugin", 
+		   (gchar*)"SL Video sink plugin",
+		   plugin_init, (gchar*)"1.0", (gchar*)"LGPL",
+		   (gchar*)"Second Life",
+		   (gchar*)"http://www.secondlife.com/");
 #undef PACKAGE
 void gst_slvideo_init_class (void)
 {

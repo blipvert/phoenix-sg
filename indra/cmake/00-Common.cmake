@@ -30,14 +30,37 @@ if (WINDOWS)
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO 
       "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Od /Zi /MD"
       CACHE STRING "C++ compiler release-with-debug options" FORCE)
-  set(CMAKE_CXX_FLAGS_RELEASE
-	#sse
-      "${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /O2 /Zi /MD /arch:SSE2 /MP"
-    #nonsse
-    #"${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /O2 /Zi /MD /MP"
-      CACHE STRING "C++ compiler release options" FORCE)
-  #disable for non sse
-  ADD_DEFINITIONS(-DLL_VECTORIZE=1)
+  
+  if (NOSSE2)
+	  if (LAA)
+		set(CMAKE_CXX_FLAGS_RELEASE
+			#nonsse2 + LAA
+			"${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /O2 /Ot /Zi /MD /MP -DNOSSE2 -DLAA"
+				CACHE STRING "C++ compiler release options" FORCE)
+	  else (LAA)
+		set(CMAKE_CXX_FLAGS_RELEASE
+			#nonsse2
+			"${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /O2 /Ot /Zi /MD /MP -DNOSSE2"
+				CACHE STRING "C++ compiler release options" FORCE)
+	  endif (LAA)
+  else (NOSSE2)
+ 	  if (LAA)
+		set(CMAKE_CXX_FLAGS_RELEASE
+			#sse2 + LAA
+			"${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} -DLL_VECTORIZE=1 /O2 /Ot /Zi /MD /arch:SSE2 /MP -DSSE2 -DLAA"
+			CACHE STRING "C++ compiler release options" FORCE)
+	  else (LAA)
+		set(CMAKE_CXX_FLAGS_RELEASE
+			#sse2 + LAA
+			"${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} -DLL_VECTORIZE=1 /O2 /Ot /Zi /MD /arch:SSE2 /MP -DSSE2"
+			CACHE STRING "C++ compiler release options" FORCE)
+	  endif (LAA)
+  endif (NOSSE2)
+  
+  if (LAA)
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LARGEADDRESSAWARE")
+  endif (LAA)
+  
   set(CMAKE_CXX_STANDARD_LIBRARIES "")
   set(CMAKE_C_STANDARD_LIBRARIES "")
 
@@ -214,10 +237,12 @@ endif (DARWIN)
 
 
 if (LINUX OR DARWIN)
-  set(GCC_WARNINGS "-Wall -Wno-sign-compare -Wno-trigraphs -Wno-non-virtual-dtor -Woverloaded-virtual")
+  set(GCC_WARNINGS "-Wall -Wno-sign-compare -Wno-trigraphs -Wno-non-virtual-dtor -Woverloaded-virtual -Wno-write-strings -Wno-deprecated-declarations")
 
   if (NOT GCC_DISABLE_FATAL_WARNINGS)
     set(GCC_WARNINGS "${GCC_WARNINGS} -Werror")
+    # This line shows the flag to use to turn off a specific warning
+    # set(GCC_WARNINGS "${GCC_WARNINGS} -Werror -fdiagnostics-show-option")
   endif (NOT GCC_DISABLE_FATAL_WARNINGS)
 
   set(GCC_CXX_WARNINGS "${GCC_WARNINGS} -Wno-reorder")

@@ -427,7 +427,6 @@ bool LLFloaterImagePreview::loadImage(const std::string& src_filename)
 
 	raw_image->biasedScaleToPowerOfTwo(1024);
 	mRawImagep = raw_image;
-	
 	return true;
 }
 

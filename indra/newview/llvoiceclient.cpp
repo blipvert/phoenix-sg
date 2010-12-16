@@ -248,6 +248,7 @@ protected:
 	bool			enabled;
 	std::string		nameString;
 	std::string		audioMediaString;
+	std::string     	deviceString;
 	std::string		displayNameString;
 	int				participantType;
 	bool			isLocallyMuted;
@@ -269,7 +270,8 @@ protected:
 	int				numberOfAliases;
 	std::string		subscriptionHandle;
 	std::string		subscriptionType;
-		
+	
+	std::string		mediaCompletionType;
 
 	// Members for processing text between tags
 	std::string		textBuffer;
@@ -503,7 +505,6 @@ void LLVivoxProtocolParser::StartTag(const char *tag, const char **attr)
 void LLVivoxProtocolParser::EndTag(const char *tag)
 {
 	const std::string& string = textBuffer;
-	bool clearbuffer = true;
 
 	responseDepth--;
 
@@ -575,6 +576,8 @@ void LLVivoxProtocolParser::EndTag(const char *tag)
 			nameString = string;
 		else if (!stricmp("DisplayName", tag))
 			displayNameString = string;
+		else if (!stricmp("Device", tag))
+			deviceString = string;	
 		else if (!stricmp("AccountName", tag))
 			nameString = string;
 		else if (!stricmp("ParticipantType", tag))
@@ -591,18 +594,13 @@ void LLVivoxProtocolParser::EndTag(const char *tag)
 			uriString = string;
 		else if (!stricmp("Presence", tag))
 			statusString = string;
-		else if (!stricmp("Device", tag))
-		{
-			// This closing tag shouldn't clear the accumulated text.
-			clearbuffer = false;
-		}
 		else if (!stricmp("CaptureDevice", tag))
 		{
-			gVoiceClient->addCaptureDevice(textBuffer);
+			gVoiceClient->addCaptureDevice(deviceString);
 		}
 		else if (!stricmp("RenderDevice", tag))
 		{
-			gVoiceClient->addRenderDevice(textBuffer);
+			gVoiceClient->addRenderDevice(deviceString);
 		}
 		else if (!stricmp("Buddy", tag))
 		{
@@ -642,13 +640,13 @@ void LLVivoxProtocolParser::EndTag(const char *tag)
 			subscriptionHandle = string;
 		else if (!stricmp("SubscriptionType", tag))
 			subscriptionType = string;
-		
-
-		if(clearbuffer)
+		else if (!stricmp("MediaCompletionType", tag))
 		{
-			textBuffer.clear();
-			accumulateText= false;
+			mediaCompletionType = string;;
 		}
+
+		textBuffer.clear();
+		accumulateText= false;
 		
 		if (responseDepth == 0)
 		{
@@ -729,6 +727,16 @@ void LLVivoxProtocolParser::processResponse(std::string tag)
 			*/
 			gVoiceClient->mediaStreamUpdatedEvent(sessionHandle, sessionGroupHandle, statusCode, statusString, state, incoming);
 		}		
+		else if (!stricmp(eventTypeCstr, "MediaCompletionEvent"))
+		{
+			/*
+			<Event type="MediaCompletionEvent">
+			<SessionGroupHandle />
+			<MediaCompletionType>AuxBufferAudioCapture</MediaCompletionType>
+			</Event>
+			*/
+			gVoiceClient->mediaCompletionEvent(sessionGroupHandle, mediaCompletionType);
+		}
 		else if (!stricmp(eventTypeCstr, "TextStreamUpdatedEvent"))
 		{
 			/*
@@ -4212,6 +4220,26 @@ void LLVoiceClient::accountLoginStateChangeEvent(
 			//Used to be a commented out warning
 			LL_DEBUGS("Voice") << "unknown state: " << state << LL_ENDL;
 		break;
+	}
+}
+
+void LLVoiceClient::mediaCompletionEvent(std::string &sessionGroupHandle, std::string &mediaCompletionType)
+{
+	if (mediaCompletionType == "AuxBufferAudioCapture")
+	{
+		mCaptureBufferRecording = false;
+	}
+	else if (mediaCompletionType == "AuxBufferAudioRender")
+	{
+		// Ignore all but the last stop event
+		if (--mPlayRequestCount <= 0)
+		{
+			mCaptureBufferPlaying = false;
+		}
+	}
+	else
+	{
+		LL_DEBUGS("Voice") << "Unknown MediaCompletionType: " << mediaCompletionType << LL_ENDL;
 	}
 }
 

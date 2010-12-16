@@ -1,7 +1,67 @@
 <?xml version="1.0" ?>
 <llsd>
 	<map>
-		<key>PhoenixVoiceAnimWhileTyping</key>
+    <key>PhoenixShowChatChannel</key>
+    <map>
+      <key>Comment</key>
+      <string>Show the chat channel selection in chatbar in chat history floater.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>PhoenixNameSystem</key>
+    <map>
+      <key>Comment</key>
+      <string>Use Display Names instead of Legacy Names. 0 = Old Style, 1 = Display Names and Username, 2 = Displayname only</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>PhoenixNameTagOldStyle</key>
+    <map>
+      <key>Comment</key>
+      <string>Add (away, busy...) to display/avatar name</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>PhoenixUseCustomUsernameColor</key>
+    <map>
+      <key>Comment</key>
+      <string>If we are using a custom Username Color instead of the one provided.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>PhoenixCustomUsernameColor</key>
+    <map>
+      <key>Comment</key>
+      <string>Color of Usernames</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Color4</string>
+      <key>Value</key>
+      <array>
+        <real>0.996</real>
+        <real>0.396</real>
+        <real>0.121</real>
+        <real>1</real>
+      </array>
+    </map>
+    <key>PhoenixVoiceAnimWhileTyping</key>
 		<map>
 		<key>Comment</key>
 			<string>Play voice animation while typing</string>
@@ -11,7 +71,42 @@
 			<string>Boolean</string>
 			<key>Value</key>
 			<integer>0</integer>
-		</map>    
+		</map>
+		<key>PhoenixSaveLoginInfoOnLogin</key>
+		<map>
+			<key>Comment</key>
+			<string>Save login information on login instead of logout. This will clear your password for your current account if enabled.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixPasswordTempSpace</key>
+		<map>
+			<key>Comment</key>
+			<string>Temparary holding spot for hashed password, used only for saving login info on logout.</string>
+			<key>Persist</key>
+			<integer>0</integer>
+			<key>HideFromEditor</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string></string>
+		</map>
+		<key>PhoenixShowCommentsForAll</key>
+		<map>
+			<key>Comment</key>
+			<string>Read and display image comments (uploader and timestamp) for all images</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>PhoenixShowOwnClientColor</key>
 		<map>
 		<key>Comment</key>
@@ -23,6 +118,17 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
+		<key>PhoenixShowSimChannel</key>
+		<map>
+			<key>Comment</key>
+			<string>Show the sim&apos;s channel if it is a RC channel.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>PhoenixDontUseMultipleColorTags</key>
 		<map>
 			<key>Comment</key>
@@ -33,6 +139,17 @@
 			<string>Boolean</string>
 			<key>Value</key>
 			<integer>0</integer>
+		</map>
+		<key>PhoenixTPFromSearch</key>
+		<map>
+			<key>Comment</key>
+			<string>Should the TP button in search start a TP or should it show an info window of the place your going to</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
 		</map>
 		<key>DiamondShowGroupNameInChatIM</key>
 		<map>
@@ -145,17 +262,6 @@
 			<array>
 				<string />
 			</array>
-		</map>
-		<key>PhoenixAssetBlacklistVersion</key>
-		<map>
-			<key>Comment</key>
-			<string>Do not edit this value.</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>String</string>
-			<key>Value</key>
-			<string>0</string>
 		</map>
 		<key>PhoenixSpecialBlacklist</key>
 		<map>
@@ -383,6 +489,17 @@
 		<map>
 			<key>Comment</key>
 			<string>Whether or not to automatically wear objects in your inventory you wear</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixDoubleClickAddInventoryObjects</key>
+		<map>
+			<key>Comment</key>
+			<string>Whether or not to add items instead of wearing them</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -1850,6 +1967,22 @@
 				<integer>100</integer>
 			</array>
 		</map>
+		<key>PhoenixMPRect</key>
+		<map>
+			<key>Comment</key>
+			<string>Rectangle for AO window</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Rect</string>
+			<key>Value</key>
+			<array>
+				<integer>0</integer>
+				<integer>100</integer>
+				<integer>100</integer>
+				<integer>100</integer>
+			</array>
+		</map>
 		<key>PhoenixUseYou</key>
 		<map>
 			<key>Comment</key>
@@ -1908,13 +2041,46 @@
 		<key>RestrainedLoveForbidGiveToRLV</key>
 		<map>
 			<key>Comment</key>
-			<string>When FALSE, allows to give sub-folders to the #RLV RestrainedLove folder.</string>
+			<string>When TRUE, forbids to give sub-folders to the #RLV RestrainedLove folder.</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
 			<string>Boolean</string>
 			<key>Value</key>
 			<integer>1</integer>
+		</map>
+		<key>RestrainedLoveReplaceWhenFolderBeginsWith</key>
+		<map>
+			<key>Comment</key>
+			<string>If a folder name begins with this string, its attach behavior will always be "replace", never "stack". Default is blank (disabled).</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string></string>
+		</map>
+		<key>RestrainedLoveStackWhenFolderBeginsWith</key>
+		<map>
+			<key>Comment</key>
+			<string>If a folder name begins with this string, its attach behavior will always be "stack", never "replace". Default is "+".</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>String</string>
+			<key>Value</key>
+			<string>+</string>
+		</map>
+		<key>RLVaDebugHideUnsetDuplicate</key>
+		<map>
+			<key>Comment</key>
+			<string>Suppresses reporting "unset" or "duplicate" command restrictions when RestrainedLoveDebug is TRUE</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
 		</map>
 		<key>RLVaEnableCompositeFolders</key>
 		<map>
@@ -1938,21 +2104,10 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
-		<key>RLVaEnableWear</key>
-		<map>
-			<key>Comment</key>
-			<string>Enables the "Wear" option on the inventory item context menu for attachments</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>Boolean</string>
-			<key>Value</key>
-			<integer>1</integer>
-		</map>
 		<key>RLVaEnableSharedWear</key>
 		<map>
 			<key>Comment</key>
-			<string>Attachments in the shared #RLV folder can be force-attached without needing to specify an attachment point (as long as no attachment is non-detachable)</string>
+			<string>Attachments in the shared #RLV folder can be force-attached without needing to specify an attachment point</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -2003,39 +2158,6 @@
 			<string>Boolean</string>
 			<key>Value</key>
 			<integer>0</integer>
-		</map>
-		<key>WarnFirstRLVDetach</key>
-		<map>
-			<key>Comment</key>
-			<string>Enables FirstRLVDetach warning dialog</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>Boolean</string>
-			<key>Value</key>
-			<integer>1</integer>
-		</map>
-		<key>WarnFirstRLVEnableWear</key>
-		<map>
-			<key>Comment</key>
-			<string>Enables RLVEnableWear warning dialog</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>Boolean</string>
-			<key>Value</key>
-			<integer>1</integer>
-		</map>
-		<key>WarnFirstRLVFartouch</key>
-		<map>
-			<key>Comment</key>
-			<string>Enables FirstRLVFartouch warning dialog</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>Boolean</string>
-			<key>Value</key>
-			<integer>1</integer>
 		</map>
 		<key>WarnFirstRLVGiveToRLV</key>
 		<map>
@@ -7458,7 +7580,7 @@
 			<key>Type</key>
 			<string>Boolean</string>
 			<key>Value</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</map>
 		<key>InBandwidth</key>
 		<map>
@@ -7927,6 +8049,17 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
+        <key>LegacyMultiAttachmentSupport</key>
+        <map>
+          <key>Comment</key>
+          <string>Converts legacy "secondary attachment points" to multi-attachments for other avatars</string>
+          <key>Persist</key>
+          <integer>1</integer>
+          <key>Type</key>
+          <string>Boolean</string>
+          <key>Value</key>
+          <integer>1</integer>
+        </map>
 		<key>LimitDragDistance</key>
 		<map>
 			<key>Comment</key>
@@ -9099,17 +9232,6 @@
 		<map>
 			<key>Comment</key>
 			<string>whether or not to create the lsl bridge</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>Boolean</string>
-			<key>Value</key>
-			<integer>1</integer>
-		</map>
-		<key>WarnPhoenixOldBridgeCleanup</key>
-		<map>
-			<key>Comment</key>
-			<string>offer to deletre any obsolete bridge objects</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -10810,6 +10932,17 @@
 			<string>Boolean</string>
 			<key>Value</key>
 			<integer>1</integer>
+		</map>
+		<key>RenderUseStreamVBO</key>
+		<map>
+		    	<key>Comment</key>
+		    	<string>Use VBO's for stream buffers</string>
+		    	<key>Persist</key>
+		    	<integer>1</integer>
+		    	<key>Type</key>
+		    	<string>Boolean</string>
+		    	<key>Value</key>
+		    	<integer>1</integer>
 		</map>
 		<key>RenderVolumeLODFactor</key>
 		<map>
@@ -13958,6 +14091,17 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
+		<key>UseInventoryLinks</key>
+			<map>
+			<key>Comment</key>
+			<string>When making a new outfit, use links for no-copy items</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+			</map>
 		<key>UseOcclusion</key>
 		<map>
 			<key>Comment</key>
@@ -13969,6 +14113,17 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
+        <key>UseOutfitFolders</key>
+        <map>
+          <key>Comment</key>
+          <string>When making a new outfit, use Viewer 2 outfit folders</string>
+          <key>Persist</key>
+          <integer>1</integer>
+          <key>Type</key>
+          <string>Boolean</string>
+          <key>Value</key>
+          <integer>1</integer>
+        </map>
 		<key>RenderDelayVBUpdate</key>
 		<map>
 			<key>Comment</key>
@@ -15373,13 +15528,13 @@
 		<key>FetchInventoryOnLogin</key>
 		<map>
 			<key>Comment</key>
-			<string>Automatically fetch the inventory in the background after login</string>
+			<string>Automatically fetch the inventory in the background after login (has issues)</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
 			<string>Boolean</string>
 			<key>Value</key>
-			<integer>1</integer>
+			<integer>0</integer>
 		</map>
 		<key>TabAutoComplete</key>
 		<map>
@@ -15407,6 +15562,83 @@
 		<map>
 			<key>Comment</key>
 			<string>Enables LOD hack on oblong sculpts</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>Phoenix40GroupsSupport</key>
+		<map>
+			<key>Comment</key>
+			<string>Support for 40 groups after its enabled on the grid in the future (requires relog)</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>Phoenix64mPrimSupport</key>
+		<map>
+			<key>Comment</key>
+			<string>Future support for making up to 64m prims (As of 10/15/2010, this only will work on mesh enabled sims on the beta grid) (requires relog)</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixOldBridgeCleanup</key>
+		<map>
+			<key>Comment</key>
+			<string>Offer to deletre any obsolete bridge objects</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixWLParcelEnabled</key>
+		<map>
+			<key>Comment</key>
+			<string>Enables auto setting WL from parcel desc flags</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixWLWhitelistFriends</key>
+		<map>
+			<key>Comment</key>
+			<string>Whitelist friend's land for Phoenix WL sharing</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixWLWhitelistGroups</key>
+		<map>
+			<key>Comment</key>
+			<string>Whitelist group land on groups you are member of for Phoenix WL sharing</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixWLWhitelistAll</key>
+		<map>
+			<key>Comment</key>
+			<string>Allow all land for Phoenix WL sharing</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>

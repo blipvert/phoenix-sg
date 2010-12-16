@@ -75,6 +75,10 @@
 #include "llprimitive.h"
 #include "a_phoenixviewerlink.h"
 
+#include "llvoavatar.h"
+
+#include "llfloaterchat.h"
+
 ////////begin drop utility/////////////
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Class JCInvDropTarget
@@ -263,21 +267,28 @@ BOOL LLPanelPhoenix::postBuild()
 	childSetCommitCallback("X Modifier", onCommitAvatarModifier);
 	childSetCommitCallback("Y Modifier", onCommitAvatarModifier);
 	childSetCommitCallback("Z Modifier", onCommitAvatarModifier);
+	childSetCommitCallback("PhoenixShapshotReuseLastDirCheck", onCommitShapshotReuseLastDir);
 	if(gAgent.getID() != LLUUID::null)
 	{
 		getChild<LLSpinCtrl>("X Modifier")->set(gSavedPerAccountSettings.getF32("PhoenixAvatarXModifier"));
 		getChild<LLSpinCtrl>("Y Modifier")->set(gSavedPerAccountSettings.getF32("PhoenixAvatarYModifier"));
 		getChild<LLSpinCtrl>("Z Modifier")->set(gSavedPerAccountSettings.getF32("PhoenixAvatarZModifier"));
+
+		getChild<LLCheckBoxCtrl>("PhoenixShapshotReuseLastDirCheck")->set(gSavedPerAccountSettings.getBOOL("PhoenixShapshotReuseLastDir"));
 	}else
 	{
 		getChild<LLSpinCtrl>("X Modifier")->setEnabled(FALSE);
 		getChild<LLSpinCtrl>("Y Modifier")->setEnabled(FALSE);
 		getChild<LLSpinCtrl>("Z Modifier")->setEnabled(FALSE);
+
+		getChild<LLCheckBoxCtrl>("PhoenixShapshotReuseLastDirCheck")->setEnabled(FALSE);
 	}
 
 
 	childSetValue("PhoenixUseOTR", LLSD((S32)gSavedSettings.getU32("PhoenixUseOTR"))); // [$PLOTR$]
 	getChild<LLButton>("otr_help_btn")->setClickedCallback(onClickOtrHelp, this);      // [/$PLOTR$]
+	const bool Wear_Dbl_Click = gSavedSettings.getBOOL("PhoenixDoubleClickWearInventoryObjects");
+	getChild<LLCheckBoxCtrl>("add-inv-toggle")->setEnabled(Wear_Dbl_Click);
 
 	initHelpBtn("PhoenixHelp_TeleportLogin",	"PhoenixHelp_TeleportLogin");
 	initHelpBtn("PhoenixHelp_Voice",			"PhoenixHelp_Voice");
@@ -360,6 +371,7 @@ BOOL LLPanelPhoenix::postBuild()
 	childSetValue("PhoenixInstantMessageResponseItem", gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageResponseItem"));
 	childSetValue("PhoenixInstantMessageAnnounceIncoming", AnnounceIncoming);
 	getChild<LLCheckBoxCtrl>("PhoenixInstantMessageAnnounceIncoming")->setCommitCallback(onPhoenixInstantMessageAnnounceIncoming);
+	getChild<LLCheckBoxCtrl>("wear-inv-toggle")->setCommitCallback(onWearInvToggle);
 	childSetValue("PhoenixInstantMessageAnnounceStealFocus", gSavedPerAccountSettings.getBOOL("PhoenixInstantMessageAnnounceStealFocus"));
 	childSetValue("PhoenixShadowsON", gSavedSettings.getBOOL("PhoenixShadowsToggle"));
 
@@ -368,6 +380,7 @@ BOOL LLPanelPhoenix::postBuild()
 
 	childSetAction("set_includeHDD", onClickSetHDDInclude, this);
 	childSetCommitCallback("include_location", onCommitApplyControl);
+	getChild<LLCheckBoxCtrl>("PhoenixShowChatChannel")->setCommitCallback(onPhoenixShowChatChannel);
 
 	//PhoenixLSLExternalEditor
 	childSetAction("set_xed", onClickSetXed, this);
@@ -378,6 +391,9 @@ BOOL LLPanelPhoenix::postBuild()
 	getChild<LLCheckBoxCtrl>("mldct_toggle")->setCommitCallback(onConditionalPreferencesChanged);
 	
 	getChild<LLColorSwatchCtrl>("friend_tag_color_swatch")->set(gSavedSettings.getColor4("PhoenixFriendNameColor"));
+
+	childSetCommitCallback("next_owner_copy", &onCommitCopy, this);
+	childSetEnabled("next_owner_transfer", gSavedSettings.getBOOL("NextOwnerCopy"));
 
 	refresh();
 	return TRUE;
@@ -511,6 +527,11 @@ void LLPanelPhoenix::apply()
 	gSavedSettings.setBOOL("PhoenixShadowsToggle", childGetValue("PhoenixShadowsON").asBoolean());
 	gSavedSettings.setU32("PhoenixUseOTR", (U32)childGetValue("PhoenixUseOTR").asReal());
 	gLggBeamMaps.forceUpdate();
+
+	//Update clienttags to make them correct
+
+	LLVOAvatar::invalidateNameTags();
+
 }
 
 void LLPanelPhoenix::cancel()
@@ -737,6 +758,12 @@ void LLPanelPhoenix::onCommitAvatarModifier(LLUICtrl* ctrl, void* userdata)
 	gAgent.sendAgentSetAppearance();
 }
 
+void LLPanelPhoenix::onCommitShapshotReuseLastDir(LLUICtrl* ctrl, void* userdata)
+{
+	
+	gSavedPerAccountSettings.setBOOL("PhoenixShapshotReuseLastDir", sInstance->getChild<LLCheckBoxCtrl>("PhoenixShapshotReuseLastDirCheck")->getValue().asBoolean());
+}
+
 void LLPanelPhoenix::onClickSetMirror(void* user_data)
 {
 	LLPanelPhoenix* self = (LLPanelPhoenix*)user_data;
@@ -816,6 +843,18 @@ void LLPanelPhoenix::onPhoenixInstantMessageAnnounceIncoming(LLUICtrl* ctrl, voi
 	}
 }
 
+void LLPanelPhoenix::onWearInvToggle(LLUICtrl* ctrl, void* userdata)
+{
+	LLPanelPhoenix* self = (LLPanelPhoenix*)ctrl->getParent();
+	const bool Wear_Dbl_Click = gSavedSettings.getBOOL("PhoenixDoubleClickWearInventoryObjects");
+	self->getChild<LLCheckBoxCtrl>("add-inv-toggle")->setEnabled(Wear_Dbl_Click);
+}
+
+void LLPanelPhoenix::onPhoenixShowChatChannel(LLUICtrl* ctrl, void* userdata)
+{
+	LLFloaterChat::updateChatChannelSetting();
+}
+
 void LLPanelPhoenix::onConditionalPreferencesChanged(LLUICtrl* ctrl, void* userdata)
 {
 	/*LLPanelPhoenix* self = (LLPanelPhoenix*)ctrl->getParent();
@@ -845,3 +884,17 @@ void LLPanelPhoenix::onClickSilver(void* data)
 	gSavedSettings.setString("SkinCurrent", "silver");
 	self->getChild<LLRadioGroup>("skin_selection")->setValue("silver");
 }*/
+
+//static 
+void LLPanelPhoenix::onCommitCopy(LLUICtrl* ctrl, void* data)
+{
+	LLPanelPhoenix* self = static_cast<LLPanelPhoenix*>(data);
+	// Implements fair use
+	BOOL copyable = gSavedSettings.getBOOL("NextOwnerCopy");
+	if(!copyable)
+	{
+		gSavedSettings.setBOOL("NextOwnerTransfer", TRUE);
+	}
+	LLCheckBoxCtrl* xfer = self->getChild<LLCheckBoxCtrl>("next_owner_transfer");
+	xfer->setEnabled(copyable);
+}
