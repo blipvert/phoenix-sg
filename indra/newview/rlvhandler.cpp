@@ -1494,15 +1494,12 @@ ERlvCmdRet RlvHandler::processForceCommand(const RlvCommand& rlvCmd) const
 			break;
 		case RLV_BHVR_DETACHME:		// @detachme=force						- Checked: 2010-09-04 (RLVa-1.2.1c) | Modified: RLVa-1.2.1c
 			{
-				// NOTE: @detachme=force could be seen as a @detach:<attachpt>=force but RLV implements it as a "detach by UUID"
 				VERIFY_OPTION(rlvCmd.getOption().empty());
-				LLViewerObject* pObj = NULL; LLVOAvatar* pAvatar = NULL; LLViewerJointAttachment* pAttachPt = NULL;
-				if ( ((pObj = gObjectList.findObject(rlvCmd.getObjectID())) != NULL) && (pObj->isAttachment()) && 
-					 ((pAvatar = gAgent.getAvatarObject()) != NULL) && 
-					 ((pAttachPt = pAvatar->getTargetAttachmentPoint(pObj->getRootEdit())) != NULL) )
+				// NOTE: @detachme should respect locks but shouldn't respect things like nostrip
+				const LLViewerObject* pAttachObj = gObjectList.findObject(rlvCmd.getObjectID());
+				if ( (pAttachObj) && (pAttachObj->isAttachment()) )
 				{
-					// @detachme should respect locks but shouldn't respect things like nostrip so handle it like a manual user detach
-					handle_detach_from_avatar(pAttachPt); 
+					LLVOAvatar::detachAttachmentIntoInventory(pAttachObj->getAttachmentItemID());
 				}
 			}
 			break;
