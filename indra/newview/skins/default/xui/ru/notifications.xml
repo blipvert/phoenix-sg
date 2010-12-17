@@ -1165,10 +1165,10 @@ www.secondlife.com/support
 		[NAME] L$ [PRICE] Недостаточно L$ для этого действия.
 	</notification>
 	<notification name="GrantedModifyRights">
-		Вам дали право менять объекты резидента [FIRST_NAME] [LAST_NAME].
+		Вам дали право менять объекты резидента [NAME].
 	</notification>
 	<notification name="RevokedModifyRights">
-		У Вас отобрали право правки объектов резидента [FIRST_NAME] [LAST_NAME]
+		У Вас отобрали право правки объектов резидента [NAME]
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
 		Это сбросит кэш карты этого региона.

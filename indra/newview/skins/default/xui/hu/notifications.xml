@@ -1079,10 +1079,10 @@ Kérjük válassz férfi vagy női avatárt. Ezt bármikor megváltoztathatod.
 		[NAME] L$ [PRICE] Nem áll rendelkezésre elég L$ ennek végrehajtásához.
 	</notification>
 	<notification name="GrantedModifyRights">
-		[FIRST_NAME] [LAST_NAME] tárgyainak szerkesztésére jogosultságot szereztél.
+		[NAME] tárgyainak szerkesztésére jogosultságot szereztél.
 	</notification>
 	<notification name="RevokedModifyRights">
-		[FIRST_NAME] [LAST_NAME] tárgyainak szerkesztésére való jogosultság visszavonásra került.
+		[NAME] tárgyainak szerkesztésére való jogosultság visszavonásra került.
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
 		Régió térkép gyorsítótár kiürítése.
