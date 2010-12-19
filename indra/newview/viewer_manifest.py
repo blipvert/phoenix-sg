@@ -315,12 +315,10 @@ class WindowsManifest(ViewerManifest):
         # Vivox runtimes
         if self.prefix(src="vivox-runtime/i686-win32", dst=""):
             self.path("SLVoice.exe")
+			self.path("alut.dll")
             self.path("vivoxsdk.dll")
             self.path("ortp.dll")
-            self.path("libsndfile-1.dll")
-            self.path("zlib1.dll")
-            self.path("vivoxplatform.dll")
-            self.path("vivoxoal.dll")
+			self.path("wrap_oal.dll")
             self.end_prefix()
 
         self.enable_no_crt_manifest_check()
