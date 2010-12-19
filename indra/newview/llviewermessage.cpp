@@ -38,6 +38,7 @@
 #include <deque>
 
 #include "llaudioengine.h"
+#include "llavatarnamecache.h"
 #include "indra_constants.h"
 #include "lscript_byteformat.h"
 #include "mean_collision_data.h"
@@ -144,6 +145,7 @@
 #include "jc_lslviewerbridge.h"
 #include "mfdkeywordfloater.h"
 #include "growlmanager.h"
+#include "kcwlinterface.h"
 
 #include <boost/tokenizer.hpp>
 
@@ -1261,6 +1263,15 @@ bool LLOfferInfo::inventory_offer_callback(const LLSD& notification, const LLSD&
 					 sizeof(mFolderID.mData));
 		// send the message
 		msg->sendReliable(mHost);
+
+// [RLVa:KB] - Checked: 2010-09-23 (RLVa-1.2.1e) | Added: RLVa-1.2.1e
+		if (fRlvNotifyAccepted)
+		{
+			std::string::size_type idxToken = mDesc.find("'  ( http://");
+			if (std::string::npos != idxToken)
+				RlvBehaviourNotifyHandler::instance().sendNotification("accepted_in_inv inv_offer " + mDesc.substr(1, idxToken - 1));
+		}
+// [/RLVa:KB]
 
 		//don't spam them if they are getting flooded
 		if (check_offer_throttle(mFromName, true))
@@ -2732,25 +2743,35 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 
 	case IM_LURE_USER:
 		{
-			if (is_muted)
+// [RLVa:KB] - Checked: 2010-12-11 (RLVa-1.2.2c) | Added: RLVa-1.2.2c
+			// If the lure sender is a specific @accepttp exception they will override muted and busy status
+			bool fRlvSummon = (rlv_handler_t::isEnabled()) && (gRlvHandler.isException(RLV_BHVR_ACCEPTTP, from_id));
+// [/RLVa:KB]
+
+//			if (is_muted)
+// [RLVa:KB] - Checked: 2010-12-11 (RLVa-1.2.2c) | Added: RLVa-1.2.2c
+			if ( (is_muted) && (!fRlvSummon) )
+// [/RLVa:KB]
 			{
 				return;
 			}
-			else if (is_busy)
+//			else if (is_busy) 
+// [RLVa:KB] - Checked: 2010-12-11 (RLVa-1.2.2c) | Added: RLVa-1.2.2c
+			else if ( (is_busy)  && (!fRlvSummon) )
+// [/RLVa:KB]
 			{
 				busy_message(msg,from_id);
 			}
 			else
 			{
-// [RLVa:KB] - Checked: 2010-04-01 (RLVa-1.1.3a) | Modified: RLVa-1.0.0d
+// [RLVa:KB] - Checked: 2010-12-11 (RLVa-1.2.2c) | Modified: RLVa-1.2.2c
 				if (rlv_handler_t::isEnabled())
 				{
-					// Block if: 1) @tplure=n restricted (and sender isn't an exception), or 2) @unsit=n restricted and currently sitting
-					LLVOAvatar* pAvatar = gAgent.getAvatarObject();
-					if ( ( (gRlvHandler.hasBehaviour(RLV_BHVR_TPLURE)) && (!gRlvHandler.isException(RLV_BHVR_TPLURE, from_id)) ) ||
-						 ( (gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) && (pAvatar) && (pAvatar->mIsSitting) ) )
+					if (!gRlvHandler.canTeleportViaLure(from_id))
 					{
 						RlvUtil::sendBusyMessage(from_id, RlvStrings::getString(RLV_STRING_BLOCKED_TPLURE_REMOTE));
+						if (is_busy)
+							busy_message(msg,from_id);
 						return;
 					}
 
@@ -2773,11 +2794,12 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 				payload["godlike"] = FALSE;
 				//LLNotifications::instance().add("TeleportOffered", args, payload);
 
-// [RLVa:KB] - Version: 1.23.4 | Checked: 2009-07-07 (RLVa-1.0.0d) | Modified: RLVa-0.2.0b
-				if ( (rlv_handler_t::isEnabled()) &&
-					 ((gRlvHandler.hasBehaviour(RLV_BHVR_ACCEPTTP)) || (gRlvHandler.isException(RLV_BHVR_ACCEPTTP, from_id))) )
+// [RLVa:KB] - Checked: 2010-12-11 (RLVa-1.2.2c) | Modified: RLVa-1.2.2c
+				if ( (rlv_handler_t::isEnabled()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_ACCEPTTP)) || (fRlvSummon)) )
 				{
 					gRlvHandler.setCanCancelTp(false);
+					if (is_busy)
+						busy_message(msg,from_id);
 					LLNotifications::instance().forceResponse(LLNotification::Params("TeleportOffered").payload(payload), 0);
 				}
 				else
@@ -3283,7 +3305,38 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 				  last_chatters[from_id.asString()] = 0;
 			  }
 		  }
+		  
+		  // [Ansariel/Henri: Display name support]
+		  if (chatter->isAvatar())
+		  {
+#ifdef LL_RRINTERFACE_H //MK
+            if (!gRRenabled || !gAgent.mRRInterface.mContainsShownames)
+			{
+#endif //mk
+				if (LLAvatarNameCache::useDisplayNames())
+				{
+					LLAvatarName avatar_name;
+					if (LLAvatarNameCache::get(from_id, &avatar_name))
+					{
+					    static S32* sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
+						if (*sPhoenixNameSystem == 2 || (*sPhoenixNameSystem == 1 && avatar_name.mIsDisplayNameDefault))
+						{
+							from_name = avatar_name.mDisplayName;
+						}
+						else
+						{
+							from_name = avatar_name.getCompleteName();
+						}
+					}
+					chat.mFromName = from_name;
+				}
+#ifdef LL_RRINTERFACE_H //MK
+			}
+#endif //mk
+		  }
+		  // [/Ansariel/Henri: Display name support]
 		}
+		
 		BOOL visible_in_chat_bubble = FALSE;
 		std::string verb;
 
@@ -3322,7 +3375,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 			{
 				if (CHAT_SOURCE_AGENT == chat.mSourceType)
 				{
-					chat.mFromName = RlvStrings::getAnonym(from_name);
+					chat.mFromName = from_name = RlvStrings::getAnonym(from_name);
 					chat.mRlvNamesFiltered = TRUE;
 				}
 				else if ( (!is_owned_by_me) || (!is_attachment) )
@@ -3401,7 +3454,8 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 			case CHAT_TYPE_DEBUG_MSG:
 			case CHAT_TYPE_OWNER:
 				if(DiamondAoInt::AOCommand(mesg))return;
-				if(JCLSLBridge::lsltobridge(mesg, from_name, from_id, owner_id))return;
+				if(JCLSLBridge::instance().lsltobridge(mesg, from_name, from_id, owner_id))return;
+				//if(KCWindlightInterface::instance().ChatCommand(mesg, from_name, from_id, owner_id))return; //KC: Disabling this for now
 // [RLVa:KB] - Checked: 2010-02-XX (RLVa-1.2.0a) | Modified: RLVa-1.1.0f
 				// TODO-RLVa: [RLVa-1.2.0] consider rewriting this before a RLVa-1.2.0 release
 				if ( (rlv_handler_t::isEnabled()) && (mesg.length() > 3) && (RLV_CMD_PREFIX == mesg[0]) && (CHAT_TYPE_OWNER == chat.mChatType) )
@@ -3638,6 +3692,9 @@ void process_teleport_start(LLMessageSystem *msg, void**)
 	{
 		gViewerWindow->setProgressCancelButtonVisible(TRUE, std::string("Cancel")); // *TODO: Translate
 	}
+
+	// Set last region data for teleport history
+	gAgent.setLastRegionData(gAgent.getRegion()->getName(), gAgent.getPositionAgent());
 
 	// Freeze the UI and show progress bar
 	// Note: could add data here to differentiate between normal teleport and death.
@@ -4260,6 +4317,10 @@ void send_agent_update(BOOL force_send, BOOL send_reliable)
 	if (gAgent.isGroupTitleHidden())
 	{
 		flags |= AU_FLAGS_HIDETITLE;
+	}
+	if (gAgent.getAutoPilot())
+	{
+		flags |= AU_FLAGS_CLIENT_AUTOPILOT;
 	}
 
 	flag_change = last_flags ^ flags;
@@ -5371,11 +5432,6 @@ void process_money_balance_reply( LLMessageSystem* msg, void** )
 		args["MESSAGE"] = desc;
 		LLNotifications::instance().add("SystemMessage", args);
 
-		if (gSavedSettings.getBOOL("PhoenixShowMoneyChangeInChat"))
-		{
-			LLChat chat(desc);
-			LLFloaterChat::addChat(desc);
-		}
 		// Once the 'recent' container gets large enough, chop some
 		// off the beginning.
 		const U32 MAX_LOOKBACK = 30;
@@ -5387,6 +5443,11 @@ void process_money_balance_reply( LLMessageSystem* msg, void** )
 		}
 		//LL_DEBUGS("Messaging") << "Pushing back transaction " << tid << LL_ENDL;
 		recent.push_back(tid);
+	}
+	if (!desc.empty() && gSavedSettings.getBOOL("PhoenixShowMoneyChangeInChat"))
+	{
+		LLChat chat(desc);
+		LLFloaterChat::addChat(desc);
 	}
 }
 

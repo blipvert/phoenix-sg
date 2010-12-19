@@ -46,6 +46,9 @@
 #include "llagent.h"
 #include "llviewerregion.h"
 #include "llfloaterpreference.h"
+#include "llavatarnamecache.h"
+#include "llvoavatar.h"
+#include "llcallingcard.h"
 
 LLPanelGeneral::LLPanelGeneral()
 {
@@ -57,6 +60,9 @@ BOOL LLPanelGeneral::postBuild()
 	LLComboBox* fade_out_combobox = getChild<LLComboBox>("fade_out_combobox");
 	fade_out_combobox->setCurrentByIndex(gSavedSettings.getS32("RenderName"));
 
+	LLComboBox* namesystem_combobox = getChild<LLComboBox>("namesystem_combobox");
+	namesystem_combobox->setCurrentByIndex(gSavedSettings.getS32("PhoenixNameSystem"));
+
 	childSetValue("default_start_location", gSavedSettings.getBOOL("LoginLastLocation") ? "MyLastLocation" : "MyHome");
 	childSetValue("show_location_checkbox", gSavedSettings.getBOOL("ShowStartLocation"));
 	childSetValue("show_all_title_checkbox", gSavedSettings.getBOOL("RenderHideGroupTitleAll"));
@@ -65,6 +71,7 @@ BOOL LLPanelGeneral::postBuild()
 	childSetValue("show_my_name_checkbox", gSavedSettings.getBOOL("RenderNameHideSelf"));
 	childSetValue("small_avatar_names_checkbox", gSavedSettings.getBOOL("SmallAvatarNames"));
 	childSetValue("show_my_title_checkbox", gSavedSettings.getBOOL("RenderHideGroupTitle"));
+	childSetValue("allow_idle_AFK_checkbox", gSavedSettings.getBOOL("AllowIdleAFK"));
 	childSetValue("afk_timeout_spinner", gSavedSettings.getF32("AFKTimeout"));
 	childSetValue("notify_money_change_checkbox", gSavedSettings.getBOOL("NotifyMoneyChange"));
 
@@ -121,6 +128,18 @@ void LLPanelGeneral::apply()
 	LLComboBox* fade_out_combobox = getChild<LLComboBox>("fade_out_combobox");
 	gSavedSettings.setS32("RenderName", fade_out_combobox->getCurrentIndex());
 	
+	LLComboBox* namesystem_combobox = getChild<LLComboBox>("namesystem_combobox");
+	if(gSavedSettings.getS32("PhoenixNameSystem")!=namesystem_combobox->getCurrentIndex()){
+		gSavedSettings.setS32("PhoenixNameSystem", namesystem_combobox->getCurrentIndex());
+		if(gAgent.getRegion()){
+			if(namesystem_combobox->getCurrentIndex()<=0 || namesystem_combobox->getCurrentIndex()>2) LLAvatarNameCache::setUseDisplayNames(false);
+			else LLAvatarNameCache::setUseDisplayNames(true);
+			LLVOAvatar::invalidateNameTags(); // Remove all clienttags to get them updated
+
+			LLAvatarTracker::instance().updateFriends();
+		}
+	}
+	
 	gSavedSettings.setBOOL("LoginLastLocation", childGetValue("default_start_location").asString() == "MyLastLocation");
 	gSavedSettings.setBOOL("ShowStartLocation", childGetValue("show_location_checkbox"));
 	gSavedSettings.setBOOL("RenderHideGroupTitleAll", childGetValue("show_all_title_checkbox"));
@@ -128,6 +147,7 @@ void LLPanelGeneral::apply()
 	gSavedSettings.setBOOL("RenderNameHideSelf", childGetValue("show_my_name_checkbox"));
 	gSavedSettings.setBOOL("SmallAvatarNames", childGetValue("small_avatar_names_checkbox"));
 	gSavedSettings.setBOOL("RenderHideGroupTitle", childGetValue("show_my_title_checkbox"));
+	gSavedSettings.setBOOL("AllowIdleAFK", childGetValue("allow_idle_AFK_checkbox"));
 	gSavedSettings.setF32("AFKTimeout", childGetValue("afk_timeout_spinner").asReal());
 	gSavedSettings.setBOOL("NotifyMoneyChange", childGetValue("notify_money_change_checkbox"));
 	gSavedSettings.setColor4("EffectColor", childGetValue("effect_color_swatch"));
@@ -155,6 +175,8 @@ void LLPanelGeneral::apply()
 			gAgent.sendMaturityPreferenceToServer(preferred_maturity);
 		}
 	}
+
+
 }
 
 void LLPanelGeneral::cancel()

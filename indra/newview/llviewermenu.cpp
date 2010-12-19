@@ -233,6 +233,9 @@
 
 #include "floatermediaplayer.h"
 
+#include "llfloaterdisplayname.h"
+#include "llavatarnamecache.h"
+
 using namespace LLVOAvatarDefines;
 
 void init_client_menu(LLMenuGL* menu);
@@ -1380,10 +1383,8 @@ void init_debug_rendering_menu(LLMenuGL* menu)
 	item = new LLMenuItemCheckGL("Disable Textures", menu_toggle_variable, NULL, menu_check_variable, (void*)&LLViewerImage::sDontLoadVolumeTextures);
 	menu->append(item);
 	
-#if 1 //ndef LL_RELEASE_FOR_DOWNLOAD
 	item = new LLMenuItemCheckGL("HTTP Get Textures", menu_toggle_control, NULL, menu_check_control, (void*)"ImagePipelineUseHTTP");
 	menu->append(item);
-#endif
 	
 	item = new LLMenuItemCheckGL("Run Multiple Threads", menu_toggle_control, NULL, menu_check_control, (void*)"RunMultipleThreads");
 	menu->append(item);
@@ -3442,6 +3443,16 @@ class LLEditEnableCustomizeAvatar : public view_listener_t
 		bool new_value = (gAgent.getAvatarObject() && 
 						  gAgent.getAvatarObject()->isFullyLoaded() &&
 						  gAgent.areWearablesLoaded());
+		gMenuHolder->findControl(userdata["control"].asString())->setValue(new_value);
+		return true;
+	}
+};
+
+class LLEditEnableChangeDisplayname : public view_listener_t
+{
+	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
+	{
+		bool new_value = LLAvatarNameCache::useDisplayNames();
 		gMenuHolder->findControl(userdata["control"].asString())->setValue(new_value);
 		return true;
 	}
@@ -5937,6 +5948,11 @@ class LLShowFloater : public view_listener_t
 			{
 				gAgent.changeCameraToCustomizeAvatar();
 			}
+		}
+		// Phoenix: Wolfspirit: Enabled Show Floater out of viewer menu
+		else if (floater_name == "displayname")
+		{
+			LLFloaterDisplayName::show();
 		}
 		else if (floater_name == "friends")
 		{
@@ -8985,6 +9001,8 @@ class LLWorldEnvSettings : public view_listener_t
 		{
 			LLWLParamManager::instance()->mAnimator.mIsRunning = true;
 			LLWLParamManager::instance()->mAnimator.mUseLindenTime = true;	
+			//KC: reset last to Default
+			gSavedPerAccountSettings.setString("PhoenixLastWLsetting", "Default");
 		}
 		return true;
 	}
@@ -9178,6 +9196,7 @@ void initialize_menus()
 	addMenu(new LLEditEnableDuplicate(), "Edit.EnableDuplicate");
 	addMenu(new LLEditEnableTakeOff(), "Edit.EnableTakeOff");
 	addMenu(new LLEditEnableCustomizeAvatar(), "Edit.EnableCustomizeAvatar");
+	addMenu(new LLEditEnableChangeDisplayname(), "Edit.EnableChangeDisplayname");
 
 	// View menu
 	addMenu(new LLViewMouselook(), "View.Mouselook");

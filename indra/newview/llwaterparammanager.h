@@ -224,6 +224,7 @@ struct WaterExpFloatControl
 /// WindLight parameter manager class - what controls all the wind light shaders
 class LLWaterParamManager
 {
+	LOG_CLASS(LLWaterParamManager);
 public:
 
 	LLWaterParamManager();

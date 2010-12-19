@@ -1,3 +1,10 @@
+/*
+	Copyright Chris Rehor (Liny Odell) 2010.
+	Licensed under the artistic license version 2.
+	http://www.perlfoundation.org/artistic_license_2_0
+*/
+
+
 #include "llviewerprecompiledheaders.h"
 
 #include "DiamondAoInt.h"

@@ -468,6 +468,7 @@ bool LLViewerInventoryCategory::fetchDescendents()
 	if((VERSION_UNKNOWN == mVersion)
 	   && mDescendentsRequested.hasExpired())	//Expired check prevents multiple downloads.
 	{
+		LL_DEBUGS("InventoryFetch") << "Fetching category children: " << mName << ", UUID: " << mUUID << LL_ENDL;
 		const F32 FETCH_TIMER_EXPIRY = 10.0f;
 		mDescendentsRequested.reset();
 		mDescendentsRequested.setTimerExpirySec(FETCH_TIMER_EXPIRY);
@@ -483,7 +484,14 @@ bool LLViewerInventoryCategory::fetchDescendents()
 		if (url.empty()) //OGPX : agent/inventory Capability not found on agent domain.  See if the region has one.
 		{
 			//llinfos << " agent/inventory not on AD, checking fallback to region " << llendl; //OGPX
-			url = gAgent.getRegion()->getCapability("WebFetchInventoryDescendents");
+			if (gAgent.getRegion())
+			{
+				url = gAgent.getRegion()->getCapability("WebFetchInventoryDescendents");
+			}
+			else
+			{
+				llwarns << "agent region is null" << llendl;
+			}
 		}
 		if (!url.empty()) //Capability found.  Build up LLSD and use it.
 		{

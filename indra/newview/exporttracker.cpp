@@ -704,10 +704,10 @@ void JCExportTracker::inventoryChanged(LLViewerObject* obj,
 									U32 num = 0;
 									for( ;	it != end;	++it)
 									{
-										LLInventoryObject* asset = (*it);
+										const LLInventoryItem* asset = dynamic_cast<const LLInventoryItem*>(it->get());
 										if(asset)
 										{
-											LLPermissions perm(((LLInventoryItem*)((LLInventoryObject*)(*it)))->getPermissions());
+											LLPermissions perm(asset->getPermissions());
 											if(couldDL(asset->getType())
 											&& perm.allowCopyBy(gAgent.getID())
 											&& perm.allowModifyBy(gAgent.getID())
@@ -717,7 +717,7 @@ void JCExportTracker::inventoryChanged(LLViewerObject* obj,
 												inv_item["name"] = asset->getName();
 												inv_item["type"] = LLAssetType::lookup(asset->getType());
 												//cmdline_printchat("requesting asset for "+asset->getName());
-												inv_item["desc"] = ((LLInventoryItem*)((LLInventoryObject*)(*it)))->getDescription();//god help us all
+												inv_item["desc"] = asset->getDescription();//god help us all
 												inv_item["item_id"] = asset->getUUID().asString();
 												JCExportTracker::mirror(asset, obj, asset_dir, asset->getUUID().asString());//loltest
 												//unacceptable
@@ -782,14 +782,14 @@ void JCAssetExportCallback(LLVFS *vfs, const LLUUID& uuid, LLAssetType::EType ty
 	delete info;
 }
 
-BOOL JCExportTracker::mirror(LLInventoryObject* item, LLViewerObject* container, std::string root, std::string iname)
+BOOL JCExportTracker::mirror(const LLInventoryItem* item, LLViewerObject* container, std::string root, std::string iname)
 {
 	if(item)
 	{
 		////cmdline_printchat("item");
 		//LLUUID asset_id = item->getAssetUUID();
 		//if(asset_id.notNull())
-		LLPermissions perm(((LLInventoryItem*)item)->getPermissions());
+		LLPermissions perm(item->getPermissions());
 		if(perm.allowCopyBy(gAgent.getID())
 		&& perm.allowModifyBy(gAgent.getID())
 		&& perm.allowTransferTo(LLUUID::null))

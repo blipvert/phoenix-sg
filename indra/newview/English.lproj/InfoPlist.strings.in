@@ -3,5 +3,5 @@
 CFBundleName = "Phoenix Viewer";
 
 CFBundleShortVersionString = "Phoenix Viewer version @VERSION_VIEWER_MAJOR@.@VERSION_VIEWER_MINOR@.@VERSION_VIEWER_PATCH@ (@VERSION_BUILD@)";
-CFBundleGetInfoString = "Phoenix Viewer version @VERSION_VIEWER_MAJOR@.@VERSION_VIEWER_MINOR@.@VERSION_VIEWER_PATCH@ (@VERSION_BUILD@), Copyright 2010 Phoenix Viewer Team";
+CFBundleGetInfoString = "Phoenix Viewer version @VERSION_VIEWER_MAJOR@.@VERSION_VIEWER_MINOR@.@VERSION_VIEWER_PATCH@ (@VERSION_BUILD@), Copyright 2010 The Phoenix Viewer Project, Inc.";
 

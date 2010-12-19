@@ -71,7 +71,7 @@
 			     word_wrap="true" />
 			<line_editor bevel_style="in" border_style="line" border_thickness="1" bottom="7"
 			     enabled="true" follows="left|right|bottom" font="SansSerif" height="20"
-			     left="5" mouse_opaque="true" name="chat_editor" max_length="2147483647"
+			     left="5" mouse_opaque="true" name="chat_editor" max_length="3000"
 			     select_all_on_focus_received="false" select_on_focus="false" tab_group="1"
 			     width="106" />
 			<button bottom="7" enabled="true" follows="right|bottom" font="SansSerif"

@@ -210,8 +210,8 @@ public:
 
 class LLView : public LLMouseHandler, public LLMortician, public LLFocusableElement
 {
-
 public:
+	LOG_CLASS(LLView);
 #if LL_DEBUG
 	static BOOL sIsDrawing;
 #endif

@@ -123,7 +123,8 @@ LLFloaterAvatarInfo::LLFloaterAvatarInfo(const std::string& name, const LLRect &
 	}
 
 	gAvatarInfoInstances.addData(avatar_id, this); // must be done before callback below is called.
-	gCacheName->get(avatar_id, FALSE, callbackLoadAvatarName);
+	LLAvatarNameCache::get(avatar_id, boost::bind(&LLFloaterAvatarInfo::callbackLoadAvatarName, _1, _2));
+	//gCacheName->get(avatar_id, FALSE, callbackLoadAvatarName);
 }
 
 // virtual
@@ -243,11 +244,14 @@ void LLFloaterAvatarInfo::showProfileCallback(S32 option, void *userdata)
 }
 
 // static
-void LLFloaterAvatarInfo::callbackLoadAvatarName(const LLUUID& id,
+/*void LLFloaterAvatarInfo::callbackLoadAvatarName(const LLUUID& id,
 												 const std::string& first,
 												 const std::string& last,
 												 BOOL is_group,
-												 void* data)
+												 void* data)*/
+// static
+void LLFloaterAvatarInfo::callbackLoadAvatarName(const LLUUID& id,
+										  const LLAvatarName& av_name)
 {
 	LLFloaterAvatarInfo *floater = gAvatarInfoInstances.getIfThere(id);
 
@@ -255,7 +259,9 @@ void LLFloaterAvatarInfo::callbackLoadAvatarName(const LLUUID& id,
 	{
 		// Build a new title including the avatar name.
 		std::ostringstream title;
-		title << first << " " << last << " - " << floater->getTitle();
+		title << av_name.getCompleteName()<< " - " << floater->getTitle();
+
+		//title << first << " " << last << " - " << floater->getTitle();
 		floater->setTitle(title.str());
 	}
 }

@@ -142,6 +142,7 @@ typedef struct opj_tcd_tilecomp {
   int numresolutions;		/* number of resolutions level */
   opj_tcd_resolution_t *resolutions;	/* resolutions information */
   int *data;			/* data of the component */
+  int datasize;			/* size of datablock */
   int numpix;			/* add fixed_quality */
 } opj_tcd_tilecomp_t;
 

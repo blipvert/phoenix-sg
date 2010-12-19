@@ -309,6 +309,10 @@ LLViewerImage::LLViewerImage(const LLUUID& id, const LLHost& host, BOOL usemipma
 {
 	init(true);
 	sImageCount++;
+	if (host != LLHost::invalid)
+	{
+		mCanUseHTTP = false;	// We must request the image from the provided host sim.
+	}
 }
 
 LLViewerImage::LLViewerImage(const std::string& url, const LLUUID& id, BOOL usemipmaps)
@@ -686,8 +690,14 @@ void LLViewerImage::processTextureStats()
 	//}
 
 	updateVirtualSize() ;
+	
+	static LLCachedControl<BOOL> textures_fullres("PhoenixTextureLoadFullRes", 0);
+	if (textures_fullres)
+	{
+		mDesiredDiscardLevel = 0;
+	}
 	// Generate the request priority and render priority
-	if (mDontDiscard || !getUseMipMaps())
+	else if (mDontDiscard || !getUseMipMaps())
 	{
 		mDesiredDiscardLevel = 0;
 		if (mFullWidth > MAX_IMAGE_SIZE_DEFAULT || mFullHeight > MAX_IMAGE_SIZE_DEFAULT)

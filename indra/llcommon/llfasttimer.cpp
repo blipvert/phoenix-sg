@@ -134,20 +134,19 @@ U64 get_cpu_clock_count()
 //////////////////////////////////////////////////////////////////////////////
 
 //static
-#if LL_DARWIN || LL_LINUX || LL_SOLARIS
-U64 LLFastTimer::countsPerSecond()
+#if (LL_DARWIN || LL_LINUX || LL_SOLARIS) && !(defined(__i386__) || defined(__amd64__))
+U64 LLFastTimer::countsPerSecond() // counts per second for the *32-bit* timer
 {
-	return sClockResolution;
+	return sClockResolution >> 8;
 }
-#else 
-U64 LLFastTimer::countsPerSecond()
+#else // windows or x86-mac or x86-linux or x86-solaris
+U64 LLFastTimer::countsPerSecond() // counts per second for the *32-bit* timer
 {
-	if (!sCPUClockFrequency)
-	{
-		CProcessor proc;
-		sCPUClockFrequency = proc.GetCPUFrequency(50);
-	}
-	return U64(sCPUClockFrequency);
+	//getCPUFrequency returns MHz and sCPUClockFrequency wants to be in Hz
+	static U64 sCPUClockFrequency = U64(LLProcessorInfo().getCPUFrequency()*1000000.0);
+
+	// we drop the low-order byte in our timers, so report a lower frequency
+	return sCPUClockFrequency >> 8;
 }
 #endif
 

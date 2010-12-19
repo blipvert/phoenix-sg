@@ -76,6 +76,7 @@ private:
 	static void onClickInfo(void* userdata);
 	static void onReceiveNotices(LLUICtrl* ctrl, void* data);
 	static void openProfile(void* data);
+	static void	onCopyURI(void*);
 
     static bool joinDlgCB(const LLSD& notification, const LLSD& response);
 

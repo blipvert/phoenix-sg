@@ -6375,8 +6375,6 @@ void LLAgent::teleportRequest(
 {
 	LLViewerRegion* regionp = getRegion();
 
-	// Set last region data for teleport history
-	gAgent.setLastRegionData(regionp->getName(),gAgent.getPositionAgent());
 	bool is_local = (region_handle == to_region_handle(getPositionGlobal()));
 	if(regionp && teleportCore(is_local))
 	{
@@ -6420,8 +6418,6 @@ void LLAgent::teleportViaLandmark(const LLUUID& landmark_asset_id)
 // [/RLVa:KB]
 
 	LLViewerRegion *regionp = getRegion();
-	// Set last region data for teleport history
-	gAgent.setLastRegionData(regionp->getName(),gAgent.getPositionAgent());
 	if(regionp && teleportCore())
 	{
 		LLMessageSystem* msg = gMessageSystem;
@@ -6437,8 +6433,6 @@ void LLAgent::teleportViaLandmark(const LLUUID& landmark_asset_id)
 void LLAgent::teleportViaLure(const LLUUID& lure_id, BOOL godlike)
 {
 	LLViewerRegion* regionp = getRegion();
-	// Set last region data for teleport history
-	gAgent.setLastRegionData(regionp->getName(),gAgent.getPositionAgent());
 	if(regionp && teleportCore())
 	{
 		U32 teleport_flags = 0x0;
@@ -6591,7 +6585,7 @@ void LLAgent::teleportViaLocation(const LLVector3d& pos_global, bool go_to)
 		if(ml)
 		{
 			gAgent.setControlFlags(AGENT_CONTROL_STAND_UP); //GIT UP
-			JCLSLBridge::bridgetolsl("move|"+strstr.str(),NULL); //o i c wut u did thar.
+			JCLSLBridge::instance().bridgetolsl("move|"+strstr.str(),NULL); //o i c wut u did thar.
 			//I presume this will be the new format instead of a naked vector on a specified channel... -tG
 		}
 	}
@@ -8050,7 +8044,7 @@ void LLAgent::setWearableOutfit(
 		{
 			const LLUUID& old_item_id = mWearableEntry[ type ].mItemID;
 			if( (old_wearable->getID() == new_wearable->getID()) &&
-				(old_item_id == new_item->getUUID()) )
+				(old_item_id == new_item->getLinkedUUID()) )
 			{
 				lldebugs << "No change to wearable asset and item: " << LLWearable::typeToTypeName( type ) << llendl;
 				continue;
@@ -8066,7 +8060,7 @@ void LLAgent::setWearableOutfit(
 			}
 		}
 
-		mWearableEntry[ type ].mItemID = new_item->getUUID();
+		mWearableEntry[ type ].mItemID = new_item->getLinkedUUID();
 		mWearableEntry[ type ].mWearable = new_wearable;
 	}
 
@@ -8195,7 +8189,7 @@ void LLAgent::setWearableFinal( LLInventoryItem* new_item, LLWearable* new_weara
 	// Replace the old wearable with a new one.
 	llassert( new_item->getAssetUUID() == new_wearable->getID() );
 	LLUUID old_item_id = mWearableEntry[ type ].mItemID;
-	mWearableEntry[ type ].mItemID = new_item->getUUID();
+	mWearableEntry[ type ].mItemID = new_item->getLinkedUUID();
 	mWearableEntry[ type ].mWearable = new_wearable;
 
 	if (old_item_id.notNull())
@@ -8336,11 +8330,16 @@ void LLAgent::userRemoveAllAttachments( void* userdata )
 			 ++attachment_iter)
 		{
 			LLViewerObject *attached_object = (*attachment_iter);
+			//KC: skip the bridge attachment point
+			if (ATTACHMENT_ID_FROM_STATE(attached_object->getState()) == (S32)JCLSLBridge::PH_BRIDGE_POINT) continue;
 //			if (attached_object)
 // [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.1.3b) | Modified: RLVa-1.1.3b
-			if ( (attached_object) && ((!rlv_handler_t::isEnabled()) || (!gRlvAttachmentLocks.isLockedAttachment(attached_object))) )
+			if ( (attached_object) && ((!rlv_handler_t::isEnabled()) || (!gRlvAttachmentLocks.isLockedAttachment(attached_object)))
+				/*&& (attached_object->getAttachmentItemID() != JCLSLBridge::instance().mBridge->getUUID())*/ //KC: dont remove our bridge
+			)
 // [/RLVa:KB]
 			{
+				llinfos << "bridge trying to get removed with everything, keeping" << llendl;
 				objects_to_remove.push_back(attached_object);
 			}
 		}
@@ -8462,12 +8461,25 @@ void LLAgent::userUpdateAttachments(LLInventoryModel::item_array_t& obj_item_arr
 			if (objectp)
 			{
 				LLUUID object_item_id = objectp->getAttachmentItemID();
-				if (requested_item_ids.find(object_item_id) != requested_item_ids.end())
+				if (ATTACHMENT_ID_FROM_STATE(objectp->getState()) == (S32)JCLSLBridge::PH_BRIDGE_POINT)
+				{
+					if (JCLSLBridge::instance().mBridge && object_item_id == JCLSLBridge::instance().mBridge->getUUID()) //KC: keep the bridge on
+					{
+						llinfos << "bridge trying to get removed, keeping" << llendl;
+						current_item_ids.insert(object_item_id);
+					}
+					else //KC: remove anything else from the bridge point
+					{
+						objects_to_remove.push_back(objectp);
+					}
+				}
+				else if (requested_item_ids.find(object_item_id) != requested_item_ids.end())
 				{
 					// Object currently worn, was requested.
 					// Flag as currently worn so we won't have to add it again.
 					current_item_ids.insert(object_item_id);
 				}
+				
 				else
 				{
 					// object currently worn, not requested.

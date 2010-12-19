@@ -122,6 +122,7 @@ set(viewer_SOURCE_FILES
 	lggfloaterirc.cpp
 	floaterskinfinder.cpp
 	lggircthread.cpp
+	kcwlinterface.cpp
     llagent.cpp
     llagentaccess.cpp
     llagentdata.cpp
@@ -529,6 +530,8 @@ set(viewer_SOURCE_FILES
     wlfPanel_AdvSettings.cpp
     floaterexploreanimations.cpp
 	floaterblacklist.cpp
+	llviewerdisplayname.cpp
+	llfloaterdisplayname.cpp
     )
 
 # This gets renamed in the packaging step
@@ -599,6 +602,7 @@ set(viewer_HEADER_FILES
 	growlnotifier.h
 	streamtitledisplay.h
 	floaterskinfinder.h
+	kcwlinterface.h
     llagent.h
     llagentaccess.h
     llagentdata.h
@@ -1017,6 +1021,8 @@ set(viewer_HEADER_FILES
     wlfPanel_AdvSettings.h
 	floaterblacklist.h
     floaterexploreanimations.h
+	llviewerdisplayname.h
+	llfloaterdisplayname.h
     )
 
 source_group("CMake Rules" FILES ViewerInstall.cmake)
@@ -1335,7 +1341,9 @@ add_executable(${VIEWER_BINARY_NAME}
     MACOSX_BUNDLE
     ${viewer_SOURCE_FILES}
     )
-check_message_template(${VIEWER_BINARY_NAME})
+
+# TODO: Remove all related code for message_template check. LL broke it by removing the online copy.
+# check_message_template(${VIEWER_BINARY_NAME})
 
 if (LLKDU_LIBRARY)
   add_dependencies(${VIEWER_BINARY_NAME} ${LLKDU_LIBRARY})

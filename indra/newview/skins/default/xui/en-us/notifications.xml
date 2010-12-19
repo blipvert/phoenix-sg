@@ -256,7 +256,7 @@ Save all changes to clothing/body parts?
    name="GrantModifyRights"
    type="alertmodal">
 Granting modify rights to another resident allows them to change, delete or take ANY objects you may have in-world. Be VERY careful when handing out this permission.
-Do you want to grant modify rights for [FIRST_NAME] [LAST_NAME]?
+Do you want to grant modify rights for [NAME]?
     <usetemplate
      name="okcancelbuttons"
      notext="No"
@@ -279,7 +279,7 @@ Do you want to grant modify rights for the selected Residents?
    icon="alertmodal.tga"
    name="RevokeModifyRights"
    type="alertmodal">
-Do you want to revoke modify rights for [FIRST_NAME] [LAST_NAME]?
+Do you want to revoke modify rights for [NAME]?
     <usetemplate
      name="okcancelbuttons"
      notext="No"
@@ -865,6 +865,13 @@ Would you like to disable all popups which can be skipped?
      yestext="OK"/>
   </notification>
 
+  <notification
+ icon="alertmodal.tga"
+ name="Restart4SettingsChange"
+ type="alertmodal">
+Settings will be applied after restarting [SECOND_LIFE].
+  </notification>
+  
   <notification
    icon="alertmodal.tga"
    name="CacheWillClear"
@@ -2087,7 +2094,7 @@ Would you be my friend?
    icon="alertmodal.tga"
    name="RemoveFromFriends"
    type="alertmodal">
-Do you want to remove [FIRST_NAME] [LAST_NAME] from your Friends List?
+Do you want to remove [NAME] from your Friends List?
     <usetemplate
      name="okcancelbuttons"
      notext="Cancel"
@@ -2253,6 +2260,23 @@ Are you sure you want to delete these items?
     <usetemplate
      name="okcancelbuttons"
      notext="cancel"
+     yestext="OK"/>
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="ConfirmObjectRestoreNoCopy"
+   type="alertmodal">
+At least one of the items you have selected is not copyable.
+
+If you proceed, the object will be removed from your inventory. It is possible that it will be permanently deleted if it is not rezzed aboveground and within the borders of the current region. This is especially likely if the object's last position was as an attachment to your avatar, rather than an object on the ground.
+
+This operation is not likely to do what you intend when applied to an attachment.
+
+Are you sure you want to proceed?
+    <usetemplate
+     name="okcancelbuttons"
+     notext="Cancel"
      yestext="OK"/>
   </notification>
 
@@ -2442,14 +2466,14 @@ Please choose the male or female avatar. You can change your mind later.
    icon="alertmodal.tga"
    name="GrantedModifyRights"
    type="notifytip">
-You have been granted the privilege to modify [FIRST_NAME] [LAST_NAME]&apos;s objects.
+You have been granted the privilege to modify [NAME]&apos;s objects.
   </notification>
 
   <notification
    icon="alertmodal.tga"
    name="RevokedModifyRights"
    type="notifytip">
-Your privilege to modify [FIRST_NAME] [LAST_NAME]&apos;s objects has been revoked
+Your privilege to modify [NAME]&apos;s objects has been revoked
   </notification>
 
   <notification
@@ -2594,7 +2618,7 @@ Can&apos;t add estate owner to estate &apos;Banned Resident&apos; list.
   <notification
    icon="alertmodal.tga"
    name="CanNotChangeAppearanceUntilLoaded"
-   type="alertmodal">
+   type="notifytip">
 Can&apos;t change appearance until clothing and shape are loaded.
   </notification>
 
@@ -4392,8 +4416,8 @@ The following required components are missing from [FLOATER]:
    name="PhoenixUsingDeprecatedAttachPoint"
    type="alertmodal">
 You are attempting to use a secondary attachment point.
-The secondary attachment points in previous versions of the Phoenix Viewer are no longer supported. Items that were attached there have been detached.
-You should attach any items on those points to the regular attachment points instead. Once you have done so, you may need to adjust their position, but you should only have to do that once for each attachment.
+The secondary attachment points in previous versions of the Phoenix Viewer are no longer supported. 
+Phoenix will attempt to add your item to the regular attachment point instead. Once it has done so, you may need to adjust the item's position manually.
   </notification>
 
   <notification
@@ -4515,6 +4539,20 @@ Put it in a web page to give others easy access to this location or try it out y
     <form name="form">
       <ignore name="ignore"
        text="When copying a SLURL to your clipboard"/>
+    </form>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
+   name="CopyGroupURI"
+   type="alertmodal">
+The following Group URL has been copied to your clipboard:
+ [URI]
+
+Paste it to a friend or someone to give them a quick link to this group.
+    <form name="form">
+      <ignore name="ignore"
+       text="When copying a group URL to your clipboard"/>
     </form>
   </notification>
 
@@ -5173,14 +5211,14 @@ Topic: [SUBJECT], Message: [MESSAGE]
    icon="notifytip.tga"
    name="FriendOnline"
    type="notifytip">
-    [FIRST] [LAST] is Online
+    [NAME] is Online
   </notification>
 
   <notification
    icon="notifytip.tga"
    name="FriendOffline"
    type="notifytip">
-[FIRST] [LAST] is Offline
+[NAME] is Offline
   </notification>
 
   <notification
@@ -6021,6 +6059,10 @@ An object named [OBJECTFROMNAME] owned by (an unknown user) has given you a [OBJ
        index="2"
        name="Ignore"
        text="Ignore"/>
+	   <button
+       index="3"
+       name="Profile"
+       text="Profile"/>
     </form>
   </notification>
 
@@ -6682,6 +6724,7 @@ An error has occurred while trying to connect to voice chat for [VOICE_CHANNEL_N
 The region you have entered is running a different simulator version.
 Current simulator : [NEWVERSION]
 Previous simulator: [OLDVERSION]
+More info at: http://wiki.secondlife.com/wiki/Beta
     <unique>
       <context key="OLDVERSION"/>
       <context key="NEWVERSION"/>
@@ -6855,7 +6898,7 @@ The URL you clicked cannot be opened from this web browser.
    icon="notify.tga"
    name="QueryBridgeCleanup"
    type="notify">
-    Phoenix has noticed that you have [BRIDGES] in your inventory. Phoenix does not need older bridges. If you do not want these for something else, you should click Yes to have them automatically moved to the trash folder for you. If you have do not want this done, you should click No, and you won't be bothered about it again.
+    Phoenix has noticed that you have [BRIDGES] in your inventory. Phoenix does not need older bridges. If you do not want these for something else, click Yes to have them automatically moved to the trash folder for you. If you do not want this done, click No, and you won't be bothered about it again.
     <form name="form">
       <button
        index="0"
@@ -7276,7 +7319,7 @@ The download of [DISPLAY_NAME] failed:
    icon="alertmodal.tga"
    name="KittyWLSaveNotecardAlert"
    type="alertmodal">
-Do you wish to overwrite the saved preset?
+Do you wish to overwrite the saved notecard preset?
     <usetemplate
      name="okcancelbuttons"
      notext="No"
@@ -7296,6 +7339,117 @@ For more details on outfits in Phoenix, please see the Phoenix Viewer Wiki.
      name="okcancelbuttons"
      yestext="Go to Wiki"
 	 notext="Close" />
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="SetDisplayNameSuccess"
+   type="alert">
+    Hi [DISPLAY_NAME]!
+
+    Just like in real life, it takes a while for everyone to learn about a new name.  Please allow several days for your name to update in objects, scripts, search, etc. See http://wiki.secondlife.com/wiki/Setting_your_display_name for more information.
+  </notification>
+
+  <notification
+ icon="alertmodal.tga"
+ name="SetDisplayNameBlocked"
+ type="alert">
+    Sorry, you cannot change your display name. If you feel this is in error, please contact support.
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="SetDisplayNameFailedLength"
+   type="alertmodal">
+    Sorry, that name is too long.  Display names can have a maximum of [LENGTH] characters.
+
+    Please try a shorter name.
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="SetDisplayNameFailedGeneric"
+   type="alertmodal">
+    Sorry, we could not set your display name.  Please try again later.
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="SetDisplayNameMismatch"
+   type="alertmodal">
+    The display names you entered do not match. Please re-enter.
+  </notification>
+
+  <!-- *NOTE: This should never happen -->
+  <notification
+   icon="alertmodal.tga"
+   name="AgentDisplayNameUpdateThresholdExceeded"
+   type="alertmodal">
+    Sorry, you have to wait longer before you can change your display name.
+
+    See http://wiki.secondlife.com/wiki/Setting_your_display_name
+
+    Please try again later.
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="AgentDisplayNameSetBlocked"
+   type="alertmodal">
+    Sorry, we could not set your requested name because it contains a banned word.
+
+    Please try a different name.
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+ name="AgentDisplayNameSetInvalidUnicode"
+ type="alertmodal">
+    The display name you wish to set contains invalid characters.
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+ name="AgentDisplayNameSetOnlyPunctuation"
+ type="alertmodal">
+    Your display name must contain letters other than punctuation.
+  </notification>
+
+  <notification
+ icon="notifytip.tga"
+ name="DisplayNameUpdate"
+ type="notifytip">
+    [OLD_NAME] ([SLID]) is now known as [NEW_NAME].
+  </notification>
+
+    <notification
+   icon="notify.tga"
+   name="PhoenixWL"
+   type="notify">
+&apos;[PARCEL_NAME]&apos;
+Owned by &apos;[OWNER_NAME]&apos;
+Would like to change your Windlight visual environment settings.
+    <form name="form">
+      <button
+       index="0"
+       name="Allow"
+       text="Allow"/>
+      <button
+       index="1"
+       name="Ignore"
+       text="Ignore"/>
+    </form>
+  </notification>
+  
+  <notification
+   icon="notify.tga"
+   name="PhoenixWLClear"
+   type="notify">
+Reset WL settings for &apos;[PARCEL_NAME]&apos; to region default?
+    <usetemplate
+     name="okcancelbuttons"
+     notext="Cancel"
+     yestext="Yes"/>
   </notification>
 
 </notifications>

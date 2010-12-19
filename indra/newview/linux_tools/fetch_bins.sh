@@ -1,23 +1,8 @@
 #!/bin/bash
 
-# Necessary files
-BINS="bin/SLVoice lib/libortp.so lib/libvivoxsdk.so lib/libfmod-3.75.so"
-
-# Locations of client to use
-URL="http://www.phoenixviewer.com/fmod-vivox.tar.bz2"
+# Location of the vivox binary
+URL="http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/slvoice-3.2.0002.9361-linux-20101117a.tar.bz2"
 ARCHIVE="${URL##*/}"
-#FOLDER="${ARCHIVE%.*.*}"
-
-missing_bins() {
-	for file in $BINS; do
-		if [[ ! -f "$file" ]]; then
-			echo "Missing binary: ./$file."
-			return 0
-		fi
-	done
-	
-	return 1
-}
 
 if [[ "$1" == "--force" ]]; then
 	GET="wget -c --random-wait -O $ARCHIVE $URL"
@@ -25,16 +10,16 @@ else
 	GET="wget -nc --random-wait $URL"
 fi
 
-echo "Looking for missing binaries."
-if [[ `missing_bins` || "$1" == "--force" ]]; then
-	echo "Fetching binary package."
+echo "Looking for SLVoice..."
+if [[ ! -f "bin/SLVoice" || "$1" == "--force" ]]; then
+	echo "Fetching SLVoice package."
 	if `$GET`; then
 		echo "Extracting."
-#		if tar -xjv --strip-components=1 -f $ARCHIVE $FOLDER/${BINS// / $FOLDER/}; then
-		if tar -xjvf $ARCHIVE; then
-			echo "Binaries successfully obtained."
-		fi
+		tar -xvjf "$ARCHIVE" -C bin --strip-components 4 indra/newview/vivox-runtime/i686-linux/SLVoice
+		tar -xvjf "$ARCHIVE" -C lib --strip-components 4 --wildcards indra/newview/vivox-runtime/i686-linux/lib*
+		rm -f lib/libvivoxoal.so.1
+		cp -p lib/libopenal.so.1 lib/libvivoxoal.so.1
 	fi
 else
-	echo "All binaries found."
+	echo "SLVoice found."
 fi

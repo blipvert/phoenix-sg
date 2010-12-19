@@ -140,7 +140,7 @@
 	<notification name="GrantModifyRights">
 		Дает право другому резиденту изменять ЛЮБЫЕ Ваши объекты в мире.
 Будьте ОЧЕНЬ осторожны, когда присваиваете такие права.
-Вы уверены в передаче прав на изменение [FIRST_NAME] [LAST_NAME]?
+Вы уверены в передаче прав на изменение [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Нет" yestext="Да"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -150,7 +150,7 @@
 		<usetemplate name="okcancelbuttons" notext="Нет" yestext="Да"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		Хотите отобрать право на изменение у [FIRST_NAME] [LAST_NAME]?
+		Хотите отобрать право на изменение у [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Нет" yestext="Да"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -992,7 +992,7 @@ www.secondlife.com/support
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		Удалить [FIRST_NAME] [LAST_NAME] из списка Друзей?
+		Удалить [NAME] из списка Друзей?
 		<usetemplate name="okcancelbuttons" notext="Отмена" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">
@@ -1165,10 +1165,10 @@ www.secondlife.com/support
 		[NAME] L$ [PRICE] Недостаточно L$ для этого действия.
 	</notification>
 	<notification name="GrantedModifyRights">
-		Вам дали право менять объекты резидента [FIRST_NAME] [LAST_NAME].
+		Вам дали право менять объекты резидента [NAME].
 	</notification>
 	<notification name="RevokedModifyRights">
-		У Вас отобрали право правки объектов резидента [FIRST_NAME] [LAST_NAME]
+		У Вас отобрали право правки объектов резидента [NAME]
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
 		Это сбросит кэш карты этого региона.
@@ -2416,10 +2416,10 @@ X и Y задает их позицию. D (плотность) определя
 		Отсутствующая часть одежды/тела заменена базовым значением.
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] Онлайн
+		[NAME] Онлайн
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] вышел из Second Life
+		[NAME] вышел из Second Life
 	</notification>
 	<notification name="AddSelfFriend">
 		Вы не можете добавить себя в друзья

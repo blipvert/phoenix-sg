@@ -35,6 +35,7 @@
 class GrowlNotifier
 {
 public:
+	LOG_CLASS(GrowlNotifier);
 	GrowlNotifier();
 	virtual ~GrowlNotifier();
 	virtual void showNotification(const std::string& notification_title, const std::string& notification_message, const std::string& notification_type);

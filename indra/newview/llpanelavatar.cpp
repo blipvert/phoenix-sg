@@ -89,10 +89,13 @@
 #include "llfloatergroups.h"
 #include "llbufferstream.h"
 #include "llsdserialize.h"
+#include "llavatarnamecache.h"
 
 // [RLVa:KB]
 #include "rlvhandler.h"
 // [/RLVa:KB]
+
+#include "llavatarname.h"
 
 // Statics
 std::list<LLPanelAvatar*> LLPanelAvatar::sAllPanels;
@@ -214,13 +217,22 @@ void LLPanelAvatarSecondLife::updatePartnerName()
 {
 	if (mPartnerID.notNull())
 	{
-		std::string first, last;
-		BOOL found = gCacheName->getName(mPartnerID, first, last);
-		if (found)
+		// [Ansariel: Display name support]
+		LLAvatarName avatar_name;
+		if (LLAvatarNameCache::get(mPartnerID, &avatar_name))
 		{
-			childSetTextArg("partner_edit", "[FIRST]", first);
-			childSetTextArg("partner_edit", "[LAST]", last);
+			std::string name;
+			static S32* sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
+			switch (*sPhoenixNameSystem)
+			{
+				case 0 : name = avatar_name.getLegacyName(); break;
+				case 1 : name = (avatar_name.mIsDisplayNameDefault ? avatar_name.mDisplayName : avatar_name.getCompleteName()); break;
+				case 2 : name = avatar_name.mDisplayName; break;
+				default : name = avatar_name.getLegacyName(); break;
+			}
+			childSetTextArg("partner_edit", "[NAME]", name);
 		}
+		// [/Ansariel: Display name support]
 		childSetEnabled("partner_info", TRUE);
 	}
 }
@@ -241,8 +253,9 @@ void LLPanelAvatarSecondLife::clearControls()
 	childSetValue("born", "");
 	childSetValue("acct", "");
 
-	childSetTextArg("partner_edit", "[FIRST]", LLStringUtil::null);
-	childSetTextArg("partner_edit", "[LAST]", LLStringUtil::null);
+	// [Ansariel: Display name support]
+	childSetTextArg("partner_edit", "[NAME]", LLStringUtil::null);
+	// [/Ansariel: Display name support]
 
 	mPartnerID = LLUUID::null;
 	
@@ -1378,6 +1391,8 @@ void LLPanelAvatar::setAvatar(LLViewerObject *avatarp)
 		name.assign("");
 	}
 
+
+
 	// If we have an avatar pointer, they must be online.
 	setAvatarID(avatarp->getID(), name, ONLINE_STATUS_YES);
 }
@@ -1436,7 +1451,8 @@ void LLPanelAvatar::setOnlineStatus(EOnlineStatus online_status)
 		{
 			mPanelSecondLife->childSetVisible("online_yes", FALSE);
 
-			if(gSavedSettings.getBOOL("PhoenixUseBridgeOnline"))JCLSLBridge::bridgetolsl("online_status|"+mAvatarID.asString(), new JCProfileCallback(mAvatarID));
+			if(gSavedSettings.getBOOL("PhoenixUseBridgeOnline"))
+				JCLSLBridge::instance().bridgetolsl("online_status|"+mAvatarID.asString(), new JCProfileCallback(mAvatarID));
 		}
 	}
 	if(online_status == ONLINE_STATUS_YES)
@@ -1473,6 +1489,12 @@ void LLPanelAvatar::setOnlineStatus(EOnlineStatus online_status)
 		childSetEnabled("Offer Teleport...", (online_status == ONLINE_STATUS_YES));
 		childSetToolTip("Offer Teleport...", childGetValue("TeleportNormal").asString());
 	}*/
+}
+
+void LLPanelAvatar::on_avatar_name_response(const LLUUID& agent_id, const LLAvatarName& av_name, void *userdata){
+	LLPanelAvatar* self = (LLPanelAvatar*)userdata;
+	LLLineEditor* dnname_edit = self->getChild<LLLineEditor>("dnname");
+	if(LLAvatarNameCache::useDisplayNames() && agent_id==self->mAvatarID) dnname_edit->setText(av_name.getCompleteName());
 }
 
 void LLPanelAvatar::setAvatarID(const LLUUID &avatar_id, const std::string &name,
@@ -1524,6 +1546,27 @@ void LLPanelAvatar::setAvatarID(const LLUUID &avatar_id, const std::string &name
 		else
 		{
 			name_edit->setText(name);
+		}
+	}
+	
+	LLLineEditor* dnname_edit = getChild<LLLineEditor>("dnname");
+	LLAvatarName av_name;
+	if(dnname_edit){
+		if(LLAvatarNameCache::useDisplayNames()){
+			if(LLAvatarNameCache::get(avatar_id, &av_name)){
+				dnname_edit->setText(av_name.getCompleteName());
+			}
+			else{
+				dnname_edit->setText(name_edit->getText());
+				LLAvatarNameCache::get(avatar_id, boost::bind(&LLPanelAvatar::on_avatar_name_response, _1, _2, this));			
+			}
+			childSetVisible("dnname",TRUE);
+			childSetVisible("name",FALSE);
+		}
+		else
+		{
+			childSetVisible("dnname",FALSE);
+			childSetVisible("name",TRUE);
 		}
 	}
 

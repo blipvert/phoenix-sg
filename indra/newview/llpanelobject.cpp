@@ -38,6 +38,7 @@
 // linden library includes
 #include "lleconomy.h"
 #include "llerror.h"
+#include "llflexibleobject.h"
 #include "llfontgl.h"
 #include "llpermissionsflags.h"
 #include "llstring.h"
@@ -134,6 +135,9 @@ LLVector3 LLPanelObject::mClipboardRot;
 
 LLVolumeParams LLPanelObject::mClipboardVolumeParams;
 BOOL LLPanelObject::hasParamClipboard = FALSE;
+BOOL LLPanelObject::hasFlexiParam = FALSE;
+BOOL LLPanelObject::hasSculptParam = FALSE;
+BOOL LLPanelObject::hasLightParam = FALSE;
 
 
 //*TODO:translate (depricated, so very low priority)
@@ -2492,18 +2496,182 @@ void LLPanelObject::onCopyRot(void* user_data)
 	gViewerWindow->mWindow->copyTextToClipboard(utf8str_to_wstring(stringVec));
 }
 
+static LLSD clipboard;
+
 void LLPanelObject::onCopyParams(void* user_data)
 {
 	LLPanelObject* self = (LLPanelObject*) user_data;
 	self->getVolumeParams(mClipboardVolumeParams);
 	hasParamClipboard = TRUE;
+	
+	LLViewerObject* objectp = self->mObject;
+	if (!objectp)
+		return;
+
+	LLVOVolume *volobjp = NULL;
+	if ( objectp && (objectp->getPCode() == LL_PCODE_VOLUME))
+		volobjp = (LLVOVolume *)objectp;
+	
+	hasFlexiParam = FALSE;
+	if(volobjp && volobjp->isFlexible())
+	{
+		LLFlexibleObjectData *attributes = (LLFlexibleObjectData *)objectp->getParameterEntry(LLNetworkData::PARAMS_FLEXIBLE);
+		if (attributes)
+		{
+			clipboard["lod"] = attributes->getSimulateLOD();
+			clipboard["gav"] = attributes->getGravity();
+			clipboard["ten"] = attributes->getTension();
+			clipboard["fri"] = attributes->getAirFriction();
+			clipboard["sen"] = attributes->getWindSensitivity();
+			LLVector3 force = attributes->getUserForce();
+			clipboard["forx"] = force.mV[0];
+			clipboard["fory"] = force.mV[1];
+			clipboard["forz"] = force.mV[2];
+			hasFlexiParam = TRUE;
+		}
+	}
+
+	if (objectp->getParameterEntryInUse(LLNetworkData::PARAMS_SCULPT))
+	{
+		LLSculptParams *sculpt_params = (LLSculptParams *)objectp->getParameterEntry(LLNetworkData::PARAMS_SCULPT);
+
+		LLUUID image_id = sculpt_params->getSculptTexture();
+		BOOL allow_texture = FALSE;
+		if (gInventory.isObjectDescendentOf(image_id, gInventoryLibraryRoot)
+			|| image_id == LLUUID(gSavedSettings.getString( "DefaultObjectTexture" ))
+			|| image_id == LLUUID(gSavedSettings.getString( "UIImgWhiteUUID" ))
+			|| image_id == LLUUID(gSavedSettings.getString( "UIImgInvisibleUUID" ))
+			|| image_id == LLUUID(SCULPT_DEFAULT_TEXTURE)
+		)
+			allow_texture = TRUE;
+		else
+		{
+			LLUUID inventory_item_id;
+			LLViewerInventoryCategory::cat_array_t cats;
+			LLViewerInventoryItem::item_array_t items;
+			LLAssetIDMatches asset_id_matches(image_id);
+			gInventory.collectDescendentsIf(LLUUID::null,
+									cats,
+									items,
+									LLInventoryModel::INCLUDE_TRASH,
+									asset_id_matches);
+
+			if (items.count())
+			{
+				// search for copyable version first
+				for (S32 i = 0; i < items.count(); i++)
+				{
+					LLInventoryItem* itemp = items[i];
+					LLPermissions item_permissions = itemp->getPermissions();
+					if (item_permissions.allowCopyBy(gAgent.getID(), gAgent.getGroupID()))
+					{
+						inventory_item_id = itemp->getUUID();
+						break;
+					}
+				}
+			}
+			if (inventory_item_id.notNull())
+			{
+				LLInventoryItem* itemp = gInventory.getItem(inventory_item_id);
+				if (itemp)
+				{
+					LLPermissions perm = itemp->getPermissions();
+					if ( (perm.getMaskBase() & PERM_ITEM_UNRESTRICTED) == PERM_ITEM_UNRESTRICTED )
+						allow_texture = TRUE;
+				}
+			}
+		}
+		if (allow_texture)
+			clipboard["sculptid"] = image_id;
+		else
+			clipboard["sculptid"] = LLUUID(SCULPT_DEFAULT_TEXTURE);
+
+		clipboard["sculpt_type"] = sculpt_params->getSculptType();
+		hasSculptParam = TRUE;
+	}
+	else
+	{
+		hasSculptParam = FALSE;
+	}
+
+	if (volobjp && volobjp->getIsLight())
+	{
+		clipboard["Light Intensity"] = volobjp->getLightIntensity();
+		clipboard["Light Radius"] = volobjp->getLightRadius();
+		clipboard["Light Falloff"] = volobjp->getLightFalloff();
+		LLColor3 color = volobjp->getLightColor();
+		clipboard["r"] = color.mV[0];
+		clipboard["g"] = color.mV[1];
+		clipboard["b"] = color.mV[2];
+		hasLightParam = TRUE;
+	}
+	else
+	{
+		hasLightParam = FALSE;
+	}
+
 }
 
 void LLPanelObject::onPasteParams(void* user_data)
 {
 	LLPanelObject* self = (LLPanelObject*) user_data;
+	
 	if(hasParamClipboard)
 		self->mObject->updateVolume(mClipboardVolumeParams);
+	
+	LLViewerObject* objectp = self->mObject;
+	if (!objectp)
+		return;
+
+	if (hasFlexiParam && (objectp->getPCode() == LL_PCODE_VOLUME))
+	{
+		LLFlexibleObjectData *attributes = (LLFlexibleObjectData *)objectp->getParameterEntry(LLNetworkData::PARAMS_FLEXIBLE);
+		if (attributes)
+		{
+			LLFlexibleObjectData new_attributes;
+			new_attributes = *attributes;
+
+			new_attributes.setSimulateLOD(clipboard["lod"].asInteger());
+			new_attributes.setGravity(clipboard["gav"].asReal());
+			new_attributes.setTension(clipboard["ten"].asReal());
+			new_attributes.setAirFriction(clipboard["fri"].asReal());
+			new_attributes.setWindSensitivity(clipboard["sen"].asReal());
+			F32 fx = (F32)clipboard["forx"].asReal();
+			F32 fy = (F32)clipboard["fory"].asReal();
+			F32 fz = (F32)clipboard["forz"].asReal();
+			LLVector3 force(fx,fy,fz);
+			new_attributes.setUserForce(force);
+			objectp->setParameterEntry(LLNetworkData::PARAMS_FLEXIBLE, new_attributes, true);
+		}
+	}
+
+	if (hasSculptParam)
+	{
+		LLSculptParams sculpt_params;
+
+		if (clipboard.has("sculptid"))
+			sculpt_params.setSculptTexture(clipboard["sculptid"].asUUID());
+
+		if (clipboard.has("sculptid"))
+			sculpt_params.setSculptType((U8)clipboard["sculpt_type"].asInteger());
+
+		objectp->setParameterEntry(LLNetworkData::PARAMS_SCULPT, sculpt_params, TRUE);
+	}
+	LLVOVolume *volobjp = NULL;
+	if ( objectp && (objectp->getPCode() == LL_PCODE_VOLUME))
+		volobjp = (LLVOVolume *)objectp;
+
+	if (volobjp && hasLightParam)
+	{
+		volobjp->setIsLight(TRUE);
+		volobjp->setLightIntensity((F32)clipboard["Light Intensity"].asReal());
+		volobjp->setLightRadius((F32)clipboard["Light Radius"].asReal());
+		volobjp->setLightFalloff((F32)clipboard["Light Falloff"].asReal());
+		F32 r = (F32)clipboard["r"].asReal();
+		F32 g = (F32)clipboard["g"].asReal();
+		F32 b = (F32)clipboard["b"].asReal();
+		volobjp->setLightColor(LLColor3(r,g,b));
+	}
 }
 
 void LLPanelObject::onLinkObj(void* user_data)

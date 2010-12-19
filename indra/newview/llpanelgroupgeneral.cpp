@@ -255,6 +255,7 @@ BOOL LLPanelGroupGeneral::postBuild()
 	}
 	else
 	{
+		childSetAction("copy_uri", onCopyURI, this);
 		mGroupNameEditor->setEnabled(FALSE);
 	}
 
@@ -399,6 +400,26 @@ void LLPanelGroupGeneral::openProfile(void* data)
 		if (selected)
 		{
 			LLFloaterAvatarInfo::showFromDirectory( selected->getUUID() );
+		}
+	}
+}
+
+//Static
+void LLPanelGroupGeneral::onCopyURI(void* data)
+{
+	LLPanelGroupGeneral* self = (LLPanelGroupGeneral*)data;
+	if(self)
+	{
+		LLNameEditor* key_edit = self->getChild<LLNameEditor>("groupkey_");
+		if(key_edit)
+		{
+			std::string URI = llformat("secondlife:///app/group/%s/about", key_edit->getText().c_str());
+			gViewerWindow->mWindow->copyTextToClipboard(utf8str_to_wstring(URI));
+
+			LLSD args;
+			args["URI"] = URI;
+
+			LLNotifications::instance().add("CopyGroupURI", args);
 		}
 	}
 }

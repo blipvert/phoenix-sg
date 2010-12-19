@@ -1,7 +1,67 @@
 <?xml version="1.0" ?>
 <llsd>
 	<map>
-		<key>PhoenixVoiceAnimWhileTyping</key>
+    <key>PhoenixShowChatChannel</key>
+    <map>
+      <key>Comment</key>
+      <string>Show the chat channel selection in chatbar in chat history floater.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>PhoenixNameSystem</key>
+    <map>
+      <key>Comment</key>
+      <string>Use Display Names instead of Legacy Names. 0 = Old Style, 1 = Display Names and Username, 2 = Displayname only</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>PhoenixNameTagOldStyle</key>
+    <map>
+      <key>Comment</key>
+      <string>Add (away, busy...) to display/avatar name</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>PhoenixUseCustomUsernameColor</key>
+    <map>
+      <key>Comment</key>
+      <string>If we are using a custom Username Color instead of the one provided.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>PhoenixCustomUsernameColor</key>
+    <map>
+      <key>Comment</key>
+      <string>Color of Usernames</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Color4</string>
+      <key>Value</key>
+      <array>
+        <real>0.996</real>
+        <real>0.396</real>
+        <real>0.121</real>
+        <real>1</real>
+      </array>
+    </map>
+    <key>PhoenixVoiceAnimWhileTyping</key>
 		<map>
 		<key>Comment</key>
 			<string>Play voice animation while typing</string>
@@ -58,6 +118,17 @@
 			<key>Value</key>
 			<integer>1</integer>
 		</map>
+		<key>PhoenixShowSimChannel</key>
+		<map>
+			<key>Comment</key>
+			<string>Show the sim&apos;s channel if it is a RC channel.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
 		<key>PhoenixDontUseMultipleColorTags</key>
 		<map>
 			<key>Comment</key>
@@ -68,6 +139,17 @@
 			<string>Boolean</string>
 			<key>Value</key>
 			<integer>0</integer>
+		</map>
+		<key>PhoenixTPFromSearch</key>
+		<map>
+			<key>Comment</key>
+			<string>Should the TP button in search start a TP or should it show an info window of the place your going to</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
 		</map>
 		<key>DiamondShowGroupNameInChatIM</key>
 		<map>
@@ -180,17 +262,6 @@
 			<array>
 				<string />
 			</array>
-		</map>
-		<key>PhoenixAssetBlacklistVersion</key>
-		<map>
-			<key>Comment</key>
-			<string>Do not edit this value.</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>String</string>
-			<key>Value</key>
-			<string>0</string>
 		</map>
 		<key>PhoenixSpecialBlacklist</key>
 		<map>
@@ -7509,7 +7580,7 @@
 			<key>Type</key>
 			<string>Boolean</string>
 			<key>Value</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</map>
 		<key>InBandwidth</key>
 		<map>
@@ -9161,17 +9232,6 @@
 		<map>
 			<key>Comment</key>
 			<string>whether or not to create the lsl bridge</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>Boolean</string>
-			<key>Value</key>
-			<integer>1</integer>
-		</map>
-		<key>WarnPhoenixOldBridgeCleanup</key>
-		<map>
-			<key>Comment</key>
-			<string>offer to deletre any obsolete bridge objects</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>
@@ -10872,6 +10932,17 @@
 			<string>Boolean</string>
 			<key>Value</key>
 			<integer>1</integer>
+		</map>
+		<key>RenderUseStreamVBO</key>
+		<map>
+		    	<key>Comment</key>
+		    	<string>Use VBO's for stream buffers</string>
+		    	<key>Persist</key>
+		    	<integer>1</integer>
+		    	<key>Type</key>
+		    	<string>Boolean</string>
+		    	<key>Value</key>
+		    	<integer>1</integer>
 		</map>
 		<key>RenderVolumeLODFactor</key>
 		<map>
@@ -15513,6 +15584,83 @@
 		<map>
 			<key>Comment</key>
 			<string>Future support for making up to 64m prims (As of 10/15/2010, this only will work on mesh enabled sims on the beta grid) (requires relog)</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixOldBridgeCleanup</key>
+		<map>
+			<key>Comment</key>
+			<string>Offer to deletre any obsolete bridge objects</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixWLParcelEnabled</key>
+		<map>
+			<key>Comment</key>
+			<string>Enables auto setting WL from parcel desc flags</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixWLWhitelistFriends</key>
+		<map>
+			<key>Comment</key>
+			<string>Whitelist friend's land for Phoenix WL sharing</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixWLWhitelistGroups</key>
+		<map>
+			<key>Comment</key>
+			<string>Whitelist group land on groups you are member of for Phoenix WL sharing</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixWLWhitelistAll</key>
+		<map>
+			<key>Comment</key>
+			<string>Allow all land for Phoenix WL sharing</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixUseOldTexturePurging</key>
+		<map>
+			<key>Comment</key>
+			<string>Disables delayed incremental old texture purging and uses old method (Use if you experience serious hiccups related to texture purging. This will cause the old single large hiccup when purging instead of several tiny ones)</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixTextureLoadFullRes</key>
+		<map>
+			<key>Comment</key>
+			<string>If TRUE, always load textures at full resolution (discard = 0)</string>
 			<key>Persist</key>
 			<integer>1</integer>
 			<key>Type</key>

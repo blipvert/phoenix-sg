@@ -58,6 +58,13 @@ public:
 
 	/*virtual*/ void done()
 	{
+		// We shouldn't be messing with inventory items during LLInventoryModel::notifyObservers()
+		doOnIdleOneTime(boost::bind(&LLCOFFetcher::doneIdle, this));
+		gInventory.removeObserver(this);
+	}
+
+	void doneIdle()
+	{
 		uuid_vec_t idItems; 
 
 		// Add the link targets for COF
@@ -103,11 +110,18 @@ public:
 		LLCOFLinkTargetFetcher* pFetcher = new LLCOFLinkTargetFetcher(idItems);
 		pFetcher->startFetch();
 		if (pFetcher->isFinished())
+		{
 			pFetcher->done();
+		}
 		else
+		{
 			gInventory.addObserver(pFetcher);
 
-		gInventory.removeObserver(this);
+			// It doesn't look like we *really* need the link targets so we can do a preliminary initialization now already
+			LLCOFMgr::instance().setLinkAttachments(true);
+			LLCOFMgr::instance().updateAttachments();
+		}
+
 		delete this;
 	}
 };

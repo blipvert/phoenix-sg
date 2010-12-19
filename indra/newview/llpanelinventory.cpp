@@ -459,14 +459,15 @@ BOOL LLTaskInvFVBridge::isItemRemovable()
 // [RLVa:KB] - Checked: 2010-04-01 (RLVa-1.2.0c) | Modified: RLVa-1.0.5a
 	if ( (object) && (rlv_handler_t::isEnabled()) )
 	{
-		if (gRlvAttachmentLocks.isLockedAttachment(object))
+		const LLViewerObject* pObjRoot = object->getRootEdit();
+		if (gRlvAttachmentLocks.isLockedAttachment(pObjRoot))
 		{
 			return FALSE;
 		}
 		else if ( (gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP)) )
 		{
 			LLVOAvatar* pAvatar = gAgent.getAvatarObject();
-			if ( (pAvatar) && (pAvatar->mIsSitting) && (pAvatar->getRoot() == object->getRootEdit()) )
+			if ( (pAvatar) && (pAvatar->mIsSitting) && (pAvatar->getRoot() == pObjRoot) )
 				return FALSE;
 		}
 	}
@@ -868,22 +869,12 @@ BOOL LLTaskCategoryBridge::startDrag(EDragAndDropType* type, LLUUID* id) const
 		LLViewerObject* object = gObjectList.findObject(mPanel->getTaskUUID());
 		if(object)
 		{
-			LLInventoryItem* inv = NULL;
-			if((inv = (LLInventoryItem*)object->getInventoryObject(mUUID)))
+			const LLInventoryObject* cat = object->getInventoryObject(mUUID);
+			if ( (cat) && (move_inv_category_world_to_agent(mUUID, LLUUID::null, FALSE)) )
 			{
-				const LLPermissions& perm = inv->getPermissions();
-				bool can_copy = gAgent.allowOperation(PERM_COPY, perm,
-														GP_OBJECT_MANIPULATE);
-				if((can_copy && perm.allowTransferTo(gAgent.getID()))
-				   || object->permYouOwner())
-//				   || gAgent.isGodlike())
-
-				{
-					*type = LLAssetType::lookupDragAndDropType(inv->getType());
-
-					*id = inv->getUUID();
-					return TRUE;
-				}
+				*type = LLAssetType::lookupDragAndDropType(cat->getType());
+				*id = mUUID;
+				return TRUE;
 			}
 		}
 	}

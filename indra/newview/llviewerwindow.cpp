@@ -4042,6 +4042,8 @@ BOOL LLViewerWindow::saveImageNumbered(LLImageFormatted *image)
 
 		LLViewerWindow::sSnapshotBaseName = gDirUtilp->getBaseFileName(filepath, true);
 		LLViewerWindow::sSnapshotDir = gDirUtilp->getDirName(filepath);
+		if (gSavedPerAccountSettings.getBOOL("PhoenixShapshotReuseLastDir"))
+			gSavedPerAccountSettings.setString("PhoenixShapshotLastDir", LLViewerWindow::sSnapshotDir);
 	}
 
 	// Look for an unused file name
@@ -4066,9 +4068,23 @@ BOOL LLViewerWindow::saveImageNumbered(LLImageFormatted *image)
 	return image->save(filepath);
 }
 
+BOOL LLViewerWindow::isSnapshotLocSet()
+{
+	if (sSnapshotDir.empty() && gSavedPerAccountSettings.getBOOL("PhoenixShapshotReuseLastDir"))
+	{
+		sSnapshotDir = gSavedPerAccountSettings.getString("PhoenixShapshotLastDir");
+	}
+	if (!sSnapshotDir.empty() && !gDirUtilp->fileExists(sSnapshotDir))
+	{
+		resetSnapshotLoc();
+	}
+	return !sSnapshotDir.empty();
+}
+
 void LLViewerWindow::resetSnapshotLoc()
 {
 	sSnapshotDir.clear();
+	gSavedPerAccountSettings.setString("PhoenixShapshotLastDir", "");
 }
 
 static S32 BORDERHEIGHT = 0;
@@ -4387,7 +4403,6 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 	{
 		return FALSE ;
 	}
-
 	if(raw->isBufferInvalid())
 	{
 		return FALSE ;

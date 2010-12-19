@@ -36,7 +36,11 @@ Hover your mouse over the options for more help.
 			     font="SansSerifSmall" height="16" is_unicode="false" left_delta="65"
 			     max_length="254" mouse_opaque="false" name="groupkey_"
 			     width="256" />
-	<text bottom_delta="-20" font="SansSerifSmall" halign="left" height="16"
+      <button bottom_delta="-2" enabled="true" follows="bottom|right" font="SansSerif"
+	     height="20" label="Copy URI" left="-85" name="copy_uri"
+	     tool_tip="Copies current location as SLURL to be used on the web."
+	     width="80" />
+	<text bottom_delta="-18" font="SansSerifSmall" halign="left" height="16"
 	     name="group_charter_label" right="410" width="265">
 		Group Charter
 	</text>

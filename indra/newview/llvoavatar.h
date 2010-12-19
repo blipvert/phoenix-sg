@@ -48,6 +48,7 @@
 #include "llrendertarget.h"
 #include "llwearable.h"
 #include "llvoavatardefines.h"
+#include "llavatarname.h"
 
 #include "phoenixboobutils.h"
 
@@ -109,7 +110,16 @@ public:
 	void idleUpdateLoadingEffect();
 	void idleUpdateWindEffect();
 	void idleUpdateBoobEffect();
-	void idleUpdateNameTag(const LLVector3& root_pos_last);
+	void 			idleUpdateNameTag(const LLVector3& root_pos_last);
+	void			idleUpdateNameTagText(BOOL new_name);
+	LLVector3		idleUpdateNameTagPosition(const LLVector3& root_pos_last);
+	void			idleUpdateNameTagAlpha(BOOL new_name, F32 alpha);
+	LLColor4		getNameTagColor(bool is_friend);
+	void			clearNameTag();
+	static void		invalidateNameTag(const LLUUID& agent_id);
+	// force all name tags to rebuild, useful when display names turned on/off
+	static void		invalidateNameTags();
+	void			addNameTagLine(const std::string& line, const LLColor4& color, S32 style, const LLFontGL* font);
 	void idleUpdateRenderCost();
 	void idleUpdateTractorBeam();
 	void idleUpdateBelowWater();
@@ -377,12 +387,16 @@ public:
 	BOOL            isFullyLoaded();
 	BOOL			isReallyFullyLoaded();
 	BOOL            updateIsFullyLoaded();
+	virtual BOOL	getIsCloud();
+protected:
+	void		updateRuthTimer(bool loading);
 private:
 	BOOL            mFullyLoaded;
 	BOOL            mPreviousFullyLoaded;
 	BOOL            mFullyLoadedInitialized;
 	S32             mFullyLoadedFrameCounter;
 	LLFrameTimer    mFullyLoadedTimer;
+	LLFrameTimer    mRuthTimer;
 
 	//--------------------------------------------------------------------
 	// Collision Volumes
@@ -491,6 +505,7 @@ private:
 	std::deque<LLChat>			mChats;
 	BOOL						mTyping;
 	LLFrameTimer				mTypingTimer;
+	static void on_avatar_name_response(const LLUUID& agent_id, const LLAvatarName& av_name, void *userdata);
 
 	//--------------------------------------------------------------------
 	// wind rippling in clothes
@@ -647,6 +662,8 @@ private:
 
 	static void resolveClient(LLColor4& avatar_name_color, std::string& client, LLVOAvatar* avatar);
 	friend class LLFloaterAvatarList;
+	
+	std::map<LLUUID, LLQuaternion> oldAttachmentRots;
 
 protected:
 	LLPointer<LLHUDEffectSpiral> mBeam;
@@ -660,8 +677,16 @@ protected:
 	BOOL	  mNameBusy;
 	BOOL	  mNameMute;
 	BOOL      mNameAppearance;
+	bool	  mNameFriend;
 	BOOL	  mVisibleChat;
+	F32		  mNameAlpha;
+	bool	  mNameCloud;
 	BOOL      mRenderGroupTitles;
+	std::string mNameClient;
+	LLColor4 mNameTagColor;
+	std::string      mRenderedName;
+	std::string      mClientName;
+	S32		  mUsedNameSystem;
 
 	std::string  mDebugText;
 	U64		  mLastRegionHandle;

@@ -464,6 +464,19 @@ void LLScriptLibrary::init()
 	// IF YOU ADD NEW SCRIPT CALLS, YOU MUST PUT THEM AT THE END OF THIS LIST.
 	// Otherwise the bytecode numbers for each call will be wrong, and all
 	// existing scripts will crash.
+
+	// New (v1.38 server) functions (in unofficial order: should be confirmed later, even if the viewer doesn't create its own bytecode any more):
+	addFunction(10.f, 0.f, dummy_func, "llSetLinkPrimitiveParamsFast", NULL, "il");
+	addFunction(10.f, 0.f, dummy_func, "llGetLinkPrimitiveParams", "l", "il");
+	addFunction(10.f, 0.f, dummy_func, "llLinkParticleSystem", NULL, "il");
+	addFunction(10.f, 0.f, dummy_func, "llSetLinkTextureAnim", NULL, "iiiiifff");
+	addFunction(10.f, 0.f, dummy_func, "llGetLinkNumberOfSides", "i", "i");
+
+	// IDEVO Name lookup calls, see lscript_avatar_names.h
+	addFunction(10.f, 0.f, dummy_func, "llGetUsername", "s", "k");
+	addFunction(10.f, 0.f, dummy_func, "llRequestUsername", "k", "k");
+	addFunction(10.f, 0.f, dummy_func, "llGetDisplayName", "s", "k");
+	addFunction(10.f, 0.f, dummy_func, "llRequestDisplayName", "k", "k");
 }
 
 LLScriptLibraryFunction::LLScriptLibraryFunction(F32 eu, F32 st, void (*exec_func)(LLScriptLibData *, LLScriptLibData *, const LLUUID &), const char *name, const char *ret_type, const char *args, BOOL god_only)

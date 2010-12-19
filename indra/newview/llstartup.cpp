@@ -445,8 +445,6 @@ bool idle_startup()
 
 		glggHunSpell->initSettings();
 
-		new JCLSLBridge();
-
 		GrowlManager::InitiateManager();
 
 		PhoenixViewerLink::getInstance()->start_download();
@@ -2039,6 +2037,13 @@ bool idle_startup()
             LLAppViewer::instance()->loadNameCache();
 		}
 
+		// Start cache in not-running state until we figure out if we have
+		// capabilities for display name lookup
+		LLAvatarNameCache::initClass(false);	
+		static S32 *sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
+		if(*sPhoenixNameSystem<=0 || *sPhoenixNameSystem >2) LLAvatarNameCache::setUseDisplayNames(false);
+		else LLAvatarNameCache::setUseDisplayNames(true);
+
 		// *Note: this is where gWorldMap used to be initialized.
 
 		// register null callbacks for audio until the audio system is initialized
@@ -2787,6 +2792,26 @@ bool idle_startup()
 		if(gSavedSettings.getBOOL("PhoenixKillTheClouds"))
 		{
 			gPipeline.toggleRenderType(LLPipeline::RENDER_TYPE_CLOUDS);
+		}
+
+		//KC: startup the lsl<->viewer bridge
+		JCLSLBridge::instance().Reset();
+		
+		//KC: restore the last WL setting
+		if (gSavedPerAccountSettings.getBOOL("PhoenixRestoreLastWLsettingsOnLogin"))
+		{
+			std::string last_wl = gSavedPerAccountSettings.getString("PhoenixLastWLsetting");
+			if (!last_wl.empty() && last_wl != "Default")
+			{
+				LLWLParamManager::instance()->mAnimator.mIsRunning = false;
+				LLWLParamManager::instance()->mAnimator.mUseLindenTime = false;
+				LLWLParamManager::instance()->loadPreset(last_wl);
+			}
+			std::string last_ww = gSavedPerAccountSettings.getString("PhoenixLastWWsetting");
+			if (!last_ww.empty() && last_ww != "Default")
+			{
+				LLWaterParamManager::instance()->loadPreset(last_ww, true);
+			}
 		}
 
 		// Let the map know about the inventory.

@@ -94,6 +94,7 @@ private:
 	static void onBeamColorDelete(void* data);
 	static void onCommitApplyControl(LLUICtrl* caller, void* user_data);
 	static void onCommitAvatarModifier(LLUICtrl* ctrl, void* userdata);
+	static void onCommitShapshotReuseLastDir(LLUICtrl* ctrl, void* userdata);
 	static void onTexturePickerCommit(LLUICtrl* ctrl, void* userdata);
 	static void onComboBoxCommit(LLUICtrl* ctrl, void* userdata);
 	static void onTagsBoxCommit(LLUICtrl* ctrl, void* userdata);
@@ -110,6 +111,8 @@ private:
 	//static void onCommitAutoResponse(LLUICtrl* caller, void* user_data);
 	static void onPhoenixInstantMessageAnnounceIncoming(LLUICtrl* ctrl, void* userdata);
 	static void onWearInvToggle(LLUICtrl* ctrl, void* userdata);
+	static void onPhoenixShowChatChannel(LLUICtrl* ctrl, void* userdata);
+	static void onCommitCopy(LLUICtrl* ctrl, void* data);
 
 private:
 	std::string mSkin;

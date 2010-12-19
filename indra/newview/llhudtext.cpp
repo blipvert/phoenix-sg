@@ -539,7 +539,7 @@ void LLHUDText::renderText(BOOL for_select)
 		for (std::vector<LLHUDTextSegment>::iterator segment_iter = mTextSegments.begin() + start_segment;
 			 segment_iter != mTextSegments.end(); ++segment_iter )
 		{
-			const LLFontGL* fontp = (segment_iter->mStyle == LLFontGL::BOLD) ? mBoldFontp : mFontp;
+			const LLFontGL* fontp = segment_iter->mFont;
 			y_offset -= fontp->getLineHeight();
 
 			U8 style = segment_iter->mStyle;
@@ -613,20 +613,28 @@ void LLHUDText::clearString()
 }
 
 
-void LLHUDText::addLine(const std::string &str, const LLColor4& color, const LLFontGL::StyleFlags style)
+void LLHUDText::addLine(const std::string &str, const LLColor4& color, const LLFontGL::StyleFlags style, const LLFontGL* font)
 {
 	addLine(utf8str_to_wstring(str), color, style);
 }
 
 
-void LLHUDText::addLine(const LLWString &wstr, const LLColor4& color, const LLFontGL::StyleFlags style)
+void LLHUDText::addLine(const LLWString &wstr, const LLColor4& color, const LLFontGL::StyleFlags style, const LLFontGL* font)
 {
 	if (gNoRender)
 	{
 		return;
 	}
+
+
 	if (!wstr.empty())
 	{
+
+		if (!font)
+		{
+			font = mFontp;
+		}
+
 		LLWString wline(wstr);
 		typedef boost::tokenizer<boost::char_separator<llwchar>, LLWString::const_iterator, LLWString > tokenizer;
 		LLWString seps(utf8str_to_wstring("\r\n"));
@@ -641,7 +649,7 @@ void LLHUDText::addLine(const LLWString &wstr, const LLColor4& color, const LLFo
 			do	
 			{
 				S32 segment_length = mFontp->maxDrawableChars(iter->substr(line_length).c_str(), mUseBubble ? HUD_TEXT_MAX_WIDTH : HUD_TEXT_MAX_WIDTH_NO_BUBBLE, wline.length(), TRUE);
-				mTextSegments.push_back(LLHUDTextSegment(iter->substr(line_length, segment_length), style, color));
+				mTextSegments.push_back(LLHUDTextSegment(iter->substr(line_length, segment_length), style, color, font));
 				line_length += segment_length;
 			}
 			while (line_length != iter->size());
@@ -658,7 +666,11 @@ void LLHUDText::setLabel(const std::string &label)
 void LLHUDText::setLabel(const LLWString &wlabel)
 {
 	mLabelSegments.clear();
-
+	addLabel(wlabel);
+}
+	
+void LLHUDText::addLabel(const LLWString &wlabel)
+{
 	if (!wlabel.empty())
 	{
 		LLWString wstr(wlabel);
@@ -677,7 +689,7 @@ void LLHUDText::setLabel(const LLWString &wlabel)
 			do	
 			{
 				S32 segment_length = mFontp->maxDrawableChars(iter->substr(line_length).c_str(), mUseBubble ? HUD_TEXT_MAX_WIDTH : HUD_TEXT_MAX_WIDTH_NO_BUBBLE, wstr.length(), TRUE);
-				mLabelSegments.push_back(LLHUDTextSegment(iter->substr(line_length, segment_length), LLFontGL::NORMAL, mColor));
+				mLabelSegments.push_back(LLHUDTextSegment(iter->substr(line_length, segment_length), LLFontGL::NORMAL, mColor, mFontp));
 				line_length += segment_length;
 			}
 			while (line_length != iter->size());
@@ -709,6 +721,16 @@ void LLHUDText::setColor(const LLColor4 &color)
 		 segment_iter != mTextSegments.end(); ++segment_iter )
 	{
 		segment_iter->mColor = color;
+	}
+}
+
+void LLHUDText::setAlpha(F32 alpha)
+{
+	mColor.mV[VALPHA] = alpha;
+	for (std::vector<LLHUDTextSegment>::iterator segment_iter = mTextSegments.begin();
+		 segment_iter != mTextSegments.end(); ++segment_iter )
+	{
+		segment_iter->mColor.mV[VALPHA] = alpha;
 	}
 }
 
@@ -898,12 +920,12 @@ LLVector2 LLHUDText::updateScreenPos(LLVector2 &offset)
 
 void LLHUDText::updateSize()
 {
+	F32 height = 0.f;
 	F32 width = 0.f;
 
 	S32 max_lines = getMaxLines();
-	S32 lines = (max_lines < 0) ? (S32)mTextSegments.size() : llmin((S32)mTextSegments.size(), max_lines);
-
-	F32 height = (F32)mFontp->getLineHeight() * (lines + mLabelSegments.size());
+	//S32 lines = (max_lines < 0) ? (S32)mTextSegments.size() : llmin((S32)mTextSegments.size(), max_lines);
+	//F32 height = (F32)mFontp->getLineHeight() * (lines + mLabelSegments.size());
 
 	S32 start_segment;
 	if (max_lines < 0) start_segment = 0;
@@ -912,13 +934,16 @@ void LLHUDText::updateSize()
 	std::vector<LLHUDTextSegment>::iterator iter = mTextSegments.begin() + start_segment;
 	while (iter != mTextSegments.end())
 	{
-		width = llmax(width, llmin(iter->getWidth(mFontp), HUD_TEXT_MAX_WIDTH));
+		const LLFontGL* fontp = iter->mFont;
+		height += fontp->getLineHeight();
+		width = llmax(width, llmin(iter->getWidth(fontp), HUD_TEXT_MAX_WIDTH));
 		++iter;
 	}
 
 	iter = mLabelSegments.begin();
 	while (iter != mLabelSegments.end())
 	{
+		height += mFontp->getLineHeight();
 		width = llmax(width, llmin(iter->getWidth(mFontp), HUD_TEXT_MAX_WIDTH));
 		++iter;
 	}

@@ -46,7 +46,8 @@ public:
 	static void fixPanel();
 
 	static void onClickExpandBtn(void* user_data);
-	static void onChangePresetName(LLUICtrl* ctrl, void* userData);
+	static void onChangeWWPresetName(LLUICtrl* ctrl, void* userData);
+	static void onChangeWLPresetName(LLUICtrl* ctrl, void* userData);
 
 protected:
 	void build();

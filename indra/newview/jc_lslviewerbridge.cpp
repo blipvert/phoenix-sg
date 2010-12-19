@@ -43,36 +43,33 @@
 #include "llfilepicker.h"
 #include "llassetstorage.h"
 #include "llviewerobjectlist.h"
-
+#include "llviewerinventory.h"
 #include "importtracker.h"
-
 #include "llviewerobject.h"
-
 #include "llvoavatar.h"
-
 #include "llinventorymodel.h"
-
 #include "lltooldraganddrop.h"
-
 #include "llmd5.h"
-
 #include "llstartup.h"
-
 #include "llcontrol.h"
-
 #include "llviewercontrol.h"
-
 #include "llviewergenericmessage.h"
-
 #include "llviewerwindow.h"
-
 #include "floaterao.h"
-
 #include "llattachmentsmgr.h"
+#include <boost/regex.hpp>
+#include <string>
 
-#define phoenix_point (U8)127
-#define phoenix_bridge_name "#LSL<->Client Bridge v0.09"
-#define phoenix_current_version (F32)0.09f
+// The old version checking code depends on the version number being the last
+//  thing in the name, separated by something that isn't a digit or a dot; on
+//  the major and minor version numbers being the same in the defines below;
+//  and on it being in the form of "<major>.<minor>". If you change any of
+//  these, you MUST update the IsAnOldBridge function to match. -- TS
+#define phoenix_bridge_name "#LSL<->Client Bridge v0.12"
+#define PHOENIX_BRIDGE_MAJOR_VERSION 0
+#define PHOENIX_BRIDGE_MINOR_VERSION 12
+
+const boost::regex AnyBridgePattern("^#LSL<->Client Bridge.*");
 
 void cmdline_printchat(std::string message);
 
@@ -89,42 +86,37 @@ std::map<U32,JCBridgeCallback*> JCLSLBridge::callback_map;
 S32 JCLSLBridge::l2c;
 bool JCLSLBridge::l2c_inuse;
 
+LLViewerInventoryItem*  JCLSLBridge::mBridge;
+
+
 JCLSLBridge::JCLSLBridge() : LLEventTimer( (F32)1.0 )
 {
-	if(sInstance)
-	{
-		////cmdline_printchat("duplicate bridge?");
-		delete this;
-	}else
-	{
-		////cmdline_printchat("instanciated bridge");
-		sInstance = this;
-		lastcall = 0;
-		l2c = 0;
-		l2c_inuse = false;
-		gSavedSettings.getControl("PhoenixBuildBridge")->getSignal()->connect(&updateBuildBridge);
-		sBuildBridge = gSavedSettings.getBOOL("PhoenixBuildBridge");
-		//getPermissions();
-	}
+	sBuildBridge = gSavedSettings.getBOOL("PhoenixBuildBridge");
+	gSavedSettings.getControl("PhoenixBuildBridge")->getSignal()->connect(boost::bind(&updateBuildBridge));
+	//cmdline_printchat("--instanciated bridge");
+	lastcall = 0;
+	l2c = 0;
+	l2c_inuse = false;
+	//getPermissions();
 }
 
-void JCLSLBridge::updateBuildBridge(const LLSD &data)
+bool JCLSLBridge::updateBuildBridge()
 {
-	BOOL newvalue = data.asBoolean();
+	BOOL newvalue = gSavedSettings.getBOOL("PhoenixBuildBridge");
 	if(sBuildBridge != newvalue)
 	{
 		if(newvalue)
 		{
-			cmdline_printchat("LSLBridge reinitializing.");
-			sBridgeStatus = UNINITIALIZED;
-		}else
+			instance().Reset();
+		}
+		else
 		{
-			cmdline_printchat("LSLBridge process terminated.");
+			//cmdline_printchat("--LSLBridge process terminated.");
 			sBridgeStatus = FAILED;
 		}
 		sBuildBridge = newvalue;
 	}
-
+	return true;
 }
 
 
@@ -167,7 +159,7 @@ bool JCLSLBridge::lsltobridge(std::string message, std::string from_name, LLUUID
 {
 	if(message == "someshit")
 	{
-		////cmdline_printchat("got someshit from "+source_id.asString());
+		//cmdline_printchat("--got someshit from "+source_id.asString());
 		
 		return true;
 	}else
@@ -177,12 +169,12 @@ bool JCLSLBridge::lsltobridge(std::string message, std::string from_name, LLUUID
 		{
 			std::string rest = message.substr(5);
 			LLSD arguments = JCLSLBridge::parse_string_to_list(rest, '|');
-			////cmdline_printchat(std::string(LLSD::dumpXML(arguments)));
+			//cmdline_printchat(std::string(LLSD::dumpXML(arguments)));
 			U32 call = atoi(arguments[0].asString().c_str());
 			if(call)
 			{
 				arguments.erase(0);
-				////cmdline_printchat(std::string(LLSD::dumpXML(arguments)));
+				//cmdline_printchat(std::string(LLSD::dumpXML(arguments)));
 				callback_fire(call, arguments);
 				return true;
 			}
@@ -209,7 +201,8 @@ bool JCLSLBridge::lsltobridge(std::string message, std::string from_name, LLUUID
 					send_chat_to_object(msg, channel, source_id);
 				}
 				return true;
-			}else if(cmd == "preloadanim")
+			}
+			else if(cmd == "preloadanim")
 			{
 				//logically, this is no worse than lltriggersoundlimited used on you, 
 				//and its enherently restricted to owner due to ownersay
@@ -222,7 +215,8 @@ bool JCLSLBridge::lsltobridge(std::string message, std::string from_name, LLUUID
 						TRUE);
 				//maybe add completion callback later?
 				return true;
-			}else if(cmd == "getwindowsize")
+			}
+			else if(cmd == "getwindowsize")
 			{
 				std::string uniq = args[1].asString();
 				S32	channel = atoi(args[2].asString().c_str());
@@ -231,7 +225,8 @@ bool JCLSLBridge::lsltobridge(std::string message, std::string from_name, LLUUID
 				std::string msg = llformat("getwindowsizereply|%s|%d|%d",uniq.c_str(),height,width);
 				send_chat_to_object(msg, channel, source_id);
 				return true;
-			}else if(cmd == "key2name")
+			}
+			else if(cmd == "key2name")
 			{
 				//same rational as preload impactwise
 				std::string uniq = args[1].asString();
@@ -296,9 +291,9 @@ bool JCLSLBridge::lsltobridge(std::string message, std::string from_name, LLUUID
 		}else if(message.substr(0,3) == "l2c")
 		{
 			std::string lolnum = message.substr(3);
-			//cmdline_printchat("num="+lolnum);
+			//cmdline_printchat("--num="+lolnum);
 			l2c = atoi(lolnum.c_str());
-			//cmdline_printchat("rnum="+llformat("%d",l2c));
+			//cmdline_printchat("--rnum="+llformat("%d",l2c));
 			l2c_inuse = true;
 			return true;
 		}
@@ -317,7 +312,7 @@ void JCLSLBridge::bridgetolsl(std::string cmd, JCBridgeCallback* cb)
 		send_chat_from_viewer(chat, CHAT_TYPE_WHISPER, l2c_inuse ? l2c : JCLSLBridge::bridge_channel(gAgent.getID()));
 	}else
 	{
-		////cmdline_printchat("bridge not RECHANNEL");
+		//cmdline_printchat("--bridge not RECHANNEL");
 		delete cb;
 	}
 }
@@ -329,14 +324,6 @@ std::string md5hash(const std::string &text, U32 thing)
 	toast.hex_digest(temp);
 	return std::string(temp);
 }
-
-/*LLUUID md5hash(const std::string &text, U32 thing)
-{
- LLUUID temp;
- LLMD5 toast((const U8*)text.c_str(), thing);
- toast.raw_digest(temp.mData);
- return temp;
-}*/
 
 S32 JCLSLBridge::bridge_channel(LLUUID user)
 {
@@ -415,20 +402,179 @@ bool isworn(LLUUID item)
 	return false;
 }
 
+bool JCLSLBridge::bridgeworn()
+{
+	return (mBridge) && isworn(mBridge->getUUID());
+}
+
+LLViewerInventoryItem* JCLSLBridge::findbridge()
+{
+	//cmdline_printchat("--looking for bridge");
+	LLUUID item_id = findInventoryByName(phoenix_bridge_name);
+	if (item_id.notNull())
+	{
+		//cmdline_printchat("--bridge found");
+		LLViewerInventoryItem* item = gInventory.getItem(item_id);
+		return item;
+	}
+	return NULL;
+}
+
+//KC: A valid bridge will pass AnyBridgePattern but not OldBridgePattern (maybe check if version is newer than ours?)
+//     and the bridge object is in the #Phoenix folder
+bool JCLSLBridge::ValidateBridge(LLViewerInventoryItem* item)
+{
+	//cmdline_printchat("--validating bridge");
+	if (item && !IsAnOldBridge(item))
+	{
+		//cmdline_printchat("---have item");
+		LLUUID phoenix_category = findCategoryByNameOrCreate(phoenix_category_name);
+		if (gInventory.isObjectDescendentOf(item->getUUID(), phoenix_category))
+		{
+			//cmdline_printchat("---bridge validated");
+			return true;
+		}
+	}
+	//cmdline_printchat("--bridge not valid");
+	return FALSE;
+}
+
+void JCLSLBridge::attachbridge(LLViewerInventoryItem* item)
+{
+	//cmdline_printchat("--bridge is ready to attach");
+	if (!isworn(item->getUUID()))
+	{
+		l2c = 0;
+		l2c_inuse = false;
+		//cmdline_printchat("--attaching");
+		// Queue bridge for attachment
+		llinfos << "attaching bridge : " << item->getUUID() << llendl;
+		LLAttachmentsMgr::instance().addAttachment(item->getUUID(), PH_BRIDGE_POINT, FALSE, TRUE);
+	}
+	sBridgeStatus = RECHANNEL;
+}
+
+//KC: Called by LLVOAvatar::detachObject
+void JCLSLBridge::CheckForBridgeDetach(const LLUUID& item_id)
+{
+	if (sBuildBridge && item_id.notNull() && mBridge) // do sanity checks first....
+	{
+		if (item_id == mBridge->getUUID())
+		{
+			//cmdline_printchat("--bridge="+bridge.asString()+" || "+(!isworn(bridge) ? "1" : "0"));
+			//cmdline_printchat("--reattaching");
+			sBridgeStatus = UNINITIALIZED;
+			mPeriod = 1.f;
+			mEventTimer.start();
+			llinfos << "bridge was removed, setting for reattach " << llendl;
+		}
+	}
+}
+
+// This function depends on not being passed a null item. Since it's always
+//  called after making that check, that's not an issue. -- TS
+bool JCLSLBridge::IsAnOldBridge(LLViewerInventoryItem* item)
+{
+        // Is this even a bridge? If not, don't bother checking.
+        if (!IsABridge(item))
+        {
+                return false;
+        }
+
+        // Extract the version number from the name. Assumes that the name
+        //  ends with the version number, in the form <major>.<minor>.
+        std::string name = item->getName();
+        std::string version_digits ("0123456789.");
+        size_t version_pos = name.find_last_not_of(version_digits);
+        if (version_pos >= name.length())
+        {
+                llinfos <<
+                        "No version number found at end of bridge name string."
+                        << llendl;
+                return false;
+        }
+        std::string version = name.substr(version_pos+1);
+        
+        // Get major and minor version numbers.
+        size_t dot_pos = version.find('.');
+        if (dot_pos == std::string::npos)
+        {
+                llinfos << "No dot found in bridge version number." << llendl;
+                return false;
+        }
+        int major = atoi(version.substr(0,dot_pos).c_str());
+        int minor = atoi(version.substr(dot_pos+1,std::string::npos).c_str());
+
+        // Compare the major and minor versions.
+	return ((major < PHOENIX_BRIDGE_MAJOR_VERSION) ||
+	        ((major == PHOENIX_BRIDGE_MAJOR_VERSION) &&
+	        (minor < PHOENIX_BRIDGE_MINOR_VERSION)));
+}
+
+bool JCLSLBridge::IsABridge(LLViewerInventoryItem* item)
+{
+	return (item) && boost::regex_match(item->getName(), AnyBridgePattern);
+}
+
+void JCLSLBridge::ChangeBridge(LLViewerInventoryItem* item)
+{
+	//cmdline_printchat("--ChangeBridge");
+	mBridge = item;
+	LLVOAvatar* pAvatar = gAgent.getAvatarObject();
+	if (pAvatar)
+	{
+		LLViewerJointAttachment* attachment = get_if_there(pAvatar->mAttachmentPoints, (S32)PH_BRIDGE_POINT, (LLViewerJointAttachment*)NULL);
+		if (attachment)
+		{
+			for (LLViewerJointAttachment::attachedobjs_vec_t::iterator attachment_iter = attachment->mAttachedObjects.begin();
+				 attachment_iter != attachment->mAttachedObjects.end();
+				 ++attachment_iter)
+			{
+				LLViewerObject *attached_object = (*attachment_iter);
+				if (attached_object)
+				{
+					LLUUID item_id = attached_object->getAttachmentItemID();
+					if (item_id.notNull() && (item_id != item->getUUID()))
+					{
+						//cmdline_printchat("---removing non active bridge");
+						LLVOAvatar::detachAttachmentIntoInventory(item_id);
+					}
+				}
+			}
+		}
+	}
+	Reset();
+}
+
+//KC: Called by LLAttachmentsMgr::addAttachment
+void JCLSLBridge::Reset()
+{
+	llinfos << "resetting bridge for recheck" << llendl;
+	//cmdline_printchat("--resetting bridge");
+	sBridgeStatus = UNINITIALIZED;
+	mPeriod = 5.f;
+	mEventTimer.start();
+	
+}
+
+// bool IsCurrentBridge(const LLViewerObject* pObj)
+// {
+	// return (pObj == mBridge)
+// }
+
+
 static const std::string bridgeprefix = std::string("#LSL<->Client Bridge v");
 static const U32 bridgeprefix_length = U32(bridgeprefix.length());
 
 void callbackBridgeCleanup(const LLSD &notification, const LLSD &response, LLViewerInventoryItem::item_array_t items)
 {
-	gSavedSettings.setWarning("PhoenixOldBridgeCleanup", FALSE);
-
 	S32 option = LLNotification::getSelectedOption(notification, response);
 	
 	if ( option == 0 )
 	{
 		if(items.count())
 		{
-			cmdline_printchat("Moving out-of-date bridge objects to your trash folder.");
+			//cmdline_printchat("--Moving out-of-date bridge objects to your trash folder.");
 			//delete
 			LLUUID trash_cat = gInventory.findCategoryUUIDForType(LLAssetType::AT_TRASH);
 			for(LLDynamicArray<LLPointer<LLViewerInventoryItem> >::iterator itr = items.begin(); itr != items.end(); ++itr)
@@ -437,11 +583,15 @@ void callbackBridgeCleanup(const LLSD &notification, const LLSD &response, LLVie
 				if(item)
 				{
 					move_inventory_item(gAgent.getID(),gAgent.getSessionID(),item->getUUID(),trash_cat,item->getName(), NULL);
-					//cmdline_printchat("Moved item "+item->getName());
+					//cmdline_printchat("--Moved item "+item->getName());
 				}
 			}
-			//cmdline_printchat("Items moved.");
+			//cmdline_printchat("--Items moved.");
 		}
+	}
+	else
+	{
+		gSavedSettings.setBOOL("PhoenixOldBridgeCleanup", FALSE);
 	}
 }
 class BridgeCleanupMatches : public LLInventoryCollectFunctor
@@ -490,9 +640,10 @@ private:
 
 void bridge_trash_check()
 {
-	if(gSavedSettings.getWarning("PhoenixOldBridgeCleanup"))
+	//cmdline_printchat("--bridge_trash_check");
+	if (gSavedSettings.getBOOL("PhoenixOldBridgeCleanup"))
 	{
-		//cmdline_printchat("doing cleaner scan");
+		//cmdline_printchat("--doing cleaner scan");
 		BridgeCleanupMatches prefixmatcher;
 		LLViewerInventoryCategory::cat_array_t cats;
 		LLViewerInventoryItem::item_array_t items;
@@ -503,53 +654,21 @@ void bridge_trash_check()
 
 		if(items.count())
 		{
-			//cmdline_printchat("items.count()");
+			//cmdline_printchat("--items.count()");
 			for(LLDynamicArray<LLPointer<LLViewerInventoryItem> >::iterator itr = items.begin(); itr != items.end(); ++itr)
 			{
 				LLViewerInventoryItem* item = *itr;
-				//cmdline_printchat("item");
-				if(item)
+				if ((item) && JCLSLBridge::IsAnOldBridge(item))
 				{
-					/*cmdline_printchat("item exists");
-					if(
-						(item->getPermissions().allowCopyBy(gAgent.getID()) == TRUE) &&
-						(item->getPermissions().allowModifyBy(gAgent.getID()) == TRUE) &&
-						(item->getPermissions().allowTransferTo(LLUUID::null) == TRUE)
-						)*/
-					{
-						//cmdline_printchat("full perm");
-						std::string name = item->getName();
-						//cmdline_printchat("name="+name);
-						if(name.length() > bridgeprefix_length)
-						{
-							std::string version_str = name.substr(bridgeprefix_length); // use rest of string
-							std::istringstream vstream(version_str);
-							F32 version_float;
-							if(vstream >> version_float)
-							{
-								if(version_float < phoenix_current_version)
-								{
-									llinfos << "bridge older than " << phoenix_current_version << " found (" << version_float << ")[" << version_str << "] in inv but not in trash" << llendl;
-									delete_queue.push_back(item);
-								}else
-								{
-									llinfos << "bridge >= " << phoenix_current_version << " found (" << version_float << ")[" << version_str << "] in inv but not in trash" << llendl;
-								}
-							}else
-							{
-								llinfos << "bridge object " << name << " [" << version_str << "] failed decoding version" << llendl;
-							}
-						}else
-						{
-							llinfos << "bridge object name " << name << " is less than bridgeprefix_length?" << llendl;	
-						}
-					}
+					//cmdline_printchat("--found old bridge");
+					llinfos << "found old bridge: " << item->getName() << llendl;
+					delete_queue.push_back(item);
 				}
 			}
 			int dqlen = delete_queue.count();
 			if(dqlen > 0)
 			{
-				//cmdline_printchat("dqlen > 0");
+				//cmdline_printchat("--dqlen > 0");
 				std::string bridges = llformat("%d",delete_queue.count())+" older Phoenix LSL Bridge object";
 				if(dqlen > 1)bridges += "s";
 				LLSD args;
@@ -561,115 +680,105 @@ void bridge_trash_check()
 }
 
 
-
 BOOL JCLSLBridge::tick()
 {
-	static BOOL firstsim = TRUE;
-	if(LLStartUp::getStartupState() >= STATE_INVENTORY_SEND)
+	if (LLStartUp::getStartupState() >= STATE_INVENTORY_SEND)
 	{
-		if(firstsim == TRUE && gInventory.isInventoryUsable())
+		static BOOL firstsim = TRUE;
+		if (firstsim && gInventory.isInventoryUsable())
 		{
-			//cmdline_printchat("firstsim fetching #Phoenix");
+			//cmdline_printchat("--firstsim fetching #Phoenix");
 			firstsim = FALSE;
 			LLUUID phoenix_category = findCategoryByNameOrCreate(phoenix_category_name);
 			gInventory.fetchDescendentsOf(phoenix_category);
 		}
+		
 		static BOOL first_full_load = TRUE;
-		if(first_full_load)
+		if (first_full_load && gInventory.isEverythingFetched()) // when the inv is done fetching, check for old bridges
 		{
-			if(gInventory.isEverythingFetched())
-			{
-				//cmdline_printchat("first full inv load");
-				first_full_load = FALSE;
-				bridge_trash_check();
-			}
+			//cmdline_printchat("--first full inv load");
+			first_full_load = FALSE;
+			bridge_trash_check();
 		}
+		
 		switch(sBridgeStatus)
 		{
 		case UNINITIALIZED:
 			{
-				if(!sBuildBridge)
+				if (!sBuildBridge)
 				{
-					//cmdline_printchat("PhoenixBuildBridge is false");
+					//cmdline_printchat("--PhoenixBuildBridge is false");
 					sBridgeStatus = FAILED;
 					break;
 				}
-				//cmdline_printchat("initializing");//<< llendl;
+				
+				//cmdline_printchat("--initializing");
 				LLUUID phoenix_category = findCategoryByNameOrCreate(phoenix_category_name);
-				LLUUID item_id = findInventoryByName(phoenix_bridge_name);
-				if(gInventory.isCategoryComplete(phoenix_category))// || (item_id.notNull() && isworn(item_id)))
+				if (gInventory.isCategoryComplete(phoenix_category))
 				{
-					//cmdline_printchat("#Phoenix is fetched");//<< llendl;
-					
-					if(item_id.notNull())
+					mPeriod = 1.f;
+					//cmdline_printchat("--#Phoenix is fetched");
+					if (bridgeworn())
 					{
-						//cmdline_printchat("item not null");
-						//cmdline_printchat("id="+item_id.asString());
-						LLViewerInventoryItem* bridge = gInventory.getItem(item_id);
-						if(bridge)
+						//cmdline_printchat("---bridge attached");
+						if (ValidateBridge(mBridge))
 						{
-							//cmdline_printchat("bridge there");
-							//cmdline_printchat("bridge is ready to attach");//<< llendl;
-							if(isworn(bridge->getUUID()))
-							{
-								//cmdline_printchat("worn; rechannelling");
-								//cmdline_printchat("bridge is already worn");//<< llendl;
-								sBridgeStatus = RECHANNEL;
-							}else// if(bridge->isComplete())
-							{
-								//cmdline_printchat("attaching");
-								//cmdline_printchat("bridge is complete, attaching");//<< llendl;
-								// Queue bridge attachment
-								LLAttachmentsMgr::instance().addAttachment(bridge->getUUID(), phoenix_point, TRUE, TRUE);
-								sBridgeStatus = RECHANNEL;
-							}
-						}/*else
+							//cmdline_printchat("---bridge is good, moving on");
+							sBridgeStatus = RECHANNEL;
+						}
+						else //KC: Something is amiss... remove this thing and look 
 						{
-							cmdline_printchat("bridge* null");
-						}*/
-					}else
-					{
-						//cmdline_printchat("itemid is null");
-						//cmdline_printchat("no bridge");//<< llendl;
-						//sBridgeStatus = BUILDING;
-						std::string directory = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS,"bridge.xml");
-						if(!LLFile::isfile(directory.c_str()))
-						{
-							//cmdline_printchat("bridge failed");
-							//cmdline_printchat("file not there o.o");//<< llendl;
-							sBridgeStatus = FAILED;
-						}else
-						{
-							
-							if(LLStartUp::getStartupState() >= STATE_STARTED)
-							{
-								
-								//cmdline_printchat("building bridge");
-								//cmdline_printchat("bridge.xml located. importing..");//<< llendl;
-								gImportTracker.importer(directory,&setBridgeObject);
-								sBridgeStatus = BUILDING;
-							}/*else
-							{
-								cmdline_printchat("state is not quite ready");
-							}*/
+							//cmdline_printchat("---attached bridge is bad, gonna relook");
+							LLVOAvatar::detachAttachmentIntoInventory(mBridge->getLinkedUUID());
 						}
 					}
-				}/*else
+					else
+					{
+						LLViewerInventoryItem* item = findbridge();
+						if (ValidateBridge(item)) // bridge found
+						{
+							attachbridge(item);
+						}
+						else // bridge not found, make a new one
+						{
+							//sBridgeStatus = BUILDING;
+							std::string directory = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS,"bridge.xml");
+							if (!LLFile::isfile(directory.c_str()))
+							{
+								//cmdline_printchat("--bridge failed: file not there o.o");
+								sBridgeStatus = FAILED;
+							}
+							else
+							{
+								if (LLStartUp::getStartupState() >= STATE_STARTED)
+								{
+									//cmdline_printchat("--building bridge: bridge.xml located. importing..");
+									gImportTracker.importer(directory,&setBridgeObject);
+									sBridgeStatus = BUILDING;
+								}
+								else
+								{
+									//cmdline_printchat("--state is not quite ready");
+								}
+							}
+						}
+					}
+				}
+				else
 				{
-					cmdline_printchat("#Phoenix is not fetched");
-				}*/
+					//cmdline_printchat("--#Phoenix is not fetched");
+				}
 			}
 			break;
 		case RENAMING:
 			{
-				//cmdline_printchat("renaming");
-				////cmdline_printchat("renaming");
+				//cmdline_printchat("--renaming");
 				LLMessageSystem* msg = gMessageSystem;
 				msg->newMessageFast(_PREHASH_ObjectAttach);
 				msg->nextBlockFast(_PREHASH_AgentData);
 				msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
 				msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-				msg->addU8Fast(_PREHASH_AttachmentPoint, phoenix_point);
+				msg->addU8Fast(_PREHASH_AttachmentPoint, PH_BRIDGE_POINT);
 				
 				msg->nextBlockFast(_PREHASH_ObjectData);
 				msg->addU32Fast(_PREHASH_ObjectLocalID, sBridgeObject->getLocalID());
@@ -681,45 +790,42 @@ BOOL JCLSLBridge::tick()
 			break;
 		case FOLDERING:
 			{
-				//cmdline_printchat("foldering");
-				////cmdline_printchat("foldering");
+				//cmdline_printchat("--foldering");
 				LLUUID phoenix_category = findCategoryByNameOrCreate(phoenix_category_name);
-
 				LLUUID bridge_id = findInventoryByName(phoenix_bridge_name);
-				//cmdline_printchat("bridge_id="+bridge_id.asString());
-				//cmdline_printchat("id="+bridge_id.asString());
+				//cmdline_printchat("--bridge_id="+bridge_id.asString());
+				//cmdline_printchat("--id="+bridge_id.asString());
 				LLViewerInventoryItem* bridge = gInventory.getItem(bridge_id);
 				if(bridge)
 				{
-					//cmdline_printchat("bridge exists, moving to #Phoenix.");
+					//cmdline_printchat("--bridge exists, moving to #Phoenix.");
 					move_inventory_item(gAgent.getID(),gAgent.getSessionID(),bridge->getUUID(),phoenix_category,phoenix_bridge_name, NULL);
 					sBridgeStatus = RECHANNEL;
-					////cmdline_printchat("moving to folder");
 				}
 			}
 			break;
 		case RECHANNEL:
 			{
 				{
-					//cmdline_printchat("sending rechannel cmd");
+					//cmdline_printchat("--sending rechannel cmd");
 					send_chat_from_viewer(std::string("0|l2c"), CHAT_TYPE_WHISPER, JCLSLBridge::bridge_channel(gAgent.getID()));
+					mPeriod = 160.f; // set high cause it takes a really long time for the inv to fully load :/
 					sBridgeStatus = ACTIVE;
 				}
 			}
 			break;
 		case ACTIVE:
+		case FAILED: // running, broken, or disabled, in any case, stop the timer if were done
 			{
-				LLUUID bridge = findInventoryByName(phoenix_bridge_name,phoenix_category_name);
-				//if(bridge)
-				//LLVOAvatar* avatar = gAgent.getAvatarObject();
-				if(bridge.isNull() || !isworn(bridge))
+				//cmdline_printchat("--Active state tick");
+				//llinfos << "bridge ACTIVE state tick" << llendl;
+				// give old bridge cleanup a chance to finish if it hasnt
+				if (!first_full_load)
 				{
-					//cmdline_printchat("bridge="+bridge.asString()+" || "+(!isworn(bridge) ? "1" : "0"));
-					l2c = 0;
-					l2c_inuse = false;
-					////cmdline_printchat("reattaching");
-					sBridgeStatus = UNINITIALIZED;
+					//cmdline_printchat("--stopping timer");
+					mEventTimer.stop();
 				}
+				break;
 			}
 		}
 	}
@@ -730,7 +836,7 @@ void JCLSLBridge::setBridgeObject(LLViewerObject* obj)
 	if(obj)
 	{
 		sBridgeObject = obj;
-		////cmdline_printchat("callback reached");
+		//cmdline_printchat("--callback reached");
 		sBridgeStatus = RENAMING;
 		LLMessageSystem* msg = gMessageSystem;
 		msg->newMessageFast(_PREHASH_ObjectName);

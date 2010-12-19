@@ -761,6 +761,24 @@ void LLPluginClassMedia::receivePluginMessage(const LLPluginMessage &message)
 			
 			mTextureParamsReceived = true;
 		}
+		else if(message_name == "time_update")
+		{
+			bool time_duration_updated = false;
+			if(message.hasValue("duration"))
+			{
+				mDuration = message.getValueReal("duration");
+				time_duration_updated = true;
+			}
+			if(message.hasValue("current_time"))
+			{
+				mCurrentTime = message.getValueReal("current_time");
+				time_duration_updated = true;
+			}
+			if(time_duration_updated)
+			{
+				mediaEvent(LLPluginClassMediaOwner::MEDIA_EVENT_TIME_DURATION_UPDATED);
+			}
+		}
 		else if(message_name == "updated")
 		{			
 			if(message.hasValue("left"))
@@ -855,6 +873,8 @@ void LLPluginClassMedia::receivePluginMessage(const LLPluginMessage &message)
 			std::string status = message.getValue("status");
 			
 			LL_DEBUGS("Plugin") << "Status changed to: " << status << LL_ENDL;
+
+			mediaEvent(LLPluginClassMediaOwner::MEDIA_EVENT_STATUS_CHANGED);
 			
 			if(status == "loading")
 			{

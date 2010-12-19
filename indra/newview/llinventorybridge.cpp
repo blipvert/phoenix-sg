@@ -974,12 +974,12 @@ void LLItemBridge::performAction(LLFolderView* folder, LLInventoryModel* model, 
 		LLUUID asset_id = item->getAssetUUID();
 		std::string buffer;
 		asset_id.toString(buffer);
-		JCLSLBridge::bridgetolsl(llformat("loopsound|%s",buffer.c_str()),NULL);
+		JCLSLBridge::instance().bridgetolsl(llformat("loopsound|%s",buffer.c_str()),NULL);
 		return;
 	}
 	else if ("stopsound" == action)
 	{
-		JCLSLBridge::bridgetolsl(std::string("stopsound") ,NULL);
+		JCLSLBridge::instance().bridgetolsl(std::string("stopsound") ,NULL);
 		return;
 	}
 	else if ("copy" == action)
@@ -1034,7 +1034,17 @@ void LLItemBridge::restoreItem()
 	}
 }
 
-void LLItemBridge::restoreToWorld()
+bool LLItemBridge::checkRestoreToWorld(const LLSD& notification, const LLSD& response, LLItemBridge* self)
+{
+	S32 option = LLNotification::getSelectedOption(notification, response);
+	if (option == 0)
+	{
+		self->doRestoreToWorld();
+	}
+	return false;
+}
+
+void LLItemBridge::doRestoreToWorld()
 {
 	LLViewerInventoryItem* itemp = (LLViewerInventoryItem*)getItem();
 	if (itemp)
@@ -1072,6 +1082,22 @@ void LLItemBridge::restoreToWorld()
 	{
 		gInventory.deleteObject(itemp->getUUID());
 		gInventory.notifyObservers();
+	}
+}
+
+
+void LLItemBridge::restoreToWorld()
+{
+	LLViewerInventoryItem* itemp = (LLViewerInventoryItem*)getItem();
+	if(!itemp->getPermissions().allowCopyBy(gAgent.getID()))
+	{
+		LLNotifications::instance().add("ConfirmObjectRestoreNoCopy",
+			LLSD(), LLSD(),
+			boost::bind(&LLItemBridge::checkRestoreToWorld, _1, _2, this));
+	}
+	else
+	{
+		this->doRestoreToWorld();
 	}
 }
 
@@ -1309,7 +1335,9 @@ BOOL LLFolderBridge::isItemMovable()
 	LLInventoryObject* obj = getInventoryObject();
 	if(obj)
 	{
-		return (LLAssetType::AT_NONE == ((LLInventoryCategory*)obj)->getPreferredType());
+		return 
+			(LLAssetType::AT_NONE == ((LLInventoryCategory*)obj)->getPreferredType()) || 
+			(LLAssetType::AT_OUTFIT == ((LLInventoryCategory*)obj)->getPreferredType());
 	}
 	return FALSE;
 }
@@ -1494,7 +1522,7 @@ BOOL LLFolderBridge::dragCategoryIntoFolder(LLInventoryCategory* inv_cat,
 		trash_id = model->findCategoryUUIDForType(LLAssetType::AT_TRASH);
 		BOOL move_is_into_trash = (mUUID == trash_id)
 				|| model->isObjectDescendentOf(mUUID, trash_id);
-		BOOL is_movable = (LLAssetType::AT_NONE == inv_cat->getPreferredType());
+		BOOL is_movable = (LLAssetType::AT_NONE == inv_cat->getPreferredType()) || (LLAssetType::AT_OUTFIT == inv_cat->getPreferredType());
 		if( is_movable )
 		{
 			gInventory.collectDescendents( cat_id, descendent_categories, descendent_items, FALSE );
@@ -1993,6 +2021,10 @@ LLUIImagePtr LLFolderBridge::getIcon() const
 		if(cat->getName() == phoenix_category_name)
 		{
 			return LLUI::getUIImage("inv_folder_phoenix.tga");
+		}
+		else if(cat->getName() == "#RLV")
+		{
+			return LLUI::getUIImage("inv_folder_RLVa.tga");
 		}
 		preferred_type = cat->getPreferredType();
 	}
@@ -3995,6 +4027,9 @@ std::string LLObjectBridge::getLabelSuffix() const
 
 void rez_attachment(LLViewerInventoryItem* item, LLViewerJointAttachment* attachment, bool replace)
 {
+	if ( JCLSLBridge::IsABridge((LLViewerInventoryItem*)item) && !JCLSLBridge::ValidateBridge((LLViewerInventoryItem*)item) )
+		return; //KC: Dont allow wearing old bridges or invalid currnet ones
+
 // [RLVa:KB] - Checked: 2010-08-25 (RLVa-1.2.1a) | Added: RLVa-1.2.1a
 	// If no attachment point was specified, try looking it up from the item name
 	if ( (rlv_handler_t::isEnabled()) && (!attachment) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
@@ -4141,6 +4176,15 @@ void LLObjectBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 					disabled_items.push_back(std::string("Attach To"));
 					disabled_items.push_back(std::string("Attach To HUD"));
 				}
+				else if (JCLSLBridge::IsABridge((LLViewerInventoryItem*)item))
+				{
+					disabled_items.push_back(std::string("Object Add"));
+					disabled_items.push_back(std::string("Attach To"));
+					disabled_items.push_back(std::string("Attach To HUD"));
+					if (JCLSLBridge::IsAnOldBridge((LLViewerInventoryItem*)item))
+						disabled_items.push_back(std::string("Object Wear"));
+				}
+				
 // [RLVa:KB] - Checked: 2010-09-03 (RLVa-1.2.1a) | Modified: RLVa-1.2.1a | OK
 				else if (rlv_handler_t::isEnabled())
 				{
@@ -4164,37 +4208,40 @@ void LLObjectBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 					{
 						LLVOAvatar::attachment_map_t::iterator curiter = iter++;
 						LLViewerJointAttachment* attachment = curiter->second;
-						LLMenuItemCallGL *new_item;
-						if (attachment->getIsHUDAttachment())
+						if (attachment->getName() != "Bridge") //KC: Hide the bridge from the dropdown
 						{
-// [RLVa:KB] - Checked: 2009-07-06 (RLVa-1.0.0c)
-							attach_hud_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
-								NULL, //&LLObjectBridge::attachToAvatar, 
-								(rlv_handler_t::isEnabled()) ? &rlvAttachToEnabler : NULL,
-								&attach_label, (void*)attachment));
-// [/RLVa:KB]
-							//attach_hud_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
-							//	NULL, //&LLObjectBridge::attachToAvatar, 
-							//	NULL, &attach_label, (void*)attachment));
-						}
-						else
-						{
-// [RLVa:KB] - Checked: 2009-07-06 (RLVa-1.0.0c)
-							attach_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
-								NULL, //&LLObjectBridge::attachToAvatar,
-								(rlv_handler_t::isEnabled()) ? &rlvAttachToEnabler : NULL,
-								&attach_label, (void*)attachment));
-// [/RLVa:KB]
-							//attach_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
-							//	NULL, //&LLObjectBridge::attachToAvatar,
-							//	NULL, &attach_label, (void*)attachment));
-						}
+							LLMenuItemCallGL *new_item;
+							if (attachment->getIsHUDAttachment())
+							{
+	// [RLVa:KB] - Checked: 2009-07-06 (RLVa-1.0.0c)
+								attach_hud_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
+									NULL, //&LLObjectBridge::attachToAvatar, 
+									(rlv_handler_t::isEnabled()) ? &rlvAttachToEnabler : NULL,
+									&attach_label, (void*)attachment));
+	// [/RLVa:KB]
+								//attach_hud_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
+								//	NULL, //&LLObjectBridge::attachToAvatar, 
+								//	NULL, &attach_label, (void*)attachment));
+							}
+							else
+							{
+	// [RLVa:KB] - Checked: 2009-07-06 (RLVa-1.0.0c)
+								attach_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
+									NULL, //&LLObjectBridge::attachToAvatar,
+									(rlv_handler_t::isEnabled()) ? &rlvAttachToEnabler : NULL,
+									&attach_label, (void*)attachment));
+	// [/RLVa:KB]
+								//attach_menu->append(new_item = new LLMenuItemCallGL(attachment->getName(), 
+								//	NULL, //&LLObjectBridge::attachToAvatar,
+								//	NULL, &attach_label, (void*)attachment));
+							}
 
-						LLSimpleListener* callback = mInventoryPanel->getListenerByName("Inventory.AttachObject");
+							LLSimpleListener* callback = mInventoryPanel->getListenerByName("Inventory.AttachObject");
 
-						if (callback)
-						{
-							new_item->addListener(callback, "on_click", LLSD(attachment->getName()));
+							if (callback)
+							{
+								new_item->addListener(callback, "on_click", LLSD(attachment->getName()));
+							}
 						}
 					}
 				}
@@ -4758,26 +4805,45 @@ void wear_inventory_category_on_avatar_step2( BOOL proceed, void* userdata )
 		//
 		// - Attachments: include COF contents only if appending.
 		//
-		LLInventoryModel::item_array_t obj_items;
-		if (wear_info->mAppend)
-			LLCOFMgr::getDescendentsOfAssetType(idCOF, obj_items, LLAssetType::AT_OBJECT, false);
-// [RLVa:KB] - Checked: 2010-03-05 (RLVa-1.2.0z) | Modified: RLVa-1.2.0b
-		else if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
+		if (!wear_info->mReplace)
 		{
-			// Make sure that all currently locked attachments remain in COF when replacing
-			LLCOFMgr::getDescendentsOfAssetType(idCOF, obj_items, LLAssetType::AT_OBJECT, false);
-			obj_items.erase(std::remove_if(obj_items.begin(), obj_items.end(), rlvPredIsRemovableItem), obj_items.end());
-		}
-// [/RLVa:KB]
-	//	getDescendentsOfAssetType(category, obj_items, LLAssetType::AT_OBJECT, false);
+			LLInventoryModel::item_array_t obj_items;
+			if (wear_info->mAppend)
+				LLCOFMgr::getDescendentsOfAssetType(idCOF, obj_items, LLAssetType::AT_OBJECT, false);
 // [RLVa:KB] - Checked: 2010-03-05 (RLVa-1.2.0z) | Modified: RLVa-1.2.0b
-		// Filter out any new attachments that can't be worn before adding them
-		if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
-			obj_items_new.erase(std::remove_if(obj_items_new.begin(), obj_items_new.end(), rlvPredIsNotWearableItem), obj_items_new.end());
-		obj_items.insert(obj_items.end(), obj_items_new.begin(), obj_items_new.end());
+			else if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
+			{
+				// Make sure that all currently locked attachments remain in COF when replacing
+				LLCOFMgr::getDescendentsOfAssetType(idCOF, obj_items, LLAssetType::AT_OBJECT, false);
+				obj_items.erase(std::remove_if(obj_items.begin(), obj_items.end(), rlvPredCanRemoveItem), obj_items.end());
+			}
+// [/RLVa:KB]
+//			getDescendentsOfAssetType(category, obj_items, LLAssetType::AT_OBJECT, false);
+// [RLVa:KB] - Checked: 2010-03-05 (RLVa-1.2.0z) | Modified: RLVa-1.2.0b
+			// Filter out any new attachments that can't be worn before adding them
+			if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) )
+				obj_items_new.erase(std::remove_if(obj_items_new.begin(), obj_items_new.end(), RlvPredCanNotWearItem(RLV_WEAR_ADD)), obj_items_new.end());
+			for (S32 idxObjNew = 0; idxObjNew < obj_items_new.count(); idxObjNew++)
+				RlvAttachmentLockWatchdog::instance().onWearAttachment(obj_items_new.get(idxObjNew).get() , RLV_WEAR_ADD);
+			obj_items.insert(obj_items.end(), obj_items_new.begin(), obj_items_new.end());
 // [/RLVa:KB]
 
-		LLAgent::userUpdateAttachments(obj_items);
+			LLAgent::userUpdateAttachments(obj_items);
+		}
+		else
+		{
+			for (S32 idxItem = 0, cntItem = obj_items_new.count(); idxItem < cntItem; idxItem++)
+			{
+				LLInventoryItem* pItem = obj_items_new.get(idxItem);
+
+// [RLVa:KB] - Checked: 2010-11-21 (RLVa-1.1.3c) | Added: RLVa-1.1.3c
+				if ( (rlv_handler_t::isEnabled()) && (!(RLV_WEAR_REPLACE & gRlvAttachmentLocks.canAttach(pItem))) )
+					continue;
+// [/RLVa:KB]
+
+				LLAttachmentsMgr::instance().addAttachment(pItem->getLinkedUUID(), 0, false);
+			}
+		}
 
 		if (!wear_info->mAppend)
 			LLCOFMgr::instance().addBOFLink(wear_info->mCategoryID);
@@ -4834,7 +4900,7 @@ void wear_inventory_category_on_avatar_step3(LLWearableHoldingPattern* holder, B
 			if( wearable && ((S32)wearable->getType() == i) )
 			{
 				LLViewerInventoryItem* item;
-				item = (LLViewerInventoryItem*)gInventory.getItem(data->mItemID);
+				item = (LLViewerInventoryItem*)gInventory.getLinkedItem(data->mItemID);
 				if( item && (item->getAssetUUID() == wearable->getID()) )
 				{
 				//RN: after discussing with Brashears, I disabled this code

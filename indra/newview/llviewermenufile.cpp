@@ -441,14 +441,27 @@ class LLFileCloseAllWindows : public view_listener_t
 	}
 };
 
-class LLFileSaveTexture : public view_listener_t
+class LLFileSaveTextureTGA : public view_listener_t
 {
 	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
 	{
 		LLFloater* top = gFloaterView->getFrontmost();
 		if (top)
 		{
-			top->saveAs();
+			top->saveAs(false);
+		}
+		return true;
+	}
+};
+
+class LLFileSaveTexturePNG : public view_listener_t
+{
+	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
+	{
+		LLFloater* top = gFloaterView->getFrontmost();
+		if (top)
+		{
+			top->saveAs(true);
 		}
 		return true;
 	}
@@ -663,6 +676,36 @@ void upload_new_resource(const std::string& src_filename, std::string name,
  			return;
  		}
  	}
+#ifdef LL_DARWIN
+	else if(exten == "psd")
+	{
+		asset_type = LLAssetType::AT_TEXTURE;
+		if (!LLViewerImageList::createUploadFile(src_filename,
+			filename,IMG_CODEC_PSD ))
+		{
+			error_message = llformat("Problem with file %s:\n\n%s\n",
+			src_filename.c_str(), LLImage::getLastError().c_str());
+			args["FILE"] = src_filename;
+			args["ERROR"] = LLImage::getLastError();
+			upload_error(error_message, "ProblemWithFile", filename, args);
+			return;
+		}
+	}
+	else if(exten == "tif" || exten == "tiff")
+	{
+		asset_type = LLAssetType::AT_TEXTURE;
+		if (!LLViewerImageList::createUploadFile(src_filename,
+			filename,IMG_CODEC_TIFF ))
+		{
+			error_message = llformat("Problem with file %s:\n\n%s\n",
+			src_filename.c_str(), LLImage::getLastError().c_str());
+			args["FILE"] = src_filename;
+			args["ERROR"] = LLImage::getLastError();
+			upload_error(error_message, "ProblemWithFile", filename, args);
+			return;
+		}
+	}
+#endif
 	else if(exten == "wav")
 	{
 		asset_type = LLAssetType::AT_SOUND;  // tag it as audio
@@ -1183,7 +1226,8 @@ void init_menu_file()
 	(new LLFileCloseAllWindows())->registerListener(gMenuHolder, "File.CloseAllWindows");
 	(new LLFileEnableCloseWindow())->registerListener(gMenuHolder, "File.EnableCloseWindow");
 	(new LLFileEnableCloseAllWindows())->registerListener(gMenuHolder, "File.EnableCloseAllWindows");
-	(new LLFileSaveTexture())->registerListener(gMenuHolder, "File.SaveTexture");
+	(new LLFileSaveTextureTGA())->registerListener(gMenuHolder, "File.SaveTextureTGA");
+	(new LLFileSaveTexturePNG())->registerListener(gMenuHolder, "File.SaveTexturePNG");
 	(new LLFileTakeSnapshot())->registerListener(gMenuHolder, "File.TakeSnapshot");
 	(new LLFileTakeSnapshotToDisk())->registerListener(gMenuHolder, "File.TakeSnapshotToDisk");
 	(new LLFileQuit())->registerListener(gMenuHolder, "File.Quit");

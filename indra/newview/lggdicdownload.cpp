@@ -128,8 +128,8 @@ void lggDicDownloadFloater::onClickDownload(void* data)
 			{
 				index--;
 				std::string newDict(self->sNames[index]);
-				LLHTTPClient::get("http://www.phoenixviewer.com/app/dics/"+newDict+".aff", new PhoenixDicDownloader(self,newDict+".aff"));
-				LLHTTPClient::get("http://www.phoenixviewer.com/app/dics/"+newDict+".dic", new PhoenixDicDownloader(NULL,newDict+".dic"));
+				LLHTTPClient::get("http://phoenixviewer.com/app/dics/"+newDict+".aff", new PhoenixDicDownloader(self,newDict+".aff"));
+				LLHTTPClient::get("http://phoenixviewer.com/app/dics/"+newDict+".dic", new PhoenixDicDownloader(NULL,newDict+".dic"));
 				
 				LLButton* butt = self->getChild<LLButton>("Phoenix_dic_download");
 				if(butt)

@@ -211,7 +211,23 @@ void LLPanelVoiceDeviceSettings::refresh()
 			devices = gVoiceClient->getCaptureDevices();
 			for(iter=devices->begin(); iter != devices->end(); iter++)
 			{
-				mCtrlInputDevices->add( *iter, ADD_BOTTOM );
+				// Lets try to localize some system device names. EXT-8375
+				std::string device_name = *iter;
+				LLStringUtil::toLower(device_name); //compare in low case
+				if ("default system device" == device_name)
+				{
+					device_name = getString(device_name);
+				}
+				else if ("no device" == device_name)
+				{
+					device_name = getString(device_name);
+				}
+				else
+				{
+					// restore original value
+					device_name = *iter;
+				}
+				mCtrlInputDevices->add( device_name, ADD_BOTTOM );
 			}
 
 			if(!mCtrlInputDevices->setSimple(mInputDevice))
@@ -228,7 +244,23 @@ void LLPanelVoiceDeviceSettings::refresh()
 			devices = gVoiceClient->getRenderDevices();
 			for(iter=devices->begin(); iter != devices->end(); iter++)
 			{
-				mCtrlOutputDevices->add( *iter, ADD_BOTTOM );
+				// Lets try to localize some system device names. EXT-8375
+				std::string device_name = *iter;
+				LLStringUtil::toLower(device_name); //compare in low case
+				if ("default system device" == device_name)
+				{
+					device_name = getString(device_name);
+				}
+				else if ("no device" == device_name)
+				{
+					device_name = getString(device_name);
+				}
+				else
+				{
+					// restore original value
+					device_name = *iter;
+				}
+				mCtrlOutputDevices->add( device_name, ADD_BOTTOM );
 			}
 
 			if(!mCtrlOutputDevices->setSimple(mOutputDevice))

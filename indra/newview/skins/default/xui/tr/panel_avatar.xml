@@ -52,7 +52,7 @@
 			<button label="i" label_selected="i" name="partner_info" tool_tip="Eş profilini açmak için tıklayınız"/>
 			<button label="?" label_selected="?" name="partner_help"/>
 			<line_editor name="partner_edit" tool_tip="Second Life evliliği.Nasıl kullandığında dair daha fazla bilgi almak için,www.secondlife.com/partner adresini ziyaret ediniz.">
-				[FIRST] [LAST]
+				[NAME]
 			</line_editor>
 			<text name="Photo:">
 				Fotoğraf:

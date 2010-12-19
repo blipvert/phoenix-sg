@@ -40,6 +40,7 @@
 // For Listeners
 #include "llaudioengine.h"
 #include "llagent.h"
+#include "llavatarnamecache.h"
 #include "llconsole.h"
 #include "lldrawpoolterrain.h"
 #include "llflexibleobject.h"
@@ -446,6 +447,17 @@ static bool handlePhoenixBlockSpam(const LLSD& newvalue)
         return true;
 }
 
+// [Ansariel/Henri: Display name support]
+static bool handlePhoenixNameSystemChanged(const LLSD& newvalue)
+{
+	S32 dnval = (S32)newvalue.asInteger();
+	if (dnval <= 0 || dnval > 2) LLAvatarNameCache::setUseDisplayNames(false);
+	else LLAvatarNameCache::setUseDisplayNames(true);
+	LLVOAvatar::invalidateNameTags();
+	return true;
+}
+// [/Ansariel/Henri: Display name support]
+
 ////////////////////////////////////////////////////////////////////////////
 
 void settings_setup_listeners()
@@ -479,6 +491,8 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderFastAlpha")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _1));
 	gSavedSettings.getControl("RenderObjectBump")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _1));
 	gSavedSettings.getControl("RenderMaxVBOSize")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _1));
+	//See LL jira VWR-3258 comment section. Implemented by LL in 2.1 -Shyotl
+	gSavedSettings.getControl("RenderUseStreamVBO")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _1));
 	gSavedSettings.getControl("RenderUseFBO")->getSignal()->connect(boost::bind(&handleRenderUseFBOChanged, _1));
 	gSavedSettings.getControl("RenderDeferredNoise")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _1));
 	gSavedSettings.getControl("RenderUseImpostors")->getSignal()->connect(boost::bind(&handleRenderUseImpostorsChanged, _1));
@@ -576,6 +590,10 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("LipSyncEnabled")->getSignal()->connect(boost::bind(&handleVoiceClientPrefsChanged, _1));	
 	gSavedSettings.getControl("TranslateChat")->getSignal()->connect(boost::bind(&handleTranslateChatPrefsChanged, _1));	
 	gSavedSettings.getControl("PhoenixBlockSpam")->getSignal()->connect(boost::bind(&handlePhoenixBlockSpam, _1));
+
+    // [Ansariel/Henri: Display name support]
+	gSavedSettings.getControl("PhoenixNameSystem")->getSignal()->connect(boost::bind(&handlePhoenixNameSystemChanged, _1));
+    // [/Ansariel/Henri: Display name support]
 }
 
 template <> eControlType get_control_type<U32>(const U32& in, LLSD& out) 

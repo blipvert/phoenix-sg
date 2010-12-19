@@ -3,44 +3,50 @@ START_DIR=$(cd $(dirname "$0"); pwd)
 INDRA_DIR=$START_DIR/indra
 OUTPUT_DIR=$START_DIR/builds
 DEPENDENCY_DIR=$START_DIR/dependencies
+LOG_DIR=$START_DIR/logs
 
 configure()
 {
         echo "Configuring (for real)..."
-        ./develop.py configure -G Xcode -DCMAKE_OSX_ARCHITECTURES="$1" -DOPENAL:BOOL=FALSE -DFMOD:BOOL=TRUE -DCMAKE_BUILD_TYPE=Release -DGCC_DISABLE_FATAL_WARNINGS:BOOL=TRUE \
-        -DCMAKE_C_FLAGS:STRING="$2" -DCMAKE_CXX_FLAGS:STRING="$2" > /dev/null
+        ./develop.py configure -G Xcode \
+	        -DCMAKE_OSX_ARCHITECTURES="$1" \
+	        -DOPENAL:BOOL=FALSE -DFMOD:BOOL=TRUE \
+        	-DCMAKE_BUILD_TYPE=Release \
+        	-DGCC_DISABLE_FATAL_WARNINGS:BOOL=TRUE \
+		2>&1 > /dev/null
 }
 
 set_channel()
 {
-        if [ -z "$BUILD_RELEASE" ]; then
-                sed -e s/Internal/Beta/ -i '' llcommon/llversionviewer.h
-                echo "Setting beta channel..."
-        else
-                sed -e s/Internal/Release/ -i '' llcommon/llversionviewer.h
+	cp -f llcommon/llversionviewer.h.in llcommon/llversionviewer.h.in.build
+        if [ -n "$BUILD_RELEASE" ]; then
+                sed -e s/Internal/Release/ -i '' llcommon/llversionviewer.h.in
                 echo "Setting release channel..."
+        else
+                sed -e s/Internal/Beta/ -i '' llcommon/llversionviewer.h.in
+                echo "Setting beta channel..."
         fi
-        sed -e "s/LL_VERSION_BUILD = 0/LL_VERSION_BUILD = $REVISION/" -i '' llcommon/llversionviewer.h
 }
 
 build()
 {
         echo "Building version ${VERSION_VIEWER}.${REVISION}..."
-        xcodebuild -target ALL_BUILD -configuration Release GCC_VERSION=4.0 > /dev/null
+        LOGFILE=${LOG_DIR}/build_${VERSION_VIEWER}.${REVISION}
+        echo "Build log is in ${LOGFILE} ."
+	${INDRA_DIR}/develop.py build 2>&1 > ${LOGFILE}
 }
 
 copy_resources()
 {
         echo "Copying resources..."
 
-#        cp -R $DEPENDENCY_DIR/cursors_mac Phoenix\ Viewer.app/Contents/Resources/
-
         if [ -n "$BUILD_RELEASE" ]; then
                 SETTINGS_FILE='settings_phoenix.xml'
         else
                 SETTINGS_FILE='settings_phoenixviewerbeta.xml'
         fi
-        echo "--settings $SETTINGS_FILE" > Phoenix\ Viewer.app/Contents/Resources/arguments.txt
+        echo "--settings $SETTINGS_FILE" \
+        	> Phoenix\ Viewer.app/Contents/Resources/arguments.txt
 }
 
 # Sends output file to stdout
@@ -60,18 +66,22 @@ make_disk_image()
         rm -f "$OUTPUT_DIR/$OUTPUT_FILE"
 
         # We store the templates as compressed images, so decompress it now.
-        hdiutil convert "$DEPENDENCY_DIR/$IMAGE" -format UDRW -o temp-image.dmg > /dev/null
-        hdiutil attach -mountpoint "$DEPENDENCY_DIR/build-image" -nobrowse temp-image.dmg > /dev/null
+        hdiutil convert "$DEPENDENCY_DIR/$IMAGE" -format UDRW \
+        	-o temp-image.dmg > /dev/null
+        hdiutil attach -mountpoint "$DEPENDENCY_DIR/build-image" -nobrowse \
+	        temp-image.dmg > /dev/null
 
         # diskutil requires the full mount path.
-        diskutil renameVolume "$DEPENDENCY_DIR/build-image" "$VOLUME_NAME" > /dev/null
+        diskutil renameVolume "$DEPENDENCY_DIR/build-image" "$VOLUME_NAME" \
+        	> /dev/null
 
         # Copy the viewer in
         cp -R Phoenix\ Viewer*.app "$DEPENDENCY_DIR/build-image/" > /dev/null
 
         # Compress/store the image and dispose of the temporary one.
         hdiutil detach "$DEPENDENCY_DIR/build-image" > /dev/null
-        hdiutil convert temp-image.dmg -format UDBZ -o "$OUTPUT_DIR/$OUTPUT_FILE" > /dev/null
+        hdiutil convert temp-image.dmg -format UDBZ \
+        	-o "$OUTPUT_DIR/$OUTPUT_FILE" > /dev/null
         rm temp-image.dmg
         echo "$OUTPUT_DIR/$OUTPUT_FILE";
 }
@@ -145,29 +155,23 @@ if [ -z $SKIP_INTEL ]; then
         echo "Cleaning..."
         cd $INDRA_DIR
         ./develop.py clean > /dev/null
-
-        configure i386 "-O2 -fomit-frame-pointer -frename-registers -ftree-vectorize -fweb -fexpensive-optimizations -march=i686 \
-                                -msse -mfpmath=sse -msse2 -pipe -DLL_VECTORIZE=1 -DLL_SSE=1 -DLL_SSE2=1"
-
-        cd build-darwin-i386
         set_channel
+	configure i386
         build
         if [ $? -eq 0 ]; then
-                cd newview/Release
+                cd build-darwin-i386/newview/Release
                 copy_resources
 
                 echo "Liposuction..."
-                lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/libhunspell-1.2.dylib -output Phoenix\ Viewer.app/Contents/MacOS/libhunspell-1.2.dylib
+                #lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/libhunspell-1.2.dylib -output Phoenix\ Viewer.app/Contents/MacOS/libhunspell-1.2.dylib
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/libndofdev.dylib -output Phoenix\ Viewer.app/Contents/MacOS/libndofdev.dylib
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/libotr.dylib -output Phoenix\ Viewer.app/Contents/MacOS/libotr.dylib
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/MacOS/7za -output Phoenix\ Viewer.app/Contents/MacOS/7za
 
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/SLVoice -output Phoenix\ Viewer.app/Contents/Resources/SLVoice
-                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libalut.dylib -output Phoenix\ Viewer.app/Contents/Resources/libalut.dylib
-                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libopenal.dylib -output Phoenix\ Viewer.app/Contents/Resources/libopenal.dylib
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libortp.dylib -output Phoenix\ Viewer.app/Contents/Resources/libortp.dylib
                 lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/libvivoxsdk.dylib -output Phoenix\ Viewer.app/Contents/Resources/libvivoxsdk.dylib
-                lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib -output Phoenix\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib
+                #lipo -thin i386 Phoenix\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib -output Phoenix\ Viewer.app/Contents/Resources/llplugin/libllqtwebkit.dylib
 
                 echo "Packaging..."
                 RESULT="$(make_package Intel)"
@@ -182,4 +186,10 @@ fi
 
 # Some cleanup.
 rm installed.xml 2>/dev/null
+if [ -e $INDRA_DIR/llcommon/llversionviewer.h.in.build ]; then
+	mv -f $INDRA_DIR/llcommon/llversionviewer.h.in \
+		$INDRA_DIR/llcommon/llversionviewer.h.in.used
+	mv -f $INDRA_DIR/llcommon/llversionviewer.h.in.build \
+		$INDRA_DIR/llcommon/llversionviewer.h.in
+fi
 echo "Finished."

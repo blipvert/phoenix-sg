@@ -147,16 +147,16 @@ class RlvUtil
 {
 public:
 	static bool isEmote(const std::string& strUTF8Text);
-	static bool isNearbyAgent(const LLUUID& idAgent);						// @shownames
-	static bool isNearbyRegion(const std::string& strRegion);				// @showloc
+	static bool isNearbyAgent(const LLUUID& idAgent);								// @shownames
+	static bool isNearbyRegion(const std::string& strRegion);						// @showloc
 
-	static void filterLocation(std::string& strUTF8Text);					// @showloc
-	static void filterNames(std::string& strUTF8Text);						// @shownames
+	static void filterLocation(std::string& strUTF8Text);							// @showloc
+	static void filterNames(std::string& strUTF8Text, bool fFilterLegacy = true);	// @shownames
 
 	static bool isForceTp()	{ return m_fForceTp; }
-	static void forceTp(const LLVector3d& posDest);							// Ignores restrictions that might otherwise prevent tp'ing
+	static void forceTp(const LLVector3d& posDest);									// Ignores restrictions that might otherwise prevent tp'ing
 
-	static void notifyFailedAssertion(const char* pstrAssert, const char* pstrFile, int nLine);
+	static void notifyFailedAssertion(const std::string& strAssert, const std::string& strFile, int nLine);
 
 	static void sendBusyMessage(const LLUUID& idTo, const std::string& strMsg, const LLUUID& idSession = LLUUID::null);
 	static bool isValidReplyChannel(S32 nChannel);
@@ -164,7 +164,7 @@ public:
 	static bool sendChatReply(const std::string& strChannel, const std::string& strUTF8Text);
 
 protected:
-	static bool m_fForceTp;													// @standtp
+	static bool m_fForceTp;															// @standtp
 };
 
 // ============================================================================
@@ -234,10 +234,26 @@ BOOL rlvAttachToEnabler(void* pParam);
 // Predicates
 //
 
-bool rlvPredIsWearableItem(const LLViewerInventoryItem* pItem);
-bool rlvPredIsNotWearableItem(const LLViewerInventoryItem* pItem);
-bool rlvPredIsRemovableItem(const LLViewerInventoryItem* pItem);
-bool rlvPredIsNotRemovableItem(const LLViewerInventoryItem* pItem);
+bool rlvPredCanWearItem(const LLViewerInventoryItem* pItem, ERlvWearMask eWearMask);
+bool rlvPredCanNotWearItem(const LLViewerInventoryItem* pItem, ERlvWearMask eWearMask);
+bool rlvPredCanRemoveItem(const LLViewerInventoryItem* pItem);
+bool rlvPredCanNotRemoveItem(const LLViewerInventoryItem* pItem);
+
+struct RlvPredCanWearItem
+{
+	RlvPredCanWearItem(ERlvWearMask eWearMask) : m_eWearMask(eWearMask) {}
+	bool operator()(const LLViewerInventoryItem* pItem) { return rlvPredCanWearItem(pItem, m_eWearMask); }
+protected:
+	ERlvWearMask m_eWearMask;
+};
+
+struct RlvPredCanNotWearItem
+{
+	RlvPredCanNotWearItem(ERlvWearMask eWearMask) : m_eWearMask(eWearMask) {}
+	bool operator()(const LLViewerInventoryItem* pItem) { return rlvPredCanNotWearItem(pItem, m_eWearMask); }
+protected:
+	ERlvWearMask m_eWearMask;
+};
 
 struct RlvPredIsEqualOrLinkedItem
 {

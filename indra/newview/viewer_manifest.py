@@ -315,12 +315,10 @@ class WindowsManifest(ViewerManifest):
         # Vivox runtimes
         if self.prefix(src="vivox-runtime/i686-win32", dst=""):
             self.path("SLVoice.exe")
+			self.path("alut.dll")
             self.path("vivoxsdk.dll")
             self.path("ortp.dll")
-            self.path("libsndfile-1.dll")
-            self.path("zlib1.dll")
-            self.path("vivoxplatform.dll")
-            self.path("vivoxoal.dll")
+			self.path("wrap_oal.dll")
             self.end_prefix()
 
         self.enable_no_crt_manifest_check()
@@ -608,7 +606,7 @@ class DarwinManifest(ViewerManifest):
                 self.path("zh-Hans.lproj")
                 
                 # SLVoice and vivox lols
-                self.path("vivox-runtime/universal-darwin/libalut.dylib", "libalut.dylib")
+                self.path("vivox-runtime/universal-darwin/libsndfile.dylib", "libsndfile.dylib")
                 self.path("vivox-runtime/universal-darwin/libvivoxoal.dylib", "libvivoxoal.dylib")
                 self.path("vivox-runtime/universal-darwin/libortp.dylib", "libortp.dylib")
                 self.path("vivox-runtime/universal-darwin/libvivoxsdk.dylib", "libvivoxsdk.dylib")
@@ -916,7 +914,7 @@ class Linux_i686Manifest(LinuxManifest):
         if self.prefix("../../libraries/i686-linux/lib_release_client", dst="lib"):
 
             try:
-                self.path("../../fmodapi375linux/api/libfmod-3.75.so", "libfmod-3.75.so");
+                self.path("../../../fmodapi375linux/api/libfmod-3.75.so", "libfmod-3.75.so");
                 pass
             except:
                 print "Skipping libfmod-3.75.so - not found"

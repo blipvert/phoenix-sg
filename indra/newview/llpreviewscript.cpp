@@ -295,6 +295,10 @@ LLScriptEdCore::LLScriptEdCore(
 			llinfos << "nothing at " << keyword_path << " ; will use default" << llendl;
 			keyword_path = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS,"keywords.ini");
 		}
+		else
+		{
+			llinfos << "loaded skin-specific keywords from " << keyword_path << llendl;
+		}
 	}else
 	{
 		llinfos << "loaded skin-specific keywords from " << keyword_path << llendl;

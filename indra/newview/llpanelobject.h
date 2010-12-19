@@ -122,6 +122,9 @@ protected:
 
 	static LLVolumeParams mClipboardVolumeParams;
 	static BOOL hasParamClipboard;
+	static BOOL hasFlexiParam;
+	static BOOL hasSculptParam;
+	static BOOL hasLightParam;
 
 	S32				mComboMaterialItemCount;
 

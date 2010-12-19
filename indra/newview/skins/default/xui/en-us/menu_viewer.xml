@@ -36,8 +36,12 @@
 			<on_enable function="File.EnableCloseAllWindows" userdata="" />
 		</menu_item_call>
 		<menu_item_separator bottom="-121" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator2" width="243" />
-		<menu_item_call bottom="-140" enabled="true" height="19" label="Save Texture As..." left="0" mouse_opaque="true" name="Save Texture As..." width="243">
-			<on_click function="File.SaveTexture" userdata="" />
+		<menu_item_call bottom="-140" enabled="true" height="19" label="Save Texture As (TGA)..." left="0" mouse_opaque="true" name="Save Texture As (TGA)..." width="243">
+			<on_click function="File.SaveTextureTGA" userdata="" />
+			<on_enable function="File.EnableSaveAs" />
+		</menu_item_call>
+		<menu_item_call bottom="-140" enabled="true" height="19" label="Save Texture As (PNG)..." left="0" mouse_opaque="true" name="Save Texture As (PNG)..." width="243">
+			<on_click function="File.SaveTexturePNG" userdata="" />
 			<on_enable function="File.EnableSaveAs" />
 		</menu_item_call>
 		<menu_item_separator bottom="-148" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator3" width="243" />
@@ -155,10 +159,14 @@
 		<menu_item_call bottom="-343" enabled="true" height="19" label="Profile..." left="0" mouse_opaque="true" name="Profile..." width="153">
 			<on_click function="ShowAgentProfile" userdata="agent" />
 		</menu_item_call>
-		<menu_item_call bottom="-362" enabled="true" height="19" label="Appearance..." left="0" mouse_opaque="true" name="Appearance..." width="153">
-			<on_click function="ShowFloater" userdata="appearance" />
-			<on_enable function="Edit.EnableCustomizeAvatar" />
-		</menu_item_call>
+    <menu_item_call bottom="-362" enabled="true" height="19" label="Appearance..." left="0" mouse_opaque="true" name="Appearance..." width="153">
+      <on_click function="ShowFloater" userdata="appearance" />
+      <on_enable function="Edit.EnableCustomizeAvatar" />
+    </menu_item_call>
+    <menu_item_call bottom="-362" enabled="true" height="19" label="Display Name..." left="0" mouse_opaque="true" name="Appearance..." width="153">
+      <on_click function="ShowFloater" userdata="displayname" />
+      <on_enable function="Edit.EnableChangeDisplayname" />
+    </menu_item_call>
 		<menu_item_separator bottom="-370" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator7" width="153" />
 		<menu_item_check bottom="-389" enabled="true" height="19" label="Friends..." left="0" mouse_opaque="true" name="Friends..." shortcut="control|shift|F" width="153">
 			<on_click function="ShowFloater" userdata="friends" />
@@ -405,9 +413,6 @@
 			<menu_item_call bottom="-170" enabled="false" height="19" label="Water Settings" left="0" mouse_opaque="true" name="Water Settings" width="169">
 				<on_click function="World.WaterSettings" />
 			</menu_item_call>
-			<menu_item_call bottom="-170" enabled="false" height="19" label="Postprocessing" left="0" mouse_opaque="true" name="Postprocessing" width="169">
-				<on_click function="World.PostProcess" />
-			</menu_item_call>
 			<menu_item_call bottom="-189" enabled="false" height="19" label="Day Cycle" left="0" mouse_opaque="true" name="Day Cycle" width="169">
 				<on_click function="World.DayCycle" />
 			</menu_item_call>
@@ -580,16 +585,16 @@
 		</menu_item_call>
 		<menu_item_separator bottom="-102" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator2" width="166" />
 		<menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Blog..." left="0" mouse_opaque="true" name="Phoenix Viewer Blog..." width="166">
-			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://phoenixviewer.com/index.shtml" />
+			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://www.phoenixviewer.com/" />
 		</menu_item_call>
 		<menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Wiki..." left="0" mouse_opaque="true" name="Phoenix Viewer Wiki..." width="166">
-			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://phoenixviewer.com/wiki.shtml" />
+			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://wiki.phoenixviewer.com/" />
 		</menu_item_call>
 		<menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Support..." left="0" mouse_opaque="true" name="Phoenix Viewer Support..." width="166">
 			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://phoenixviewer.com/support.shtml" />
 		</menu_item_call>
 		<menu_item_call bottom="-140" enabled="true" height="19" label="Phoenix Viewer Bug Reports..." left="0" mouse_opaque="true" name="Phoenix Viewer Bug Reports..." width="166">
-			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://jira.phoenixviewer.com" />
+			<on_click function="PromptShowURL" name="ms_url" userdata="WebLaunchMS,http://jira.phoenixviewer.com/" />
 		</menu_item_call>
 		<menu_item_separator bottom="-411" enabled="true" height="8" label="-----------" left="0" mouse_opaque="true" name="separator7" width="250" />
 		<menu bottom="-554" create_jump_keys="true" drop_shadow="true" enabled="true" height="109" label="Linden Resources" left="0" mouse_opaque="false" name="LL" opaque="true" tear_off="true" width="118">
