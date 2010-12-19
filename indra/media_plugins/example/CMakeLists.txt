@@ -60,14 +60,6 @@ add_dependencies(media_plugin_example
   ${LLCOMMON_LIBRARIES}
 )
 
-if (WINDOWS)
-  set_target_properties(
-    media_plugin_example
-    PROPERTIES
-    LINK_FLAGS "/MANIFEST:NO"
-    )
-endif (WINDOWS)
-
 if (DARWIN)
   # Don't prepend 'lib' to the executable name, and don't embed a full path in the library's install name
   set_target_properties(
