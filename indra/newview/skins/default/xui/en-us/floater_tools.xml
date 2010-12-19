@@ -92,7 +92,7 @@
     Ruler:
   </text>
   <combo_box allow_text_entry="false" bottom_delta="-4" follows="left|top" height="20"
-	     left_delta="40" max_chars="20" mouse_opaque="true"
+	     left_delta="35" max_chars="20" mouse_opaque="true"
 	     name="combobox grid mode" width="86">
     <combo_item name="World" value="World">
       World
@@ -104,10 +104,10 @@
       Reference
     </combo_item>
   </combo_box>
-    <button bottom="-36" follows="left|top" font="SansSerifSmall"
+    <button bottom="-103" follows="left|top" font="SansSerifSmall"
        halign="center" valign="center"
-	     height="20" label="Options" label_selected="Options" left="190"
-	     mouse_opaque="true" name="Options..." scale_image="TRUE" width="60" />
+	     height="18" label="Options" label_selected="Options" left="210"
+	     mouse_opaque="true" name="Options..." scale_image="TRUE" width="55" />
     <check_box bottom="-70" control_name="ScaleUniform" follows="left|top"
 	     font="SansSerifSmall" height="16" initial_value="false"
 	     label="Stretch Both Sides" left="143" mouse_opaque="true"
@@ -303,12 +303,12 @@
   <volume_slider bottom_delta="-4" follows="left|top" height="16" hidden="false"
 	     increment="0.1" initial_val="0.00" left="178" max_val="2.0" min_val="-1.0"
 	     mouse_opaque="true" name="slider force" width="80" />
-    <button bottom="-163" follows="left|top" font="SansSerifSmall" halign="center"
-	     height="20" label="&gt;&gt;" left="136" mouse_opaque="true"
+    <button bottom="-164" follows="left|top" font="SansSerifSmall" halign="center"
+	     height="15" label="&gt;&gt;" left="131" mouse_opaque="true"
 	     name="button more" scale_image="TRUE" tool_tip="Advanced Options"
 	     width="25" />
-  	<button bottom_delta="0" follows="left|top" font="SansSerifSmall" halign="center"
-	     height="20" label="&lt;&lt;" left_delta="0" mouse_opaque="true"
+  	<button bottom_delta="-0" follows="left|top" font="SansSerifSmall" halign="center"
+	     height="15" label="&lt;&lt;" left_delta="0" mouse_opaque="true"
 	     name="button less" scale_image="TRUE" tool_tip="Advanced Options"
 	     width="25" />
   <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
@@ -321,7 +321,7 @@
        bottom="-163" left="118" drop_shadow_visible="true" follows="left|top"
        font="SansSerifSmall" h_pad="0" halign="right" height="16"
        mouse_opaque="true" name="prim_count" v_pad="0" width="143">
-    primitives: [COUNT]
+    Primitives: [COUNT]
   </text>
 
   <!-- Sub-tabs -->
@@ -329,6 +329,9 @@
   <tab_container bottom="-550" follows="left|top" height="384" left="0" mouse_opaque="false"
 	     name="Object Info Tabs" tab_max_width="52" tab_min_width="40"
 	     tab_position="top" width="272">
+
+    <!-- General sub-tab -->
+
     <panel border="true" bottom="-383" follows="left|top|right|bottom" height="367"
 		     label="General" left="1" mouse_opaque="false" name="General" width="270">
       <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
@@ -1344,24 +1347,27 @@
 			</text>
 			<button bottom_delta="-18" follows="top|right" font="SansSerifSmall" halign="center"
 			     height="20" label="Copy" left_delta="5" mouse_opaque="true" name="copytextures"  enabled="true"
-			     tool_tip="Copy Testure Params from Clipboard"  width="68" />
+			     tool_tip="Copy Texture Params from Clipboard"  width="68" />
 	  		<button bottom_delta="-20" follows="top|right" font="SansSerifSmall" halign="center"
 			     height="20" label="Paste" left_delta="0" mouse_opaque="true" name="pastetextures"  enabled="true"
 			     tool_tip="Paste Texture Params from Clipboard"  width="68" />
     </panel>
+    
+    <!-- Content sub-tab -->
+    
     <panel border="true" bottom="-383" follows="left|top|right|bottom" height="367"
 		     label="Content" left="1" mouse_opaque="false" name="Contents" width="270">
       <button bottom="-30" follows="left|top" font="SansSerif" halign="center" height="20"
 			      label="New Script" label_selected="New Script"
-			     left="10" mouse_opaque="true" name="button new script" scale_image="TRUE"
-			     width="100" />
-      <button bottom_delta="0" left_delta="110" width="100" height="20" follows="left|top"
-            label="Permissions..." name="button permissions" font="SansSerif" halign="center"
+			     left="8" mouse_opaque="true" name="button new script" scale_image="TRUE"
+			     width="85" />
+      <button bottom_delta="0" left_delta="86" width="92" height="20" follows="left|top"
+            label="Permissions" name="button permissions" font="SansSerif" halign="center"
             mouse_opaque="true" scale_image="TRUE" />
-      <button bottom_delta="-20" left="10" width="100" height="20" follows="left|top"
+      <button bottom_delta="0" left_delta="93" width="75" height="20" follows="left|top"
             label="Refresh" name="button refresh" font="SansSerif" halign="center"
             mouse_opaque="true" scale_image="TRUE" />
-      <panel bottom_delta="-310" follows="left|top" height="305"  left="10"
+      <panel bottom_delta="-327" follows="left|top" height="326"  left="10"
 			     mouse_opaque="true" name="ContentsInventory" width="252" />
     </panel>
   </tab_container>
