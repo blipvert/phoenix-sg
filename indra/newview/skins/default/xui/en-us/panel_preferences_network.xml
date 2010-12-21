@@ -81,15 +81,17 @@
 		tool_tip="Browse to this path."/>
 	<button bottom_delta="0" enabled="true" follows="left|top|right" font="SansSerif"
 	     halign="center" height="22" label="Set" label_selected="Set" left_delta="65"
-	     mouse_opaque="true" name="set_sound_cache" scale_image="true" width="65" />
+	     mouse_opaque="true" name="set_sound_cache" scale_image="true" width="65"
+tool_tip="Set new cache location."/>
 	<button bottom_delta="0" enabled="true" follows="left|top|right"
 	     font="SansSerif" halign="center" height="22" label="Reset"
 	     label_selected="Set" left_delta="45" mouse_opaque="true"
-	     name="reset_sound_cache" scale_image="true" width="95" />
+	     name="reset_sound_cache" scale_image="true" width="95"
+tool_tip="Reset cache location to default."/>
   <text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	     bottom_delta="-10" drop_shadow_visible="true" enabled="true"
 	     follows="left|top" font="SansSerifSmall" h_pad="0" halign="left"
-	     height="10" left="12" mouse_opaque="false" name="cache_location_label"
+	     height="10" left="12" mouse_opaque="false" name="chat_location_label"
 	     v_pad="0" width="200">
     Chat Log Files Location:
   </text>
@@ -104,15 +106,17 @@
 		tool_tip="Browse to this path."/>
   <button bottom_delta="0" enabled="true" follows="left|top|right" font="SansSerif"
 	     halign="center" height="22" label="Set" label_selected="Set" left_delta="65"
-	     mouse_opaque="true" name="set_chat_logs" scale_image="true" width="65"/>
+	     mouse_opaque="true" name="set_chat_logs" scale_image="true" width="65"
+  tool_tip="Set new log file location."/>
   <button bottom_delta="0" enabled="true" follows="left|top|right"
 	     font="SansSerif" halign="center" height="22" label="Reset"
 	     label_selected="Set" left_delta="45" mouse_opaque="true"
-	     name="reset_chat_logs" scale_image="true" width="95"/>
+	     name="reset_chat_logs" scale_image="true" width="95"
+  tool_tip="Reset log file location to default."/>
 	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	     bottom_delta="-10" drop_shadow_visible="true" enabled="true"
 	     follows="left|top" font="SansSerifSmall" h_pad="0" halign="left"
-	     height="10" left="12" mouse_opaque="false" name="chat_location_label"
+	     height="10" left="12" mouse_opaque="false" name="crash_location_label"
 	     v_pad="0" width="200">
 		Crash Log Files Location:
 	</text>
@@ -128,14 +132,14 @@
   <text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	     bottom_delta="10" drop_shadow_visible="true" enabled="true"
 	     follows="left|top" font="SansSerifSmall" h_pad="0" halign="left"
-	     height="10" left="12" left_delta="80" mouse_opaque="false" name="cache_location_label"
+	     height="10" left="12" left_delta="80" mouse_opaque="false" name="cannot_change_crash_label"
 	     v_pad="0" width="200" visible="true">
     (Can not change)
   </text>
   <text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	     bottom_delta="-20" drop_shadow_visible="true" enabled="true"
 	     follows="left|top" font="SansSerifSmall" h_pad="0" halign="left"
-	     height="10" left="12" mouse_opaque="false" name="chat_location_label"
+	     height="10" left="12" mouse_opaque="false" name="user_location_label"
 	     v_pad="0" width="200">
     User Settings Files Location:
   </text>
@@ -151,28 +155,28 @@
   <text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	     bottom_delta="10" drop_shadow_visible="true" enabled="true"
 	     follows="left|top" font="SansSerifSmall" h_pad="0" halign="left"
-	     height="10" left="12" left_delta="80" mouse_opaque="true" name="chat_location_label"
+	     height="10" left="12" left_delta="80" mouse_opaque="true" name="cannot_change_user_label"
 	     v_pad="0" width="200" visible="true">
     (Can not change)
   </text>
-	<check_box bottom="-173" bottom_delta="-50"
+	<check_box bottom="-165" bottom_delta="-50"
 	     enabled="true" follows="left|top" font="SansSerifSmall" height="16"
 	     initial_value="false" label="Custom Port:" left="6"
 	     mouse_opaque="true" name="connection_port_enabled" radio_style="false"
 	     width="128" />
-	<spinner bottom_delta="0" decimal_digits="0" enabled="true" follows="left|top" height="16"
+	<spinner bottom_delta="-20" decimal_digits="0" enabled="true" follows="left|top" height="16"
 	     increment="1" initial_val="13000" label="" label_width="75"
-	     left_delta="100" max_val="13050" min_val="13000" mouse_opaque="true"
+	     left_delta="20" max_val="13050" min_val="13000" mouse_opaque="true"
 	     name="connection_port" width="64" />
-  <button bottom="-55" bottom_delta="-2" enabled="true" follows="left|top"
+  <button bottom="-55" bottom_delta="20" enabled="true" follows="left|top"
 	     font="SansSerif" halign="center" height="22" label="Clear Cache" left="340"
-	     left_delta="110" mouse_opaque="true" name="clear_cache" scale_image="true"
+	     left_delta="195" mouse_opaque="true" name="clear_cache" scale_image="true"
 	     width="90" />
   <button bottom="-55" bottom_delta="-0" enabled="false" follows="left|top"
 	     font="SansSerif" halign="center" height="22" label="Clear Inventory Cache" left="340"
 	     left_delta="110" mouse_opaque="true" name="clear_inv_cache" scale_image="true"
 	     width="155" tool_tip="You must be logged in to use the inventory clear cache." />
-	<check_box bottom_delta="-30" enabled="true"
+	<check_box bottom_delta="-40" enabled="true"
 	     follows="left|top" font="SansSerifSmall" height="16" initial_value="false"
 	     label="Enable SOCKS 5 Proxy" left="6" mouse_opaque="true"
 	     name="socks5_proxy_enabled" radio_style="false" width="256" />
@@ -180,7 +184,7 @@
 	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	     bottom_delta="-15" drop_shadow_visible="true" enabled="true"
 	     follows="left|top" font="SansSerifSmall" h_pad="0" halign="left"
-	     height="10" left="12" mouse_opaque="false" name="socks5_auth_label"
+	     height="10" left="12" mouse_opaque="false" name="socks5_type_label"
 	     v_pad="0" width="128">
 		Http Proxy:
 	</text>
