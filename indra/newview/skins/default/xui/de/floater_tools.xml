@@ -13,7 +13,7 @@
 	<check_box label="Rotieren (Strg-Umschalt)" name="radio spin"/>
 	<check_box label="Position" name="radio position"/>
 	<check_box label="Drehen (Strg)" name="radio rotate"/>
-	<check_box label="Dehnen (Strg-Umschalt)" name="radio stretch"/>
+	<check_box label="Beidseitig dehnen" name="radio stretch"/>
   <check_box label="Textur auswählen" name="radio select face" tool_tip="Klicke auf Objekt zur Texturauswahl"/>
   <check_box label="Ausrichten" name="radio align" tool_tip="Objekt an Bunten Pfeilen ausrichten"/>
 	<check_box label="Verknüpfte Teile bearbeiten" name="checkbox edit linked parts"/>
@@ -232,7 +232,9 @@
 			<text name="edit_object">
 				Parameter:
 			</text>
-			<check_box label="Gesperrt" name="checkbox locked" tool_tip="Verhindert, dass Objekt verschoben oder gelöscht wird. Oft beim Bauen nützlich, um unbeabsichtigte Bearbeitungen zu vermeiden."/>
+      <button label="verknüpfen" name="link_obj"/>
+      <button label="trennen" name="unlink_obj"/>
+      <check_box label="Gesperrt" name="checkbox locked" tool_tip="Verhindert, dass Objekt verschoben oder gelöscht wird. Oft beim Bauen nützlich, um unbeabsichtigte Bearbeitungen zu vermeiden."/>
 			<check_box label="Physisch" name="Physical Checkbox Ctrl" tool_tip="Gestattet, das Objekt geschoben und von Schwerkraft beeinflusst wird"/>
 			<check_box label="Temporär" name="Temporary Checkbox Ctrl" tool_tip="Verursacht, dass Objekt 1 Minute nach Erstellung gelöscht wird."/>
 			<check_box label="Phantom" name="Phantom Checkbox Ctrl" tool_tip="Verursacht, dass Objekt nicht mit anderen Objekten oder Avataren kollidiert"/>
@@ -242,18 +244,27 @@
 			<spinner label="X" name="Pos X"/>
 			<spinner label="Y" name="Pos Y"/>
 			<spinner label="Z" name="Pos Z"/>
+      <button label="K" name="copypos" tool_tip="Position kopieren" />
+      <button label="E" name="pastepos" tool_tip="Position einfügen" />
+      <button label="e" name="pasteposclip" tool_tip="Position aus Ablage einfügen" />
 			<text name="label size">
 				Größe (Meter)
 			</text>
 			<spinner label="X" name="Scale X"/>
 			<spinner label="Y" name="Scale Y"/>
 			<spinner label="Z" name="Scale Z"/>
+      <button label="K" name="copysize" tool_tip="Größe kopieren" />
+      <button label="E" name="pastesize" tool_tip="Größe einfügen" />
+      <button label="e" name="pastesizeclip" tool_tip="Größe aus Ablage einfügen" />
 			<text name="label rotation">
 				Rotation (Grad)
 			</text>
 			<spinner label="X" name="Rot X"/>
 			<spinner label="Y" name="Rot Y"/>
 			<spinner label="Z" name="Rot Z"/>
+      <button label="K" name="copyrot" tool_tip="Drehung kopieren" />
+      <button label="E" name="pasterot" tool_tip="Drehung einfügen" />
+      <button label="e" name="pasterotclip" tool_tip="Drehung aus Ablage einfügen" />
 			<text name="label material">
 				Material
 			</text>
