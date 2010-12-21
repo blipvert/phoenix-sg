@@ -8,13 +8,14 @@
 	<check_box label="Zoom" name="radio zoom"/>
 	<check_box label="Orbit (Strg)" name="radio orbit"/>
 	<check_box label="Schwenken (Strg-Umschalt)" name="radio pan"/>
-	<check_box label="Verschieben" name="radio move"/>
+	<check_box label="Verschieben" name="radio move" bottom="-80"/>
 	<check_box label="Heben (Strg)" name="radio lift"/>
 	<check_box label="Rotieren (Strg-Umschalt)" name="radio spin"/>
 	<check_box label="Position" name="radio position"/>
 	<check_box label="Drehen (Strg)" name="radio rotate"/>
 	<check_box label="Dehnen (Strg-Umschalt)" name="radio stretch"/>
-	<check_box label="Textur auswählen" name="radio select face"/>
+  <check_box label="Textur auswählen" name="radio select face" tool_tip="Klicke auf Object zur Texturauswahl"/>
+  <check_box label="Ausrichten" name="radio align" tool_tip="Object an Bunten Pfeilen ausrichten"/>
 	<check_box label="Verknüpfte Teile bearbeiten" name="checkbox edit linked parts"/>
 	<text name="text ruler mode">
 		Lineal:
@@ -33,9 +34,9 @@
 	<button label="Optionen" label_selected="Optionen" name="Options..."/>
 	<check_box label="Beide Seiten dehnen" name="checkbox uniform"/>
 	<check_box label="Texturen dehnen" name="checkbox stretch textures"/>
-	<check_box label="Raster verwenden" name="checkbox snap to grid"/>
+	<check_box label="Raster" name="checkbox snap to grid"/>
 	<check_box label="Achse an der wurzel" name="checkbox actual root" />
-	<check_box label="Show Highlight" left_delta="20" name="checkbox show highlight" />
+	<check_box label="Hervorheben" left_delta="20" name="checkbox show highlight" />
 	
 	<text name="text status">
 		Zum Verschieben ziehen, zum Kopieren Umschalttaste-Ziehen
@@ -229,7 +230,7 @@
 				Wählen Sie nur ein Primitivum aus, um Parameter zu bearbeiten.
 			</text>
 			<text name="edit_object">
-				Objektparameter bearbeiten:
+				Parameter:
 			</text>
 			<check_box label="Gesperrt" name="checkbox locked" tool_tip="Verhindert, dass Objekt verschoben oder gelöscht wird. Oft beim Bauen nützlich, um unbeabsichtigte Bearbeitungen zu vermeiden."/>
 			<check_box label="Physisch" name="Physical Checkbox Ctrl" tool_tip="Gestattet, das Objekt geschoben und von Schwerkraft beeinflusst wird"/>
@@ -279,7 +280,9 @@
 					Gummi
 				</combo_item>
 			</combo_box>
-			<text left="115" name="label basetype">
+      <button label="Kopieren" name="copyparams"/>
+      <button label="Einfügen" name="pasteparams"/>
+      <text left="115" name="label basetype">
 				Bausteintyp
 			</text>
 			<combo_box left="115" name="comboBaseType">
@@ -405,8 +408,9 @@ Primitiv" name="sculpt texture control" tool_tip="Klicken Sie hier, um ein Bild 
 			</combo_box>
 		</panel>
 		<panel label="Eigenschaften" name="Features">
-			<text name="select_single">
-				Wählen Sie nur einen einzelnen Baustein aus, um Eigenschaften zu bearbeiten.
+			<text name="select_single" bottom="-15">
+				Wählen Sie nur einen einzelnen Baustein aus,
+um Eigenschaften zu bearbeiten.
 			</text>
 			<text name="edit_object">
 				Objekteigenschaften bearbeiten:
@@ -556,10 +560,16 @@ Primitiv" name="sculpt texture control" tool_tip="Klicken Sie hier, um ein Bild 
 (zuerst laden)
 			</text>
 			<button label="Ausrichten" label_selected="Ausrichten" name="button align"/>
-		</panel>
+      <text name="textbox params">
+        Textur-Parameter
+      </text>
+      <button label="Kopieren" name="copytextures"/>
+      <button label="Einfügen" name="pastetextures"/>
+    </panel>
 		<panel label="Inhalt" name="Contents">
-			<button label="Neues Skript" label_selected="Neues Skript..." name="button new script"/>
-			<button label="Berechtigungen..." name="button permissions" width="118"/>
+			<button label="Neues Skript" label_selected="Neues Skript..." name="button new script" width="83" left="4"/>
+      <button label="Berechtigungen" name="button permissions" width="100" left_delta="83"/>
+      <button label="Aktualisieren" name="button refresh" width="79" left_delta="101"/>
 		</panel>
 	</tab_container>
 	<panel name="land info panel">
@@ -587,11 +597,11 @@ Primitiv" name="sculpt texture control" tool_tip="Klicken Sie hier, um ein Bild 
 		<button label="Land aufgeben..." label_selected="Land aufgeben..." name="button abandon land" width="110"/>
 	</panel>
 	<string name="status_rotate">
-		An den farbigen Bändern ziehen, um das Objekt zu drehen
-	</string>
+    Object an den Farbigen Bändern drehen
+  </string>
 	<string name="status_scale">
-		Klicken und ziehen, um die ausgewählte Seite zu dehnen
-	</string>
+    Object an Auswahlkästchen dehnen
+  </string>
 	<string name="status_move">
 		Maus verschiebt, Umschalt-Taste und Maus kopiert
 	</string>
@@ -602,11 +612,12 @@ Primitiv" name="sculpt texture control" tool_tip="Klicken Sie hier, um ein Bild 
 		Klicken und ziehen, um die Ansicht zu ändern
 	</string>
 	<string name="status_grab">
-		Ziehen, um Objekte zu verschieben, Strg zum Heben, Strg-Umschalt zum Drehen
+		Ziehen, um Objekte zu verschieben,
+Strg zum Heben, Strg-Umschalt zum Drehen
 	</string>
 	<string name="status_place">
-		Inworld klicken, um zu bauen.
-	</string>
+    In Welt Klicken, um zu Bauen.
+  </string>
 	<string name="status_selectland">
 		Klicken und ziehen, um Land auszuwählen
 	</string>

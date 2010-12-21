@@ -77,10 +77,10 @@
 	     mouse_opaque="true" name="radio stretch" radio_style="true" width="123" />
   <check_box bottom_delta="-15" follows="left|top" font="SansSerifSmall" height="16"
 	     initial_value="false" label="Select Texture" left="4" mouse_opaque="true"
-	     name="radio select face" radio_style="true" width="114" />
+	     name="radio select face" radio_style="true" width="114" tool_tip="Select surfaces to apply a texture to."/>
   <check_box bottom_delta="-15" follows="left|top" font="SansSerifSmall" height="16"
 	     initial_value="false" label="Align" left="4" mouse_opaque="true"
-	     name="radio align" radio_style="true" width="114" />
+	     name="radio align" radio_style="true" width="114" tool_tip="Aligns selected prims to grid."/>
   <check_box bottom_delta="-19" control_name="EditLinkedParts" follows="left|top"
 	     font="SansSerifSmall" height="16" initial_value="false"
 	     label="Edit linked parts" left="4" mouse_opaque="true"
@@ -768,13 +768,13 @@
         </combo_item>
       </combo_box>
       <text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-			    bottom="-20" drop_shadow_visible="true" follows="left|top"
+			    bottom="-15" drop_shadow_visible="true" follows="left|top"
 			    font="SansSerifSmall" h_pad="0" halign="left" height="10" left="121"
 			    mouse_opaque="true" name="edit_object" v_pad="0" width="252">
-				Params:
-			</text>
-			<button bottom="-24" follows="top|right" font="SansSerifSmall" halign="center"
-			    height="16" label="Copy" left="178" mouse_opaque="true" name="copyparams"  enabled="true"
+        Parameters:
+      </text>
+			<button bottom="-20" follows="top|right" font="SansSerifSmall" halign="center"
+			    height="16" label="Copy" left="180" mouse_opaque="true" name="copyparams"  enabled="true"
 			    tool_tip="Copy Parameters from Clipboard"  width="42" />
 			<button bottom_delta="0" follows="top|right" font="SansSerifSmall" halign="center"
 			     height="16" label="Paste" left_delta="42" mouse_opaque="true" name="pasteparams"  enabled="true"
