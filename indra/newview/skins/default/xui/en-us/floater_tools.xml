@@ -627,7 +627,7 @@
 -->
 			<button bottom="-26" follows="top|right" font="SansSerifSmall" halign="center"
 			     height="18" label="Link" left="10" mouse_opaque="true" name="link_obj"  enabled="true"
-			     tool_tip="He come to town..."  width="50" />
+			     tool_tip="Link selected objects together"  width="50" />
 			<button bottom_delta="0" follows="top|right" font="SansSerifSmall" halign="center"
 			     height="18" label="Unlink" left_delta="50" mouse_opaque="true" name="unlink_obj"  enabled="true"
 			     tool_tip="Unlinks linkset."  width="50" />
