@@ -1679,6 +1679,7 @@ ERlvCmdRet RlvHandler::processReplyCommand(const RlvCommand& rlvCmd) const
 			eRet = onFindFolder(rlvCmd, strReply);
 			break;
 		case RLV_BHVR_GETPATH:			// @getpath[:<option>]=<channel>
+		case RLV_BHVR_GETPATHNEW:		// @getpathnew[:<option>]=<channel>
 			eRet = onGetPath(rlvCmd, strReply);
 			break;
 		case RLV_BHVR_GETINV:			// @getinv[:<path>]=<channel>
