@@ -885,10 +885,10 @@ Daha sonra fikrinizi değiştirebilirsiniz.
 		[NAME] [PRICE] L$ Bunu yapabilmeniz için yeterli L$&apos;a sahip değilsiniz.
 	</notification>
 	<notification name="GrantedModifyRights">
-		[FIRST_NAME] [LAST_NAME] kişisinin objelerini kontrol etmek için izin sahibi oldunuz.
+		[NAME] kişisinin objelerini kontrol etmek için izin sahibi oldunuz.
 	</notification>
 	<notification name="RevokedModifyRights">
-		[FIRST_NAME] [LAST_NAME] kişisinin objelerini kontrol etmek için sahip olduğunuz izin geri alındı
+		[NAME] kişisinin objelerini kontrol etmek için sahip olduğunuz izin geri alındı
 	</notification>
 	<notification name="BuyOneObjectOnly">
 		Tek seferde birden fazla obje satın alınamıyor.  Lütfen sadece bir obje seçiniz ve tekrar deneyiniz.

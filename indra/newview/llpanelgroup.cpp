@@ -549,6 +549,10 @@ bool LLPanelGroup::apply()
 	std::string apply_mesg;
 	if ( panelp->apply( apply_mesg ) )
 	{
+		// Force updating agent data. This should trigger updates
+		// of the group data.
+		gAgent.sendAgentDataUpdateRequest();
+
 		// Everything worked.  We're done.
 		return true;
 	}

@@ -1146,10 +1146,10 @@ Por favor, escolha se o seu avatar é feminino ou masculino. Você pode mudar de
 		[NAME] L$ [PRICE] Você não possui suficientes L$ para fazer isso.
 	</notification>
 	<notification name="GrantedModifyRights">
-		Foi garantido à você o privilégio de alterar o(s) objeto(s) de [FIRST_NAME] [LAST_NAME]&apos;
+		Foi garantido à você o privilégio de alterar o(s) objeto(s) de [NAME]&apos;
 	</notification>
 	<notification name="RevokedModifyRights">
-		Seu privilégio para alterar o(s) objeto(s) de [FIRST_NAME] [LAST_NAME]&apos;s foi removido.
+		Seu privilégio para alterar o(s) objeto(s) de [NAME]&apos;s foi removido.
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
 		Isto irá descarregar os caches de mapa relativos a esta região.

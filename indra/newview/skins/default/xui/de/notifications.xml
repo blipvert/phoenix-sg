@@ -1153,10 +1153,10 @@ Sie können sich später noch umentscheiden.
 		[NAME] [PRICE] L$  Sie haben nicht genügend L$, um diese Aktion auszuführen.
 	</notification>
 	<notification name="GrantedModifyRights">
-		Sie verfügen über Änderungsrechte für die Objekte von [FIRST_NAME] [LAST_NAME].
+		Sie verfügen über Änderungsrechte für die Objekte von [NAME].
 	</notification>
 	<notification name="RevokedModifyRights">
-		Ihnen wurden die Änderungsrechte für die Objekte von [FIRST_NAME] [LAST_NAME] entzogen.
+		Ihnen wurden die Änderungsrechte für die Objekte von [NAME] entzogen.
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
 		Der Kartencache dieser Region wird geleert.

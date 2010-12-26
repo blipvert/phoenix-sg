@@ -248,7 +248,9 @@ protected:
 	bool			enabled;
 	std::string		nameString;
 	std::string		audioMediaString;
+#ifndef LL_WINDOWS
 	std::string     	deviceString;
+#endif
 	std::string		displayNameString;
 	int				participantType;
 	bool			isLocallyMuted;
@@ -505,6 +507,9 @@ void LLVivoxProtocolParser::StartTag(const char *tag, const char **attr)
 void LLVivoxProtocolParser::EndTag(const char *tag)
 {
 	const std::string& string = textBuffer;
+#ifdef LL_WINDOWS
+	bool clearbuffer = true;
+#endif
 
 	responseDepth--;
 
@@ -576,8 +581,10 @@ void LLVivoxProtocolParser::EndTag(const char *tag)
 			nameString = string;
 		else if (!stricmp("DisplayName", tag))
 			displayNameString = string;
+#ifndef LL_WINDOWS
 		else if (!stricmp("Device", tag))
 			deviceString = string;	
+#endif
 		else if (!stricmp("AccountName", tag))
 			nameString = string;
 		else if (!stricmp("ParticipantType", tag))
@@ -594,13 +601,28 @@ void LLVivoxProtocolParser::EndTag(const char *tag)
 			uriString = string;
 		else if (!stricmp("Presence", tag))
 			statusString = string;
+#ifdef LL_WINDOWS
+		else if (!stricmp("Device", tag))
+    	{
+    		// This closing tag shouldn't clear the accumulated text.
+    		clearbuffer = false;
+    	}
+#endif
 		else if (!stricmp("CaptureDevice", tag))
 		{
+#ifdef LL_WINDOWS
+			gVoiceClient->addCaptureDevice(textBuffer);
+#else
 			gVoiceClient->addCaptureDevice(deviceString);
+#endif
 		}
 		else if (!stricmp("RenderDevice", tag))
 		{
+#ifdef LL_WINDOWS
+			gVoiceClient->addRenderDevice(textBuffer);
+#else
 			gVoiceClient->addRenderDevice(deviceString);
+#endif
 		}
 		else if (!stricmp("Buddy", tag))
 		{
@@ -645,8 +667,13 @@ void LLVivoxProtocolParser::EndTag(const char *tag)
 			mediaCompletionType = string;;
 		}
 
-		textBuffer.clear();
-		accumulateText= false;
+#ifdef LL_WINDOWS
+		if(clearbuffer)
+#endif
+		{
+			textBuffer.clear();
+			accumulateText= false;
+		}
 		
 		if (responseDepth == 0)
 		{

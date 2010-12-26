@@ -252,6 +252,7 @@ private:
         static void setSpamCount(const LLSD &data);
         static void setChatSpamTime(const LLSD &data);
         static void setChatSpamCount(const LLSD &data);
+		static void setHighlights(const LLSD &data);
 
 public:
 	//some information for updater

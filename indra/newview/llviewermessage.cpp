@@ -1264,6 +1264,15 @@ bool LLOfferInfo::inventory_offer_callback(const LLSD& notification, const LLSD&
 		// send the message
 		msg->sendReliable(mHost);
 
+// [RLVa:KB] - Checked: 2010-09-23 (RLVa-1.2.1e) | Added: RLVa-1.2.1e
+		if (fRlvNotifyAccepted)
+		{
+			std::string::size_type idxToken = mDesc.find("'  ( http://");
+			if (std::string::npos != idxToken)
+				RlvBehaviourNotifyHandler::instance().sendNotification("accepted_in_inv inv_offer " + mDesc.substr(1, idxToken - 1));
+		}
+// [/RLVa:KB]
+
 		//don't spam them if they are getting flooded
 		if (check_offer_throttle(mFromName, true))
 		{
@@ -2734,25 +2743,35 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 
 	case IM_LURE_USER:
 		{
-			if (is_muted)
+// [RLVa:KB] - Checked: 2010-12-11 (RLVa-1.2.2c) | Added: RLVa-1.2.2c
+			// If the lure sender is a specific @accepttp exception they will override muted and busy status
+			bool fRlvSummon = (rlv_handler_t::isEnabled()) && (gRlvHandler.isException(RLV_BHVR_ACCEPTTP, from_id));
+// [/RLVa:KB]
+
+//			if (is_muted)
+// [RLVa:KB] - Checked: 2010-12-11 (RLVa-1.2.2c) | Added: RLVa-1.2.2c
+			if ( (is_muted) && (!fRlvSummon) )
+// [/RLVa:KB]
 			{
 				return;
 			}
-			else if (is_busy)
+//			else if (is_busy) 
+// [RLVa:KB] - Checked: 2010-12-11 (RLVa-1.2.2c) | Added: RLVa-1.2.2c
+			else if ( (is_busy)  && (!fRlvSummon) )
+// [/RLVa:KB]
 			{
 				busy_message(msg,from_id);
 			}
 			else
 			{
-// [RLVa:KB] - Checked: 2010-04-01 (RLVa-1.1.3a) | Modified: RLVa-1.0.0d
+// [RLVa:KB] - Checked: 2010-12-11 (RLVa-1.2.2c) | Modified: RLVa-1.2.2c
 				if (rlv_handler_t::isEnabled())
 				{
-					// Block if: 1) @tplure=n restricted (and sender isn't an exception), or 2) @unsit=n restricted and currently sitting
-					LLVOAvatar* pAvatar = gAgent.getAvatarObject();
-					if ( ( (gRlvHandler.hasBehaviour(RLV_BHVR_TPLURE)) && (!gRlvHandler.isException(RLV_BHVR_TPLURE, from_id)) ) ||
-						 ( (gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) && (pAvatar) && (pAvatar->mIsSitting) ) )
+					if (!gRlvHandler.canTeleportViaLure(from_id))
 					{
 						RlvUtil::sendBusyMessage(from_id, RlvStrings::getString(RLV_STRING_BLOCKED_TPLURE_REMOTE));
+						if (is_busy)
+							busy_message(msg,from_id);
 						return;
 					}
 
@@ -2775,11 +2794,12 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 				payload["godlike"] = FALSE;
 				//LLNotifications::instance().add("TeleportOffered", args, payload);
 
-// [RLVa:KB] - Version: 1.23.4 | Checked: 2009-07-07 (RLVa-1.0.0d) | Modified: RLVa-0.2.0b
-				if ( (rlv_handler_t::isEnabled()) &&
-					 ((gRlvHandler.hasBehaviour(RLV_BHVR_ACCEPTTP)) || (gRlvHandler.isException(RLV_BHVR_ACCEPTTP, from_id))) )
+// [RLVa:KB] - Checked: 2010-12-11 (RLVa-1.2.2c) | Modified: RLVa-1.2.2c
+				if ( (rlv_handler_t::isEnabled()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_ACCEPTTP)) || (fRlvSummon)) )
 				{
 					gRlvHandler.setCanCancelTp(false);
+					if (is_busy)
+						busy_message(msg,from_id);
 					LLNotifications::instance().forceResponse(LLNotification::Params("TeleportOffered").payload(payload), 0);
 				}
 				else

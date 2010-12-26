@@ -619,6 +619,10 @@ void LLAppViewer::setChatSpamTime(const LLSD &data)
 {
         chatSpamTime=data.asReal();
 }
+void LLAppViewer::setHighlights(const LLSD &data)
+{
+	LLSelectMgr::sRenderSelectionHighlights = data.asBoolean();
+}
 bool LLAppViewer::init()
 {
 	//
@@ -945,6 +949,7 @@ bool LLAppViewer::init()
         chatSpamTime = gSavedSettings.getF32("PhoenixChatSpamTime");
         gSavedSettings.getControl("PhoenixChatSpamCount")->getSignal()->connect(&setChatSpamCount);
         chatSpamCount = gSavedSettings.getF32("PhoenixChatSpamCount");
+		gSavedSettings.getControl("PhoenixRenderHighlightSelections")->getSignal()->connect(&setHighlights);
 
 	return true;
 }
@@ -3011,10 +3016,10 @@ S32 LLAppViewer::getCacheVersion()
 bool LLAppViewer::initCache()
 {
 	mPurgeCache = false;
-	BOOL disable_texture_cache = FALSE ;
 	BOOL read_only = mSecondInstance ? TRUE : FALSE;
-	LLAppViewer::getTextureCache()->setReadOnly(read_only) ;
+	LLAppViewer::getTextureCache()->setReadOnly(read_only);
 
+	BOOL disable_texture_cache = FALSE ;
 	if (gSavedSettings.getS32("LocalCacheVersion") != LLAppViewer::getCacheVersion())
 	{
 		if(read_only)

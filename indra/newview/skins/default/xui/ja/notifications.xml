@@ -1219,11 +1219,11 @@ F1キーを押してください。
 	</notification>
 	<notification name="GrantedModifyRights">
 		あなたには、
-[FIRST_NAME] [LAST_NAME]
+[NAME]
 のオブジェクトを修正する権限が与えられています。
 	</notification>
 	<notification name="RevokedModifyRights">
-		[FIRST_NAME] [LAST_NAME]
+		[NAME]
 のオブジェクトを修正する権限が取り消されました。
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
@@ -2325,7 +2325,7 @@ Linden Lab
 
 メッシュ詳細： 特定のオブジェクトのレンダリング時の細部表現、または三角形の数を設定します。 値を大きくするほどレンダリングに時間がかかりますが、オブジェクトがより詳細に表示されます。
 
-ライティング詳細：レンダリングする光源の種類を選択します。
+ライティング詳細：レンダリングする光���の種類を選択します。
 
 地形詳細： 地形テクスチャの細部表現を設定します。
 	</notification>

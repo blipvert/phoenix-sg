@@ -1164,10 +1164,10 @@ Puede cambiar más adelante su elección.
 		[NAME] cuesta [PRICE] L$. No tiene suficientes L$ para hacer eso.
 	</notification>
 	<notification name="GrantedModifyRights">
-		Se le ha concedido el privilegio de modificar los objetos de [FIRST_NAME] [LAST_NAME].
+		Se le ha concedido el privilegio de modificar los objetos de [NAME].
 	</notification>
 	<notification name="RevokedModifyRights">
-		Ha sido revocado su privilegio de modificar los objetos de [FIRST_NAME] [LAST_NAME].
+		Ha sido revocado su privilegio de modificar los objetos de [NAME].
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
 		Esto limpiará las caches del mapa en esta región.

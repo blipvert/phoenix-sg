@@ -2255,14 +2255,14 @@ www.secondlife.com으로 돌아가 신규 계정을 만드시겠습니까?
    
    name="GrantedModifyRights"
    >
-[FIRST_NAME] [LAST_NAME]의 오브젝트 수정 권한을 부여받았습니다.
+[NAME]의 오브젝트 수정 권한을 부여받았습니다.
   </notification>
 
   <notification
    
    name="RevokedModifyRights"
    >
-[FIRST_NAME] [LAST_NAME]의 오브젝트 수정 권한이 취소되었습니다.
+[NAME]의 오브젝트 수정 권한이 취소되었습니다.
   </notification>
 
   <notification

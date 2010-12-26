@@ -1145,10 +1145,10 @@ Ten wybór będzie można później zmienić.
 		[NAME] [PRICE]L$ Masz za mało L$.
 	</notification>
 	<notification name="GrantedModifyRights">
-		Masz teraz prawa modyfikacji obiektów należących do [FIRST_NAME] [LAST_NAME].
+		Masz teraz prawa modyfikacji obiektów należących do [NAME].
 	</notification>
 	<notification name="RevokedModifyRights">
-		Prawa modyfikacji obiektów należących do [FIRST_NAME] [LAST_NAME] zostały Ci odebrane.
+		Prawa modyfikacji obiektów należących do [NAME] zostały Ci odebrane.
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
 		To spowoduje wyczyszczenie buforów map regionu.
