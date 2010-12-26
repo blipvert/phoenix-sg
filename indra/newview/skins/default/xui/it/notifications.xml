@@ -139,7 +139,7 @@ Scegli solo un oggetto e riprova.
 	</notification>
 	<notification name="GrantModifyRights">
 		Dare i diritti di modifica ad un altro residente gli consente di cambiare, cancellare o prendere QUALUNQUE oggetto che hai in Second Life. Fai MOLTA attenzione quando concedi questo permesso.
-Vuoi davvero dare i diritti di modifica a [FIRST_NAME] [LAST_NAME]?
+Vuoi davvero dare i diritti di modifica a [NAME]?
 		<usetemplate name="okcancelbuttons" notext="No" yestext="Si"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -148,7 +148,7 @@ Vuoi davvero dare i diritti di modifica ai residenti selezionati?
 		<usetemplate name="okcancelbuttons" notext="No" yestext="Si"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		Vuoi revocare i diritti di modifica dati a [FIRST_NAME] [LAST_NAME]?
+		Vuoi revocare i diritti di modifica dati a [NAME]?
 		<usetemplate name="okcancelbuttons" notext="No" yestext="Si"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -985,7 +985,7 @@ Offri l&apos;amicizia a [NAME]?
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		Vuoi rimuovere remove [FIRST_NAME] [LAST_NAME] dalla lista dei tuoi amici?
+		Vuoi rimuovere remove [NAME] dalla lista dei tuoi amici?
 		<usetemplate name="okcancelbuttons" notext="Annulla" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">
@@ -1159,10 +1159,10 @@ Scegli un avatar maschile o femminile. Puoi sempre cambiare idea più tardi.
 		[NAME] [PRICE]L$ Non hai abbastanza L$ per farlo.
 	</notification>
 	<notification name="GrantedModifyRights">
-		Ti sono stati accordati i privilegi di modifica degli oggetti di [FIRST_NAME] [LAST_NAME].
+		Ti sono stati accordati i privilegi di modifica degli oggetti di [NAME].
 	</notification>
 	<notification name="RevokedModifyRights">
-		Ti sono stati revocati i privilegi di modifica degli oggetti di [FIRST_NAME] [LAST_NAME].
+		Ti sono stati revocati i privilegi di modifica degli oggetti di [NAME].
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
 		Questo reinizializzerà la cache della mappa di questa regione.
@@ -2436,10 +2436,10 @@ Vuoi visitare il sito di Second Life per impostarle?
 		Oggetto: [SUBJECT], Messaggio: [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] è Online
+		[NAME] è Online
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] è Offline
+		[NAME] è Offline
 	</notification>
 	<notification name="AddSelfFriend">
 		Non puoi aggiungere te stesso come amico.

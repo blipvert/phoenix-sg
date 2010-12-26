@@ -53,8 +53,12 @@ private:
 	static void onClickResetCache(void*);
 	static void onClickSetSoundCache(void*);
 	static void onClickResetSoundCache(void*);
-	static void onClickBrowseLogs(void*);
+	static void onClickSetChatLogs(void*);
+	static void onClickResetChatLogs(void*);
+	static void onClickBrowseChatLogs(void*);
+	static void onClickBrowseCrashLogs(void*);
 	static void onClickBrowseSoundCache(void*);
+	static void onClickBrowseUserSetting(void*);
 	static void onClickBrowseCache(void*);
 	static void onCommitPort(LLUICtrl* ctrl, void*);
 	static void onCommitSocks5ProxyEnabled(LLUICtrl* ctrl, void* data);

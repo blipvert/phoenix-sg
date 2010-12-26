@@ -40,7 +40,7 @@ void wear_inventory_category_on_avatar_loop(LLWearable* wearable, void*);
 // RlvCommmand
 //
 
-RlvCommand::RlvBhvrTable RlvCommand::m_BhvrMap;
+RlvCommand::bhvr_map_t RlvCommand::m_BhvrMap;
 
 // Checked: 2009-12-27 (RLVa-1.1.0k) | Modified: RLVa-1.1.0k
 RlvCommand::RlvCommand(const LLUUID& idObj, const std::string& strCommand)
@@ -121,10 +121,29 @@ ERlvBehaviour RlvCommand::getBehaviourFromString(const std::string& strBhvr, boo
 		*pfStrict = fStrict;
 
 	RLV_ASSERT(m_BhvrMap.size() > 0);
-	RlvBhvrTable::const_iterator itBhvr = m_BhvrMap.find( (!fStrict) ? strBhvr : strBhvr.substr(0, idxStrict));
+	bhvr_map_t::const_iterator itBhvr = m_BhvrMap.find( (!fStrict) ? strBhvr : strBhvr.substr(0, idxStrict));
 	if ( (itBhvr != m_BhvrMap.end()) && ((!fStrict) || (hasStrictVariant(itBhvr->second))) )
 		return itBhvr->second;
 	return RLV_BHVR_UNKNOWN;
+}
+
+// Checked: 2010-12-11 (RLVa-1.2.2c) | Added: RLVa-1.2.2c
+bool RlvCommand::getCommands(bhvr_map_t& cmdList, const std::string &strMatch)
+{
+	if (strMatch.empty())
+		return false;
+	cmdList.clear();
+
+	RLV_ASSERT(m_BhvrMap.size() > 0);
+	for (bhvr_map_t::const_iterator itBhvr = m_BhvrMap.begin(); itBhvr != m_BhvrMap.end(); ++itBhvr)
+	{
+		std::string strCmd = itBhvr->first; ERlvBehaviour eBhvr = itBhvr->second;
+		if (std::string::npos != strCmd.find(strMatch))
+			cmdList.insert(std::pair<std::string, ERlvBehaviour>(strCmd, eBhvr));
+		if ( (hasStrictVariant(eBhvr)) && (std::string::npos != strCmd.append("_sec").find(strMatch)) )
+			cmdList.insert(std::pair<std::string, ERlvBehaviour>(strCmd, eBhvr));
+	}
+	return (0 != cmdList.size());
 }
 
 // Checked: 2010-02-27 (RLVa-1.2.0a) | Modified: RLVa-1.1.0h
@@ -145,7 +164,7 @@ void RlvCommand::initLookupTable()
 				"attachthisover", "detachthis", "attachall", "attachallover", "detachall", "attachallthis", "attachallthisover",
 				"detachallthis", "tpto", "version", "versionnew", "versionnum", "getattach", "getattachnames", 	"getaddattachnames", 
 				"getremattachnames", "getoutfit", "getoutfitnames", "getaddoutfitnames", "getremoutfitnames", "findfolder", "findfolders", 
-				"getpath", "getpathnew", "getinv", "getinvworn", "getsitid", "getstatus", "getstatusall"
+				"getpath", "getpathnew", "getinv", "getinvworn", "getsitid", "getcommand", "getstatus", "getstatusall"
 			};
 
 		for (int idxBvhr = 0; idxBvhr < RLV_BHVR_COUNT; idxBvhr++)
@@ -366,6 +385,7 @@ void RlvForceWear::forceFolder(const LLViewerInventoryCategory* pFolder, EWearAc
 			case LLAssetType::AT_CLOTHING:
 				if (isWearAction(eAction))
 				{
+					eCurAction = ACTION_WEAR_REPLACE; // 1.X doesn't support multi-wearables so "add" means "replace" for wearables
 					ERlvWearMask eWearMask = gRlvWearableLocks.canWear(pRlvItem);
 					if ( ((ACTION_WEAR_REPLACE == eCurAction) && (eWearMask & RLV_WEAR_REPLACE)) ||
 						 ((ACTION_WEAR_ADD == eCurAction) && (eWearMask & RLV_WEAR_ADD)) )
@@ -459,9 +479,7 @@ bool RlvForceWear::isForceDetachable(const LLViewerObject* pAttachObj, bool fChe
 	    (pAttachObj) && (pAttachObj->isAttachment())
 		&& ( (idExcept.isNull()) ? (!gRlvAttachmentLocks.isLockedAttachment(pAttachObj))
 								 : (!gRlvAttachmentLocks.isLockedAttachmentExcept(pAttachObj, idExcept)) )
-		#ifdef RLV_EXTENSION_FLAG_NOSTRIP
 		&& (isStrippable(pAttachObj->getAttachmentItemID()))
-		#endif // RLV_EXTENSION_FLAG_NOSTRIP
 		#ifdef RLV_EXPERIMENTAL_COMPOSITEFOLDERS
 		&& ( (!fCheckComposite) || (!RlvSettings::getEnableComposites()) || 
 		     (!gRlvHandler.getCompositeInfo(pAttachPt->getItemID(), NULL, &pFolder)) || (gRlvHandler.canTakeOffComposite(pFolder)) )
@@ -534,9 +552,7 @@ bool RlvForceWear::isForceRemovable(const LLWearable* pWearable, bool fCheckComp
 		(pWearable) && (LLAssetType::AT_CLOTHING == pWearable->getAssetType()) 
 		&& ( (idExcept.isNull()) ? !gRlvWearableLocks.isLockedWearable(pWearable)
 		                         : !gRlvWearableLocks.isLockedWearableExcept(pWearable, idExcept) )
-		#ifdef RLV_EXTENSION_FLAG_NOSTRIP
 		&& (isStrippable(gAgent.getWearableItem(pWearable->getType())))
-		#endif // RLV_EXTENSION_FLAG_NOSTRIP
 		#ifdef RLV_EXPERIMENTAL_COMPOSITEFOLDERS
 		&& ( (!fCheckComposite) || (!RlvSettings::getEnableComposites()) || 
 		     (!gRlvHandler.getCompositeInfo(pWearable->getItemID(), NULL, &pFolder)) || (gRlvHandler.canTakeOffComposite(pFolder)) )
@@ -585,7 +601,6 @@ void RlvForceWear::forceRemove(EWearableType wtType)
 	forceRemove(gAgent.getWearable(wtType));
 }
 
-#ifdef RLV_EXTENSION_FLAG_NOSTRIP
 // Checked: 2010-03-19 (RLVa-1.2.0c) | Modified: RLVa-1.2.0a
 bool RlvForceWear::isStrippable(const LLInventoryItem* pItem)
 {
@@ -618,7 +633,6 @@ bool RlvForceWear::isStrippable(const LLInventoryItem* pItem)
 	}
 	return true;
 }
-#endif // RLV_EXTENSION_FLAG_NOSTRIP
 
 // Checked: 2010-08-30 (RLVa-1.1.3b) | Modified: RLVa-1.2.1c
 void RlvForceWear::addAttachment(const LLViewerInventoryItem* pItem, EWearAction eAction)
@@ -694,7 +708,6 @@ void RlvForceWear::remAttachment(const LLViewerObject* pAttachObj)
 // Checked: 2010-08-30 (RLVa-1.1.3b) | Modified: RLVa-1.2.1c
 void RlvForceWear::addWearable(const LLViewerInventoryItem* pItem, EWearAction eAction)
 {
-	eAction = ACTION_WEAR_REPLACE; // 1.X doesn't support multi-wearables so "add" means "replace" for wearables
 	const LLWearable* pWearable = gAgent.getWearableFromWearableItem(pItem->getLinkedUUID());
 	// When replacing remove all currently worn wearables of this type *unless* the item is currently worn
 	if ( (ACTION_WEAR_REPLACE == eAction) && (!pWearable) )
@@ -818,7 +831,7 @@ void RlvForceWear::done()
 				LLViewerInventoryItem* pItem = wearItems.get(0);
 				if ( (pItem) && ((LLAssetType::AT_BODYPART == pItem->getType()) || (LLAssetType::AT_CLOTHING == pItem->getType())) )
 				{
-					LLFoundData* pFound = new LLFoundData(pItem->getUUID(), pItem->getAssetUUID(), pItem->getName(), pItem->getType());
+					LLFoundData* pFound = new LLFoundData(pItem->getLinkedUUID(), pItem->getAssetUUID(), pItem->getName(), pItem->getType());
 					pWearData->mFoundList.push_front(pFound);
 				}
 			}
@@ -909,6 +922,15 @@ void RlvBehaviourNotifyHandler::changed(const RlvCommand& rlvCmd, bool fInternal
 			break;
 		default:
 			break;
+	}
+
+	// RLVa-HACK: @notify:<channel>;XXX=add will trigger itself, but shouldn't... this is a bad fix but won't create new bugs, revisit later
+	//   -> it works since the command did succeed and will trigger RlvHandler::notifyBehaviourObservers() which in turn will trigger us
+	//      and cause the code below to run, but meanwhile the code above will not process the @notify because it's not been added yet
+	if (!m_NotificationsDelayed.empty())
+	{
+		m_Notifications.insert(m_NotificationsDelayed.begin(), m_NotificationsDelayed.end());
+		m_NotificationsDelayed.clear();
 	}
 }
 

@@ -124,7 +124,11 @@ Angus Boyd
 Ann Congrejo
 	CT-193
 Ansariel Hiller
+	PHOE-1125
 	PHOE-1360
+	PHOE-1653
+	PHOE-1718
+	PHOE-1807
 Archimedes Plutonian
 	SNOW-197
 Ardy Lay
@@ -302,6 +306,7 @@ Henri Beauchamp
 	VWR-1320
 	VWR-1406
 	VWR-4157
+	PHOE-1718
 Hikkoshi Sakai
 	VWR-429
 Hiro Sommambulist

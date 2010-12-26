@@ -141,7 +141,7 @@
 	<notification name="GrantModifyRights">
 		授予另外一名居民修改的权利，意味着允许他们修改、删除或拿走
 任何你在世界里可能拥有的物品。请在执行这项许可的时候格外小心。
-你真的希望授予[FIRST_NAME] [LAST_NAME]修改权利吗？
+你真的希望授予[NAME]修改权利吗？
 		<usetemplate name="okcancelbuttons" notext="不，我想再考虑一下" yestext="是的，我愿意"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -151,7 +151,7 @@
 		<usetemplate name="okcancelbuttons" notext="不，我想再考虑一下" yestext="是的，我愿意"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		你真的希望撤回[FIRST_NAME] [LAST_NAME]的修改权利吗？
+		你真的希望撤回[NAME]的修改权利吗？
 		<usetemplate name="okcancelbuttons" notext="不，我想再考虑一下" yestext="是的，我愿意"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -1033,7 +1033,7 @@ www.secondlife.com/support
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		你是否要将[FIRST_NAME] [LAST_NAME] 从好友列表中去除？
+		你是否要将[NAME] 从好友列表中去除？
 		<usetemplate name="okcancelbuttons" notext="取消" yestext="移除"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">
@@ -1222,10 +1222,10 @@ www.secondlife.com/support
 		[NAME] L$ [PRICE] 您没有足够的 L$ 来这样做。
 	</notification>
 	<notification name="GrantedModifyRights">
-		你已经被授予特权，你可以任意修改[FIRST_NAME] [LAST_NAME]的物体。
+		你已经被授予特权，你可以任意修改[NAME]的物体。
 	</notification>
 	<notification name="RevokedModifyRights">
-		你的特权已经被撤回，你不可以再任意修改[FIRST_NAME] [LAST_NAME]的物体。
+		你的特权已经被撤回，你不可以再任意修改[NAME]的物体。
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
 		这样将会清空该区域的地图缓存。
@@ -2580,10 +2580,10 @@ http://secondlife.com/community/support.php
 		主题： [SUBJECT], 信息： [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST]上线了。
+		[NAME]上线了。
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST]下线了。
+		[NAME]下线了。
 	</notification>
 	<notification name="AddSelfFriend">
 		您无法将自己添加为好友。
@@ -3158,7 +3158,7 @@ Sculpted 元件需要特殊的材质来指定其形状。
 		您尝试加入的语音呼叫， [VOICE_CHANNEL_NAME], 已经达到最大成员数。请稍候再试。
 	</notification>
 	<notification name="ProximalVoiceChannelFull">
-		我们很抱歉。该区域已经达到语音交流的最大成员数。请尝试在其他区域使用语音聊天。
+		我们很抱歉。该区域已经达到语音交流的最大成员数。请尝试在其他区域使用语���聊天。
 	</notification>
 	<notification name="VoiceChannelDisconnected">
 		您已经从 [VOICE_CHANNEL_NAME] 断开连接。 您现在将会被重新连接到空间语音聊天。

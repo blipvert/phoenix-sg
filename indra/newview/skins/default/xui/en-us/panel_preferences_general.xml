@@ -81,28 +81,44 @@
 	     font="SansSerifSmall" height="16" initial_value="false"
 	     label="Use resolution independent scale" left="151" mouse_opaque="true"
 	     name="ui_auto_scale" radio_style="false" width="256" />
-	<spinner bottom="-260" decimal_digits="0" enabled="true"
+  <text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
+     bottom="-255" drop_shadow_visible="true" enabled="true" follows="left|top"
+     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="10"
+     mouse_opaque="true" name="logout_timer_label" v_pad="0" width="394">
+    Away Mode:
+  </text>
+  <check_box bottom="-260" enabled="true" follows="left|top"
+	     font="SansSerifSmall" height="16" initial_value="false"
+	     label="Auto trigger Away mode when idle" left="151" mouse_opaque="true"
+	     name="allow_idle_AFK_checkbox" radio_style="false" width="256" />
+	<spinner bottom="-282" decimal_digits="0" enabled="true"
 	     follows="left|top" height="16" increment="1" initial_val="300"
-	     label="Away Timeout:" label_width="141" left="10" max_val="600"
-	     min_val="30" mouse_opaque="true" name="afk_timeout_spinner" width="202" />
-	<check_box bottom="-286" enabled="true"
+	     label="Second before Away mode begins" label_width="200" left="170" max_val="1200"
+	     min_val="30" mouse_opaque="true" name="afk_timeout_spinner" width="255" />
+  <text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
+	     bottom="-300" drop_shadow_visible="true" enabled="true" follows="left|top"
+	     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="10"
+	     mouse_opaque="true" name="maturity_desired_label" v_pad="0" width="394">
+    (L$) Notification:
+  </text>
+	<check_box bottom="-306" enabled="true"
 	     follows="left|top" font="SansSerifSmall" height="16" initial_value="false"
 	     label="Notify when Linden dollars (L$) spent or received" left="151"
 	     mouse_opaque="true" name="notify_money_change_checkbox" radio_style="false"
 	     width="256" />
 	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-	     bottom="-305" drop_shadow_visible="true" enabled="true" follows="left|top"
+	     bottom="-325" drop_shadow_visible="true" enabled="true" follows="left|top"
 	     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="10"
 	     mouse_opaque="true" name="maturity_desired_label" v_pad="0" width="394">
 		 Rating:
 	</text>
 	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-	     bottom="-305" drop_shadow_visible="true" enabled="true" follows="left|top"
+	     bottom="-325" drop_shadow_visible="true" enabled="true" follows="left|top"
 	     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="151"
 	     mouse_opaque="true" name="maturity_desired_prompt" v_pad="0" width="394">
 		 I want to access content rated:
 	</text>
-	<combo_box bottom="-311" follows="left|top" height="18" left="315"
+	<combo_box bottom="-331" follows="left|top" height="18" left="315"
 	     mouse_opaque="true" name="maturity_desired_combobox" width="150" control_name="PreferredMaturity">
 		<combo_item name="Desired_Adult" value="42">
 			PG, Mature and Adult
@@ -139,13 +155,7 @@
 		Color For My Effects:
 	</text>
 	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-	     bottom="-254" drop_shadow_visible="true" enabled="true" follows="left|top"
-	     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="220"
-	     mouse_opaque="true" name="seconds_textbox" v_pad="0" width="128">
-		seconds
-	</text>
-	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-	     bottom="-347" drop_shadow_visible="true" enabled="true" follows="left|top"
+	     bottom="-357" drop_shadow_visible="true" enabled="true" follows="left|top"
 	     font="SansSerifSmall" h_pad="0" halign="left" height="18" left="10"
 	     mouse_opaque="true" name="crash_report_textbox" v_pad="0" width="394">
 		Crash reports:
@@ -157,7 +167,7 @@
 		Language:
 	</text>
 	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-	     bottom_delta="-1" drop_shadow_visible="true" enabled="true"
+	     bottom_delta="-3" drop_shadow_visible="true" enabled="true"
 	     follows="left|top" font="SansSerifSmall" h_pad="0" halign="left"
 	     height="18" left_delta="293" mouse_opaque="true" name="language_textbox2"
 	     v_pad="0" width="400">
@@ -224,7 +234,7 @@
 	<string name="region_name_prompt">
 		&lt;Type region name&gt;
 	</string>
-	<combo_box allow_text_entry="false" bottom="-347" enabled="true" follows="left|top"
+	<combo_box allow_text_entry="false" bottom="-357" enabled="true" follows="left|top"
 	     height="18" left="153" max_chars="20" mouse_opaque="true"
 	     name="crash_behavior_combobox" width="146">
 		<combo_item type="string" length="1" enabled="true" name="Askbeforesending" value="Ask before sending">

@@ -1,6 +1,17 @@
 <?xml version="1.0" ?>
 <llsd>
 	<map>
+    <key>PhoenixShowChatChannel</key>
+    <map>
+      <key>Comment</key>
+      <string>Show the chat channel selection in chatbar in chat history floater.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
     <key>PhoenixNameSystem</key>
     <map>
       <key>Comment</key>
@@ -10,7 +21,7 @@
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <integer>0</integer>
+      <integer>1</integer>
     </map>
     <key>PhoenixNameTagOldStyle</key>
     <map>
@@ -15590,6 +15601,61 @@
 			<string>Boolean</string>
 			<key>Value</key>
 			<integer>1</integer>
+		</map>
+		<key>PhoenixWLParcelEnabled</key>
+		<map>
+			<key>Comment</key>
+			<string>Enables auto setting WL from parcel desc flags</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixWLWhitelistFriends</key>
+		<map>
+			<key>Comment</key>
+			<string>Whitelist friend's land for Phoenix WL sharing</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixWLWhitelistGroups</key>
+		<map>
+			<key>Comment</key>
+			<string>Whitelist group land on groups you are member of for Phoenix WL sharing</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>1</integer>
+		</map>
+		<key>PhoenixWLWhitelistAll</key>
+		<map>
+			<key>Comment</key>
+			<string>Allow all land for Phoenix WL sharing</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
+		</map>
+		<key>PhoenixTextureLoadFullRes</key>
+		<map>
+			<key>Comment</key>
+			<string>If TRUE, always load textures at full resolution (discard = 0)</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>Boolean</string>
+			<key>Value</key>
+			<integer>0</integer>
 		</map>
 	</map>
 </llsd>

@@ -250,9 +250,12 @@ bool LLTextureCacheLocalFileWorker::doRead()
 		}
 	}
 #else
-	if (!mDataSize || mDataSize > local_size)
+	// Patch by Max Fox
+	// if (!mDataSize || mDataSize > local_size)
+	if (!mDataSize || mDataSize > (local_size-mOffset))
 	{
-		mDataSize = local_size;
+		//mDataSize = local_size;
+		mDataSize = local_size-mOffset;
 	}
 	mReadData = new U8[mDataSize];
 	
@@ -372,10 +375,13 @@ bool LLTextureCacheRemoteWorker::doRead()
 	if (!done && (mState == LOCAL))
 	{
 		llassert(local_size != 0);	// we're assuming there is a non empty local file here...
-		if (!mDataSize || mDataSize > local_size)
+
+		// Take offset into account. Thanks to Max Fox and Henri Beauchamp
+		if (!mDataSize || mDataSize > (local_size - mOffset))
 		{
-			mDataSize = local_size;
+			mDataSize = local_size - mOffset;
 		}
+
 		// Allocate read buffer
 		mReadData = new U8[mDataSize];
 		S32 bytes_read = LLAPRFile::readEx(local_filename, mReadData, mOffset, mDataSize);

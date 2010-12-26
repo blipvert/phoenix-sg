@@ -195,7 +195,10 @@ std::string LLFloaterMessageLogItem::getFull(BOOL show_header)
 								else
 									full.append(llformat("%s = ", var_name));
 								// llformat has a 1024 char limit!?
-								full.append(value);
+								if (std::string("SoundID").compare(var_name) == 0)
+									full.append(llformat("%s ... ", value.substr(0,14).c_str()));
+								else
+									full.append(value);
 								full.append("\n");
 							}
 						}

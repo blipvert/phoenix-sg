@@ -11,7 +11,7 @@ at [TIME] GMT.
     
     <text length="1" bottom_delta="0" font="SansSerif" height="25" left="20" text_color="AlertTextColor" name="no_lockout_text" visible="true" width="360"
        wrap="true">
-      You may change your Display Name at any time.
+      You may change your Display Name now.
     </text>
     
     <text left="20" bottom_delta="-40" width="360" height="18" font="SansSerif" name="set_name_label">

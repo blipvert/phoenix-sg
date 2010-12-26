@@ -234,6 +234,7 @@
 #include "floatermediaplayer.h"
 
 #include "llfloaterdisplayname.h"
+#include "llavatarnamecache.h"
 
 using namespace LLVOAvatarDefines;
 
@@ -3444,6 +3445,16 @@ class LLEditEnableCustomizeAvatar : public view_listener_t
 		bool new_value = (gAgent.getAvatarObject() && 
 						  gAgent.getAvatarObject()->isFullyLoaded() &&
 						  gAgent.areWearablesLoaded());
+		gMenuHolder->findControl(userdata["control"].asString())->setValue(new_value);
+		return true;
+	}
+};
+
+class LLEditEnableChangeDisplayname : public view_listener_t
+{
+	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
+	{
+		bool new_value = LLAvatarNameCache::useDisplayNames();
 		gMenuHolder->findControl(userdata["control"].asString())->setValue(new_value);
 		return true;
 	}
@@ -8992,6 +9003,8 @@ class LLWorldEnvSettings : public view_listener_t
 		{
 			LLWLParamManager::instance()->mAnimator.mIsRunning = true;
 			LLWLParamManager::instance()->mAnimator.mUseLindenTime = true;	
+			//KC: reset last to Default
+			gSavedPerAccountSettings.setString("PhoenixLastWLsetting", "Default");
 		}
 		return true;
 	}
@@ -9185,6 +9198,7 @@ void initialize_menus()
 	addMenu(new LLEditEnableDuplicate(), "Edit.EnableDuplicate");
 	addMenu(new LLEditEnableTakeOff(), "Edit.EnableTakeOff");
 	addMenu(new LLEditEnableCustomizeAvatar(), "Edit.EnableCustomizeAvatar");
+	addMenu(new LLEditEnableChangeDisplayname(), "Edit.EnableChangeDisplayname");
 
 	// View menu
 	addMenu(new LLViewMouselook(), "View.Mouselook");

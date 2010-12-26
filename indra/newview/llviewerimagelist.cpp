@@ -65,10 +65,6 @@
 
 #include <sys/stat.h>
 
-#ifdef LL_DARWIN
-#include "llwindowmacosx-objc.h"
-#endif
-
 ////////////////////////////////////////////////////////////////////////////
 
 void (*LLViewerImageList::sUUIDCallback)(void **, const LLUUID&) = NULL;
@@ -908,20 +904,6 @@ BOOL LLViewerImageList::createUploadFile(const std::string& filename,
 	// First, load the image.
 	LLPointer<LLImageRaw> raw_image = new LLImageRaw;
 	
-#ifdef LL_DARWIN
-	if (!decodeImageQuartz(filename, raw_image))
-		return FALSE;
-	bool reversible = false;
-	if (gSavedSettings.getBOOL("LosslessJ2CUpload") &&
-		(raw_image->getWidth() * raw_image->getHeight() <= LL_IMAGE_REZ_LOSSLESS_CUTOFF * LL_IMAGE_REZ_LOSSLESS_CUTOFF))
-	{
-		llinfos << "Saving image with lossless compression" << llendl;
-		reversible = true;
-	}
-	raw_image->biasedScaleToPowerOfTwo(LLViewerImage::MAX_IMAGE_SIZE_DEFAULT);
-	if (!encodeImageQuartz(raw_image,out_filename,reversible))
-		return FALSE;
-#else
 	switch (codec)
 	{
 		case IMG_CODEC_BMP:
@@ -1007,7 +989,6 @@ BOOL LLViewerImageList::createUploadFile(const std::string& filename,
 		llinfos << "Created output file " << out_filename << llendl;
 	}
 
-#endif
 	// test to see if the encode and save worked.
 	LLPointer<LLImageJ2C> integrity_test = new LLImageJ2C;
 	if( !integrity_test->loadAndValidate( out_filename ) )

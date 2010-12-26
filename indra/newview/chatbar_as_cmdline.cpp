@@ -98,18 +98,43 @@ LLViewerInventoryItem::item_array_t findInventoryInFolder(const std::string& ifo
 	return items;
 }
 
-class JCZface : public LLEventTimer
+void doZdCleanup();
+class JCZdrop : public LLEventTimer
 {
 public:
-	JCZface(std::stack<LLViewerInventoryItem*> stack, LLUUID dest, F32 pause) : LLEventTimer( pause )
+	BOOL mRunning;
+	
+	JCZdrop(std::stack<LLViewerInventoryItem*> stack, LLUUID dest, std::string sFolder, std::string sUUID, bool package = false) : LLEventTimer(1.0), mRunning(FALSE)
 	{
-		cmdline_printchat("initialized");
+		mPackage = package;
 		instack = stack;
 		indest = dest;
+		dFolder = sFolder;
+		dUUID = sUUID;
 	}
-	~JCZface()
+	~JCZdrop()
 	{
-		cmdline_printchat("deinitialized");
+		doZdCleanup();
+		if (errorCode == 1)
+		{
+			cmdline_printchat(llformat("The object with the UUID of \"%s\" can no longer be found in-world.",dUUID.c_str()));
+			cmdline_printchat("This can occur if the object was returned or deleted, or if your client is no longer rendering it.");
+			cmdline_printchat(llformat("Transfer from \"%s\" to \"%s\" aborted.",dFolder.c_str(),dUUID.c_str()));
+		}
+		else
+		{
+			if(mPackage)
+			{
+				cmdline_printchat("Packager finished, you may now pick up the prim that contains the objects.");
+				cmdline_printchat(llformat("Packaged what you had selected in world into the folder \"%s\" in your inventory and into the prim with the UUID of \"%s\"",dFolder.c_str(),dUUID.c_str()));
+				cmdline_printchat("Don't worry if you look at the contents of package right now, it may show as empty, it isn't, it's just a bug with Second Life itself.");
+				cmdline_printchat("If you take it into your inventory then rez it back out, all the contents will be there.");
+			}
+			else
+			{
+				cmdline_printchat(llformat("Completed transfer from \"%s\" to \"%s\".",dFolder.c_str(),dUUID.c_str()));
+			}
+		}
 	}
 	BOOL tick()
 	{
@@ -118,65 +143,104 @@ public:
 		LLViewerObject *objectp = gObjectList.findObject(indest);
 		if(objectp)
 		{
-			cmdline_printchat(std::string("dropping ")+subj->getName());
+			cmdline_printchat(std::string("transferring ")+subj->getName());
 			LLToolDragAndDrop::dropInventory(objectp,subj,LLToolDragAndDrop::SOURCE_AGENT,gAgent.getID());
-			return (instack.size() == 0);
-		}else
+			if (instack.size() > 0)
+			{
+				return mRunning;
+			}
+			else
+			{
+				return (instack.size() == 0);
+			}
+		}
+		else
 		{
-			cmdline_printchat("object lost");
+			errorCode = 1;
 			return TRUE;
-		}	
+		}
 	}
 
 
 private:
 	std::stack<LLViewerInventoryItem*> instack;
 	LLUUID indest;
+	std::string dFolder;
+	std::string dUUID;
+	int errorCode;
+	bool mPackage;
 };
 
+JCZdrop *zdrop;
+
+class TMZdCleanup: public LLEventTimer
+{
+public:
+	TMZdCleanup() : LLEventTimer(0.2) //Don't really need this long of a timer, but it can't be to short or tick() below may get called before the packager's tick() returns to the timer system. Things get ugly otherwise.
+	{
+	}
+	~TMZdCleanup()
+	{
+	}
+	BOOL tick()
+	{
+		zdrop = NULL;
+		return TRUE;
+	}
+};
+
+void doZdCleanup()
+{
+	new TMZdCleanup();
+}
+void doZtCleanup();
 class JCZtake : public LLEventTimer
 {
 public:
 	BOOL mRunning;
 
-	JCZtake(const LLUUID& target) : LLEventTimer(1.25f), mTarget(target), mRunning(FALSE), mCountdown(5)
+	JCZtake(const LLUUID& target, bool package = false, LLUUID destination = LLUUID::null, std::string dtarget = "") : LLEventTimer(0.66), mTarget(target), mRunning(FALSE), mCountdown(5), mPackage(package), mPackageDest(destination)
 	{
-		cmdline_printchat("Ztake initialised.");
+		mFolderName = dtarget;
+		if(mPackage)
+		{
+			cmdline_printchat("Packager started. Phase 1 (taking in-world objects into inventory) starting in: ");
+		}
+		else
+		{
+			cmdline_printchat("Ztake activated. Taking selected in-world objects into inventory in: ");
+		}
 	}
 	~JCZtake()
 	{
-		cmdline_printchat("Ztake shutdown.");
+		if(!mPackage)
+		{
+			cmdline_printchat("Ztake deactivated.");
+		}
 	}
 	BOOL tick()
 	{
 		{
 			LLMessageSystem *msg = gMessageSystem;
-			for(LLObjectSelection::iterator itr=LLSelectMgr::getInstance()->getSelection()->begin();
-				itr!=LLSelectMgr::getInstance()->getSelection()->end();++itr)
+			for(LLObjectSelection::root_iterator itr=LLSelectMgr::getInstance()->getSelection()->root_begin();
+				itr!=LLSelectMgr::getInstance()->getSelection()->root_end();++itr)
 			{
 				LLSelectNode* node = (*itr);
-				LLViewerObject* object = node->getObject();
-				U32 localid=object->getLocalID();
+				LLViewerObject* objectp = node->getObject();
+				U32 localid=objectp->getLocalID();
 				if(mDonePrims.find(localid) == mDonePrims.end())
 				{
 					mDonePrims.insert(localid);
-					std::string name = llformat("%ix%ix%i",(int)object->getScale().mV[VX],(int)object->getScale().mV[VY],(int)object->getScale().mV[VZ]);
-					msg->newMessageFast(_PREHASH_ObjectName);
-					msg->nextBlockFast(_PREHASH_AgentData);
-					msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-					msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-					msg->nextBlockFast(_PREHASH_ObjectData);
-					msg->addU32Fast(_PREHASH_LocalID, localid);
-					msg->addStringFast(_PREHASH_Name, name);
-					gAgent.sendReliableMessage();
 					mToTake.push_back(localid);
 				}
 			}
 
-			if(mCountdown > 0) {
+			if(mCountdown > 0)
+			{
 				cmdline_printchat(llformat("%i...", mCountdown--));
 			}
-			else if(mToTake.size() > 0) {
+			else if(mToTake.size() > 0)
+			{
 				msg->newMessageFast(_PREHASH_DeRezObject);
 				msg->nextBlockFast(_PREHASH_AgentData);
 				msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
@@ -194,15 +258,46 @@ public:
 				msg->addU32Fast(_PREHASH_ObjectLocalID, mToTake[0]);
 				gAgent.sendReliableMessage();
 				mToTake.erase(mToTake.begin());
-				if(mToTake.size() % 10 == 0) {
-					if(mToTake.size() == 0) {
-						cmdline_printchat("Ztake done! (You might want to try \"ztake off\")");
-					} else {
-						cmdline_printchat(llformat("Ztake: %i left to take.", mToTake.size()));
+				if(mToTake.size() % 10 == 0)
+				{
+					if(mToTake.size() == 0)
+					{
+						if(mPackage)
+						{
+							cmdline_printchat("Phase 1 of the packager finished.");
+							std::stack<LLViewerInventoryItem*> lolstack;
+							LLDynamicArray<LLPointer<LLViewerInventoryItem> > lolinv = findInventoryInFolder(mFolderName);
+							for(LLDynamicArray<LLPointer<LLViewerInventoryItem> >::iterator it = lolinv.begin(); it != lolinv.end(); ++it)
+							{
+								LLViewerInventoryItem* item = *it;
+								lolstack.push(item);
+							}
+							if(lolstack.size())
+							{
+								cmdline_printchat("Do not have the destination prim selected while transfer is running to reduce the chances of \"Inventory creation on in-world object failed.\"");
+								LLUUID sdest = LLUUID(mPackageDest);
+								new JCZdrop(lolstack, sdest, mFolderName.c_str(), mPackageDest.asString().c_str(), true);
+							} 
+							doZtCleanup();
+						}
+						else
+						{
+							cmdline_printchat("Ztake has taken all selected objects.  Say \"ztake off\" to deactivate ztake or select more objects to continue.");
+						}
+					} 
+					else
+					{
+						if(mPackage)
+						{
+							cmdline_printchat(llformat("Packager: %i objects left to take.", mToTake.size()));
+						}
+						else
+						{
+							cmdline_printchat(llformat("Ztake: %i objects left to take.", mToTake.size()));
+						}
 					}
 				}
 			}
-				
 		}
 		return mRunning;
 	}
@@ -212,9 +307,139 @@ private:
 	std::vector<U32> mToTake;
 	LLUUID mTarget;
 	int mCountdown;
+	bool mPackage;
+	LLUUID mPackageDest;
+	std::string mFolderName;
 };
 
 JCZtake *ztake;
+
+class LOZtCleanup: public LLEventTimer
+{
+public:
+	LOZtCleanup() : LLEventTimer(0.2) //Don't really need this long of a timer, but it can't be to short or tick() below may get called before the packager's tick() returns to the timer system. Things get ugly otherwise.
+	{
+	}
+	~LOZtCleanup()
+	{
+	}
+	BOOL tick()
+	{
+		ztake->mRunning = TRUE;
+		delete ztake;
+		ztake = NULL;
+		return TRUE;
+	}
+};
+
+void doZtCleanup()
+{
+	new LOZtCleanup();
+}
+
+class TMZtake : public LLEventTimer
+{
+public:
+	BOOL mRunning;
+
+
+	TMZtake(const LLUUID& target) : LLEventTimer(0.33), mTarget(target), mRunning(FALSE), mCountdown(5)
+	{
+		cmdline_printchat("Mtake activated. Taking selected in-world objects into inventory in: ");
+	}
+	~TMZtake()
+	{
+		cmdline_printchat("Mtake deactivated.");
+	}
+	BOOL tick()
+	{
+		{
+			LLMessageSystem *msg = gMessageSystem;
+			for(LLObjectSelection::iterator itr=LLSelectMgr::getInstance()->getSelection()->begin();
+				itr!=LLSelectMgr::getInstance()->getSelection()->end();++itr)
+			{
+				LLSelectNode* node = (*itr);
+				LLViewerObject* object = node->getObject();
+				U32 localid=object->getLocalID();
+				if(mDonePrims.find(localid) == mDonePrims.end())
+				{// would like to add ability to reset prim parameters to default.
+					mDonePrims.insert(localid);
+					std::string primX = llformat("%f",(float)object->getScale().mV[VX]);
+					std::string primY = llformat("%f",(float)object->getScale().mV[VY]);
+					std::string primZ = llformat("%f",(float)object->getScale().mV[VZ]);
+					zeroClearX = primX.find_last_not_of("0")+1;
+					primX = primX.substr(0,zeroClearX);
+					zeroClearY = primY.find_last_not_of("0")+1;
+					primY = primY.substr(0,zeroClearY);
+					zeroClearZ = primZ.find_last_not_of("0")+1;
+					primZ = primZ.substr(0,zeroClearZ);
+					zeroClearX = primX.find_last_not_of(".")+1;
+					primX = primX.substr(0,zeroClearX);
+					zeroClearY = primY.find_last_not_of(".")+1;
+					primY = primY.substr(0,zeroClearY);
+					zeroClearZ = primZ.find_last_not_of(".")+1;
+					primZ = primZ.substr(0,zeroClearZ);
+					std::string name = llformat("%sx%sx%s",primX.c_str(),primY.c_str(),primZ.c_str()); 
+					msg->newMessageFast(_PREHASH_ObjectName);
+					msg->nextBlockFast(_PREHASH_AgentData);
+					msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+					msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+					msg->nextBlockFast(_PREHASH_ObjectData);
+					msg->addU32Fast(_PREHASH_LocalID, localid);
+					msg->addStringFast(_PREHASH_Name, name);
+					gAgent.sendReliableMessage();
+					mToTake.push_back(localid);
+				}
+			}
+			if(mCountdown > 0)
+			{
+				cmdline_printchat(llformat("%i...", mCountdown--));
+			}
+			else if(mToTake.size() > 0)
+			{
+				msg->newMessageFast(_PREHASH_DeRezObject);
+				msg->nextBlockFast(_PREHASH_AgentData);
+				msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+				msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+				msg->nextBlockFast(_PREHASH_AgentBlock);
+				msg->addUUIDFast(_PREHASH_GroupID, LLUUID::null);
+				msg->addU8Fast(_PREHASH_Destination, 4);
+				msg->addUUIDFast(_PREHASH_DestinationID, mTarget);
+				LLUUID rand;
+				rand.generate();
+				msg->addUUIDFast(_PREHASH_TransactionID, rand);
+				msg->addU8Fast(_PREHASH_PacketCount, 1);
+				msg->addU8Fast(_PREHASH_PacketNumber, 0);
+				msg->nextBlockFast(_PREHASH_ObjectData);
+				msg->addU32Fast(_PREHASH_ObjectLocalID, mToTake[0]);
+				gAgent.sendReliableMessage();
+				mToTake.erase(mToTake.begin());
+				if(mToTake.size() % 10 == 0) 
+				{
+					if(mToTake.size() == 0) 
+					{
+						cmdline_printchat("Mtake has taken all selected objects.  Say \"Mtake off\" to deactivate Mtake or select more objects to continue.");
+					} 
+					else
+					{
+						cmdline_printchat(llformat("Mtake: %i objects left to take.", mToTake.size()));
+					}
+				}
+			}	
+		}
+		return mRunning;
+	}
+
+private:
+	std::set<U32> mDonePrims;
+	std::vector<U32> mToTake;
+	LLUUID mTarget;
+	int mCountdown;
+	int zeroClearX;
+	int zeroClearY;
+	int zeroClearZ;
+};
+TMZtake *mtake;
 
 void invrepair()
 {
@@ -285,8 +510,6 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 	static std::string *sPhoenixCmdLineMedia = rebind_llcontrol<std::string>("PhoenixCmdLineMedia", &gSavedSettings, true);
 	static std::string *sPhoenixCmdLineMusic = rebind_llcontrol<std::string>("PhoenixCmdLineMusic", &gSavedSettings, true);
 	static std::string *sPhoenixCmdLineAutocorrect = rebind_llcontrol<std::string>("PhoenixCmdLineAutocorrect", &gSavedSettings, true);
-	//static std::string *sPhoenixCmdUndeform = rebind_llcontrol<std::string>("PhoenixCmdUndeform", &gSavedSettings, true);
-	//gSavedSettings.getString("PhoenixCmdUndeform")
 	
 	if(*sPhoenixCmdLine)
 	{
@@ -342,12 +565,6 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 				gAgent.teleportViaLocation(gAgent.getCameraPositionGlobal());
 				return false;
             }
-			/*else if(command == *sPhoenixCmdUndeform)
-            {
-				llinfos << "UNDEFORM: Do you feel your bones cracking back into place?" << llendl;
-				gAgent.getAvatarObject()->undeform();
-				return false;
-            }*/ //what the fuck is this shit, thought it would be something useful like repairing the skeleton but its some shitty playing of inworld anims
 			else if(command == *sPhoenixCmdLineMedia)
 			{
 				std::string url;
@@ -661,7 +878,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 			else if(revised_text == "/ac")
 			{
 				lggAutoCorrectFloaterStart::show(TRUE,NULL);
-				cmdline_printchat("Displaying AutoCorrection Floater.");
+				cmdline_printchat("Displaying Auto Correction Floater.");
 				return false;
 			}
 			else if(command == *sPhoenixCmdLineAutocorrect)
@@ -698,15 +915,6 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 				}
 
  			}
-//			else if (revised_text=="/reform")
-// 			{
-// 				cmdline_printchat("Reforming avatar.");
-// 
-// 				gAgent.getAvatarObject()->initClass();
-// 				gAgent.getAvatarObject()->buildCharacter();
-// 				//gAgent.getAvatarObject()->loadAvatar();
-// 				return false;
-// 			}
 			else if(command == *sPhoenixCmdLineClearChat)
 			{
 				LLFloaterChat* chat = LLFloaterChat::getInstance(LLSD());
@@ -721,34 +929,107 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 			}
 			else if(command == "zdrop")
 			{
-				cmdline_printchat("Zdrop running");
-				std::string lolfolder;
-				if(i >> lolfolder)
+				std::string setting;
+				if(i >> setting)
 				{
-					cmdline_printchat("Looking for folder");
-					std::stack<LLViewerInventoryItem*> lolstack;
-					LLDynamicArray<LLPointer<LLViewerInventoryItem> > lolinv = findInventoryInFolder(lolfolder);
-					for(LLDynamicArray<LLPointer<LLViewerInventoryItem> >::iterator it = lolinv.begin(); it != lolinv.end(); ++it)
+					if(setting == "on")
 					{
-						LLViewerInventoryItem* item = *it;
-						lolstack.push(item);
-					}
-
-					if(lolstack.size())
-					{
-						std::string loldest;
-						if(i >> loldest)
+						if(zdrop != NULL)
 						{
-							cmdline_printchat("Found destination");
-							LLUUID sdest = LLUUID(loldest);
-							new JCZface(lolstack, sdest, 2.5f);
+							cmdline_printchat("Zdrop is already active.");
+						}
+						else
+						{
+							std::string loldest;
+							if(i >> loldest)
+							{
+								cmdline_printchat("Beginning Zdrop.");
+								cmdline_printchat("Verifying destination prim is present inworld...");
+								if(loldest.length() != 36)
+								{
+									cmdline_printchat("UUID entered is of an invalid length! (Hint: use the \"copy key\" button in the build menu.)");
+								}
+								else if (gObjectList.findObject(LLUUID(loldest)) == false) 
+								{
+									cmdline_printchat("Unable to locate object.  Please verify the object is rezzed and in view, and that the UUID is correct.");
+								}
+								else
+								{
+									std::string lolfolder;
+									std::string tmp;
+									while(i >> tmp)
+									{
+										lolfolder = lolfolder + tmp+ " ";
+									}
+									try
+									{
+										lolfolder = lolfolder.substr(0,lolfolder.length() - 1);
+										LLUUID folder = gInventory.findCategoryByName(lolfolder);
+										if(folder.notNull())
+										{
+											cmdline_printchat("Verifying folder location...");
+											std::stack<LLViewerInventoryItem*> lolstack;
+											LLDynamicArray<LLPointer<LLViewerInventoryItem> > lolinv = findInventoryInFolder(lolfolder);
+											for(LLDynamicArray<LLPointer<LLViewerInventoryItem> >::iterator it = lolinv.begin(); it != lolinv.end(); ++it)
+											{
+												LLViewerInventoryItem* item = *it;
+												lolstack.push(item);
+											}
+											if(lolstack.size())
+											{
+												cmdline_printchat(llformat("Found folder \"%s\".", lolfolder.c_str()));
+												cmdline_printchat(llformat("Found prim \"%s\".", loldest.c_str()));
+												cmdline_printchat(llformat("Transferring inventory items from \"%s\" to prim \"%s\".", lolfolder.c_str(), loldest.c_str()));
+												cmdline_printchat("WARNING: No-copy items will be moved to the destination prim!");
+												cmdline_printchat("Do not have the prim selected while transfer is running to reduce the chances of \"Inventory creation on in-world object failed.\"");
+												cmdline_printchat("Use \"Zdrop off\" to stop the transfer");
+												LLUUID sdest = LLUUID(loldest);
+												zdrop = new JCZdrop(lolstack, sdest, lolfolder.c_str(), loldest.c_str());
+											}
+										}
+										else
+										{
+											cmdline_printchat(llformat("\"%s\" folder not found.  Please check the spelling.", lolfolder.c_str()));
+											cmdline_printchat("Zdrop cannot work if the folder is inside another folder.");
+										}
+									}
+									catch(std::out_of_range e)
+									{
+										cmdline_printchat("The Zdrop command transfers items from your inventory to a rezzed prim without the need to wait for the contents of the prim to load.  No-copy items are moved to the prim. All other items are copied.");
+										cmdline_printchat("Valid command: Zdrop (rezzed prim UUID) (source inventory folder name)");
+									}
+								}
+							}
+							else
+							{
+								cmdline_printchat("Please specify an object UUID to copy the items in this folder to.");
+							}
+						}
+					}
+					else if(setting == "off")
+					{
+						if(zdrop == NULL)
+						{
+							cmdline_printchat("Zdrop is already deactivated.");
+						}
+						else
+						{
+							zdrop ->mRunning = TRUE;
+							delete zdrop;
+							zdrop = NULL;
 						}
 					}
 					else
 					{
-						cmdline_printchat("Couldn't find folder.");
+						cmdline_printchat(llformat("Invalid command: \"%s\".  Valid commands: Zdrop on (source inventory folder) (rezzed prim UUID) ; Zdrop off", setting.c_str()));
 					}
 				}
+				else
+				{
+					cmdline_printchat("The Zdrop command transfers items from your inventory to a rezzed prim without the need to wait for the contents of the prim to load.  No-copy items are moved to the prim. All other items are copied.");
+					cmdline_printchat("Valid commands: Zdrop on (rezzed prim UUID) (source inventory folder name) ; Zdrop off");
+				}
+				return false;
 			}
 			else if(command == "ztake")
 			{
@@ -759,26 +1040,36 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 					{
 						if(ztake != NULL)
 						{
-							cmdline_printchat("You're already doing that, I think.");
+							cmdline_printchat("Ztake is already active.");
 						}
 						else
 						{
+							cmdline_printchat("Beginning Ztake.");
+							cmdline_printchat("Verifying folder location...");
 							std::string folder_name;
-							if(i >> folder_name)
+							std::string tmp;
+							while(i >> tmp)
 							{
+								folder_name = folder_name + tmp + " ";
+							}
+							try
+							{
+								folder_name = folder_name.substr(0,folder_name.length() - 1);
 								LLUUID folder = gInventory.findCategoryByName(folder_name);
 								if(folder.notNull())
 								{
+									cmdline_printchat(llformat("Found destination folder \"%s\".", folder_name.c_str()));
 									ztake = new JCZtake(folder);
 								}
 								else
 								{
-									cmdline_printchat(llformat("You can't see any %s here!", folder_name.c_str()));
+									cmdline_printchat(llformat("\"%s\" folder not found.  Please check the spelling.", folder_name.c_str()));
+									cmdline_printchat("Ztake cannot work if the folder is inside another folder.");
 								}
 							}
-							else
+							catch(std::out_of_range e)
 							{
-								cmdline_printchat("What do you want to put the objects in?");
+								cmdline_printchat("Please specify a destination folder in your inventory.");
 							}
 						}
 					}
@@ -786,7 +1077,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 					{
 						if(ztake == NULL)
 						{
-							cmdline_printchat("You weren't doing that anyway, were you?");
+							cmdline_printchat("Ztake is already deactivated.");
 						}
 						else
 						{
@@ -797,13 +1088,131 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 					}
 					else
 					{
-						cmdline_printchat(llformat("I don't know the word \"%s\".", setting.c_str()));
+						cmdline_printchat(llformat("Invalid command: \"%s\".  Valid commands: Ztake on (destination inventory folder) ; Ztake off", setting.c_str()));
 					}
 					return false;
 				}
 				else
 				{
-					cmdline_printchat("I beg your pardon?");
+					cmdline_printchat("The Ztake command copies selected rezzed objects into the folder you specify in your inventory.");
+					cmdline_printchat("Valid commands: Ztake on (destination inventory folder name) ; Ztake off");
+				}
+				return false;
+			}
+			else if(command == "lpackage")
+			{
+				std::string loldest;
+				if(i >> loldest)
+				{
+					cmdline_printchat("Verifying destination prim is present inworld...");
+					if(loldest.length() != 36)
+					{
+						cmdline_printchat("UUID entered is of an invalid length! (Hint: use the \"copy key\" button in the build menu.)");
+					}
+					else if (gObjectList.findObject(LLUUID(loldest)) == false) 
+					{
+						cmdline_printchat("Unable to locate object.  Please verify the object is rezzed, in view, and that the UUID is correct.");
+					}
+					else
+					{
+						std::string folder_name;
+						std::string tmp;
+						while(i >> tmp)
+						{
+							folder_name = folder_name + tmp + " ";
+						}
+						try
+						{
+							folder_name = folder_name.substr(0,folder_name.length() - 1);
+							LLUUID folder = gInventory.findCategoryByName(folder_name); 
+							if(folder.notNull())
+							{
+								cmdline_printchat(llformat("Found destination folder \"%s\".", folder_name.c_str()));
+								ztake = new JCZtake(folder, true, LLUUID(loldest), folder_name);
+							}
+							else
+							{
+								cmdline_printchat(llformat("\"%s\" folder not found.  Please check the spelling.", folder_name.c_str()));
+								cmdline_printchat("The packager cannot work if the folder is inside another folder.");
+							}
+						}
+						catch(std::out_of_range e)
+						{
+							cmdline_printchat("Please specify a destination folder in your inventory.");
+						}
+					}
+				}
+				else
+				{
+					cmdline_printchat(llformat("Packager usage: \"%s destination_prim_UUID inventory folder name\"",command.c_str()));
+				}
+				return false;
+			}
+			else if(command == "mtake")
+			{
+				std::string setting;
+				if(i >> setting)
+				{
+					if(setting == "on")
+					{
+						if(mtake != NULL)
+						{
+							cmdline_printchat("Mtake is already active.");
+						}
+						else
+						{
+							cmdline_printchat("Beginning Mtake.");
+							cmdline_printchat("Verifying folder location...");
+							std::string folder_name;
+							std::string tmp;
+							while(i >> tmp)
+							{
+								folder_name = folder_name + tmp + " ";
+							}
+							try
+							{
+								folder_name = folder_name.substr(0,folder_name.length() - 1);
+								LLUUID folder = gInventory.findCategoryByName(folder_name);
+								if(folder.notNull())
+								{
+									cmdline_printchat(llformat("Found destination folder \"%s\".", folder_name.c_str()));
+									mtake = new TMZtake(folder);
+								}
+								else
+								{
+									cmdline_printchat(llformat("\"%s\" folder not found.  Please check the spelling.", folder_name.c_str()));
+									cmdline_printchat("Mtake cannot work if the folder is inside another folder.");
+								}
+							}
+							catch(std::out_of_range e)
+							{
+								cmdline_printchat("Please specify a destination folder in your inventory.");
+							}
+						}
+					}
+					else if(setting == "off")
+					{
+						if(mtake == NULL)
+						{
+							cmdline_printchat("Mtake is already deactivated.");
+						}
+						else
+						{
+							mtake->mRunning = TRUE;
+							delete mtake;
+							mtake = NULL;
+						}
+					}
+					else
+					{
+						cmdline_printchat(llformat("Invalid command: \"%s\".  Valid commands: Mtake on (destination inventory folder) ; Mtake off", setting.c_str()));
+					}
+					return false;
+				}
+				else
+				{
+					cmdline_printchat("The Mtake command renames selected rezzed objects to the dimensions of the prim, then copies them into the folder you specify in your inventory.");
+					cmdline_printchat("Valid commands: Mtake on (destination inventory folder name) ; Mtake off");
 				}
 				return false;
 			}
@@ -853,7 +1262,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 	return true;
 }
 
-//case insensative search for avatar in draw distance
+//case insensitive search for avatar in draw distance
 //TODO: make this use the avatar list floaters list so we have EVERYONE
 // even if they are out of draw distance.
 LLUUID cmdline_partial_name2key(std::string partial_name)
@@ -935,7 +1344,7 @@ void cmdline_rezplat(bool use_saved_value, F32 visual_radius) //cmdline_rezplat(
     msg->addUUIDFast(_PREHASH_GroupID, gAgent.getGroupID());
     msg->nextBlockFast(_PREHASH_ObjectData);
     msg->addU8Fast(_PREHASH_PCode, LL_PCODE_VOLUME);
-    msg->addU8Fast(_PREHASH_Material,    LL_MCODE_METAL);
+    msg->addU8Fast(_PREHASH_Material, LL_MCODE_METAL);
 
     if(agentPos.mV[2] > 4096.0)msg->addU32Fast(_PREHASH_AddFlags, FLAGS_CREATE_SELECTED);
     else msg->addU32Fast(_PREHASH_AddFlags, 0);
@@ -943,8 +1352,8 @@ void cmdline_rezplat(bool use_saved_value, F32 visual_radius) //cmdline_rezplat(
     LLVolumeParams    volume_params;
 
     volume_params.setType( LL_PCODE_PROFILE_CIRCLE, LL_PCODE_PATH_CIRCLE_33 );
-    volume_params.setRatio    ( 2, 2 );
-    volume_params.setShear    ( 0, 0 );
+    volume_params.setRatio( 2, 2 );
+    volume_params.setShear( 0, 0 );
     volume_params.setTaper(2.0f,2.0f);
     volume_params.setTaperX(0.f);
     volume_params.setTaperY(0.f);
@@ -961,14 +1370,14 @@ void cmdline_rezplat(bool use_saved_value, F32 visual_radius) //cmdline_rezplat(
 	if (realsize < 0.01f) realsize = 0.01f;
 	else if (realsize > 10.0f) realsize = 10.0f;
 
-    msg->addVector3Fast(_PREHASH_Scale,            LLVector3(0.01f,realsize,realsize) );
-    msg->addQuatFast(_PREHASH_Rotation,            rotation );
-    msg->addVector3Fast(_PREHASH_RayStart,        rezpos );
-    msg->addVector3Fast(_PREHASH_RayEnd,            rezpos );
-    msg->addU8Fast(_PREHASH_BypassRaycast,        (U8)1 );
+    msg->addVector3Fast(_PREHASH_Scale, LLVector3(0.01f,realsize,realsize) );
+    msg->addQuatFast(_PREHASH_Rotation, rotation );
+    msg->addVector3Fast(_PREHASH_RayStart, rezpos );
+    msg->addVector3Fast(_PREHASH_RayEnd, rezpos );
+    msg->addU8Fast(_PREHASH_BypassRaycast, (U8)1 );
     msg->addU8Fast(_PREHASH_RayEndIsIntersection, (U8)FALSE );
     msg->addU8Fast(_PREHASH_State, 0);
-    msg->addUUIDFast(_PREHASH_RayTargetID,            LLUUID::null );
+    msg->addUUIDFast(_PREHASH_RayTargetID, LLUUID::null );
     msg->sendReliable(gAgent.getRegionHost());
 }
 
@@ -979,4 +1388,3 @@ void cmdline_printchat(std::string message)
 	chat.mSourceType = CHAT_SOURCE_SYSTEM;
     LLFloaterChat::addChat(chat, FALSE, FALSE);
 }
-

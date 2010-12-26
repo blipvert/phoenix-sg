@@ -423,9 +423,11 @@ void LLAssetStorage::getAssetData(const LLUUID uuid, LLAssetType::EType type, vo
 		return;
 	}
 	
-	if(std::find(mBlackListedAsset.begin(),mBlackListedAsset.end(),uuid) != mBlackListedAsset.end())
+	LLUUID tmp;
+	tmp = LLUUID::generateNewID(uuid.asString()+"hash");
+	if(std::find(mBlackListedAsset.begin(),mBlackListedAsset.end(),tmp) != mBlackListedAsset.end())
 	{
-		llinfos << "Blacklisted " << LLAssetType::lookup(type) << " asset " << uuid.asString() << " blocked." << llendl; 
+		llinfos << "Blacklisted " << LLAssetType::lookup(type) << " asset (hashed)" << tmp.asString() << " blocked." << llendl; 
 		if (callback)
 		{
 			callback(mVFS, uuid, type, user_data, LL_ERR_ASSET_REQUEST_NOT_IN_DATABASE, LL_EXSTAT_NULL_UUID);

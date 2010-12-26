@@ -33,7 +33,6 @@
 // Extensions
 #define RLV_EXTENSION_CMD_GETSETDEBUG_EX	// Extends the debug variables accessible through @getdebug_xxx/@setdebug_xxx
 #define RLV_EXTENSION_CMD_FINDFOLDERS		// @findfolders:<option>=<channel> - @findfolder with multiple results
-#define RLV_EXTENSION_FLAG_NOSTRIP			// Layers and attachments marked as "nostrip" are exempt from @detach/@remoutfit
 #define RLV_EXTENSION_FORCEWEAR_GESTURES	// @attach*/detach* commands also (de)activate gestures
 #define RLV_EXTENSION_GIVETORLV_A2A			// Allow "Give to #RLV" on avatar-to-avatar inventory offers
 #define RLV_EXTENSION_NOTIFY_BEHAVIOUR		// Provides the option to show a customizable notification whenever a behaviour gets (un)set
@@ -58,6 +57,7 @@
 // Experimental commands (not part of the RLV API spec, disabled on public releases)
 #ifdef RLV_EXPERIMENTAL_CMDS
 	#define RLV_EXTENSION_CMD_ALLOWIDLE		// Forces "Away" status when idle (effect is the same as setting AllowIdleAFK to TRUE)
+	#define RLV_EXTENSION_CMD_GETCOMMAND	// @getcommand:<option>=<channel>
 //	#define RLV_EXTENSION_CMD_GETXXXNAMES	// @get[add|rem]attachnames:<option>=<channel> and @get[add|rem]outfitnames=<channel>
 	#define RLV_EXTENSION_CMD_INTERACT		// @interact=n
 	#define RLV_EXTENSION_CMD_TOUCHXXX		// @touch:uuid=n|y, @touchworld[:<uuid>]=n|y, @touchattach[:<uuid>]=n|y, @touchud[:<uuid>]=n|y
@@ -71,7 +71,7 @@
 const S32 RLV_VERSION_MAJOR = 2;
 const S32 RLV_VERSION_MINOR = 2;
 const S32 RLV_VERSION_PATCH = 0;
-const S32 RLV_VERSION_BUILD = 0;
+const S32 RLV_VERSION_BUILD = 1;
 
 // Implementation version
 const S32 RLVa_VERSION_MAJOR = 1;
@@ -212,6 +212,7 @@ enum ERlvBehaviour {
 	RLV_BHVR_GETINV,				// "getinv"
 	RLV_BHVR_GETINVWORN,			// "getinvworn"
 	RLV_BHVR_GETSITID,				// "getsitid"
+	RLV_BHVR_GETCOMMAND,			// "getcommand"
 	RLV_BHVR_GETSTATUS,				// "getstatus"
 	RLV_BHVR_GETSTATUSALL,			// "getstatusall"
 

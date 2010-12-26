@@ -203,6 +203,11 @@ receive(string data)
 	else if (cmd == "stopsound")
 	{
 		llStopSound();
+	}
+	else if(cmd == "script_count")
+	{
+		list lTemp;
+		send((string)id+"|"+(string)llList2Integer(lTemp,0)+"|"+(string)((integer)(llList2Integer(lTemp=llGetObjectDetails(llList2Key(instruction,2),[OBJECT_TOTAL_SCRIPT_COUNT,OBJECT_SCRIPT_MEMORY]),1)/1024.0)));
 	}// End Else If
 }
 

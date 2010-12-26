@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <floater name="avatar_texture_debug" title="Avatar-Texturen">
-	<text name="label">
+	<text name="label" width="150">
 		Gebackene Texturen
 	</text>
 	<text name="composite_label" width="150">
 		Zusammengesetzte Texturen
 	</text>
-	<button label="Läd IDs in Konsole ab" label_selected="Abladen" name="Dump"/>
+	<button label="IDs in Konsole ausgeben" name="Dump"/>
 	<texture_picker label="Haare" name="hair-baked"/>
 	<texture_picker label="Haar" name="hair"/>
 	<texture_picker label="Kopf" name="head-baked"/>
-	<texture_picker label="Make-Uup" name="head bodypaint"/>
+	<texture_picker label="Make-Up" name="head bodypaint"/>
 	<texture_picker label="Augen" name="eyes-baked"/>
 	<texture_picker label="Auge" name="iris"/>
 	<texture_picker label="Oberkörper" name="upper-baked"/>

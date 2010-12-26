@@ -140,7 +140,7 @@ Wybierz pojedynczy obiekt i spróbuj jeszcze raz.
 	<notification name="GrantModifyRights">
 		Udzielenie praw modyfikacji innemu Rezydentowi umożliwia modyfikację, usuwanie lub wzięcie JAKIEGOKOLWIEK z Twoich obiektów.
 Używaj tej opcji z rozwagą!
-Czy chcesz dać prawa modyfikacji osobie [FIRST_NAME] [LAST_NAME]?
+Czy chcesz dać prawa modyfikacji osobie [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Nie" yestext="Tak"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -150,7 +150,7 @@ Czy chcesz dać prawa modyfikacji wybranym osobom?
 		<usetemplate name="okcancelbuttons" notext="Nie" yestext="Tak"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		Czy chcesz odebrać prawa modyfikacji Rezydentowi [FIRST_NAME] [LAST_NAME]?
+		Czy chcesz odebrać prawa modyfikacji Rezydentowi [NAME]?
 		<usetemplate name="okcancelbuttons" notext="Nie" yestext="Tak"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -976,7 +976,7 @@ Zaproponować znajomość [NAME]?
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		Chcesz usunąć [FIRST_NAME] [LAST_NAME] z listy Twoich znajomych?
+		Chcesz usunąć [NAME] z listy Twoich znajomych?
 		<usetemplate name="okcancelbuttons" notext="Anuluj" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">
@@ -1145,10 +1145,10 @@ Ten wybór będzie można później zmienić.
 		[NAME] [PRICE]L$ Masz za mało L$.
 	</notification>
 	<notification name="GrantedModifyRights">
-		Masz teraz prawa modyfikacji obiektów należących do [FIRST_NAME] [LAST_NAME].
+		Masz teraz prawa modyfikacji obiektów należących do [NAME].
 	</notification>
 	<notification name="RevokedModifyRights">
-		Prawa modyfikacji obiektów należących do [FIRST_NAME] [LAST_NAME] zostały Ci odebrane.
+		Prawa modyfikacji obiektów należących do [NAME] zostały Ci odebrane.
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
 		To spowoduje wyczyszczenie buforów map regionu.
@@ -2379,10 +2379,10 @@ Czy chcesz odwiedzić stronę Second Life żeby to zmienić?
 		Temat: [SUBJECT], Treść: [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] jest w Second Life
+		[NAME] jest w Second Life
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] opuszcza Second Life
+		[NAME] opuszcza Second Life
 	</notification>
 	<notification name="AddSelfFriend">
 		Nie możesz dodać siebie do listy znajomych.

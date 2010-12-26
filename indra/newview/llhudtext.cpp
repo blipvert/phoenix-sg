@@ -65,7 +65,6 @@ const F32 SPRING_STRENGTH = 0.7f;
 const F32 RESTORATION_SPRING_TIME_CONSTANT = 0.1f;
 const F32 HORIZONTAL_PADDING = 15.f;
 const F32 VERTICAL_PADDING = 12.f;
-const F32 LINE_PADDING = 2.f;			// aka "leading"
 const F32 BUFFER_SIZE = 2.f;
 const F32 MIN_EDGE_OVERLAP = 3.f;
 F32 HUD_TEXT_MAX_WIDTH = 190.f;
@@ -542,7 +541,6 @@ void LLHUDText::renderText(BOOL for_select)
 		{
 			const LLFontGL* fontp = segment_iter->mFont;
 			y_offset -= fontp->getLineHeight();
-			y_offset -= LINE_PADDING;
 
 			U8 style = segment_iter->mStyle;
 			if (mDropShadow)
@@ -938,14 +936,8 @@ void LLHUDText::updateSize()
 	{
 		const LLFontGL* fontp = iter->mFont;
 		height += fontp->getLineHeight();
-		height += LINE_PADDING;
 		width = llmax(width, llmin(iter->getWidth(fontp), HUD_TEXT_MAX_WIDTH));
 		++iter;
-	}
-	// Don't want line spacing under the last line
-	if (height > 0.f)
-	{
-		height -= LINE_PADDING;
 	}
 
 	iter = mLabelSegments.begin();

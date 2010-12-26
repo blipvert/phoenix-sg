@@ -47,6 +47,7 @@
 #include "llwaterparammanager.h"
 #include "llmath.h"
 #include "llviewerwindow.h"
+#include "llviewercontrol.h"
 
 #include "pipeline.h"
 
@@ -297,6 +298,8 @@ void LLFloaterEnvSettings::onUseEstateTime(void* userData)
 
 	LLWLParamManager::instance()->mAnimator.mIsRunning = true;
 	LLWLParamManager::instance()->mAnimator.mUseLindenTime = true;
+	//KC: reset last to Default
+	gSavedPerAccountSettings.setString("PhoenixLastWLsetting", "Default");
 }
 
 std::string LLFloaterEnvSettings::timeToString(F32 curTime)

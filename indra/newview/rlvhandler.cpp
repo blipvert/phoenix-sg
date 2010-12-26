@@ -16,6 +16,7 @@
 
 #include "llviewerprecompiledheaders.h"
 #include "floateravatarlist.h"
+#include "llavatarnamecache.h"
 #include "llfloaterbeacons.h"
 #include "llfloaterchat.h"
 #include "llfloaterdaycycle.h"
@@ -1081,6 +1082,12 @@ ERlvCmdRet RlvHandler::processAddRemCommand(const RlvCommand& rlvCmd)
 					// If this is the first @shownames=n restriction refresh all object text so we can filter it if necessary
 					fRefreshHover = (0 == m_Behaviours[RLV_BHVR_SHOWNAMES]);
 
+					// Force the use of the "display name" cache so we can filter both display and legacy names
+					if (0 == m_Behaviours[RLV_BHVR_SHOWNAMES])
+					{
+						LLAvatarNameCache::setForceDisplayNames(true);
+					}
+
 					// Close the "Active Speakers" panel if it's currently visible
 					LLFloaterChat::getInstance()->childSetVisible("active_speakers_panel", false);
 
@@ -1092,6 +1099,13 @@ ERlvCmdRet RlvHandler::processAddRemCommand(const RlvCommand& rlvCmd)
 				{
 					// If this is the last @shownames=n restriction refresh all object text in case anything needs restoring
 					fRefreshHover = (1 == m_Behaviours[RLV_BHVR_SHOWNAMES]);
+
+					// Return the use of display names back to the user's preferences on the last @shownames=n restriction
+					if (1 == m_Behaviours[RLV_BHVR_SHOWNAMES])
+					{
+						LLAvatarNameCache::setForceDisplayNames(false);
+						LLAvatarNameCache::setUseDisplayNames(gSavedSettings.getS32("PhoenixNameSystem") != 0);
+					}
 				}
 			}
 			break;
@@ -1480,15 +1494,12 @@ ERlvCmdRet RlvHandler::processForceCommand(const RlvCommand& rlvCmd) const
 			break;
 		case RLV_BHVR_DETACHME:		// @detachme=force						- Checked: 2010-09-04 (RLVa-1.2.1c) | Modified: RLVa-1.2.1c
 			{
-				// NOTE: @detachme=force could be seen as a @detach:<attachpt>=force but RLV implements it as a "detach by UUID"
 				VERIFY_OPTION(rlvCmd.getOption().empty());
-				LLViewerObject* pObj = NULL; LLVOAvatar* pAvatar = NULL; LLViewerJointAttachment* pAttachPt = NULL;
-				if ( ((pObj = gObjectList.findObject(rlvCmd.getObjectID())) != NULL) && (pObj->isAttachment()) && 
-					 ((pAvatar = gAgent.getAvatarObject()) != NULL) && 
-					 ((pAttachPt = pAvatar->getTargetAttachmentPoint(pObj->getRootEdit())) != NULL) )
+				// NOTE: @detachme should respect locks but shouldn't respect things like nostrip
+				const LLViewerObject* pAttachObj = gObjectList.findObject(rlvCmd.getObjectID());
+				if ( (pAttachObj) && (pAttachObj->isAttachment()) )
 				{
-					// @detachme should respect locks but shouldn't respect things like nostrip so handle it like a manual user detach
-					handle_detach_from_avatar(pAttachPt); 
+					LLVOAvatar::detachAttachmentIntoInventory(pAttachObj->getAttachmentItemID());
 				}
 			}
 			break;
@@ -1668,6 +1679,7 @@ ERlvCmdRet RlvHandler::processReplyCommand(const RlvCommand& rlvCmd) const
 			eRet = onFindFolder(rlvCmd, strReply);
 			break;
 		case RLV_BHVR_GETPATH:			// @getpath[:<option>]=<channel>
+		case RLV_BHVR_GETPATHNEW:		// @getpathnew[:<option>]=<channel>
 			eRet = onGetPath(rlvCmd, strReply);
 			break;
 		case RLV_BHVR_GETINV:			// @getinv[:<path>]=<channel>
@@ -1691,6 +1703,16 @@ ERlvCmdRet RlvHandler::processReplyCommand(const RlvCommand& rlvCmd) const
 				strReply = idSitObj.asString();
 			}
 			break;
+#ifdef RLV_EXTENSION_CMD_GETCOMMAND
+		case RLV_BHVR_GETCOMMAND:		// @getcommand:<option>=<channel>		- Checked: 2010-12-11 (RLVa-1.2.2c) | Added: RLVa-1.2.2c
+			{
+				RlvCommand::bhvr_map_t cmdList;
+				if (RlvCommand::getCommands(cmdList, rlvCmd.getOption()))
+					for (RlvCommand::bhvr_map_t::const_iterator itCmd = cmdList.begin(); itCmd != cmdList.end(); ++itCmd)
+						strReply.append("/").append(itCmd->first);
+			}
+			break;
+#endif // RLV_EXTENSION_CMD_GETCOMMAND
 		case RLV_BHVR_GETSTATUS:		// @getstatus[:<option>]=<channel>		- Checked: 2009-11-26 (RLVa-1.1.0f) | Modified: RLVa-1.1.0f
 			{
 				// NOTE: specification says response should start with '/' but RLV-1.16.1 returns an empty string when no rules are set
@@ -1888,9 +1910,9 @@ ERlvCmdRet RlvHandler::onGetInvWorn(const RlvCommand& rlvCmd, std::string& strRe
 	// Sanity check - gAgentAvatarp can't be NULL [see RlvForceWearLegacy::isWearingItem()]
 	if (!gAgent.getAvatarObject())
 		return RLV_RET_FAILED;
-	// Sanity check - folder should exist and not be hidden
+	// Sanity check - folder should exist
 	LLViewerInventoryCategory* pFolder = RlvInventory::instance().getSharedFolder(rlvCmd.getOption());
-	if ( (!pFolder) || (pFolder->getName().empty()) || (RLV_FOLDER_PREFIX_HIDDEN == pFolder->getName()[0]) )
+	if (!pFolder)
 		return (RlvInventory::instance().getSharedRoot() != NULL) ? RLV_RET_FAILED_OPTION : RLV_RET_FAILED_NOSHAREDROOT;
 
 	// Collect everything @attachall would be attaching

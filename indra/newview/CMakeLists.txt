@@ -122,6 +122,7 @@ set(viewer_SOURCE_FILES
 	lggfloaterirc.cpp
 	floaterskinfinder.cpp
 	lggircthread.cpp
+	kcwlinterface.cpp
     llagent.cpp
     llagentaccess.cpp
     llagentdata.cpp
@@ -601,6 +602,7 @@ set(viewer_HEADER_FILES
 	growlnotifier.h
 	streamtitledisplay.h
 	floaterskinfinder.h
+	kcwlinterface.h
     llagent.h
     llagentaccess.h
     llagentdata.h

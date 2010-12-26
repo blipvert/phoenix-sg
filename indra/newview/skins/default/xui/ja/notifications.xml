@@ -134,7 +134,7 @@
 	<notification name="GrantModifyRights">
 		他の住人に変更権限を与えると、その人はあなたが所有している
 すべてのオブジェクトを変更、削除、または取得することができるようになります。この許可を与えるときは細心の注意を払ってください。
-[FIRST_NAME] [LAST_NAME]に対して変更権限を与えますか？
+[NAME]に対して変更権限を与えますか？
 		<usetemplate name="okcancelbuttons" notext="いいえ" yestext="はい"/>
 	</notification>
 	<notification name="GrantModifyRightsMultiple">
@@ -144,7 +144,7 @@
 		<usetemplate name="okcancelbuttons" notext="いいえ" yestext="はい"/>
 	</notification>
 	<notification name="RevokeModifyRights">
-		[FIRST_NAME] [LAST_NAME]に対して変更権限を取り消しますか？
+		[NAME]に対して変更権限を取り消しますか？
 		<usetemplate name="okcancelbuttons" notext="いいえ" yestext="はい"/>
 	</notification>
 	<notification name="RevokeModifyRightsMultiple">
@@ -1035,7 +1035,7 @@ L$は返金されません。
 		</form>
 	</notification>
 	<notification name="RemoveFromFriends">
-		[FIRST_NAME] [LAST_NAME]をフレンドリストから削除しますか？
+		[NAME]をフレンドリストから削除しますか？
 		<usetemplate name="okcancelbuttons" notext="取り消し" yestext="OK"/>
 	</notification>
 	<notification name="RemoveMultipleFromFriends">
@@ -1219,11 +1219,11 @@ F1キーを押してください。
 	</notification>
 	<notification name="GrantedModifyRights">
 		あなたには、
-[FIRST_NAME] [LAST_NAME]
+[NAME]
 のオブジェクトを修正する権限が与えられています。
 	</notification>
 	<notification name="RevokedModifyRights">
-		[FIRST_NAME] [LAST_NAME]
+		[NAME]
 のオブジェクトを修正する権限が取り消されました。
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
@@ -2325,7 +2325,7 @@ Linden Lab
 
 メッシュ詳細： 特定のオブジェクトのレンダリング時の細部表現、または三角形の数を設定します。 値を大きくするほどレンダリングに時間がかかりますが、オブジェクトがより詳細に表示されます。
 
-ライティング詳細：レンダリングする光源の種類を選択します。
+ライティング詳細：レンダリングする光���の種類を選択します。
 
 地形詳細： 地形テクスチャの細部表現を設定します。
 	</notification>
@@ -2622,10 +2622,10 @@ Second Life のウェブサイトにアクセスして、設定しますか？
 		件名： [SUBJECT], ﾒｯｾｰｼﾞ： [MESSAGE]
 	</notification>
 	<notification name="FriendOnline">
-		[FIRST] [LAST] はオンラインです。
+		[NAME] はオンラインです。
 	</notification>
 	<notification name="FriendOffline">
-		[FIRST] [LAST] はオフラインです。
+		[NAME] はオフラインです。
 	</notification>
 	<notification name="AddSelfFriend">
 		自分自身をフレンドにはできません。

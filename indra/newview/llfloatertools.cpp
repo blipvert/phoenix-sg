@@ -869,8 +869,8 @@ void LLFloaterTools::onClose(bool app_quitting)
 	LLSelectMgr::getInstance()->promoteSelectionToRoot();
 	gSavedSettings.setBOOL("EditLinkedParts", FALSE);
 	//Banana:KC - restore show highlight state
-	gSavedSettings.setBOOL("PhoenixRenderHighlightSelections", mShowHighlight);
-	LLSelectMgr::getInstance()->enableSilhouette(mShowHighlight);
+	//gSavedSettings.setBOOL("PhoenixRenderHighlightSelections", mShowHighlight);
+	//LLSelectMgr::getInstance()->enableSilhouette(mShowHighlight);
 	
 	gViewerWindow->showCursor();
 

@@ -20,7 +20,7 @@
       <key>GrowlName</key>
       <string>Friend logged on</string>
       <key>GrowlTitle</key>
-      <string>[FIRST] [LAST]</string>
+      <string>[NAME]</string>
       <key>GrowlBody</key>
       <string>came online</string>
     </map>
@@ -29,7 +29,7 @@
       <key>GrowlName</key>
       <string>Friend logged off</string>
       <key>GrowlTitle</key>
-      <string>[FIRST] [LAST]</string>
+      <string>[NAME]</string>
       <key>GrowlBody</key>
       <string>went offline</string>
     </map>

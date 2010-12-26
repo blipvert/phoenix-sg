@@ -16,6 +16,7 @@
 #include "llviewerprecompiledheaders.h"
 
 #include "llavatarconstants.h"
+#include "llavatarnamecache.h"
 #include "llappviewer.h"
 #include "floateravatarlist.h"
 #include "lluictrlfactory.h"
@@ -605,9 +606,16 @@ bool LLFloaterAvatarList::LLAgentIM::handleEvent(LLPointer<LLEvent> event, const
 			// Single avatar
 			LLUUID agent_id = ids[0];
 			char buffer[MAX_STRING];
-			snprintf(buffer, MAX_STRING, "%s", avlist->mAvatars[agent_id].getName().c_str());
-			gIMMgr->setFloaterOpen(TRUE);
-			gIMMgr->addSession(buffer,IM_NOTHING_SPECIAL,agent_id);
+			// [Ansariel/Henri: Display name support]
+			// snprintf(buffer, MAX_STRING, "%s", avlist->mAvatars[agent_id].getName().c_str());
+			LLAvatarName avatar_name;
+			if (LLAvatarNameCache::get(agent_id, &avatar_name))
+			{
+				snprintf(buffer, MAX_STRING, "%s", avatar_name.getLegacyName().c_str());
+				gIMMgr->setFloaterOpen(TRUE);
+				gIMMgr->addSession(buffer,IM_NOTHING_SPECIAL,agent_id);
+			}
+			// [Ansariel/Henri: Display name support]
 		}
 		else
 		{
@@ -845,13 +853,7 @@ bool LLFloaterAvatarList::LLAgentScripts::handleEvent(LLPointer<LLEvent> event, 
 	LLFloaterAvatarList* avlist = getInstance();
  	LLScrollListItem *item =   avlist->mAvatarList->getFirstSelected();
 	if(!item)return true;
-	LLViewerObject *obj=gObjectList.findObject(item->getUUID());
-	if(obj)
-	{
-		LLSelectMgr::getInstance()->selectObjectOnly(obj);
-		ScriptCounter::serializeSelection(false);
-		LLSelectMgr::getInstance()->deselectAll();
-	}
+	ScriptCounter::radarScriptCount(item->getUUID());
 	return true;
 }
 
@@ -1141,18 +1143,7 @@ void LLFloaterAvatarList::updateAvatarList()
 
 			// Get avatar data
 			position = gAgent.getPosGlobalFromAgent(avatarp->getCharacterPosition());
-			name = avatarp->getFullname();
 
-			// Apparently, sometimes the name comes out empty, with a " " name. This is because
-			// getFullname concatenates first and last name with a " " in the middle.
-			// This code will avoid adding a nameless entry to the list until it acquires a name.
-
-			//duped for lower section
-			if (name.empty() || (name.compare(" ") == 0))// || (name.compare(gCacheName->getDefaultName()) == 0))
-			{
-				if(gCacheName->getName(avid, first, last)) name = first + " " + last;
-				else continue;
-			}
 			if (avid.isNull()) continue;
 			if ( mAvatars.count( avid ) > 0 )
 			{
@@ -1161,6 +1152,25 @@ void LLFloaterAvatarList::updateAvatarList()
 			}
 			else
 			{
+				// [Ansariel: Display name support]
+				LLAvatarName avatar_name;
+				if (LLAvatarNameCache::get(avatarp->getID(), &avatar_name))
+				{
+					static S32* sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
+					switch (*sPhoenixNameSystem)
+					{
+						case 0 : name = avatar_name.getLegacyName(); break;
+						case 1 : name = (avatar_name.mIsDisplayNameDefault ? avatar_name.mDisplayName : avatar_name.getCompleteName()); break;
+						case 2 : name = avatar_name.mDisplayName; break;
+						default : name = avatar_name.getLegacyName(); break;
+					}
+
+					first = avatar_name.mLegacyFirstName;
+					last = avatar_name.mLegacyLastName;
+				}
+				else continue;
+				// [/Ansariel: Display name support]
+
 				// Avatar not there yet, add it
 				BOOL isLinden = ( strcmp(last.c_str(), "Linden") == 0 || last == "Linden" );
 				LLAvatarListEntry entry(avid, name, position, isLinden, 0);
@@ -1175,9 +1185,6 @@ void LLFloaterAvatarList::updateAvatarList()
 			}
 			else continue;
 
-			if(gCacheName->getName(avid, first, last)) name = first + " " + last;
-			else continue; //prevent (Loading...)
-
 			if ( mAvatars.count( avid ) > 0 )
 			{
 				// Avatar already in list, update position
@@ -1185,6 +1192,25 @@ void LLFloaterAvatarList::updateAvatarList()
 			}
 			else
 			{
+				// [Ansariel: Display name support]
+				LLAvatarName avatar_name;
+				if (LLAvatarNameCache::get(avid, &avatar_name))
+				{
+					static S32* sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
+					switch (*sPhoenixNameSystem)
+					{
+						case 0 : name = avatar_name.getLegacyName(); break;
+						case 1 : name = (avatar_name.mIsDisplayNameDefault ? avatar_name.mDisplayName : avatar_name.getCompleteName()); break;
+						case 2 : name = avatar_name.mDisplayName; break;
+						default : name = avatar_name.getLegacyName(); break;
+					}
+
+					first = avatar_name.mLegacyFirstName;
+					last = avatar_name.mLegacyLastName;
+				}
+				else continue;
+				// [/Ansariel: Display name support]
+
 				// Avatar not there yet, add it
 				BOOL isLinden = last == "Linden";
 				LLAvatarListEntry entry(avid, name, position, isLinden, 0);
@@ -1229,18 +1255,25 @@ void LLFloaterAvatarList::updateAvatarListVoice()
 				continue;
 			}
 
-			name = std::string(participantp->mAccountName); //participantp->mDisplayName;
-
-			llinfos << "voice participant not in list: " << participant_id.asString().c_str() << " - " << name << llendl;
-
-			// The check against "==" is to check that we don't get a voice ID (which is in the form of base64 data)
-			// Voice IDs are of constant length, and thus always have "==" padding at the end. "=" is otherwise illegal in
-			// a name (for now).
-			if (name.empty() || (name.compare(" ") == 0) || name.substr(name.length() - 2, 2) == "==")// || (name.compare(gCacheName->getDefaultName()) == 0))
+			// [Ansariel/Henri: Display name support]
+			LLAvatarName avatar_name;
+			if (LLAvatarNameCache::get(participant_id, &avatar_name))
 			{
-				if(gCacheName->getName(participant_id, first, last)) name = first + " " + last;
-				else continue;
+				static S32* sPhoenixNameSystem = rebind_llcontrol<S32>("PhoenixNameSystem", &gSavedSettings, true);
+				switch (*sPhoenixNameSystem)
+				{
+					case 0 : name = avatar_name.getLegacyName(); break;
+					case 1 : name = (avatar_name.mIsDisplayNameDefault ? avatar_name.mDisplayName : avatar_name.getCompleteName()); break;
+					case 2 : name = avatar_name.mDisplayName; break;
+					default : name = avatar_name.getCompleteName(); break;
+				}
+
+				first = avatar_name.mLegacyFirstName;
+				last = avatar_name.mLegacyLastName;
 			}
+			else continue;
+			// [/Ansariel/Henri: Display name support]
+
 			BOOL isLinden = ( strcmp(last.c_str(), "Linden") == 0 || last == "Linden" );
 			LLAvatarListEntry entry(participant_id, name, LLVector3d::zero, isLinden, TRUE);
 			mAvatars[participant_id] = entry;
@@ -1726,12 +1759,19 @@ void LLFloaterAvatarList::onClickIM(void* userdata)
 			// Single avatar
 			LLUUID agent_id = ids[0];
 			char buffer[MAX_STRING];
-			snprintf(buffer, MAX_STRING, "%s", avlist->mAvatars[agent_id].getName().c_str());
-			gIMMgr->setFloaterOpen(TRUE);
-			gIMMgr->addSession(
-				buffer,
-				IM_NOTHING_SPECIAL,
-				agent_id);
+			// [Ansariel/Henri: Display name support]
+			// snprintf(buffer, MAX_STRING, "%s", avlist->mAvatars[agent_id].getName().c_str());
+			LLAvatarName avatar_name;
+			if (LLAvatarNameCache::get(agent_id, &avatar_name))
+			{
+				snprintf(buffer, MAX_STRING, "%s", avatar_name.getLegacyName().c_str());
+				gIMMgr->setFloaterOpen(TRUE);
+				gIMMgr->addSession(
+					buffer,
+					IM_NOTHING_SPECIAL,
+					agent_id);
+			}
+			// [Ansariel/Henri: Display name support]
 		}
 		else
 		{

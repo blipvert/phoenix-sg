@@ -372,7 +372,7 @@ void RlvRenameOnWearObserver::doneIdle()
 	}
 
 	const LLViewerJointAttachment* pAttachPt = NULL; S32 idxAttachPt = 0;
-	RLV_ASSERT(mComplete.size() > 0);	// Catch instances where we forgot to call startFetch()
+//	RLV_ASSERT(mComplete.size() > 0);	// Catch instances where we forgot to call startFetch()
 	for (uuid_vec_t::const_iterator itItem = mComplete.begin(); itItem != mComplete.end(); ++itItem)
 	{
 		const LLUUID& idAttachItem = *itItem;
@@ -389,7 +389,7 @@ void RlvRenameOnWearObserver::doneIdle()
 		if ( ((pAttachPt = pAvatar->getWornAttachmentPoint(idAttachItem)) == NULL) ||
 			 ((idxAttachPt = RlvAttachPtLookup::getAttachPointIndex(pAttachPt)) == 0) )
 		{
-			RLV_ASSERT(false);
+//			RLV_ASSERT(false);
 			continue;
 		}
 
@@ -636,7 +636,7 @@ bool RlvWearableItemCollector::onCollectFolder(const LLInventoryCategory* pFolde
 		return false;
 
 	bool fAttach = RlvForceWear::isWearAction(m_eWearAction);
-	bool fMatchAll = (!fLinkedFolder) && (m_eWearFlags | RlvForceWear::FLAG_MATCHALL);
+	bool fMatchAll = (!fLinkedFolder) && (m_eWearFlags & RlvForceWear::FLAG_MATCHALL);
 
 	if ( (!fLinkedFolder) && (RlvInventory::isFoldedFolder(pFolder, false)) )	// Check for folder that should get folded under its parent
 	{
@@ -681,10 +681,8 @@ bool RlvWearableItemCollector::onCollectItem(const LLInventoryItem* pItem)
 {
 	bool fAttach = RlvForceWear::isWearAction(m_eWearAction);
 
-	#ifdef RLV_EXTENSION_FLAG_NOSTRIP
 	if ( (!fAttach) && (!RlvForceWear::isStrippable(pItem)) )							// Don't process "nostrip" items on detach
 		return false;
-	#endif // RLV_EXTENSION_FLAG_NOSTRIP
 
 	const LLUUID& idParent = pItem->getParentUUID(); bool fRet = false;
 	switch (pItem->getType())
@@ -693,13 +691,9 @@ bool RlvWearableItemCollector::onCollectItem(const LLInventoryItem* pItem)
 			if (!fAttach)
 				break;																	// Don't process body parts on detach
 		case LLAssetType::AT_CLOTHING:
-			#ifdef RLV_EXTENSION_FLAG_NOSTRIP
-				fRet = ( (m_Wearable.end() != std::find(m_Wearable.begin(), m_Wearable.end(), idParent)) ||
-						 ( (fAttach) && (m_Folded.end() != std::find(m_Folded.begin(), m_Folded.end(), idParent)) &&
-						   (RlvForceWear::isStrippable(pItem)) ) );
-			#else
-				fRet = (m_Wearable.end() != std::find(m_Wearable.begin(), m_Wearable.end(), idParent));
-			#endif // RLV_EXTENSION_FLAG_NOSTRIP
+			fRet = ( (m_Wearable.end() != std::find(m_Wearable.begin(), m_Wearable.end(), idParent)) ||
+					 ( (fAttach) && (m_Folded.end() != std::find(m_Folded.begin(), m_Folded.end(), idParent)) &&
+					   (RlvForceWear::isStrippable(pItem)) ) );
 			break;
 		case LLAssetType::AT_OBJECT:
 			fRet = ( (m_Wearable.end() != std::find(m_Wearable.begin(), m_Wearable.end(), idParent)) || 

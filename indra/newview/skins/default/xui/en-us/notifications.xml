@@ -256,7 +256,7 @@ Save all changes to clothing/body parts?
    name="GrantModifyRights"
    type="alertmodal">
 Granting modify rights to another resident allows them to change, delete or take ANY objects you may have in-world. Be VERY careful when handing out this permission.
-Do you want to grant modify rights for [FIRST_NAME] [LAST_NAME]?
+Do you want to grant modify rights for [NAME]?
     <usetemplate
      name="okcancelbuttons"
      notext="No"
@@ -279,7 +279,7 @@ Do you want to grant modify rights for the selected Residents?
    icon="alertmodal.tga"
    name="RevokeModifyRights"
    type="alertmodal">
-Do you want to revoke modify rights for [FIRST_NAME] [LAST_NAME]?
+Do you want to revoke modify rights for [NAME]?
     <usetemplate
      name="okcancelbuttons"
      notext="No"
@@ -865,6 +865,13 @@ Would you like to disable all popups which can be skipped?
      yestext="OK"/>
   </notification>
 
+  <notification
+ icon="alertmodal.tga"
+ name="Restart4SettingsChange"
+ type="alertmodal">
+Settings will be applied after restarting [SECOND_LIFE].
+  </notification>
+  
   <notification
    icon="alertmodal.tga"
    name="CacheWillClear"
@@ -2087,7 +2094,7 @@ Would you be my friend?
    icon="alertmodal.tga"
    name="RemoveFromFriends"
    type="alertmodal">
-Do you want to remove [FIRST_NAME] [LAST_NAME] from your Friends List?
+Do you want to remove [NAME] from your Friends List?
     <usetemplate
      name="okcancelbuttons"
      notext="Cancel"
@@ -2459,14 +2466,14 @@ Please choose the male or female avatar. You can change your mind later.
    icon="alertmodal.tga"
    name="GrantedModifyRights"
    type="notifytip">
-You have been granted the privilege to modify [FIRST_NAME] [LAST_NAME]&apos;s objects.
+You have been granted the privilege to modify [NAME]&apos;s objects.
   </notification>
 
   <notification
    icon="alertmodal.tga"
    name="RevokedModifyRights"
    type="notifytip">
-Your privilege to modify [FIRST_NAME] [LAST_NAME]&apos;s objects has been revoked
+Your privilege to modify [NAME]&apos;s objects has been revoked
   </notification>
 
   <notification
@@ -5204,14 +5211,14 @@ Topic: [SUBJECT], Message: [MESSAGE]
    icon="notifytip.tga"
    name="FriendOnline"
    type="notifytip">
-    [FIRST] [LAST] is Online
+    [NAME] is Online
   </notification>
 
   <notification
    icon="notifytip.tga"
    name="FriendOffline"
    type="notifytip">
-[FIRST] [LAST] is Offline
+[NAME] is Offline
   </notification>
 
   <notification
@@ -6717,6 +6724,7 @@ An error has occurred while trying to connect to voice chat for [VOICE_CHANNEL_N
 The region you have entered is running a different simulator version.
 Current simulator : [NEWVERSION]
 Previous simulator: [OLDVERSION]
+More info at: http://wiki.secondlife.com/wiki/Beta
     <unique>
       <context key="OLDVERSION"/>
       <context key="NEWVERSION"/>
@@ -6890,7 +6898,7 @@ The URL you clicked cannot be opened from this web browser.
    icon="notify.tga"
    name="QueryBridgeCleanup"
    type="notify">
-    Phoenix has noticed that you have [BRIDGES] in your inventory. Phoenix does not need older bridges. If you do not want these for something else, you should click Yes to have them automatically moved to the trash folder for you. If you have do not want this done, you should click No, and you won't be bothered about it again.
+    Phoenix has noticed that you have [BRIDGES] in your inventory. Phoenix does not need older bridges. If you do not want these for something else, click Yes to have them automatically moved to the trash folder for you. If you do not want this done, click No, and you won't be bothered about it again.
     <form name="form">
       <button
        index="0"
@@ -7311,7 +7319,7 @@ The download of [DISPLAY_NAME] failed:
    icon="alertmodal.tga"
    name="KittyWLSaveNotecardAlert"
    type="alertmodal">
-Do you wish to overwrite the saved preset?
+Do you wish to overwrite the saved notecard preset?
     <usetemplate
      name="okcancelbuttons"
      notext="No"
@@ -7414,5 +7422,34 @@ For more details on outfits in Phoenix, please see the Phoenix Viewer Wiki.
     [OLD_NAME] ([SLID]) is now known as [NEW_NAME].
   </notification>
 
+    <notification
+   icon="notify.tga"
+   name="PhoenixWL"
+   type="notify">
+&apos;[PARCEL_NAME]&apos;
+Owned by &apos;[OWNER_NAME]&apos;
+Would like to change your Windlight visual environment settings.
+    <form name="form">
+      <button
+       index="0"
+       name="Allow"
+       text="Allow"/>
+      <button
+       index="1"
+       name="Ignore"
+       text="Ignore"/>
+    </form>
+  </notification>
+  
+  <notification
+   icon="notify.tga"
+   name="PhoenixWLClear"
+   type="notify">
+Reset WL settings for &apos;[PARCEL_NAME]&apos; to region default?
+    <usetemplate
+     name="okcancelbuttons"
+     notext="Cancel"
+     yestext="Yes"/>
+  </notification>
 
 </notifications>

@@ -51,7 +51,7 @@
 			</text>
 			<button label="i" label_selected="i" name="partner_info" tool_tip="点击打开搭档的档案"/>
 			<line_editor name="partner_edit" tool_tip="第二人生搭档。要获取更多关于如何设置此项功能， 请登陆www.secondlife.com/partner">
-				[FIRST] [LAST]
+				[NAME]
 			</line_editor>
 			<text name="Photo:">
 				照片：
