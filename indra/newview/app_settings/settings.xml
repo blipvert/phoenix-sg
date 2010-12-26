@@ -15646,16 +15646,5 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>PhoenixUseOldTexturePurging</key>
-		<map>
-			<key>Comment</key>
-			<string>Disables delayed incremental old texture purging and uses old method (Use if you experience serious hiccups related to texture purging. This will cause the old single large hiccup when purging instead of several tiny ones)</string>
-			<key>Persist</key>
-			<integer>1</integer>
-			<key>Type</key>
-			<string>Boolean</string>
-			<key>Value</key>
-			<integer>0</integer>
-		</map>
 	</map>
 </llsd>

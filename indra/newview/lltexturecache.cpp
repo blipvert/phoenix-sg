@@ -54,7 +54,6 @@
 //note: there is no good to define 1024 for TEXTURE_CACHE_ENTRY_SIZE while FIRST_PACKET_SIZE is 600 on sim side.
 const S32 TEXTURE_CACHE_ENTRY_SIZE = FIRST_PACKET_SIZE;//1024;
 const F32 TEXTURE_CACHE_PURGE_AMOUNT = .20f; // % amount to reduce the cache by when it exceeds its limit
-const S64 TEXTURE_CACHE_PURGE_MAX_SIZE = 67108864; //64MB; max amount to reduce the cache by when it exceeds its limit
 const F32 TEXTURE_CACHE_LRU_SIZE = .10f; // % amount for LRU list (low overhead to regenerate)
 
 class LLTextureCacheWorker : public LLWorkerClass
@@ -1568,13 +1567,12 @@ void LLTextureCache::purgeAllTextures(bool purge_directories)
 void LLTextureCache::purgeTextures(bool validate, bool force)
 {
 	static LLTimer timeout;
-	const S32 min_purge_count = 5;
-	const F32 delay_between_passes = 0.5f;
-	const F32 max_time_per_pass = 0.1f;
-	static F32 time_per_pass = 0.05f;
-	static LLCachedControl<BOOL> PhoenixUseOldTexturePurging("PhoenixUseOldTexturePurging", 0);
+	const S32 min_purge_count = 10;
+	const F32 delay_between_passes = 1.0f;
+	const F32 max_time_per_pass = 0.2f;
+	F32 time_per_pass = 0.05f;
 
-	if (!force && timeout.getElapsedTimeF32() <= delay_between_passes && !PhoenixUseOldTexturePurging)
+	if (!force && timeout.getElapsedTimeF32() <= delay_between_passes)
 	{
 		return;
 	}
@@ -1650,13 +1648,12 @@ void LLTextureCache::purgeTextures(bool validate, bool force)
 	        max_time_per_pass << llendl;
 
 	S64 cache_size = mTexturesSizeTotal;
-	//S64 purged_cache_size = (sCacheMaxTexturesSize * (S64)((1.f - TEXTURE_CACHE_PURGE_AMOUNT) * 100.f)) / 100;
-	S64 purged_cache_size = sCacheMaxTexturesSize - llmin(((sCacheMaxTexturesSize * (S64)(TEXTURE_CACHE_PURGE_AMOUNT * 100.f)) / 100), TEXTURE_CACHE_PURGE_MAX_SIZE);
+	S64 purged_cache_size = (sCacheMaxTexturesSize * (S64)((1.f - TEXTURE_CACHE_PURGE_AMOUNT) * 100.f)) / 100;
 	S32 purge_count = 0;
 	for (time_idx_set_t::iterator iter = time_idx_set.begin();
 		 iter != time_idx_set.end(); ++iter)
 	{
-		if (!force && !validate && purge_count >= min_purge_count && timeout.getElapsedTimeF32() > time_per_pass && !PhoenixUseOldTexturePurging) 
+		if (!force && !validate && purge_count >= min_purge_count && timeout.getElapsedTimeF32() > time_per_pass) 
 		{
 			LL_INFOS("TextureCache") << "Texture cache purge splitted to avoid hickup." << LL_ENDL;
 			mDoPurge = TRUE;
@@ -1708,15 +1705,15 @@ void LLTextureCache::purgeTextures(bool validate, bool force)
 	
 	// *FIX:Mani - watchdog back on.
 	LLAppViewer::instance()->resumeMainloopTimeout();
-
- 	LL_INFOS("TextureCache") << "TEXTURE CACHE:"
+	
+	LL_INFOS("TextureCache") << "TEXTURE CACHE:"
 			<< " Purged: " << purge_count
 			<< " - Entries: " << num_entries
 			<< " - Cache size: " << mTexturesSizeTotal / (1024 * 1024) << " MB"
 			<< " - Time used for this purge: " << timeout.getElapsedTimeF32() << "s + " << overhead << "s of overhead."
 			<< LL_ENDL;
 
-	//timeout.reset();
+	timeout.reset();
 }
 
 //////////////////////////////////////////////////////////////////////////////
