@@ -5,7 +5,7 @@
 	<button label="" label_selected="" name="button edit" tool_tip="Modifier"/>
 	<button label="" label_selected="" name="button create" tool_tip="Créer"/>
 	<button label="" label_selected="" name="button land" tool_tip="Terrain"/>
-	<check_box label="Zoom" name="radio zoom"/>
+	<check_box label="Zoom" bottom_delta="-10" name="radio zoom"/>
 	<check_box label="Orbite (Ctrl)" name="radio orbit"/>
 	<check_box label="Panoramique (Ctrl-Maj)" name="radio pan"/>
 	<check_box label="Déplacer" name="radio move"/>
@@ -15,7 +15,8 @@
 	<check_box label="Pivoter (Ctrl)" name="radio rotate"/>
 	<check_box label="Étirer (Ctrl-Maj)" name="radio stretch"/>
 	<check_box label="Sélectionner une face" name="radio select face"/>
-	<check_box label="Modifier les parties liées" name="checkbox edit linked parts"/>
+  <check_box label="Aligner (+Maj)" name="radio align"/>
+	<check_box label="Mod part (Ctrl-Maj-E)" name="checkbox edit linked parts"/>
 	<text name="text ruler mode">
 		Axe :
 	</text>
@@ -32,8 +33,10 @@
 	</combo_box>
 	<check_box label="Étirer les deux côtés" name="checkbox uniform"/>
 	<check_box label="Étirer les textures" name="checkbox stretch textures"/>
-	<check_box label="Utiliser la grille" name="checkbox snap to grid"/>
-	<button label="Options..." label_selected="Options..." name="Options..."/>
+	<check_box label="Grille" name="checkbox snap to grid"/>
+  <check_box label="Axes sur le root" name="checkbox actual root"/>
+  <check_box label="Surbrillance (Crtl-O)" name="checkbox show highlight"/>
+	<button label="Options" label_selected="Options..." name="Options..."/>
 	<text name="text status">
 		Glissez pour déplacer, Maj-glissez pour copier.
 	</text>
@@ -226,7 +229,7 @@
 				Sélectionnez un prim pour modifier les paramètres.
 			</text>
 			<text name="edit_object">
-				Modifier les paramètres de l&apos;objet :
+				paramètres:
 			</text>
 			<check_box label="Verrouillé" name="checkbox locked" tool_tip="Empêche l&apos;objet d&apos;être déplacé ou supprimé. Utile pendant la construction pour éviter les modifications involontaires."/>
 			<check_box label="Physique" name="Physical Checkbox Ctrl" tool_tip="Permet à l&apos;objet d&apos;être poussé et affecté par la gravité"/>
@@ -551,10 +554,16 @@
 (chargement préalable)
 			</text>
 			<button label="Ajuster" label_selected="Ajuster" left="150" name="button align"/>
+      <text name="textbox params">
+        Texture Param
+      </text>
+      <button label="Copy" name="copytextures"/>
+      <button label="Paste" name="pastetextures"/>
 		</panel>
 		<panel label="Contenu" name="Contents">
-			<button label="Nouveau script" label_selected="Nouveau script..." name="button new script"/>
-			<button label="Droits..." name="button permissions"/>
+			<button label="Nouv script" label_selected="Nouv script" name="button new script"/>
+			<button label="Droits" width="50" name="button permissions"/>
+      <button label="Actualisation" width="85" left_delta="51" name="button refresh"/>
 		</panel>
 	</tab_container>
 	<panel name="land info panel">
@@ -597,7 +606,8 @@
 		Cliquez et faites glisser pour changer l&apos;affichage.
 	</string>
 	<string name="status_grab">
-		Glisser pour déplacer, Ctrl pour soulever, Crtl-Maj pour pivoter.
+		Glisser pour déplacer, Ctrl pour soulever,
+Crtl-Maj pour pivoter.
 	</string>
 	<string name="status_place">
 		Cliquez dans le monde pour construire.

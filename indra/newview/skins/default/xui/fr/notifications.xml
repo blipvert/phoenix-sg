@@ -1135,10 +1135,10 @@ Vous pourrez revenir sur votre décision plus tard.
 		[NAME] [PRICE] L$ Vous n&apos;avez pas suffisamment de L$ pour faire cela.
 	</notification>
 	<notification name="GrantedModifyRights">
-		Vous avez reçu le droit de modifier les objets de [FIRST_NAME] [LAST_NAME].
+		Vous avez reçu le droit de modifier les objets de [NAME].
 	</notification>
 	<notification name="RevokedModifyRights">
-		Vous n&apos;avez plus le droit de modifier les objets de [FIRST_NAME] [LAST_NAME].
+		Vous n&apos;avez plus le droit de modifier les objets de [NAME].
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
 		Cela videra le cache cartographique de cette région.

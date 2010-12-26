@@ -1871,10 +1871,10 @@ void LLInventoryPanel::modelChanged(U32 mask)
 					else
 					{
 						// this object was probably moved, check its parent
-						if ((mask & LLInventoryObserver::STRUCTURE) != LLInventoryObserver::STRUCTURE)
+						/*if ((mask & LLInventoryObserver::STRUCTURE) != LLInventoryObserver::STRUCTURE)
 						{
 							llwarns << *id_it << " is in model and in view, but STRUCTURE flag not set" << llendl;
-						}
+						}*/ //Kadah: log spam D:
 
 						LLFolderViewFolder* new_parent = (LLFolderViewFolder*)mFolders->getItemByID(model_item->getParentUUID());
 						if (view_item->getParentFolder() != new_parent)

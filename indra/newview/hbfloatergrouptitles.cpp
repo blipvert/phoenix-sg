@@ -47,7 +47,7 @@
 HBFloaterGroupTitles* HBFloaterGroupTitles::sInstance = NULL;
 
 // helper function
-void update_titles_list(HBFloaterGroupTitles* self);
+void update_titles_list(HBFloaterGroupTitles* self, bool force = false);
 
 
 // HBFloaterGroupTitlesObserver class
@@ -130,7 +130,7 @@ BOOL HBFloaterGroupTitles::postBuild()
 	mTitlesList->setCallbackUserData(this);
 	mTitlesList->setDoubleClickCallback(onActivate);
 	childSetAction("activate", onActivate, this);
-	update_titles_list(this);
+	update_titles_list(this, true);
 	return TRUE;
 }
 
@@ -165,7 +165,7 @@ void HBFloaterGroupTitles::onActivate(void* userdata)
 	LLGroupMgr::getInstance()->sendGroupTitlesRequest(group_id);
 }
 
-void update_titles_list(HBFloaterGroupTitles* self)
+void update_titles_list(HBFloaterGroupTitles* self, bool force)
 {
 	S32 i;
 	S32 count = gAgent.mGroups.count();
@@ -192,7 +192,7 @@ void update_titles_list(HBFloaterGroupTitles* self)
 			self->mObservers.push_back(observer);
 		}
 		gmgr_datap = LLGroupMgr::getInstance()->getGroupData(id);
-		if (!gmgr_datap)
+		if (!gmgr_datap || force)
 		{
 			LLGroupMgr::getInstance()->sendGroupTitlesRequest(id);
 			continue;

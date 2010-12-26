@@ -65,9 +65,9 @@
 //  the major and minor version numbers being the same in the defines below;
 //  and on it being in the form of "<major>.<minor>". If you change any of
 //  these, you MUST update the IsAnOldBridge function to match. -- TS
-#define phoenix_bridge_name "#LSL<->Client Bridge v0.11"
+#define phoenix_bridge_name "#LSL<->Client Bridge v0.12"
 #define PHOENIX_BRIDGE_MAJOR_VERSION 0
-#define PHOENIX_BRIDGE_MINOR_VERSION 11
+#define PHOENIX_BRIDGE_MINOR_VERSION 12
 
 const boost::regex AnyBridgePattern("^#LSL<->Client Bridge.*");
 

@@ -9,12 +9,10 @@ include(CMakeCopyIfDifferent)
 set(vivox_src_dir "${CMAKE_SOURCE_DIR}/newview/vivox-runtime/i686-win32")
 set(vivox_files
     SLVoice.exe
-	libsndfile-1.dll
-	ortp.dll
-	vivoxoal.dll
-	vivoxplatform.dll
-	vivoxsdk.dll
-	zlib1.dll
+    alut.dll
+    vivoxsdk.dll
+    ortp.dll
+    wrap_oal.dll
     )
 copy_if_different(
     ${vivox_src_dir}
@@ -330,7 +328,7 @@ if (MSVC80)
             )
         set(all_targets ${all_targets} ${out_targets})
 
-        set(debug_appconfig_file ${CMAKE_CURRENT_BINARY_DIR}/Debug/${VIEWER_BINARY_NAME}.exe.config)
+        set(debug_appconfig_file ${CMAKE_CURRENT_BINARY_DIR}/Debug/secondlife-bin.exe.config)
         add_custom_command(
             OUTPUT ${debug_appconfig_file}
             COMMAND ${PYTHON_EXECUTABLE}
@@ -375,7 +373,7 @@ if (MSVC80)
             )
         set(all_targets ${all_targets} ${out_targets})
 
-        set(release_appconfig_file ${CMAKE_CURRENT_BINARY_DIR}/Release/${VIEWER_BINARY_NAME}.exe.config)
+        set(release_appconfig_file ${CMAKE_CURRENT_BINARY_DIR}/Release/secondlife-bin.exe.config)
         add_custom_command(
             OUTPUT ${release_appconfig_file}
             COMMAND ${PYTHON_EXECUTABLE}
@@ -388,7 +386,7 @@ if (MSVC80)
             COMMENT "Creating release app config file"
             )
 
-        set(relwithdebinfo_appconfig_file ${CMAKE_CURRENT_BINARY_DIR}/RelWithDebInfo/${VIEWER_BINARY_NAME}.exe.config)
+        set(relwithdebinfo_appconfig_file ${CMAKE_CURRENT_BINARY_DIR}/RelWithDebInfo/secondlife-bin.exe.config)
         add_custom_command(
             OUTPUT ${relwithdebinfo_appconfig_file}
             COMMAND ${PYTHON_EXECUTABLE}
