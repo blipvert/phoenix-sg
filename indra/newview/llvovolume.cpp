@@ -466,7 +466,8 @@ void LLVOVolume::updateTextureVirtualSize()
 		else
 		{
 			vsize = face->getTextureVirtualSize();
-			if (isAttachment())
+			//KC: dont boost attached textures unless we have a decent amout of texture mem
+			if (isAttachment()&& gImageList.getMaxTotalTextureMem() >= 256)
 			{
 				// Rez attachments faster and at full details !
 				if (permYouOwner())
@@ -482,11 +483,10 @@ void LLVOVolume::updateTextureVirtualSize()
 					// Others' can get their texture discarded to avoid
 					// filling up the video buffers in crowded areas...
 					imagep->setBoostLevel(LLViewerImageBoostLevel::BOOST_SELECTED);
+				}
 					imagep->setAdditionalDecodePriority(1.5f);
 					vsize = (F32) LLViewerCamera::getInstance()->getScreenPixelArea();
 					face->setPixelArea(vsize); // treat as full screen
-				}
-
 			}
 		}
 
