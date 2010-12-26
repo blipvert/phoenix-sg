@@ -466,12 +466,6 @@ void LLVOVolume::updateTextureVirtualSize()
 		else
 		{
 			vsize = face->getTextureVirtualSize();
-			if (isAttachment())
-			{
-				// Rez attachments faster and at full details !
-				imagep->setBoostLevel(LLViewerImageBoostLevel::BOOST_HUD);
-				imagep->dontDiscard();
-			}
 		}
 
 		mPixelArea = llmax(mPixelArea, face->getPixelArea());		
