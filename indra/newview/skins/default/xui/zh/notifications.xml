@@ -1222,10 +1222,10 @@ www.secondlife.com/support
 		[NAME] L$ [PRICE] 您没有足够的 L$ 来这样做。
 	</notification>
 	<notification name="GrantedModifyRights">
-		你已经被授予特权，你可以任意修改[FIRST_NAME] [LAST_NAME]的物体。
+		你已经被授予特权，你可以任意修改[NAME]的物体。
 	</notification>
 	<notification name="RevokedModifyRights">
-		你的特权已经被撤回，你不可以再任意修改[FIRST_NAME] [LAST_NAME]的物体。
+		你的特权已经被撤回，你不可以再任意修改[NAME]的物体。
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
 		这样将会清空该区域的地图缓存。
@@ -3158,7 +3158,7 @@ Sculpted 元件需要特殊的材质来指定其形状。
 		您尝试加入的语音呼叫， [VOICE_CHANNEL_NAME], 已经达到最大成员数。请稍候再试。
 	</notification>
 	<notification name="ProximalVoiceChannelFull">
-		我们很抱歉。该区域已经达到语音交流的最大成员数。请尝试在其他区域使用语音聊天。
+		我们很抱歉。该区域已经达到语音交流的最大成员数。请尝试在其他区域使用语���聊天。
 	</notification>
 	<notification name="VoiceChannelDisconnected">
 		您已经从 [VOICE_CHANNEL_NAME] 断开连接。 您现在将会被重新连接到空间语音聊天。

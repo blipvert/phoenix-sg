@@ -64,7 +64,6 @@ public:
 	void setPersonalInfo(const std::string& visibility, bool im_via_email, const std::string& email);
 	void enableHistory();
 
-	static void onClickLogPath(void* user_data);
 	static void onCommitLogging(LLUICtrl* ctrl, void* user_data);
 
 protected:
@@ -102,6 +101,7 @@ BOOL LLPrefsIMImpl::postBuild()
 
 	// Don't enable this until we get personal data
 	childDisable("include_im_in_chat_console");
+	childDisable("include_im_in_chat_history");
 	childDisable("show_timestamps_check");
 	childDisable("friends_online_notify_checkbox");
 	
@@ -121,10 +121,11 @@ BOOL LLPrefsIMImpl::postBuild()
 	childSetText("busy_response", getString("log_in_to_change"));
 
 	childSetValue("include_im_in_chat_console", gSavedSettings.getBOOL("IMInChatConsole"));
+	childSetValue("include_im_in_chat_history", gSavedSettings.getBOOL("IMInChatHistory"));
 	childSetValue("show_timestamps_check", gSavedSettings.getBOOL("IMShowTimestamps"));
 	childSetValue("friends_online_notify_checkbox", gSavedSettings.getBOOL("ChatOnlineNotification"));
 
-	childSetText("log_path_string", gSavedPerAccountSettings.getString("InstantMessageLogPath"));
+	childSetText("chat_logs_location", gSavedPerAccountSettings.getString("InstantMessageLogPath"));
 	childSetValue("log_instant_messages", gSavedPerAccountSettings.getBOOL("LogInstantMessages")); 
 	childSetValue("log_chat", gSavedPerAccountSettings.getBOOL("LogChat")); 
 	childSetValue("log_show_history", gSavedPerAccountSettings.getBOOL("LogShowHistory"));
@@ -134,7 +135,6 @@ BOOL LLPrefsIMImpl::postBuild()
 	childSetValue("log_date_timestamp", gSavedPerAccountSettings.getBOOL("LogTimestampDate"));
 	childSetValue("logfile_name_datestamp", gSavedPerAccountSettings.getBOOL("LogFileNamewithDate"));
 
-	childSetAction("log_path_button", onClickLogPath, this);
 	childSetCommitCallback("log_chat",onCommitLogging,this);
 	childSetCommitCallback("log_instant_messages",onCommitLogging,this);
 	
@@ -171,10 +171,10 @@ void LLPrefsIMImpl::apply()
 		gSavedPerAccountSettings.setString("BusyModeResponse", std::string(wstring_to_utf8str(busy_response)));
 
 		gSavedSettings.setBOOL("IMInChatConsole", childGetValue("include_im_in_chat_console").asBoolean());
+		gSavedSettings.setBOOL("IMInChatHistory", childGetValue("include_im_in_chat_history").asBoolean());
 		gSavedSettings.setBOOL("IMShowTimestamps", childGetValue("show_timestamps_check").asBoolean());
 		gSavedSettings.setBOOL("ChatOnlineNotification", childGetValue("friends_online_notify_checkbox").asBoolean());
 		
-		gSavedPerAccountSettings.setString("InstantMessageLogPath", childGetText("log_path_string"));
 		gSavedPerAccountSettings.setBOOL("LogInstantMessages",childGetValue("log_instant_messages").asBoolean());
 		gSavedPerAccountSettings.setBOOL("LogChat",childGetValue("log_chat").asBoolean());
 		gSavedPerAccountSettings.setBOOL("LogShowHistory",childGetValue("log_show_history").asBoolean());
@@ -184,11 +184,7 @@ void LLPrefsIMImpl::apply()
 		gSavedPerAccountSettings.setBOOL("LogTimestampDate",childGetValue("log_date_timestamp").asBoolean());
 		gSavedPerAccountSettings.setBOOL("LogFileNamewithDate",childGetValue("logfile_name_datestamp").asBoolean());
 
-		gDirUtilp->setChatLogsDir(gSavedPerAccountSettings.getString("InstantMessageLogPath"));
 
-		gDirUtilp->setPerAccountChatLogsDir(gSavedSettings.getString("FirstName"), 
-											gSavedSettings.getString("LastName") );
-		LLFile::mkdir(gDirUtilp->getPerAccountChatLogsDir());
 		
 		bool new_im_via_email = childGetValue("send_im_to_email").asBoolean();
 		bool new_hide_online = childGetValue("online_visibility").asBoolean();		
@@ -243,6 +239,7 @@ void LLPrefsIMImpl::setPersonalInfo(const std::string& visibility, bool im_via_e
 	}
 
 	childEnable("include_im_in_chat_console");
+	childEnable("include_im_in_chat_history");
 	childEnable("show_timestamps_check");
 	childEnable("friends_online_notify_checkbox");
 
@@ -284,24 +281,6 @@ void LLPrefsIMImpl::setPersonalInfo(const std::string& visibility, bool im_via_e
 
 	childSetLabelArg("send_im_to_email", "[EMAIL]", display_email);
 }
-
-
-// static
-void LLPrefsIMImpl::onClickLogPath(void* user_data)
-{
-	LLPrefsIMImpl* self=(LLPrefsIMImpl*)user_data;
-	
-	std::string proposed_name(self->childGetText("log_path_string"));	 
-	
-	LLDirPicker& picker = LLDirPicker::instance();
-	if (!picker.getDir(&proposed_name ) )
-	{
-		return; //Canceled!
-	}
-	
-	self->childSetText("log_path_string", picker.getDirName());	 
-}
-
 
 // static
 void LLPrefsIMImpl::onCommitLogging( LLUICtrl* ctrl, void* user_data)

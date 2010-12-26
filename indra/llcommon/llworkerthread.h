@@ -81,7 +81,7 @@ public:
 	};
 
 protected:
-	void clearDeleteList() ;
+	void clearDeleteList();
 
 private:
 	typedef std::list<LLWorkerClass*> delete_list_t;

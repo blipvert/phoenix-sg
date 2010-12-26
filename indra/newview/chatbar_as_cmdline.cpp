@@ -173,13 +173,13 @@ private:
 
 JCZdrop *zdrop;
 
-class ZdCleanup: public LLEventTimer
+class TMZdCleanup: public LLEventTimer
 {
 public:
-	ZdCleanup() : LLEventTimer(0.2) //Don't really need this long of a timer, but it can't be to short or tick() below may get called before the packager's tick() returns to the timer system. Things get ugly otherwise.
+	TMZdCleanup() : LLEventTimer(0.2) //Don't really need this long of a timer, but it can't be to short or tick() below may get called before the packager's tick() returns to the timer system. Things get ugly otherwise.
 	{
 	}
-	~ZdCleanup()
+	~TMZdCleanup()
 	{
 	}
 	BOOL tick()
@@ -191,7 +191,7 @@ public:
 
 void doZdCleanup()
 {
-	new ZdCleanup();
+	new TMZdCleanup();
 }
 void doZtCleanup();
 class JCZtake : public LLEventTimer
@@ -1124,7 +1124,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 						try
 						{
 							folder_name = folder_name.substr(0,folder_name.length() - 1);
-							LLUUID folder = gInventory.findCategoryByName(folder_name);
+							LLUUID folder = gInventory.findCategoryByName(folder_name); 
 							if(folder.notNull())
 							{
 								cmdline_printchat(llformat("Found destination folder \"%s\".", folder_name.c_str()));

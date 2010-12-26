@@ -188,7 +188,9 @@ const S32 OBJECT_VELOCITY = 5;
 const S32 OBJECT_OWNER = 6;
 const S32 OBJECT_GROUP = 7;
 const S32 OBJECT_CREATOR = 8;
-
+const S32 OBJECT_RUNNING_SCRIPT_COUNT = 9;
+const S32 OBJECT_TOTAL_SCRIPT_COUNT = 10;
+const S32 OBJECT_SCRIPT_MEMORY = 11;
 // llTextBox() magic token string - yes this is a hack.  sue me.
 const std::string TEXTBOX_MAGIC_TOKEN = "!!llTextBox!!";
 

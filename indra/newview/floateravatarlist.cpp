@@ -853,13 +853,7 @@ bool LLFloaterAvatarList::LLAgentScripts::handleEvent(LLPointer<LLEvent> event, 
 	LLFloaterAvatarList* avlist = getInstance();
  	LLScrollListItem *item =   avlist->mAvatarList->getFirstSelected();
 	if(!item)return true;
-	LLViewerObject *obj=gObjectList.findObject(item->getUUID());
-	if(obj)
-	{
-		LLSelectMgr::getInstance()->selectObjectOnly(obj);
-		ScriptCounter::serializeSelection(false);
-		LLSelectMgr::getInstance()->deselectAll();
-	}
+	ScriptCounter::radarScriptCount(item->getUUID());
 	return true;
 }
 

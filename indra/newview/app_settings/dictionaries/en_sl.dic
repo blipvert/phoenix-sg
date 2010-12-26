@@ -10201,6 +10201,7 @@ llGetCenterOfMass
 llGetColor
 llGetCreator
 llGetDate
+llGetDisplayName
 llGetEnergy
 llGetForce
 llGetFreeMemory

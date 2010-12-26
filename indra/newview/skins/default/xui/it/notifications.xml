@@ -1159,10 +1159,10 @@ Scegli un avatar maschile o femminile. Puoi sempre cambiare idea più tardi.
 		[NAME] [PRICE]L$ Non hai abbastanza L$ per farlo.
 	</notification>
 	<notification name="GrantedModifyRights">
-		Ti sono stati accordati i privilegi di modifica degli oggetti di [FIRST_NAME] [LAST_NAME].
+		Ti sono stati accordati i privilegi di modifica degli oggetti di [NAME].
 	</notification>
 	<notification name="RevokedModifyRights">
-		Ti sono stati revocati i privilegi di modifica degli oggetti di [FIRST_NAME] [LAST_NAME].
+		Ti sono stati revocati i privilegi di modifica degli oggetti di [NAME].
 	</notification>
 	<notification name="FlushMapVisibilityCaches">
 		Questo reinizializzerà la cache della mappa di questa regione.

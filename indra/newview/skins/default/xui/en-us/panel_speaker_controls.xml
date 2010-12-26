@@ -40,7 +40,7 @@
 				     name="resident_name" valign="center" width="140">
 					Rumplstiltskin Califragilistic
 				</text>
-				<volume_slider bottom_delta="-29" follows="left|top" height="15" increment="0.05"
+				<volume_slider bottom_delta="-29" follows="left|top" height="15" increment="0.025"
 				     initial_val="0.5" left="0" max_val="1.0" min_val="0.0"
 				     name="speaker_volume" width="110" />
 				<button bottom_delta="0" height="20" image_selected="icn_speaker-muted_dark.tga"

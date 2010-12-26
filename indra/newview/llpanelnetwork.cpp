@@ -61,8 +61,12 @@ BOOL LLPanelNetwork::postBuild()
 	std::string sound_cache_location = gDirUtilp->getExpandedFilename(MM_SNDLOC, "");
 	if(sound_cache_location=="")sound_cache_location="Not Set Yet.";
 	childSetText("sound_cache_location", sound_cache_location);
-	std::string logs_location = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"");
-	childSetText("logs_location",logs_location);
+	std::string chat_logs_location = gDirUtilp->getExpandedFilename(LL_PATH_CHAT_LOGS, "");
+	childSetText("chat_logs_location",chat_logs_location);
+	std::string crash_logs_location = gDirUtilp->getExpandedFilename(LL_PATH_LOGS, "");
+	childSetText("crash_logs_location",crash_logs_location);
+	std::string user_setting_location = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "");
+	childSetText("user_setting_location",user_setting_location);
 		
 	childSetAction("clear_cache", onClickClearCache, this);
 	childSetAction("clear_inv_cache", onClickClearInvCache, this);
@@ -71,10 +75,14 @@ BOOL LLPanelNetwork::postBuild()
 	childSetAction("reset_cache", onClickResetCache, this);
 	childSetAction("set_sound_cache", onClickSetSoundCache, this);
 	childSetAction("reset_sound_cache", onClickResetSoundCache, this);
+	childSetAction("set_chat_logs", onClickSetChatLogs, this);
+	childSetAction("reset_chat_logs", onClickResetChatLogs, this);
 
-	childSetAction("em_open_logs_loc",onClickBrowseLogs,this);
-	childSetAction("em_open_soundcache_loc",onClickBrowseSoundCache,this);
-	childSetAction("em_open_cache_loc",onClickBrowseCache,this);
+	childSetAction("open_user_loc",onClickBrowseUserSetting,this);
+	childSetAction("open_crash_logs_loc",onClickBrowseCrashLogs,this);
+	childSetAction("open_chat_logs_loc",onClickBrowseChatLogs,this);
+	childSetAction("open_soundcache_loc",onClickBrowseSoundCache,this);
+	childSetAction("open_cache_loc",onClickBrowseCache,this);
 	
 	childSetEnabled("connection_port", gSavedSettings.getBOOL("ConnectionPortEnabled"));
 	childSetCommitCallback("connection_port_enabled", onCommitPort, this);
@@ -187,8 +195,8 @@ void LLPanelNetwork::onClickSetCache(void* user_data)
 	}
 	else
 	{
-		std::string cache_location = gDirUtilp->getCacheDir();
-		self->childSetText("cache_location", cache_location);
+		std::string folder_location = gDirUtilp->getCacheDir();
+		self->childSetText("cache_location", folder_location);
 	}
 }
 
@@ -239,8 +247,53 @@ void LLPanelNetwork::onClickResetSoundCache(void* user_data)
 	self->childSetText("sound_cache_location",std::string("None"));
 }
 
+// static
+void LLPanelNetwork::onClickSetChatLogs(void* user_data)
+{
+	LLPanelNetwork* self = (LLPanelNetwork*)user_data;
+
+	std::string cur_name(gSavedSettings.getString("InstantMessageLogPath"));
+	std::string proposed_name(cur_name);
+	
+	LLDirPicker& picker = LLDirPicker::instance();
+	if (! picker.getDir(&proposed_name ) )
+	{
+		return; //Canceled!
+	}
+
+	std::string dir_name = picker.getDirName();
+	if (!dir_name.empty() && dir_name != cur_name)
+	{
+		gSavedPerAccountSettings.setString("InstantMessageLogPath",dir_name);
+		LLNotifications::instance().add("Restart4SettingsChange");
+		self->childSetText("chat_logs_location", dir_name);
+	}
+}
+
+// static
+void LLPanelNetwork::onClickResetChatLogs(void* user_data)
+{
+	{
+		LLPanelNetwork* self = (LLPanelNetwork*)user_data;
+		//gDirUtilp->setChatLogsDir(gDirUtilp->getOSUserAppDir());
+		gSavedPerAccountSettings.setString("InstantMessageLogPath",gDirUtilp->getChatLogsDir());
+		self->childSetText("chat_logs_location", gDirUtilp->getChatLogsDir());
+		LLNotifications::instance().add("Restart4SettingsChange");
+	}
+}
+
 //static
-void LLPanelNetwork::onClickBrowseLogs(void* user_data)
+void LLPanelNetwork::onClickBrowseUserSetting(void* user_data)
+{
+	gViewerWindow->getWindow()->openFile(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,""));
+}
+//static
+void LLPanelNetwork::onClickBrowseChatLogs(void* user_data)
+{
+	gViewerWindow->getWindow()->openFile(gDirUtilp->getExpandedFilename(LL_PATH_CHAT_LOGS,""));
+}
+//static
+void LLPanelNetwork::onClickBrowseCrashLogs(void* user_data)
 {
 	gViewerWindow->getWindow()->openFile(gDirUtilp->getExpandedFilename(LL_PATH_LOGS,""));
 }

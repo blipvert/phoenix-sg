@@ -119,7 +119,7 @@ Phoenix Support
 			     max_length="254" mouse_opaque="false" name="partner_edit"
 			     tool_tip="Second Life partner. For more info on how to set, see www.secondlife.com/partner"
 			     width="121">
-        [FIRST] [LAST]
+        [NAME]
       </line_editor>
       <button bottom_delta="0" follows="left|top" left="40"  bottom="-42" height="20" halign="center"
               label="&lt; &lt;" label_selected="&gt; &gt;" name="bigimg" tool_tip="Open Full Size." width="40" />

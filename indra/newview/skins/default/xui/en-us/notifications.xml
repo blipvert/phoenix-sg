@@ -866,6 +866,13 @@ Would you like to disable all popups which can be skipped?
   </notification>
 
   <notification
+ icon="alertmodal.tga"
+ name="Restart4SettingsChange"
+ type="alertmodal">
+Settings will be applied after restarting [SECOND_LIFE].
+  </notification>
+  
+  <notification
    icon="alertmodal.tga"
    name="CacheWillClear"
    type="alertmodal">
@@ -2459,14 +2466,14 @@ Please choose the male or female avatar. You can change your mind later.
    icon="alertmodal.tga"
    name="GrantedModifyRights"
    type="notifytip">
-You have been granted the privilege to modify [FIRST_NAME] [LAST_NAME]&apos;s objects.
+You have been granted the privilege to modify [NAME]&apos;s objects.
   </notification>
 
   <notification
    icon="alertmodal.tga"
    name="RevokedModifyRights"
    type="notifytip">
-Your privilege to modify [FIRST_NAME] [LAST_NAME]&apos;s objects has been revoked
+Your privilege to modify [NAME]&apos;s objects has been revoked
   </notification>
 
   <notification
@@ -6717,6 +6724,7 @@ An error has occurred while trying to connect to voice chat for [VOICE_CHANNEL_N
 The region you have entered is running a different simulator version.
 Current simulator : [NEWVERSION]
 Previous simulator: [OLDVERSION]
+More info at: http://wiki.secondlife.com/wiki/Beta
     <unique>
       <context key="OLDVERSION"/>
       <context key="NEWVERSION"/>

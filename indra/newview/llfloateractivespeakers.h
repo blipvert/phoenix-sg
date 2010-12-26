@@ -93,6 +93,7 @@ public:
 	BOOL			mIsModerator;
 	BOOL			mModeratorMutedVoice;
 	BOOL			mModeratorMutedText;
+	std::string     mLegacyName;
 };
 
 class LLSpeakerTextModerationEvent : public LLEvent
