@@ -1572,6 +1572,7 @@ void LLTextureCache::purgeTextures(bool validate)
 	U32 num_entries = openAndReadEntries(entries);
 	if (!num_entries)
 	{
+		LLAppViewer::instance()->resumeMainloopTimeout();
 		return; // nothing to purge
 	}
 	
@@ -1862,7 +1863,11 @@ void LLTextureCache::removeCachedTexture(const LLUUID& id)
 		mTexturesSizeMap.erase(id);
 	}
 	mHeaderIDMap.erase(id);
-	LLAPRFile::remove(getTextureFileName(id));		
+	std::string filename = getTextureFileName(id);
+	if (LLAPRFile::isExist(filename))
+	{
+		LLAPRFile::remove(filename);
+	}
 }
 
 //called after mHeaderMutex is locked.
@@ -1879,7 +1884,10 @@ void LLTextureCache::removeEntry(S32 idx, Entry& entry, std::string& filename)
 		mFreeList.insert(idx);	
 	}
 
-	LLAPRFile::remove(filename);		
+	if (LLAPRFile::isExist(filename))
+	{
+		LLAPRFile::remove(filename);
+	}
 }
 
 bool LLTextureCache::removeFromCache(const LLUUID& id)
