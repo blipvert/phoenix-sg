@@ -1574,7 +1574,10 @@ const LLVector3 LLVOAvatar::getRenderPosition() const
 	{
 		return getPositionAgent();
 	}
-	else if (isRoot())
+//	else if (isRoot())
+// [RLVa:KB] - Checked: 2010-12-23 (RLVa-1.1.3) | Added: RLVa-1.1.3
+	else if ( (isRoot()) || (!mDrawable->getParent()) )
+// [/RLVa:KB]
 	{
 		return mDrawable->getPositionAgent();
 	}

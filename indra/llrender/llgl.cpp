@@ -750,16 +750,12 @@ void LLGLManager::initExtensions()
 	}
 
 
-/*
-This works now - no need to disable. ATi hardware does this much faster if they have updated drivers in the past 2 years.
-
+//KC: This might be needed after all
 	if (mIsATI && mHasMipMapGeneration)
 	{
 		LL_INFOS("RenderInit") << "Disabling mip-map generation for ATI GPUs (performance opt)" << LL_ENDL;
 		mHasMipMapGeneration = FALSE;
 	}
-
-*/ 
 	
 	// Misc
 	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, (GLint*) &mGLMaxVertexRange);

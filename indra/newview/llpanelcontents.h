@@ -53,6 +53,7 @@ public:
 
 	static void		onClickNewScript(		void* userdata);
 	static void		onClickPermissions(		void* userdata);
+	static void		onClickRefresh(		void* userdata);
 
 protected:
 	void			getState(LLViewerObject *object);
