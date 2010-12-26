@@ -1343,7 +1343,8 @@ add_executable(${VIEWER_BINARY_NAME}
     )
 
 # TODO: Remove all related code for message_template check. LL broke it by removing the online copy.
-# check_message_template(${VIEWER_BINARY_NAME})
+#They realized there oops and put the file back up the next day as it broke ALL compiles, re-adding this check.
+check_message_template(${VIEWER_BINARY_NAME})
 
 if (LLKDU_LIBRARY)
   add_dependencies(${VIEWER_BINARY_NAME} ${LLKDU_LIBRARY})
