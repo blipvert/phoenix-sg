@@ -330,7 +330,7 @@ std::string LLFloaterAbout::get_viewer_misc_info()
 
 	// TODO: Implement media plugin version query
 
-	support.append("Qt Webkit Version: 4.5.2 ");
+	support.append("Qt Webkit Version: 4.6 ");
 	support.append("\n");
 
 	if (gPacketsIn > 0)

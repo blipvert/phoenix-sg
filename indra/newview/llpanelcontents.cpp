@@ -88,7 +88,7 @@ BOOL LLPanelContents::postBuild()
 
 	childSetAction("button new script",&LLPanelContents::onClickNewScript, this);
 	childSetAction("button permissions",&LLPanelContents::onClickPermissions, this);
-
+	childSetAction("button refresh",&LLPanelContents::onClickRefresh, this);
 	return TRUE;
 }
 
@@ -167,6 +167,13 @@ void LLPanelContents::refresh()
 //
 // Static functions
 //
+
+//static
+void LLPanelContents::onClickRefresh(void *userdata)
+{
+	LLPanelContents* self = (LLPanelContents*)userdata;
+	self->refresh();
+}
 
 // static
 void LLPanelContents::onClickNewScript(void *userdata)

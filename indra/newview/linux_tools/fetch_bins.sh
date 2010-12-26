@@ -17,6 +17,8 @@ if [[ ! -f "bin/SLVoice" || "$1" == "--force" ]]; then
 		echo "Extracting."
 		tar -xvjf "$ARCHIVE" -C bin --strip-components 4 indra/newview/vivox-runtime/i686-linux/SLVoice
 		tar -xvjf "$ARCHIVE" -C lib --strip-components 4 --wildcards indra/newview/vivox-runtime/i686-linux/lib*
+		rm -f lib/libvivoxoal.so.1
+		cp -p lib/libopenal.so.1 lib/libvivoxoal.so.1
 	fi
 else
 	echo "SLVoice found."
