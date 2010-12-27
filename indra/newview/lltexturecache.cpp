@@ -1863,11 +1863,7 @@ void LLTextureCache::removeCachedTexture(const LLUUID& id)
 		mTexturesSizeMap.erase(id);
 	}
 	mHeaderIDMap.erase(id);
-	std::string filename = getTextureFileName(id);
-	if (LLAPRFile::isExist(filename))
-	{
-		LLAPRFile::remove(filename);
-	}
+	LLAPRFile::remove(getTextureFileName(id));
 }
 
 //called after mHeaderMutex is locked.
@@ -1884,10 +1880,7 @@ void LLTextureCache::removeEntry(S32 idx, Entry& entry, std::string& filename)
 		mFreeList.insert(idx);	
 	}
 
-	if (LLAPRFile::isExist(filename))
-	{
-		LLAPRFile::remove(filename);
-	}
+	LLAPRFile::remove(filename);
 }
 
 bool LLTextureCache::removeFromCache(const LLUUID& id)
