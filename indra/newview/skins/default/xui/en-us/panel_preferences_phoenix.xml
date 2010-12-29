@@ -290,7 +290,7 @@
 	<!--Page 2-->
     <tab_container label="Page 2" bottom="0" height="440" left="0" mouse_opaque="false" name="tab2" tab_min_width="50" tab_position="top" width="500" bg_opaque_color="0,0,0,0.0">
       
-	  <!--IRC-->
+	  <!--IRC remved-->
 	  <panel border="true" bottom="-440" follows="left|top|right|bottom" height="440" label="IRC" left="1" mouse_opaque="true" name="IRC" width="517">
         <button bottom="-25" follows="left|top" font="SansSerifSmall" height="18" label="?" name="PhoenixHelp_IRC" tool_tip="Click here for help regarding the settings in this page." right="490" width="18"/>
         <text bottom="-20" follows="left|top" font="SansSerifSmall" height="16" left="150" name="IRC-colors" width="512">Colors used to display IRC Messages:</text>
@@ -312,8 +312,8 @@
         <check_box bottom_delta="0" left_delta="55" enabled="true" follows="left|top" font="SansSerifSmall" height="16" label="" mouse_opaque="true" control_name="PhoenixIRC_ShowKick" tool_tip="Show this messages in the window?" name="PhIRC_ShowKick"/>
         <check_box bottom_delta="0" left_delta="55" enabled="true" follows="left|top" font="SansSerifSmall" height="16" label="" mouse_opaque="true" control_name="PhoenixIRC_ShowNick" tool_tip="Show this messages in the window?" name="PhIRC_ShowNick"/>
         <check_box bottom_delta="0" left_delta="55" enabled="true" follows="left|top" font="SansSerifSmall" height="16" label="" mouse_opaque="true" control_name="PhoenixIRC_ShowSystem" tool_tip="Show this messages in the window?" name="PhIRC_ShowSystem"/>
-        <check_box bottom_delta="-35" left="25" enabled="true" follows="right|top" font="SansSerifSmall" height="16" label="Auto Re-Join" mouse_opaque="true" control_name="PhoenixIRC_AutoReJoin" tool_tip="Automaticly accempt to reconnect to the channel you were just in if kicked. Some networks dont like this and may ban you for doing so, be carefull." name="PhoenixIRC_AutoReJoin"/>
-        <check_box bottom_delta="-35" left="25" enabled="true" follows="right|top" font="SansSerifSmall" height="16" label="Auto Connect at login" mouse_opaque="true" control_name="PhoenixIRC_AutoConnect" tool_tip="Automaticly connect to any IRC networks that you have set to auto connect to upon startup." name="PhoenixIRC_AutoConnect"/>
+        <check_box bottom_delta="-35" left="25" enabled="true" follows="right|top" font="SansSerifSmall" height="16" label="Auto Re-Join" mouse_opaque="true" control_name="PhoenixIRC_AutoReJoin" tool_tip="Automatically attempt to reconnect to the channel you were just in if kicked. Some networks don't like this and may ban you for doing so, be careful." name="PhoenixIRC_AutoReJoin"/>
+        <check_box bottom_delta="-20" left="25" enabled="true" follows="right|top" font="SansSerifSmall" height="16" label="Enable Auto Connect at login" mouse_opaque="true" control_name="PhoenixIRC_AutoConnect" tool_tip="Enable to automatically connect to all IRC channels that you have set to auto connect to upon logging into Phoenix.  Disable ignores per channel setting by disabling auto login completely." name="PhoenixIRC_AutoConnect"/>
       </panel>
 	  
 	  <!--Inventory-->

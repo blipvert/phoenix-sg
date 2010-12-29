@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel border="true" bottom="-371" height="300" left="280" mouse_opaque="true"
      name="PhoenixIRC" width="350">
-	<scroll_list background_visible="true" bottom="10" column_padding="5" draw_border="true"
+	<scroll_list background_visible="true" bottom="25" column_padding="5" draw_border="true"
 	     draw_heading="false" draw_stripes="true" enabled="true"
 	     follows="left|top|right|bottom" left="10" mouse_opaque="true"
 	     multi_select="false" name="PhoenixIRC_list" tab_stop="true" top="-10"
@@ -22,4 +22,6 @@
 	     label="Refresh" name="PhoenixIRC_refresh" width="80" />
   <button bottom_delta="-25" follows="top|right" font="SansSerif" height="22"
 	     label="Help" name="PhoenixIRC_Help" width="80" />
+  <check_box bottom="5" left="10" enabled="true" follows="left|bottom" font="SansSerifSmall" height="16" label="Auto Re-Join" mouse_opaque="true" control_name="PhoenixIRC_AutoReJoin" tool_tip="Automatically attempt to reconnect to the channel you were just in if kicked. Some networks don't like this and may ban you for doing so, be careful." name="PhoenixIRC_AutoReJoin"/>
+  <check_box bottom_delta="0" left_delta="100" enabled="true" follows="left|bottom" font="SansSerifSmall" height="16" label="Enable Auto Connect at login" mouse_opaque="true" control_name="PhoenixIRC_AutoConnect" tool_tip="Enable to automatically connect to all IRC channels that you have set to auto connect to upon logging into Phoenix.  Disable ignores per channel setting by disabling auto login completely." name="PhoenixIRC_AutoConnect"/>
 </panel>
