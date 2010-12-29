@@ -1718,6 +1718,12 @@ void LLViewerImage::saveRawImage()
 	}
 
 	mSavedRawDiscardLevel = mRawDiscardLevel ;
+
+	if (!mRawImage->getData()) //KC: sanity check
+	{
+		return ;
+	}
+
 	mSavedRawImage = new LLImageRaw(mRawImage->getData(), mRawImage->getWidth(), mRawImage->getHeight(), mRawImage->getComponents()) ;
 
 	if(mSavedRawDiscardLevel <= mDesiredSavedRawDiscardLevel)
