@@ -8,14 +8,15 @@
 	<check_box label="Zoom" name="radio zoom"/>
 	<check_box label="Órbita (Ctrl)" name="radio orbit"/>
 	<check_box label="Panorámica (Ctrl-Shift)" name="radio pan"/>
-	<check_box label="Mover" name="radio move"/>
-	<check_box label="Vertical (Ctrl)" name="radio lift"/>
-	<check_box label="Horizontal (Ctrl-Shift)" name="radio spin"/>
+	<check_box label="Mover" name="radio move" bottom_delta="20"/>
+	<check_box label="Ascensor (Ctrl)" name="radio lift"/>
+	<check_box label="Rotar (Ctrl-Shift)" name="radio spin"/>
 	<check_box label="Posición" name="radio position"/>
 	<check_box label="Girar (Ctrl)" name="radio rotate"/>
 	<check_box label="Estirar (Ctrl-Shift)" name="radio stretch"/>
 	<check_box label="Elegir la cara" name="radio select face"/>
-	<check_box label="Editar las partes enlazadas" name="checkbox edit linked parts"/>
+  <check_box label="Alinear los fundamentos" name="radio align"/>
+	<check_box label="Editar partes enlazadas" name="checkbox edit linked parts"/>
 	<text name="text ruler mode">
 		Ajuste:
 	</text>
@@ -32,8 +33,10 @@
 	</combo_box>
 	<check_box label="Estirar ambos lados" name="checkbox uniform"/>
 	<check_box label="Estirar las texturas" name="checkbox stretch textures"/>
-	<check_box label="Usar la cuadrícula" name="checkbox snap to grid"/>
-	<button label="Opciones..." label_selected="Opciones..." name="Options..."/>
+	<check_box label="cuadrícula" name="checkbox snap to grid"/>
+  <check_box label="Editar eje en la raíz" name="checkbox actual root"/>
+  <check_box label="Mostrar resalte de la" name="checkbox show highlight"/>
+	<button label="Opciones" label_selected="Opciones..." name="Options..." width="65" left="220"/>
 	<text name="text status" width="280">
 		Arrastrar para mover, Mayús.+arrastrar para copiar
 	</text>
@@ -73,9 +76,9 @@
 	<text name="Strength:">
 		Fuerza
 	</text>
-	<text name="obj_count" left="134">
-		Objetos seleccionados: [COUNT]
-	</text>
+	<text name="link_num_obj_count" left="134">
+    [DESC] [NUM]
+  </text>
 	<text name="prim_count" left="134">
 		primitivas: [COUNT]
 	</text>
@@ -101,13 +104,21 @@
 				Thrax Linden
 			</text>
 			<button label="Perfil..." label_selected="Perfil..." name="button owner profile"/>
+      <text name="LastOwner:">
+        Último Propietario:
+      </text>
+      <text name="Last Owner Name">
+        Thrax Linden
+      </text>
+      <button label="Perfil..." label_selected="Perfil..." name="button last owner profile" />
 			<text name="Group:">
 				Grupo:
 			</text>
 			<text name="Group Name Proxy">
 				Los Linden
 			</text>
-			<button label="Configurar..." label_selected="Configurar..." name="button set group"/>
+			<button label="Configurar" tool_tip="Configurar" label_selected="Configurar..." name="button set group"/>
+      <button label="Abierto" name="button open group"/>
 			<text name="Permissions:">
 				Permisos:
 			</text>
@@ -172,7 +183,8 @@
 					Abrir los media de la parcela
 				</combo_item>
 			</combo_box>
-			<text name="B:">
+      <button label="UUID Copia" label_selected="UUID Copia" name="button cpy_key" left_delta="175"/>
+      <text name="B:">
 				B:
 			</text>
 			<text name="O:">
@@ -222,12 +234,16 @@
 			</string>
 		</panel>
 		<panel label="Objeto" name="Object">
+      <button label="Enlace" name="link_obj" follows="top|left" left="0"/>
+      <button label="Desvincular" name="unlink_obj" follows="top|left" width="75"/>
 			<text name="select_single">
 				Seleccione un sólo prim para editarlo.
 			</text>
-			<text name="edit_object">
-				Modificar los parámetros del objeto:
+			<text name="edit_object" left="130">
+				parámetros:
 			</text>
+      <button label="Copia" name="copyparams"/>
+      <button label="Pegar" name="pasteparams"/>
 			<check_box label="Bloqueado" name="checkbox locked" tool_tip="Previene que el objeto sea movido o borrado. Suele ser útil mientras se construye, para prevenir que se modifique sin querer."/>
 			<check_box label="Material" name="Physical Checkbox Ctrl" tool_tip="Permite que el objeto pueda ser empujado y le afecte la gravedad."/>
 			<check_box label="Temporal" name="Temporary Checkbox Ctrl" tool_tip="Hace que el objeto se borre 1 minuto después de su creación."/>
@@ -235,21 +251,15 @@
 			<text name="label position">
 				Posición (metros)
 			</text>
-			<spinner label="X" name="Pos X"/>
-			<spinner label="Y" name="Pos Y"/>
-			<spinner label="Z" name="Pos Z"/>
+      <button left_delta="75" name="copypos"/>
 			<text name="label size">
 				Tamaño (metros)
 			</text>
-			<spinner label="X" name="Scale X"/>
-			<spinner label="Y" name="Scale Y"/>
-			<spinner label="Z" name="Scale Z"/>
+      <button left_delta="75" name="copysize"/>
 			<text name="label rotation">
 				Rotación (grados)
 			</text>
-			<spinner label="X" name="Rot X"/>
-			<spinner label="Y" name="Rot Y"/>
-			<spinner label="Z" name="Rot Z"/>
+      <button left_delta="75" name="copyrot"/>
 			<text name="label material">
 				Material
 			</text>
@@ -551,10 +561,16 @@
 (primero debe subirla)
 			</text>
 			<button label="Alinear" label_selected="Alinear" name="button align" left="180"/>
-		</panel>
-		<panel label="Contenido " name="Contents">
+    <text name="textbox params">
+      Parámetro Textura
+    </text>
+    <button label="Copia" name="copytextures"/>
+    <button label="Pegar" name="pastetextures" />
+    </panel>
+    <panel label="Contenido " name="Contents">
 			<button label="Script nuevo" label_selected="Script nuevo" name="button new script"/>
-			<button label="Permisos..." name="button permissions"/>
+			<button label="Permisos" name="button permissions"/>
+      <button label="Actualizar" name="button refresh"/>
 		</panel>
 	</tab_container>
 	<panel name="land info panel">
@@ -597,7 +613,8 @@
 		Pulse y arrastre para cambiar el punto de vista
 	</string>
 	<string name="status_grab">
-		Arrastre para mover objetos: Ctrl, verticalmente; Ctrl-Mayús., para girarlos.
+		Arrastre para mover objetos: Ctrl, verticalmente;
+Ctrl-Mayús., para girarlos.
 	</string>
 	<string name="status_place">
 		Pulse en el mundo para construir
