@@ -768,7 +768,7 @@ bool LLTextureFetchWorker::doWork(S32 param)
 
 	if (mState == LOAD_FROM_NETWORK)
 	{
-		static LLCachedControl<bool> use_http("ImagePipelineUseHTTP", 0);
+		static LLCachedControl<bool> use_http("ImagePipelineUseHTTPFetch", 0);
 
 // 		if (mHost != LLHost::invalid) get_url = false;
 		if ( use_http && mCanUseHTTP && mUrl.empty())//get http url.
