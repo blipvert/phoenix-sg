@@ -55,7 +55,7 @@
 
   <!-- Move panel -->
 
-  <check_box bottom="-70" follows="left|top" font="SansSerifSmall" height="16"
+  <check_box bottom="-90" follows="left|top" font="SansSerifSmall" height="16"
 	     initial_value="false" label="Move" left="4" mouse_opaque="true"
 	     name="radio move" radio_style="true" width="114" />
   <check_box bottom_delta="-15" follows="left|top" font="SansSerifSmall" height="16"
@@ -416,8 +416,8 @@
         The Lindens
       </text>
       <button bottom="-126" follows="top|right" font="SansSerifSmall" halign="center"
-                 height="16" label="Set" label_selected="Set..." left_delta="94"
-                 mouse_opaque="true" name="button set group" scale_image="TRUE" width="30" />
+           height="16" label="Set" label_selected="Set..." left_delta="94" tool_tip=""
+           mouse_opaque="true" name="button set group" scale_image="TRUE" width="30" />
       <button bottom_delta="0" follows="top|right" font="SansSerifSmall" halign="center"
 			     height="16" label="Open" label_selected="Open" left_delta="30"
 			     mouse_opaque="true" name="button open group" scale_image="TRUE" width="48" />
