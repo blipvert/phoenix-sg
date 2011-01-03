@@ -13,4 +13,7 @@
 			</layout_stack>
 		</layout_panel>
 	</layout_stack>
+  <string name="unread_count_string_plural">
+    Neue IMs
+  </string>
 </panel>
