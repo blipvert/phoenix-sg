@@ -17,4 +17,7 @@
 		<layout_panel min_width="220" name="media_remote_container" width="220"/>
 		<layout_panel min_width="138" name="voice_remote_container" width="140"/>
 	</layout_stack>
+  <string name="unread_count_string_plural">
+    Nuevo MIs
+  </string>
 </panel>
