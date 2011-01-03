@@ -5,7 +5,7 @@
 			<layout_stack name="chatbar_and_buttons" right="410">
 				<layout_panel name="padding" width="410"/>
 				<layout_panel name="state_buttons" width="410">
-					<button label="Recibido un MI" label_selected="Recibido un MI" name="IM Received" tool_tip="Tiene pendiente un mensaje instantáneo. Pulse para ver los MI."/>
+					<button label="MI recibido" label_selected="Recibido un MI" name="IM Received" tool_tip="Tiene pendiente un mensaje instantáneo. Pulse para ver los MI."/>
 					<button label="Salir de &apos;ocupado&apos;" label_selected="Salir de &apos;ocupado&apos;" name="Set Not Busy" tool_tip="El chat y los MI están escondidos para usted. Pulse aquí para salir del estado ocupado."/>
 					<button label="Flycam" label_selected="Flycam" name="Flycam" tool_tip="Su cámara está controlada por el joystick; pulse aquí para liberarla."/>
 					<button font="SansSerifSmall" label="Vista subjetiva" label_selected="Vista subjetiva" name="Mouselook" tool_tip="Use el ratón para orientar su punto de vista. Si tiene un arma, al pulsarlo disparará."/>
@@ -18,6 +18,6 @@
 		<layout_panel min_width="138" name="voice_remote_container" width="140"/>
 	</layout_stack>
   <string name="unread_count_string_plural">
-    Nuevo MIs
+    Nuevos MIs
   </string>
 </panel>
