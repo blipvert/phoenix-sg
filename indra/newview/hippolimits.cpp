@@ -48,10 +48,11 @@ void HippoLimits::setSecondLifeLimits()
 {
 	llinfos << "Using Second Life limits." << llendl;
 	
-	if(gSavedSettings.getBOOL("Phoenix40GroupsSupport")) {
-		mMaxAgentGroups = 40;
-	} else {
-		mMaxAgentGroups = 25;
+	//KC: new server defined max groups
+	mMaxAgentGroups = gHippoGridManager->getConnectedGrid()->getMaxAgentGroups();
+	if (mMaxAgentGroups < 0)
+	{
+		mMaxAgentGroups = DEFAULT_MAX_AGENT_GROUPS;
 	}
 	
 	if(gSavedSettings.getBOOL("Phoenix64mPrimSupport")) {
