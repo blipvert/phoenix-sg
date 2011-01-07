@@ -3570,7 +3570,7 @@ void LLAppViewer::idle()
 	//
 	//
 
-	/*{
+	{
 		// Initialize the viewer_stats_timer with an already elapsed time
 		// of SEND_STATS_PERIOD so that the initial stats report will
 		// be sent immediately.
@@ -3608,7 +3608,7 @@ void LLAppViewer::idle()
 			}
 		}
 		gFrameStats.addFrameData();
-	}*/
+	}
 
 	if (!gDisconnected)
 	{

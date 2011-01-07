@@ -714,9 +714,14 @@ void send_stats()
 	system["ram"] = (S32) gSysMemory.getPhysicalMemoryKB();
 	system["os"] = LLAppViewer::instance()->getOSInfo().getOSStringSimple();
 	system["cpu"] = gSysCPU.getCPUString();
-	std::string macAddressString = llformat("%02x-%02x-%02x-%02x-%02x-%02x",
-											gMACAddress[0],gMACAddress[1],gMACAddress[2],
-											gMACAddress[3],gMACAddress[4],gMACAddress[5]);
+	char hashed_mac_string[MD5HEX_STR_SIZE];
+        LLMD5 hashed_mac;
+        hashed_mac.update( gMACAddress, MAC_ADDRESS_BYTES );
+        hashed_mac.finalize();
+        hashed_mac.hex_digest(hashed_mac_string);
+        std::string macAddressString = llformat("%02x-%02x-%02x-%02x-%02x-%02x",
+          hashed_mac_string[0],hashed_mac_string[1],hashed_mac_string[2],
+          hashed_mac_string[3],hashed_mac_string[4],hashed_mac_string[5]);
 	system["mac_address"] = macAddressString;
 	system["serial_number"] = LLAppViewer::instance()->getSerialNumber();
 	std::string gpu_desc = llformat(
