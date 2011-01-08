@@ -197,7 +197,6 @@ private:
 	//Banana:KC
 	S32					mSmallHeight;
 	S32					mLargeHeight;
-	BOOL					mShowHighlight; //Banana:KC - make changes to show highlight only temporary during build mode, and restore on close
 	std::map<std::string, std::string> mStatusText;
 };
 

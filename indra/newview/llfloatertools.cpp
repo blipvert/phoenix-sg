@@ -241,10 +241,9 @@ BOOL	LLFloaterTools::postBuild()
 	mComboGridMode = getChild<LLComboBox>("combobox grid mode");
 	childSetCommitCallback("combobox grid mode",commit_grid_mode, this);
 	
-	//Banana:KC - stuff for show highlight
-	mShowHighlight = (BOOL)gSavedSettings.getBOOL("PhoenixRenderHighlightSelections"); //Banana: save show highlight state on open so it can be restored on close
+	//Phoenix:KC show highlight
 	mCheckShowHighlight = getChild<LLCheckBoxCtrl>("checkbox show highlight");
-	childSetValue("checkbox show highlight",mShowHighlight);
+	childSetValue("checkbox show highlight", (BOOL)gSavedSettings.getBOOL("PhoenixRenderHighlightSelections"));
 	childSetCommitCallback("checkbox show highlight",commit_show_highlight, this);
 	
 	//Banana:KC - handiness
@@ -848,6 +847,8 @@ void LLFloaterTools::onOpen()
 	}
 	mObjectSelection = LLSelectMgr::getInstance()->getEditSelection();
 	
+	mCheckShowHighlight->setValue((BOOL)gSavedSettings.getBOOL("PhoenixRenderHighlightSelections"));
+
 	// gMenuBarView->setItemVisible(std::string("Tools"), TRUE);
 	// gMenuBarView->arrange();
 }
@@ -868,9 +869,8 @@ void LLFloaterTools::onClose(bool app_quitting)
 	// exit component selection mode
 	LLSelectMgr::getInstance()->promoteSelectionToRoot();
 	gSavedSettings.setBOOL("EditLinkedParts", FALSE);
-	//Banana:KC - restore show highlight state
-	//gSavedSettings.setBOOL("PhoenixRenderHighlightSelections", mShowHighlight);
-	//LLSelectMgr::getInstance()->enableSilhouette(mShowHighlight);
+	//Phoenix:KC - restore the show highlight state to the saved setting
+	LLSelectMgr::sRenderSelectionHighlights = (BOOL)gSavedSettings.getBOOL("PhoenixRenderHighlightSelections");
 	
 	gViewerWindow->showCursor();
 
@@ -1085,10 +1085,11 @@ void commit_grid_mode(LLUICtrl *ctrl, void *data)
 	LLSelectMgr::getInstance()->setGridMode((EGridMode)combo->getCurrentIndex());
 } 
 
-//Banana:KC update the show highlight state nao :O
+//Phoenix:KC temporarily change the show highlight state
 void commit_show_highlight(LLUICtrl *ctrl, void*)
 {
-	LLSelectMgr::getInstance()->enableSilhouette(gSavedSettings.getBOOL("PhoenixRenderHighlightSelections"));
+	LLCheckBoxCtrl* check = (LLCheckBoxCtrl*)ctrl;
+	LLSelectMgr::sRenderSelectionHighlights = check->getValue().asBoolean();
 }
 
 // static 
