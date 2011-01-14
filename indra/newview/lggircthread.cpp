@@ -1014,6 +1014,11 @@ void lggIrcThread::notifyStuff()
 {
 	LLFloaterChatterBox* chat_floater = LLFloaterChatterBox::getInstance(LLSD());
 
+	if(!floater->getVisible())
+	{
+		chat_floater->setFloaterFlashing(floater, TRUE);
+	}
+
 	if( !chat_floater->getVisible() && !floater->getVisible())
 	{
 		//if the IM window is not open and the floater is not visible (i.e. not torn off)
@@ -1148,17 +1153,11 @@ void lggIrcThread::msg(std::string message, LLColor4 color, bool notify)
 
 void lggIrcThread::msg(std::string message, std::string name, LLColor4 color, bool notify)
 {
-	LLUUID uid;
-	uid.generate(name+"lgg"+makelower(getChannel()));
-
-	llinfos << "Generating Disp uuid from |" << name << "| and |" << makelower(getChannel()) << "| it was " << uid.asString() << llendl;
-
-
 	floater  = gIMMgr->findFloaterBySession(getMID());
 	floater->addHistoryLine(stripColorCodes(message),
 		color,
 		true,
-		uid,
+		LLUUID::null,
 		name);
 	if(notify)
 	{

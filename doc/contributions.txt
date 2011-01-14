@@ -745,6 +745,9 @@ Vector Hastings
 	VWR-8726
 Vex Streeter
 	SNOW-434
+Vicky Aura
+	PHOE-2039
+	PHOE-2240
 Vixen Heron
 	VWR-2710
 	CT-88
