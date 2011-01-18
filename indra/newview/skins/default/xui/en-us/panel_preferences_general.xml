@@ -134,7 +134,7 @@
 	     bottom="-331" drop_shadow_visible="true" enabled="true" follows="left|top"
 	     font="SansSerifSmall" h_pad="0" halign="left" height="16" left="315"
 	     mouse_opaque="true" name="maturity_desired_textbox" v_pad="0" width="150">
-		 PG only
+		 Log in to change
 	</text>
 	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	     bottom="-20" drop_shadow_visible="true" enabled="true" follows="left|top"

@@ -108,7 +108,7 @@ BOOL LLPanelGeneral::postBuild()
 	U32 preferred_maturity = gSavedSettings.getU32("PreferredMaturity");
 	childSetValue("maturity_desired_combobox", int(preferred_maturity));
 	std::string selected_item_label = getChild<LLComboBox>("maturity_desired_combobox")->getSelectedItemLabel();
-	childSetValue("maturity_desired_textbox", selected_item_label);
+//	childSetValue("maturity_desired_textbox", selected_item_label); // WL: Disabled to have a static not logged in text
 	
 	childSetVisible("maturity_desired_combobox", can_choose);
 	childSetVisible("maturity_desired_textbox",	!can_choose);
