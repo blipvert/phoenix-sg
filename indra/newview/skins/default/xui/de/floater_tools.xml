@@ -426,7 +426,7 @@ um Eigenschaften zu bearbeiten.
 			<text name="edit_object">
 				Objekteigenschaften bearbeiten:
 			</text>
-			<check_box label="Flexibler Weg" name="Flexible1D Checkbox Ctrl" tool_tip="Gestattet, dass Objekt um die Z-Achse gebogen wird. (nur Client-Seite)"/>
+			<check_box bottom_delta="-40" label="Flexibler Weg" name="Flexible1D Checkbox Ctrl" tool_tip="Gestattet, dass Objekt um die Z-Achse gebogen wird. (nur Client-Seite)"/>
 			<spinner label="Weichheit" name="FlexNumSections"/>
 			<spinner label="Schwerkraft" name="FlexGravity"/>
 			<spinner label="Ziehen" name="FlexFriction"/>
