@@ -17,31 +17,29 @@ macro(vcs_get_revision _output_variable)
 			MESSAGE(STATUS "Found hg!")
 			
 			# Grab the revision number
-			EXECUTE_PROCESS(COMMAND ${_hg} summary WORKING_DIRECTORY 
+			EXECUTE_PROCESS(COMMAND ${_hg} id -n WORKING_DIRECTORY 
 			"${PROJECT_SOURCE_DIR}" OUTPUT_VARIABLE _release 
 			RESULT_VARIABLE hg_result
 			OUTPUT_STRIP_TRAILING_WHITESPACE
 			ERROR_STRIP_TRAILING_WHITESPACE)
 			
 			if (hg_result EQUAL 0)
-				# So some regex magic
-				foreach(_v_l ${_release})
-				if(_v_l MATCHES "^parent: *[^0-9]*\([0-9]+\):\([a-z0-9]+\)")
-					# not using CPACK yet for installing. This is prep work for CPACK
-					#set(CPACK_PACKAGE_VERSION_PATCH ${CMAKE_MATCH_1})
+				# Strip out the + from the result. + indicates uncommitted changes.
+				string(REGEX REPLACE \\+ "" _release ${_release})
+
+				# not using CPACK yet for installing. This is prep work for CPACK
+				#set(CPACK_PACKAGE_VERSION_PATCH ${_release})
 		
-					# set Rev number.
-					set(PHOENIX_WC_REVISION ${CMAKE_MATCH_1})
-				endif()
-				endforeach()
+				# set Rev number.
+				set(PHOENIX_WC_REVISION ${_release})
 			ELSE ()
 				# give feedback and set the rev to 0
-				MESSAGE("Mercurial had an error. Too old version of hg?")
+				MESSAGE("Mercurial had an error. Setting revision to zero.")
 				SET(PHOENIX_WC_REVISION 0)
 			ENDIF ()
 		ELSE()
 			# give feedback and set the rev to 0
-			MESSAGE("Could not parse Mercurial version. Newer version of hg?")
+			MESSAGE("Could not find Mercurial. Setting revision to zero.")
 			SET(PHOENIX_WC_REVISION 0)
 		ENDIF()
 	ELSE()
