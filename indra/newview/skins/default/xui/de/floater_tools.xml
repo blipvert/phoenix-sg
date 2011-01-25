@@ -138,8 +138,8 @@
 					Original
 				</radio_item>
 				<radio_item name="Copy">
-					Kopieren
-				</radio_item>
+          Kopie
+        </radio_item>
 				<radio_item name="Contents">
 					Inhalt
 				</radio_item>
