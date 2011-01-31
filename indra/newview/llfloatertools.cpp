@@ -119,7 +119,7 @@ void commit_radio_orbit(LLUICtrl *, void*);
 void commit_radio_pan(LLUICtrl *, void*);
 void commit_grid_mode(LLUICtrl *, void*);
 void commit_slider_zoom(LLUICtrl *, void*);
-void commit_show_highlight(LLUICtrl *, void*); //Banana:KC
+void commit_show_highlight(LLUICtrl *, void*); //Phoenix:KC
 
 //static
 void*	LLFloaterTools::createPanelPermissions(void* data)
@@ -387,7 +387,7 @@ LLFloaterTools::LLFloaterTools()
 	mComboGridMode(NULL),
 	mCheckStretchUniform(NULL),
 	mCheckStretchTexture(NULL),
-	mCheckShowHighlight(NULL), //Banana:KC
+	mCheckShowHighlight(NULL), //Phoenix:KC
 	mCheckActualRoot(NULL), //Banana:KC
 
 	mBtnRotateLeft(NULL),
@@ -720,7 +720,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	//mCheckSelectLinked	->setVisible( edit_visible );
 	if (mCheckStretchUniform) mCheckStretchUniform->setVisible( edit_visible );
 	if (mCheckStretchTexture) mCheckStretchTexture->setVisible( edit_visible );
-	if (mCheckShowHighlight) mCheckShowHighlight->setVisible( edit_visible ); //Banana:KC
+	if (mCheckShowHighlight) mCheckShowHighlight->setVisible( edit_visible ); //Phoenix:KC
 	if (mCheckActualRoot) mCheckActualRoot->setVisible( edit_visible ); //Banana:KC
 
 	// Create buttons
@@ -847,7 +847,10 @@ void LLFloaterTools::onOpen()
 	}
 	mObjectSelection = LLSelectMgr::getInstance()->getEditSelection();
 	
-	mCheckShowHighlight->setValue((BOOL)gSavedSettings.getBOOL("PhoenixRenderHighlightSelections"));
+	//Phoenix:KC - set the check box value from the render setting
+	// this function runs on selection change and will cause it to become rechecked
+	//mCheckShowHighlight->setValue((BOOL)gSavedSettings.getBOOL("PhoenixRenderHighlightSelections"));
+	mCheckShowHighlight->setValue(LLSelectMgr::sRenderSelectionHighlights);
 
 	// gMenuBarView->setItemVisible(std::string("Tools"), TRUE);
 	// gMenuBarView->arrange();
