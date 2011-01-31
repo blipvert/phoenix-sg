@@ -112,7 +112,7 @@ public:
 	
 	void purgeCache(ELLPath location);
 	void setReadOnly(BOOL read_only) ;
-	S64 initCache(ELLPath location, S64 maxsize, BOOL disable_texture_cache);
+	S64 LLTextureCache::initCache(ELLPath location, S64 max_size, BOOL texture_cache_mismatch);
 
 	handle_t readFromCache(const std::string& local_filename, const LLUUID& id, U32 priority, S32 offset, S32 size,
 						   ReadResponder* responder);
@@ -158,6 +158,7 @@ private:
 	void clearCorruptedCache();
 	void purgeAllTextures(bool purge_directories);
 	void purgeTextures(bool validate);
+	void purgeTextureFilesTimeSliced(bool force = false);
 	LLAPRFile* openHeaderEntriesFile(bool readonly, S32 offset);
 	void closeHeaderEntriesFile();
 	void readEntriesHeader();
@@ -169,7 +170,7 @@ private:
 	void writeEntriesAndClose(const std::vector<Entry>& entries);
 	void readEntryFromHeaderImmediately(S32& idx, Entry& entry) ;
 	void writeEntryToHeaderImmediately(S32& idx, Entry& entry, bool write_header = false) ;
-	void removeEntry(S32 idx, Entry& entry, std::string& filename);
+	void removeEntry(S32 idx, Entry& entry, std::string& filename, bool remove_file = true);
 	void removeCachedTexture(const LLUUID& id) ;
 	S32 getHeaderCacheEntry(const LLUUID& id, Entry& entry);
 	S32 setHeaderCacheEntry(const LLUUID& id, Entry& entry, S32 imagesize, S32 datasize);
@@ -194,7 +195,11 @@ private:
 
 	typedef std::vector<std::pair<LLPointer<Responder>, bool> > responder_list_t;
 	responder_list_t mCompletedList;
-	
+
+	typedef std::map<LLUUID, std::string> purge_map_t;
+	purge_map_t mFilesToDelete;
+	LLTimer mSlicedPurgeTimer;
+
 	BOOL mReadOnly;
 	
 	// HEADERS (Include first mip)

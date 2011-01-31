@@ -483,10 +483,10 @@ void LLVOVolume::updateTextureVirtualSize()
 					// Others' can get their texture discarded to avoid
 					// filling up the video buffers in crowded areas...
 					imagep->setBoostLevel(LLViewerImageBoostLevel::BOOST_SELECTED);
-				}
 					imagep->setAdditionalDecodePriority(1.5f);
 					vsize = (F32) LLViewerCamera::getInstance()->getScreenPixelArea();
 					face->setPixelArea(vsize); // treat as full screen
+				}
 			}
 		}
 

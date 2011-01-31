@@ -985,33 +985,29 @@ bool LLTextureFetchWorker::doWork(S32 param)
 
 				if (mHTTPFailCount >= max_attempts)
 				{
-					// Make max_attempts attempt at decoding what data we have, then bail forever on this image
-					if (cur_size > 0 && (mHTTPFailCount < (max_attempts+1)) )
+					if (mCanUseNET)
+					{
+						llinfos << "Falling back to SIM fetch for texture " << mID << llendl;
+						resetFormattedData();
+						mState = INIT ;
+						mCanUseHTTP = false ;
+						setPriority(LLWorkerThread::PRIORITY_HIGH | mWorkPriority);
+						return false ;
+					}
+					if (cur_size > 0)
 					{
 						// Use available data
 						mLoadedDiscard = mFormattedImage->getDiscardLevel();
 						mState = DECODE_IMAGE;
 						return false; 
 					}
+
+
 					else
 					{
-						//roll back to try UDP
-						if(mCanUseNET)
-						{
-							llinfos << "Falling back to UDP fetch for texture " << mID << llendl;
-							mState = INIT ;
-							mCanUseHTTP = false ;
-							setPriority(LLWorkerThread::PRIORITY_HIGH | mWorkPriority);
-							return false ;
-						}
-						else
-						{
-							// UDP is not an option, we are dead
-							llwarns << "No UDP fallback available for texture " << mID << llendl;
-							resetFormattedData();
-							mState = DONE;
-							return true; // failed
-						}
+						resetFormattedData();
+						mState = DONE;
+						return true; // failed
 					}
 				}
 				else
@@ -1083,36 +1079,9 @@ bool LLTextureFetchWorker::doWork(S32 param)
 	if (mState == DECODE_IMAGE)
 	{
 		static LLCachedControl<bool> textures_decode_disabled("TextureDecodeDisabled", 0);
-		if(textures_decode_disabled)
+		if(textures_decode_disabled || mDesiredDiscard < 0 || mFormattedImage->getDataSize() <= 0 || mLoadedDiscard < 0)
 		{
 			// for debug use, don't decode
-			mState = DONE;
-			setPriority(LLWorkerThread::PRIORITY_LOW | mWorkPriority);
-			return true;
-		}
-
-		if (mDesiredDiscard < 0)
-		{
-			// We aborted, don't decode
-			mState = DONE;
-			setPriority(LLWorkerThread::PRIORITY_LOW | mWorkPriority);
-			return true;
-		}
-		
-		if (mFormattedImage->getDataSize() <= 0)
-		{
-			//llerrs << "Decode entered with invalid mFormattedImage. ID = " << mID << llendl;
-			
-			//abort, don't decode
-			mState = DONE;
-			setPriority(LLWorkerThread::PRIORITY_LOW | mWorkPriority);
-			return true;
-		}
-		if (mLoadedDiscard < 0)
-		{
-			//llerrs << "Decode entered with invalid mLoadedDiscard. ID = " << mID << llendl;
-
-			//abort, don't decode
 			mState = DONE;
 			setPriority(LLWorkerThread::PRIORITY_LOW | mWorkPriority);
 			return true;
@@ -1420,10 +1389,8 @@ S32 LLTextureFetchWorker::callbackHttpGet(const LLChannelDescriptors& channels,
 			mBuffer = new U8[data_size];
 			buffer->readAfter(channels.in(), NULL, mBuffer, data_size);
 
-			if (data_size < mRequestedSize &&
-			  (mRequestedDiscard == 0 || mRequestedSize >= MAX_IMAGE_DATA_SIZE) )
+			if (data_size < mRequestedSize && mRequestedDiscard == 0)
 			{
-				// We requested whole image (by discard or by size,) so assume we got it
 				mHaveAllData = TRUE;
 			}
 			else if (data_size > mRequestedSize)
@@ -1865,11 +1832,17 @@ bool LLTextureFetch::updateRequestPriority(const LLUUID& id, F32 priority)
 //virtual
 S32 LLTextureFetch::update(U32 max_time_ms)
 {
-	S32 res;
+	{
+		mNetworkQueueMutex.lock() ;
+		mMaxBandwidth = gSavedSettings.getF32("ThrottleBandwidthKBPS");
+
+		gImageList.sTextureBits += mHTTPTextureBits;
+		mHTTPTextureBits = 0 ;
+
+		mNetworkQueueMutex.unlock() ;
+	}
 	
-	mMaxBandwidth = *LLViewerThrottle::sThrottleBandwidthKBPS;
-	
-	res = LLWorkerThread::update(max_time_ms);
+	S32 res = LLWorkerThread::update(max_time_ms);
 	
 	if (!mDebugPause)
 	{
