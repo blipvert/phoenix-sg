@@ -169,6 +169,7 @@ BOOL LLViewerJointAttachment::addObject(LLViewerObject* object)
 
 	if (isObjectAttached(object))
 	{
+		llinfos << "(same object re-attached)" << llendl;
 		removeObject(object);
 		// Pass through anyway to let setupDrawable()
 		// re-connect object to the joint correctly
