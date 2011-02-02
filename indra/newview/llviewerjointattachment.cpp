@@ -169,11 +169,6 @@ BOOL LLViewerJointAttachment::addObject(LLViewerObject* object)
 
 	if (isObjectAttached(object))
 	{
-		LLSD argsNotify;
-		argsNotify["MESSAGE"] = "Assertion failure: same object re-attached";
-		LLNotifications::instance().add("SystemMessageTip", argsNotify);
-
-		llinfos << "(same object re-attached)" << llendl;
 		removeObject(object);
 		// Pass through anyway to let setupDrawable()
 		// re-connect object to the joint correctly
