@@ -21,7 +21,7 @@
 	     font="SansSerif" handle_edit_keys_directly="true" height="20" left="32"
        max_chars="31" mouse_opaque="true" name="first_name_combo" label="First or single name"
        select_all_on_focus_received="true" width="120" allow_text_entry="true" 
-       tool_tip="If your account has two names, enter the first name here. If it has just one, enter it here."/>
+       tool_tip="Enter your account's first name or only name here."/>
 	<text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	     bottom="54" drop_shadow_visible="true" follows="left|bottom"
 	     font="SansSerif" h_pad="0" halign="left" height="16"
@@ -32,7 +32,7 @@
 	     follows="left|bottom" font="SansSerifSmall" handle_edit_keys_directly="true"
 	     height="20" left="164" max_length="31" mouse_opaque="true" label="Last Name or Resident"
 	     name="last_name_edit" select_all_on_focus_received="true" width="130" 
-       tool_tip="If your accounbt has two names, enter the last name here. If it has just one, enter the word Resident here."/>
+       tool_tip="Enter your account's last name or type Resident for single named accounts."/>
 	<text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	     bottom="54" drop_shadow_visible="true" follows="left|bottom"
 	     font="SansSerif" h_pad="0" halign="left" height="16"
