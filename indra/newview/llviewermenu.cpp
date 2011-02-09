@@ -219,7 +219,6 @@
 #include "llpolymesh.h"
 #include "floaterexploreanimations.h"
 #include "floaterexploresounds.h"
-#include "floaterblacklist.h"
 #include "llfloatermediabrowser.h"
 #include "llfloaterteleporthistory.h"
 #include "floaterlocalassetbrowse.h"
@@ -235,6 +234,7 @@
 
 #include "llfloaterdisplayname.h"
 #include "llavatarnamecache.h"
+#include "floaterblacklist.h"
 
 using namespace LLVOAvatarDefines;
 
@@ -2068,7 +2068,7 @@ class LLObjectDerender : public view_listener_t
 {
     bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
     {
-		LLViewerObject* slct = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
+		LLViewerObject* slct = LLSelectMgr::getInstance()->getSelection()->getPrimaryObject();
 		if(!slct)return true;
 		LLUUID id = slct->getID();
 		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
@@ -2080,11 +2080,47 @@ class LLObjectDerender : public view_listener_t
 			id = root_key;
 			//LLSelectMgr::getInstance()->removeObjectFromSelections(root_key);
 		}
-		LLSelectMgr::getInstance()->removeObjectFromSelections(id);
+
+		LLViewerRegion* cur_region = gAgent.getRegion();
+		std::string entry_name;
+		if(slct->isAvatar()){
+			LLNameValue* firstname = slct->getNVPair("FirstName");
+			LLNameValue* lastname =  slct->getNVPair("LastName");
+			entry_name = llformat("Derendered: (AV) %s %s",firstname->getString(),lastname->getString());
+		}
+		else{
+			if(!node->mName.empty())
+			{
+				if(cur_region)
+					entry_name = llformat("Derendered: %s in region %s",node->mName.c_str(),cur_region->getName().c_str());
+				else
+					entry_name = llformat("Derendered: %s",node->mName.c_str());
+			}
+			else
+			{
+				if(cur_region)
+					entry_name = llformat("Derendered: (unkown object) in region %s",cur_region->getName().c_str());
+				else
+					entry_name = "Derendered: (unkown object)";
+
+			}
+		}		
+
+
+
+
+		LLSD indata;
+		indata["entry_type"] = 6; //AT_TEXTURE
+		indata["entry_name"] = entry_name;
+		indata["entry_agent"] = gAgent.getID();
+
+		
 
 		// ...don't kill the avatar
 		if (!(id == gAgentID))
 		{
+			LLFloaterBlacklist::addEntry(id,indata);
+			LLSelectMgr::getInstance()->deselectAll();
 			LLViewerObject *objectp = gObjectList.findObject(id);
 //			if (objectp)
 // [RLVa:KB] - Alternate: Phoenix-1371 | Checked: 2009-01-17 (RLVa-1.1.0) | Added: RLVa-1.1.0

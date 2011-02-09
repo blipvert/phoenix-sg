@@ -74,6 +74,7 @@
 #include "object_flags.h"
 
 #include "llappviewer.h"
+#include "floaterblacklist.h"
 
 extern F32 gMinObjectDistance;
 extern BOOL gAnimateTextures;
@@ -520,6 +521,17 @@ void LLViewerObjectList::processObjectUpdate(LLMessageSystem *mesgsys,
 				continue;
 			}
 #endif
+
+
+			LLUUID tmp;
+			tmp = LLUUID::generateNewID(fullid.asString()+"hash");
+			if(std::find(LLFloaterBlacklist::blacklist_objects.begin(),
+				LLFloaterBlacklist::blacklist_objects.end(),tmp) != LLFloaterBlacklist::blacklist_objects.end())
+			{
+				llinfos << "Blacklisted object asset (hashed) " << tmp.asString() << " blocked." << llendl; 
+				continue;
+			}
+
 
 			objectp = createObject(pcode, regionp, fullid, local_id, gMessageSystem->getSender());
 			if (!objectp)

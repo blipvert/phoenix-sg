@@ -29,6 +29,7 @@ public:
 
 	static std::map<LLUUID,LLSD> blacklist_entries;
 	static std::vector<LLUUID> blacklist_textures;
+	static std::vector<LLUUID> blacklist_objects;
 		
 	static void loadFromSave();
 
@@ -43,6 +44,7 @@ private:
 	static void onClickClear(void* user_data);
 	static void onClickSave(void* user_data);
 	static void onClickLoad(void* user_data);
+	static void onClickRerender(void* user_data);
 	static void onClickRemove(void* user_data);
 	
 };

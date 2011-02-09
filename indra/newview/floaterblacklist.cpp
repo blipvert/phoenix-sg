@@ -10,12 +10,14 @@
 #include "llfilepicker.h"
 #include "llviewerwindow.h"
 #include "llviewercontrol.h"
+#include "llviewerobjectlist.h"
 #include "lldate.h"
 #include "llagent.h"
 
 LLFloaterBlacklist* LLFloaterBlacklist::sInstance;
 
 std::vector<LLUUID> LLFloaterBlacklist::blacklist_textures;
+std::vector<LLUUID> LLFloaterBlacklist::blacklist_objects;
 
 std::map<LLUUID,LLSD> LLFloaterBlacklist::blacklist_entries;
 
@@ -46,10 +48,12 @@ BOOL LLFloaterBlacklist::postBuild()
 	childSetAction("remove_btn", onClickRemove, this);
 	childSetAction("save_btn", onClickSave, this);
 	childSetAction("load_btn", onClickLoad, this);
+	childSetAction("rerender_btn", onClickRerender, this);
 	LLComboBox* box = getChild<LLComboBox>("asset_combo");
 	box->add("Texture",LLSD(0));
 	box->add("Sound",LLSD(1));
 	box->add("Animation",LLSD(20));
+	box->add("Object",LLSD(6));
 	refresh();
 	return TRUE;
 }
@@ -61,6 +65,7 @@ void LLFloaterBlacklist::refresh()
 	LLSD settings;
 	for(std::map<LLUUID,LLSD>::iterator itr = blacklist_entries.begin(); itr != blacklist_entries.end(); ++itr)
 	{
+		if(itr->first.isNull()) continue;
 		LLSD element;
 		std::string agent;
 		gCacheName->getFullName(LLUUID(itr->second["entry_agent"].asString()), agent);
@@ -175,7 +180,7 @@ void LLFloaterBlacklist::onClickRemove(void* user_data)
 	if(list->getFirstSelected())
 	{
 	  LLScrollListItem* item = list->getFirstSelected();
-	  selected_id = item->getColumn(0)->getValue().asUUID();
+	  selected_id = item->getColumn(4)->getValue().asUUID();
 	  if(selected_id.isNull()) return;
 	  list->deleteSingleItem(list->getFirstSelectedIndex());
 	  blacklist_entries.erase(selected_id);
@@ -207,6 +212,7 @@ void LLFloaterBlacklist::updateBlacklists()
 	if(gAssetStorage)
 	{
 		blacklist_textures.clear();
+		blacklist_objects.clear();
 		gAssetStorage->mBlackListedAsset.clear();
 		std::map<LLUUID,LLSD> blacklist_entries2;
 		for(std::map<LLUUID,LLSD>::iterator itr = blacklist_entries.begin(); itr != blacklist_entries.end(); ++itr)
@@ -221,6 +227,12 @@ void LLFloaterBlacklist::updateBlacklists()
 				{
 					gAssetStorage->mBlackListedAsset.push_back(LLUUID(itr->first));
 				}
+
+				if(blacklist_entries[itr->first]["entry_type"].asString() == "6")
+				{
+					blacklist_objects.push_back(LLUUID(itr->first));
+				}
+
 				blacklist_entries2[itr->first] = blacklist_entries[itr->first];
 				blacklist_entries2[itr->second] = blacklist_entries[itr->second];
 			}
@@ -260,7 +272,7 @@ void LLFloaterBlacklist::saveToDisk()
 	{
 		data[itr->first.asString()] = itr->second;
 	}
-	LLSDSerialize::toPrettyXML(data, export_file);
+	LLSDSerialize::toPrettyXML(data, export_file);	
 	export_file.close();
 }
 
@@ -303,4 +315,23 @@ void LLFloaterBlacklist::onClickLoad(void* user_data)
 		xml_file.close();
 	}
 }
+
+
+void LLFloaterBlacklist::onClickRerender(void* user_data)
+{
+	std::map<LLUUID,LLSD> blacklist_new;
+	for(std::map<LLUUID,LLSD>::iterator itr = blacklist_entries.begin(); itr != blacklist_entries.end(); ++itr)
+	{
+		if(blacklist_entries[itr->first]["entry_type"].asString() == "6") continue;
+		blacklist_new[itr->first] = blacklist_entries[itr->first];
+		blacklist_new[itr->second] = blacklist_entries[itr->second];
+	}
+	blacklist_entries = blacklist_new;
+	saveToDisk();
+	LLFloaterBlacklist* instance = LLFloaterBlacklist::getInstance();
+	if(instance)
+		instance->refresh();
+
+}
+
 // </edit>
