@@ -7571,7 +7571,7 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
-		<key>ImagePipelineUseHTTPFetch</key>
+		<key>ImagePipelineUseHTTPFetch2</key>
 		<map>
 			<key>Comment</key>
 			<string>If TRUE use HTTP GET to fetch textures from the server</string>
