@@ -79,7 +79,7 @@ const S32 RLVa_VERSION_MINOR = 1;
 const S32 RLVa_VERSION_PATCH = 3;
 const S32 RLVa_VERSION_BUILD = 2;
 
- Uncomment before a final release
+ //Uncomment before a final release
 #define RLV_RELEASE
 
 // The official viewer version we're patching against
