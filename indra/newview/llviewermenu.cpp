@@ -7341,6 +7341,24 @@ class LLToggleControl : public view_listener_t
 			// High Res Snapshot active, must uncheck RenderUIInSnapshot
 			gSavedSettings.setBOOL( "RenderUIInSnapshot", FALSE );
 		}
+        else if (control_name == "DoubleClickAutoPilot" && !checked)
+        {
+                // Doubleclick actions - there can be only one
+            gSavedSettings.setBOOL( "PhoenixDoubleClickTeleport", FALSE );
+        }
+        else if (control_name == "PhoenixDoubleClickTeleport" && !checked)
+        {
+                // Doubleclick actions - there can be only one
+			gSavedSettings.setBOOL( "DoubleClickAutoPilot", FALSE );
+		}
+		
+		if (control_name == "PhoenixDoubleClickTeleport"){
+			LLChat chat;
+			chat.mSourceType = CHAT_SOURCE_SYSTEM;
+			chat.mText = llformat("%s%s","Doubleclick Teleporting ",(!checked ? "On" : "Off"));
+			LLFloaterChat::addChat(chat);
+		}
+
 		gSavedSettings.setBOOL( control_name, !checked );
 		return true;
 	}
@@ -9135,29 +9153,7 @@ class LLPhoenixCheckAutoResponse: public view_listener_t
 	}
 };
 
-class LLPhoenixToggleDoubleClickTeleport: public view_listener_t
-{
-	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
-	{
-			gSavedSettings.setBOOL("PhoenixDoubleClickTeleport",!gSavedSettings.getBOOL("PhoenixDoubleClickTeleport"));
-			BOOL tp = gSavedSettings.getBOOL("PhoenixDoubleClickTeleport");
-			LLChat chat;
-			chat.mSourceType = CHAT_SOURCE_SYSTEM;
-			chat.mText = llformat("%s%s","Doubleclick Teleporting ",(tp ? "On" : "Off"));
-			LLFloaterChat::addChat(chat);
-		return true;
-	}
 
-};
-
-class LLPhoenixCheckDoubleClickTeleport: public view_listener_t
-{
-	bool handleEvent(LLPointer<LLEvent> event, const LLSD& userdata)
-	{
-		gMenuHolder->findControl(userdata["control"].asString())->setValue(gSavedSettings.getBOOL("PhoenixDoubleClickTeleport"));
-		return true;
-	}
-};
 
 static void addMenu(view_listener_t *menu, const std::string& name)
 {
@@ -9270,8 +9266,6 @@ void initialize_menus()
 	addMenu(new LLPhoenixToggleSit(), "Phoenix.ToggleSit");
 	addMenu(new LLPhoenixCheckSit(), "Phoenix.CheckSit");
 
-	addMenu(new LLPhoenixToggleDoubleClickTeleport(), "Phoenix.ToggleDoubleClickTeleport");
-	addMenu(new LLPhoenixCheckDoubleClickTeleport(), "Phoenix.CheckDoubleClickTeleport");
 
 	addMenu(new LLPhoenixToggleAutoResponse(), "Phoenix.ToggleAutoResponse");
 	addMenu(new LLPhoenixCheckAutoResponse(), "Phoenix.CheckAutoResponse");

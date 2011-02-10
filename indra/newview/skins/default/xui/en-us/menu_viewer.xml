@@ -662,8 +662,8 @@
 			<on_check control="DoubleClickAutoPilot" />
 		</menu_item_check>
 		<menu_item_check enabled="true" label="DoubleClick Teleports" name="DoubleClick Teleports" shortcut="control|shift|d">
-			<on_click function="Phoenix.ToggleDoubleClickTeleport" userdata="" />
-			<on_check function="Phoenix.CheckDoubleClickTeleport" userdata="" />
+      <on_click function="ToggleControl" userdata="PhoenixDoubleClickTeleport" />
+      <on_check control="PhoenixDoubleClickTeleport" />
 		</menu_item_check>
 		<menu_item_check enabled="true" label="Enable Autoresponse">
 			<on_click function="Phoenix.ToggleAutoResponse" userdata="" />
