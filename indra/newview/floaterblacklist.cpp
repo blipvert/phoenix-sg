@@ -11,6 +11,7 @@
 #include "llviewerwindow.h"
 #include "llviewercontrol.h"
 #include "llviewerobjectlist.h"
+#include "llviewerregion.h"
 #include "lldate.h"
 #include "llagent.h"
 
@@ -319,6 +320,8 @@ void LLFloaterBlacklist::onClickLoad(void* user_data)
 
 void LLFloaterBlacklist::onClickRerender(void* user_data)
 {
+
+	// WS: Remove all Objects from the Blacklist. 
 	std::map<LLUUID,LLSD> blacklist_new;
 	for(std::map<LLUUID,LLSD>::iterator itr = blacklist_entries.begin(); itr != blacklist_entries.end(); ++itr)
 	{
@@ -327,7 +330,7 @@ void LLFloaterBlacklist::onClickRerender(void* user_data)
 		blacklist_new[itr->second] = blacklist_entries[itr->second];
 	}
 	blacklist_entries = blacklist_new;
-	saveToDisk();
+	updateBlacklists();
 	LLFloaterBlacklist* instance = LLFloaterBlacklist::getInstance();
 	if(instance)
 		instance->refresh();
