@@ -2070,17 +2070,32 @@ class LLObjectDerender : public view_listener_t
     {
 		LLViewerObject* slct = LLSelectMgr::getInstance()->getSelection()->getPrimaryObject();
 		if(!slct)return true;
+
 		LLUUID id = slct->getID();
 		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
 		LLUUID root_key;
-		LLSelectNode* node = selection->getFirstRootNode();
-		if(node)root_key = node->getObject()->getID();
-		if(root_key.notNull())
+		//delivers null in linked parts if used as getFirstRootNode()
+		LLSelectNode* node = selection->getFirstRootNode(NULL,TRUE);  
+				
+		/*this works for derendering entire object if child is selected
+		
+		LLSelectNode* node = selection->getFirstNode(); 
+		//Delivers node even when linked parts, but only first node
+		
+		LLViewerObject* obj = node->getObject();
+		LLViewerObject* parent = (LLViewerObject*)obj->getParent();*/
+		
+		
+		if(node) 
 		{
-			id = root_key;
-			//LLSelectMgr::getInstance()->removeObjectFromSelections(root_key);
+			root_key = node->getObject()->getID();
+			llinfos << "Derender node has key " << root_key << llendl;
 		}
-
+		else
+		{
+			llinfos << "Derender node is null " << llendl;
+		}
+		
 		LLViewerRegion* cur_region = gAgent.getRegion();
 		std::string entry_name;
 		if(slct->isAvatar()){
@@ -2089,6 +2104,11 @@ class LLObjectDerender : public view_listener_t
 			entry_name = llformat("Derendered: (AV) %s %s",firstname->getString(),lastname->getString());
 		}
 		else{
+			if(root_key.isNull())
+			{
+				return true;
+			}
+			id = root_key;
 			if(!node->mName.empty())
 			{
 				if(cur_region)
@@ -2104,7 +2124,7 @@ class LLObjectDerender : public view_listener_t
 					entry_name = "Derendered: (unkown object)";
 
 			}
-		}		
+		}
 
 
 
@@ -2114,7 +2134,7 @@ class LLObjectDerender : public view_listener_t
 		indata["entry_name"] = entry_name;
 		indata["entry_agent"] = gAgent.getID();
 
-		
+			
 
 		// ...don't kill the avatar
 		if (!(id == gAgentID))
