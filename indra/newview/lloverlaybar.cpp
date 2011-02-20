@@ -483,7 +483,14 @@ void LLOverlayBar::toggleMediaPlay(void*)
 		if (parcel)
 		{
 			LLViewerParcelMedia::sManuallyAllowedScriptedMedia=TRUE;
-			LLViewerParcelMedia::play(parcel);
+			if (gSavedSettings.getBOOL("MediaEnableFilter"))
+			{
+				LLViewerParcelMedia::filtermediaurl(parcel);
+			}
+			else
+			{
+				LLViewerParcelMedia::play(parcel);
+			}
 		}
 	}
 }
@@ -508,7 +515,14 @@ void LLOverlayBar::toggleMusicPlay(void*)
 				// stream is stopped, it doesn't return the right thing - commenting out for now.
 	// 			if ( gAudiop->isInternetStreamPlaying() == 0 )
 				{
-					gAudiop->startInternetStream(parcel->getMusicURL());
+					if (gSavedSettings.getBOOL("MediaEnableFilter"))
+					{
+						LLViewerParcelMedia::filteraudiourl(parcel->getMusicURL());
+					}
+					else
+					{
+						gAudiop->startInternetStream(parcel->getMusicURL());
+					}
 				}
 			}
 		}
@@ -528,6 +542,32 @@ void LLOverlayBar::toggleMusicPlay(void*)
 		{
 			gAudiop->stopInternetStream();
 		}
+	}
+}
+
+void LLOverlayBar::audioFilterPlay()
+{
+	if (!gOverlayBar)
+	{
+		return;
+	}
+	
+	if (gOverlayBar->mMusicState != PLAYING)
+	{
+		gOverlayBar->mMusicState = PLAYING;
+	}
+}
+ 
+void LLOverlayBar::audioFilterStop()
+{
+	if (!gOverlayBar)
+	{
+		return;
+	}
+	
+	if (gOverlayBar->mMusicState != STOPPED)
+	{
+		gOverlayBar->mMusicState = STOPPED;
 	}
 }
 

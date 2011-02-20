@@ -577,7 +577,14 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 						LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
 						parcel->setMediaURL(url);
 						parcel->setMediaType(type);
-						LLViewerParcelMedia::play(parcel);
+						if (gSavedSettings.getBOOL("MediaEnableFilter"))
+						{
+							LLViewerParcelMedia::filtermediaurl(parcel);
+						}
+						else
+						{
+							LLViewerParcelMedia::play(parcel);
+						}
 						LLViewerParcelMediaAutoPlay::playStarted();
 						return false;
 					}
@@ -592,7 +599,14 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 					{
 						gOverlayBar->toggleMusicPlay(gOverlayBar);
 					}
-					gAudiop->startInternetStream(status);
+					if (gSavedSettings.getBOOL("MediaEnableFilter"))
+					{
+						LLViewerParcelMedia::filteraudiourl(status);
+					}
+					else
+					{
+						gAudiop->startInternetStream(status);
+					}
 					return false;
 				}
 			}

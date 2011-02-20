@@ -82,6 +82,8 @@ public:
 	static void musicPause(void*);
 	static void musicStop(void*);
 	static void mediaStop(void*);
+	static void audioFilterPlay();
+	static void audioFilterStop();
 
 	static void toggleAudioVolumeFloater(void*);
 

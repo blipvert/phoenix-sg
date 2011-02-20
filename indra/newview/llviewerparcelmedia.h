@@ -56,6 +56,13 @@ class LLViewerParcelMedia : public LLViewerMediaObserver
 
 		static void play(LLParcel* parcel);
 			// user clicked play button in media transport controls
+		static void filtermediaurl(LLParcel* parcel);
+			// user has media filter enabled and play requested
+		static void filteraudiourl(std::string media_url);
+			// user has media filter enabled and play requested
+
+		static bool loadDomainFilterList();
+		static bool saveDomainFilterList();
 
 		static void stop();
 			// user clicked stop button in media transport controls
@@ -87,6 +94,7 @@ class LLViewerParcelMedia : public LLViewerMediaObserver
 		static viewer_media_t sMediaImpl;
 		//whether the user pressed the play button, thus allowing scripts to control media
 		static BOOL sManuallyAllowedScriptedMedia;
+		static LLSD sMediaFilterList;
 };
 
 

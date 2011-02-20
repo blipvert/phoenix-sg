@@ -71,6 +71,7 @@
 #include "llvowlsky.h"
 #include "llrender.h"
 #include "llfloaterchat.h"
+#include "llviewerparcelmedia.h"
 
 #ifdef TOGGLE_HACKED_GODLIKE_VIEWER
 BOOL 				gHackGodmode = FALSE;
@@ -265,7 +266,14 @@ static bool handleAudioStreamMusicChanged(const LLSD& newvalue)
 				// otherwise music will briefly stop
 				if ( !gAudiop->isInternetStreamPlaying() )
 				{
-					gAudiop->startInternetStream(LLViewerParcelMgr::getInstance()->getAgentParcel()->getMusicURL());
+					if (gSavedSettings.getBOOL("MediaEnableFilter"))
+					{
+						LLViewerParcelMedia::filteraudiourl(LLViewerParcelMgr::getInstance()->getAgentParcel()->getMusicURL());
+					}
+					else
+					{
+						gAudiop->startInternetStream(LLViewerParcelMgr::getInstance()->getAgentParcel()->getMusicURL());
+					}
 				}
 			}
 		}

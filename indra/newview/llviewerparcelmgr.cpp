@@ -1717,9 +1717,18 @@ void optionally_start_music(const std::string& music_url)
 			if(gSavedSettings.getBOOL("PhoenixStopMusicOnParcelChange"))
 			{
 				gOverlayBar->toggleMusicPlay(gOverlayBar);
-			}else
-			gAudiop->startInternetStream(music_url);
-			
+			}
+			else
+			{
+				if (gSavedSettings.getBOOL("MediaEnableFilter"))
+				{
+					LLViewerParcelMedia::filteraudiourl(music_url);
+				}
+				else
+				{
+					gAudiop->startInternetStream(music_url);
+				}
+			}
 		}
 	}
 }
