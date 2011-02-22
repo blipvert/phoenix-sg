@@ -232,7 +232,7 @@ void add_timestamped_line(LLViewerTextEditor* edit, LLChat chat, const LLColor4&
 		edit->appendStyledText(start_line, false, prepend_newline, sourceStyle);
 		prepend_newline = false;
 	}
-	edit->appendColoredText(line, false, prepend_newline, color);
+	edit->appendColoredText(line, false, prepend_newline, color, LLStringUtil::null, true);
 }
 
 void log_chat_text(const LLChat& chat)

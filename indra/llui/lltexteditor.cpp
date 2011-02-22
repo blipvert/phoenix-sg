@@ -4093,7 +4093,8 @@ void LLTextEditor::appendColoredText(const std::string &new_text,
 									 bool allow_undo, 
 									 bool prepend_newline,
 									 const LLColor4 &color,
-									 const std::string& font_name)
+									 const std::string& font_name,
+									 bool parse_jiras)
 {
 	LLColor4 lcolor=color;
 	if (mParseHighlights)
@@ -4106,13 +4107,14 @@ void LLTextEditor::appendColoredText(const std::string &new_text,
 	style->setVisible(true);
 	style->setColor(lcolor);
 	style->setFontName(font_name);
-	appendStyledText(new_text, allow_undo, prepend_newline, style);
+	appendStyledText(new_text, allow_undo, prepend_newline, style, parse_jiras);
 }
 
 void LLTextEditor::appendStyledText(const std::string &new_text, 
 									 bool allow_undo, 
 									 bool prepend_newline,
-									 LLStyleSP stylep)
+									 LLStyleSP stylep,
+									 bool parse_jiras)
 {
 	S32 part = (S32)LLTextParser::WHOLE;
 	if(mParseHTML)
@@ -4121,7 +4123,7 @@ void LLTextEditor::appendStyledText(const std::string &new_text,
 		S32 start=0,end=0;
 		std::string text = new_text;
 		std::string url;
-		while ( findHTML(text, &start, &end, url) )
+		while ( findHTML(text, &start, &end, url, parse_jiras) )
 		{
 			LLStyleSP html(new LLStyle);
 			html->setVisible(true);
@@ -4952,7 +4954,7 @@ S32 LLTextEditor::findHTMLToken(const std::string &line, S32 pos, BOOL reverse) 
 	}		
 }
 
-BOOL LLTextEditor::findHTML(const std::string &line, S32 *begin, S32 *end, std::string& url) const
+BOOL LLTextEditor::findHTML(const std::string &line, S32 *begin, S32 *end, std::string& url, bool parse_jiras) const
 {
 	  
 	S32 m1,m2,m3;
@@ -5056,8 +5058,43 @@ BOOL LLTextEditor::findHTML(const std::string &line, S32 *begin, S32 *end, std::
 	
 	// In-client JIRA linking.
 	// This check helpfully ensures that any full-form links aren't double-linked.
-	if(m1 < 0)
+	if(m1 < 0 && parse_jiras)
 	{
+		//KC: Lets use regex to make links to jiras :D
+		// will match PHOE-1 as well as phoe-1
+		// match 1, "JIRA-#"
+		// match 2, is phoenix jira
+		const boost::regex key("((?:(?:SVC|VWR|SNOW|STORM|DN|SH|WEB|PYO|LLSD|CTS|ARVC|MISC|SOCIAL|ECC|PLAT|ER|OPEN|SEC|LEAP)|(PHOE|FIRE|SPOT))-(?:[\\d]+))",
+		boost::regex::perl|boost::regex::icase);
+		
+		boost::cmatch result;
+		bool found;
+
+		// regex_search can potentially throw an exception, so check for it
+		try
+		{
+			found = boost::regex_search(line.c_str(), result, key);
+		}
+		catch (std::runtime_error &)
+		{
+			matched = FALSE;
+		}
+
+		if (found)
+		{
+			*begin = static_cast<U32>(result[0].first - line.c_str());
+			*end  = static_cast<U32>(result[0].second - line.c_str());
+			if (result[2].matched)
+			{
+				url = llformat("http://jira.phoenixviewer.com/browse/%s", std::string(result[1]).c_str());
+			}
+			else
+			{
+				url = llformat("https://jira.secondlife.com/browse/%s", std::string(result[1]).c_str());
+			}
+			matched = TRUE;
+		}
+#if 0
 		// jiras[] contains the project keys.
 		// jira_count contains the number of entries in jiras[].
 		// jurls[] contains the URL templates
@@ -5102,6 +5139,7 @@ BOOL LLTextEditor::findHTML(const std::string &line, S32 *begin, S32 *end, std::
 				}
 			}
 		}
+#endif
 	}
 	
 	if (!matched)
