@@ -5162,7 +5162,7 @@ Object exported. Some textures could not be saved due to: [REASON]
    icon="alert.tga"
    name="MediaAlert"
    type="alert">
-The owner of this parcel has requested media from the following domain to be loaded by your viewer:
+The owner of this parcel has requested media at the following location to be loaded by your viewer:
 
 [MEDIAURL]
    <form name="form">
@@ -5189,7 +5189,7 @@ The owner of this parcel has requested media from the following domain to be loa
 	icon="alert.tga"
 	name="AudioAlert"
 	type="alert">
-The owner of this parcel has requested music from the following domain to be played by your viewer:
+The owner of this parcel has requested music at the following location to be played by your viewer:
 
 [AUDIOURL]
 	<form name="form">

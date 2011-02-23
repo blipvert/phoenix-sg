@@ -67,6 +67,7 @@ bool callback_play_media(const LLSD& notification, const LLSD& response, LLParce
 void callback_media_alert(const LLSD& notification, const LLSD& response, LLParcel* parcel);
 void callback_audio_alert(const LLSD& notification, const LLSD& response, std::string media_url);
 std::string extractdomain(std::string url);
+std::string mungeURL(std::string url);
 
 // static
 void LLViewerParcelMedia::initClass()
@@ -651,8 +652,15 @@ bool callback_play_media(const LLSD& notification, const LLSD& response, LLParce
 void LLViewerParcelMedia::filtermediaurl(LLParcel* parcel)
 {
 	std::string media_url = parcel->getMediaURL();
+	if (media_url.empty())
+	{
+		// Treat it as allowed; it'll get stopped elsewhere
+		play(parcel);
+	}
+
 	std::string media_action;
 	std::string domain = extractdomain(media_url);
+	std::string munged_url = mungeURL(media_url);
     
 	for(int i = 0;i<(int)sMediaFilterList.size();i++)
 	{
@@ -676,7 +684,7 @@ void LLViewerParcelMedia::filtermediaurl(LLParcel* parcel)
 	else
 	{
 		LLSD args;
-		args["MEDIAURL"] = domain;
+		args["MEDIAURL"] = munged_url;
 		LLNotifications::instance().add("MediaAlert", args,LLSD(),boost::bind(callback_media_alert, _1, _2, parcel));
 	}
 }
@@ -717,8 +725,16 @@ void callback_media_alert(const LLSD &notification, const LLSD &response, LLParc
 
 void LLViewerParcelMedia::filteraudiourl(std::string media_url)
 {
+	if (media_url.empty())
+	{
+		// Treat it as allowed; it'll get stopped elsewhere
+		gAudiop->startInternetStream(media_url);
+		LLOverlayBar::audioFilterPlay();
+	}
+
 	std::string media_action;
 	std::string domain = extractdomain(media_url);
+	std::string munged_url = mungeURL(media_url);
     
 	for(int i = 0;i<(int)sMediaFilterList.size();i++)
 	{
@@ -744,7 +760,7 @@ void LLViewerParcelMedia::filteraudiourl(std::string media_url)
 	else
 	{
 		LLSD args;
-		args["AUDIOURL"] = domain;
+		args["AUDIOURL"] = munged_url;
 		LLNotifications::instance().add("AudioAlert", args,LLSD(),boost::bind(callback_audio_alert, _1, _2, media_url));
 	}
 }
@@ -851,6 +867,36 @@ std::string extractdomain(std::string url)
 	}
 
 	return url;
+}
+
+std::string mungeURL(std::string url)
+{
+	std::string domain = extractdomain(url);
+	size_t prefix = url.find(domain);
+	size_t pos = domain.size() + prefix;
+	std::string work_url;
+	if (prefix > 0)
+	{
+		work_url = url.substr(0,prefix);
+	}
+	else
+	{
+		work_url = "";
+	}
+	work_url += domain;
+	for ( ; pos < url.size(); pos++)
+	{
+		char whatshere = url[pos];
+		if (isalnum(whatshere))
+		{
+			work_url += '.';
+		}
+		else
+		{
+			work_url += whatshere;
+		}
+	}
+	return work_url;
 }
 
 // TODO: observer
