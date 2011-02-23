@@ -656,6 +656,7 @@ void LLViewerParcelMedia::filtermediaurl(LLParcel* parcel)
 	{
 		// Treat it as allowed; it'll get stopped elsewhere
 		play(parcel);
+		return;
 	}
 
 	std::string media_action;
@@ -730,6 +731,7 @@ void LLViewerParcelMedia::filteraudiourl(std::string media_url)
 		// Treat it as allowed; it'll get stopped elsewhere
 		gAudiop->startInternetStream(media_url);
 		LLOverlayBar::audioFilterPlay();
+		return;
 	}
 
 	std::string media_action;
