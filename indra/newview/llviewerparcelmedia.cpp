@@ -669,14 +669,14 @@ void LLViewerParcelMedia::filtermediaurl(LLParcel* parcel)
 	else if (media_action=="deny")
 	{
 		LLChat chat;
-		chat.mText = "Media URL "+media_url+" blocked"+" - Blacklisted domain: "+domain;
+		chat.mText = "Media blocked - Blacklisted domain: "+domain;
 		chat.mSourceType = CHAT_SOURCE_SYSTEM;
 		LLFloaterChat::addChat(chat,FALSE,FALSE);
 	}
 	else
 	{
 		LLSD args;
-		args["MEDIAURL"] = media_url;
+		args["MEDIAURL"] = domain;
 		LLNotifications::instance().add("MediaAlert", args,LLSD(),boost::bind(callback_media_alert, _1, _2, parcel));
 	}
 }
@@ -736,7 +736,7 @@ void LLViewerParcelMedia::filteraudiourl(std::string media_url)
 	else if (media_action=="deny")
 	{
 		LLChat chat;
-		chat.mText = "Audio URL "+media_url+" blocked"+" - Blacklisted domain: "+domain;
+		chat.mText = "Audio blocked - Blacklisted domain: "+domain;
 		chat.mSourceType = CHAT_SOURCE_SYSTEM;
 		LLFloaterChat::addChat(chat,FALSE,FALSE);
 		LLOverlayBar::audioFilterStop();
@@ -744,7 +744,7 @@ void LLViewerParcelMedia::filteraudiourl(std::string media_url)
 	else
 	{
 		LLSD args;
-		args["AUDIOURL"] = media_url;
+		args["AUDIOURL"] = domain;
 		LLNotifications::instance().add("AudioAlert", args,LLSD(),boost::bind(callback_audio_alert, _1, _2, media_url));
 	}
 }
