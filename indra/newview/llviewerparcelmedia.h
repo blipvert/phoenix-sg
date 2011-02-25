@@ -96,6 +96,10 @@ class LLViewerParcelMedia : public LLViewerMediaObserver
 		//whether the user pressed the play button, thus allowing scripts to control media
 		static BOOL sManuallyAllowedScriptedMedia;
 		static LLSD sMediaFilterList;
+		static std::string sMediaLastURL;
+		static bool sMediaLastActionPlay;
+		static std::string sAudioLastURL;
+		static bool sAudioLastActionPlay;
 };
 
 

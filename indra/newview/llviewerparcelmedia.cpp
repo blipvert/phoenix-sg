@@ -60,6 +60,10 @@ BOOL LLViewerParcelMedia::sManuallyAllowedScriptedMedia = FALSE;
 LLUUID LLViewerParcelMedia::sMediaRegionID;
 viewer_media_t LLViewerParcelMedia::sMediaImpl;
 LLSD LLViewerParcelMedia::sMediaFilterList;
+bool LLViewerParcelMedia::sMediaLastActionPlay = FALSE;
+std::string LLViewerParcelMedia::sMediaLastURL = "";
+bool LLViewerParcelMedia::sAudioLastActionPlay = FALSE;
+std::string LLViewerParcelMedia::sAudioLastURL = "";
 
 
 // Local functions
@@ -658,6 +662,17 @@ void LLViewerParcelMedia::filterMediaUrl(LLParcel* parcel)
 		return;
 	}
 
+	if (media_url == sMediaLastURL)
+	{
+		if (sMediaLastActionPlay)
+		{
+			play(parcel);
+		}
+		return;
+	}
+
+	sMediaLastURL = media_url;
+
 	std::string media_action;
 	std::string domain = extractDomain(media_url);
 	std::string munged_url = mungeURL(media_url);
@@ -673,6 +688,7 @@ void LLViewerParcelMedia::filterMediaUrl(LLParcel* parcel)
 	if (media_action=="allow")
 	{
 		play(parcel);
+		sMediaLastActionPlay = true;
 	}
 	else if (media_action=="deny")
 	{
@@ -680,6 +696,7 @@ void LLViewerParcelMedia::filterMediaUrl(LLParcel* parcel)
 		chat.mText = "Media blocked - Blacklisted domain: "+domain;
 		chat.mSourceType = CHAT_SOURCE_SYSTEM;
 		LLFloaterChat::addChat(chat,FALSE,FALSE);
+		sMediaLastActionPlay = false;
 	}
 	else
 	{
@@ -698,9 +715,11 @@ void callback_media_alert(const LLSD &notification, const LLSD &response, LLParc
 	LLChat chat;
 	chat.mSourceType = CHAT_SOURCE_SYSTEM;
 
+	LLViewerParcelMedia::sMediaLastActionPlay = false;
 	if (option== 0) //allow
 	{
 		LLViewerParcelMedia::play(parcel);
+		LLViewerParcelMedia::sMediaLastActionPlay = true;
 	}
 	else if (option== 2) //Blacklist
 	{
@@ -722,6 +741,7 @@ void callback_media_alert(const LLSD &notification, const LLSD &response, LLParc
 		chat.mText = "Domain "+domain+" is now whitelisted";
 		LLFloaterChat::addChat(chat,FALSE,FALSE);
 		LLViewerParcelMedia::play(parcel);
+		LLViewerParcelMedia::sMediaLastActionPlay = true;
 	}	
 }
 
@@ -734,6 +754,18 @@ void LLViewerParcelMedia::filterAudioUrl(std::string media_url)
 		LLOverlayBar::audioFilterPlay();
 		return;
 	}
+
+	if (media_url == sAudioLastURL)
+	{
+		if (sAudioLastActionPlay)
+		{
+			gAudiop->startInternetStream(media_url);
+			LLOverlayBar::audioFilterPlay();
+		}
+		return;
+	}
+
+	sAudioLastURL = media_url;
 
 	std::string media_action;
 	std::string domain = extractDomain(media_url);
@@ -751,6 +783,7 @@ void LLViewerParcelMedia::filterAudioUrl(std::string media_url)
 	{
 		gAudiop->startInternetStream(media_url);
 		LLOverlayBar::audioFilterPlay();
+		sAudioLastActionPlay = true;
 	}
 	else if (media_action=="deny")
 	{
@@ -759,6 +792,7 @@ void LLViewerParcelMedia::filterAudioUrl(std::string media_url)
 		chat.mSourceType = CHAT_SOURCE_SYSTEM;
 		LLFloaterChat::addChat(chat,FALSE,FALSE);
 		LLOverlayBar::audioFilterStop();
+		sAudioLastActionPlay = false;
 	}
 	else
 	{
@@ -780,11 +814,13 @@ void callback_audio_alert(const LLSD &notification, const LLSD &response, std::s
 	{
 		gAudiop->startInternetStream(media_url);
 		LLOverlayBar::audioFilterPlay();	
+		LLViewerParcelMedia::sAudioLastActionPlay = true;
 	}
 	else if (option== 1) //deny
 	{
 		gAudiop->stopInternetStream();
 		LLOverlayBar::audioFilterStop();
+		LLViewerParcelMedia::sAudioLastActionPlay = false;
 	}
 	else if (option== 2) //Blacklist
 	{
@@ -797,6 +833,7 @@ void callback_audio_alert(const LLSD &notification, const LLSD &response, std::s
 		LLFloaterChat::addChat(chat,FALSE,FALSE);
 		gAudiop->stopInternetStream();
 		LLOverlayBar::audioFilterStop();
+		LLViewerParcelMedia::sAudioLastActionPlay = false;
 	}
 	else if (option== 3) // Whitelist
 	{
@@ -809,6 +846,7 @@ void callback_audio_alert(const LLSD &notification, const LLSD &response, std::s
 		LLFloaterChat::addChat(chat,FALSE,FALSE);
 		gAudiop->startInternetStream(media_url);
 		LLOverlayBar::audioFilterPlay();
+		LLViewerParcelMedia::sAudioLastActionPlay = true;
 	}
 }
 
