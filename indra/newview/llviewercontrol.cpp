@@ -268,7 +268,7 @@ static bool handleAudioStreamMusicChanged(const LLSD& newvalue)
 				{
 					if (gSavedSettings.getBOOL("MediaEnableFilter"))
 					{
-						LLViewerParcelMedia::filteraudiourl(LLViewerParcelMgr::getInstance()->getAgentParcel()->getMusicURL());
+						LLViewerParcelMedia::filterAudioUrl(LLViewerParcelMgr::getInstance()->getAgentParcel()->getMusicURL());
 					}
 					else
 					{

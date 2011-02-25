@@ -579,7 +579,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 						parcel->setMediaType(type);
 						if (gSavedSettings.getBOOL("MediaEnableFilter"))
 						{
-							LLViewerParcelMedia::filtermediaurl(parcel);
+							LLViewerParcelMedia::filterMediaUrl(parcel);
 						}
 						else
 						{
@@ -601,7 +601,7 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 					}
 					if (gSavedSettings.getBOOL("MediaEnableFilter"))
 					{
-						LLViewerParcelMedia::filteraudiourl(status);
+						LLViewerParcelMedia::filterAudioUrl(status);
 					}
 					else
 					{

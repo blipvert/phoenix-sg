@@ -56,11 +56,12 @@ class LLViewerParcelMedia : public LLViewerMediaObserver
 
 		static void play(LLParcel* parcel);
 			// user clicked play button in media transport controls
-		static void filtermediaurl(LLParcel* parcel);
+		static void filterMediaUrl(LLParcel* parcel);
 			// user has media filter enabled and play requested
-		static void filteraudiourl(std::string media_url);
+		static void filterAudioUrl(std::string media_url);
 			// user has media filter enabled and play requested
-
+		static std::string extractDomain(std::string url);
+			// helper function to extract domain from url and convert to lower case
 		static bool loadDomainFilterList();
 		static bool saveDomainFilterList();
 

@@ -135,7 +135,7 @@ BOOL LLViewerParcelMediaAutoPlay::tick()
 							// and last but not least, only play when autoplay is enabled
 							if (gSavedSettings.getBOOL("MediaEnableFilter"))
 							{
-								LLViewerParcelMedia::filtermediaurl(this_parcel);
+								LLViewerParcelMedia::filterMediaUrl(this_parcel);
 							}	
 							else
 							{

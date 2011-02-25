@@ -485,7 +485,7 @@ void LLOverlayBar::toggleMediaPlay(void*)
 			LLViewerParcelMedia::sManuallyAllowedScriptedMedia=TRUE;
 			if (gSavedSettings.getBOOL("MediaEnableFilter"))
 			{
-				LLViewerParcelMedia::filtermediaurl(parcel);
+				LLViewerParcelMedia::filterMediaUrl(parcel);
 			}
 			else
 			{
@@ -517,7 +517,7 @@ void LLOverlayBar::toggleMusicPlay(void*)
 				{
 					if (gSavedSettings.getBOOL("MediaEnableFilter"))
 					{
-						LLViewerParcelMedia::filteraudiourl(parcel->getMusicURL());
+						LLViewerParcelMedia::filterAudioUrl(parcel->getMusicURL());
 					}
 					else
 					{

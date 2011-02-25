@@ -907,7 +907,7 @@ static void handle_click_action_play()
 		default:
 			if (gSavedSettings.getBOOL("MediaEnableFilter"))
 			{
-				LLViewerParcelMedia::filtermediaurl(parcel);
+				LLViewerParcelMedia::filterMediaUrl(parcel);
 			}
 			else
 			{

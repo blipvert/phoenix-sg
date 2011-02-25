@@ -1722,7 +1722,7 @@ void optionally_start_music(const std::string& music_url)
 			{
 				if (gSavedSettings.getBOOL("MediaEnableFilter"))
 				{
-					LLViewerParcelMedia::filteraudiourl(music_url);
+					LLViewerParcelMedia::filterAudioUrl(music_url);
 				}
 				else
 				{

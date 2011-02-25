@@ -235,6 +235,7 @@
 #include "llfloaterdisplayname.h"
 #include "llavatarnamecache.h"
 #include "floaterblacklist.h"
+#include "floatermedialists.h"
 
 using namespace LLVOAvatarDefines;
 
@@ -6161,6 +6162,10 @@ class LLShowFloater : public view_listener_t
 		{
 			LLFloaterPerms::toggleInstance(LLSD());
 		}
+		else if (floater_name == "media_lists")
+        {
+			FloaterMediaLists::show();
+        }
 		else if (floater_name == "media_player")
         {
 			FloaterMediaPlayer::showInstance();
