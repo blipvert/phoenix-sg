@@ -91,7 +91,6 @@ void FloaterMediaLists::onWhitelistAdd( void* data )
 	sInstance->childDisable("add_blacklist");
 	sInstance->childSetVisible("input_domain",true);
 	sInstance->childSetVisible("commit_domain",true);
-	sInstance->childSetVisible("commit_domain",true);
 	sInstance->childSetText("add_text",std::string("Enter domain/url to add to domain whitelist:"));
 	sInstance->childSetVisible("add_text",true);
 	sIsWhitelist = true;
