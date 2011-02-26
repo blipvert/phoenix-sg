@@ -917,6 +917,16 @@ std::string LLViewerParcelMedia::extractDomain(std::string url)
 std::string mungeURL(std::string url)
 {
 	std::string domain = LLViewerParcelMedia::extractDomain(url);
+
+	size_t llserver_pos = domain.find("lindenlab.com");
+	if (llserver_pos != std::string::npos)
+	{
+		// Don't munge LL servers, since they don't provide media or
+		// audio streams.  This makes it more obvious that something
+		// fishy is going on.
+		return url;
+	}
+
 	size_t prefix = url.find(domain);
 	size_t pos = domain.size() + prefix;
 	std::string work_url;
@@ -929,6 +939,7 @@ std::string mungeURL(std::string url)
 		work_url = "";
 	}
 	work_url += domain;
+
 	for ( ; pos < url.size(); pos++)
 	{
 		char whatshere = url[pos];
@@ -941,6 +952,7 @@ std::string mungeURL(std::string url)
 			work_url += whatshere;
 		}
 	}
+
 	return work_url;
 }
 
