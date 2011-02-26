@@ -23,7 +23,7 @@ public:
 	static void onWhitelistRemove(void*);
 	static void onBlacklistAdd(void*);
 	static void onBlacklistRemove(void*);
-	static void onCommit(void*);
+	static void onCommitDomain(void*);
 
 private:
 	static bool sIsWhitelist;

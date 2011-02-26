@@ -36,7 +36,7 @@ BOOL FloaterMediaLists::postBuild()
 	childSetAction("remove_whitelist", onWhitelistRemove,this);
 	childSetAction("add_blacklist", onBlacklistAdd,this);
 	childSetAction("remove_blacklist", onBlacklistRemove,this);
-	childSetAction("commit_domain", onCommit,this);
+	childSetAction("commit_domain", onCommitDomain,this);
 	childSetUserData("whitelist_list", this);
 	childSetUserData("blacklist_list", this);
 
@@ -155,7 +155,7 @@ void FloaterMediaLists::onBlacklistRemove( void* data )
 	}
 }	
 
-void FloaterMediaLists::onCommit( void* data )
+void FloaterMediaLists::onCommitDomain( void* data )
 {
 	std::string domain = sInstance->childGetText("input_domain");
 	domain = LLViewerParcelMedia::extractDomain(domain);
