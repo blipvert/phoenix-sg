@@ -605,7 +605,10 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 					}
 					else
 					{
-						gAudiop->startInternetStream(status);
+						if (gAudiop != NULL)
+						{
+							gAudiop->startInternetStream(status);
+						}
 					}
 					return false;
 				}

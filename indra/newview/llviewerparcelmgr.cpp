@@ -1726,7 +1726,10 @@ void optionally_start_music(const std::string& music_url)
 				}
 				else
 				{
-					gAudiop->startInternetStream(music_url);
+					if (gAudiop != NULL)
+					{
+						gAudiop->startInternetStream(music_url);
+					}
 				}
 			}
 		}

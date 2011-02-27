@@ -750,8 +750,11 @@ void LLViewerParcelMedia::filterAudioUrl(std::string media_url)
 	if (media_url.empty())
 	{
 		// Treat it as allowed; it'll get stopped elsewhere
-		gAudiop->startInternetStream(media_url);
-		LLOverlayBar::audioFilterPlay();
+		if (gAudiop != NULL)
+		{
+			gAudiop->startInternetStream(media_url);
+			LLOverlayBar::audioFilterPlay();
+		}
 		return;
 	}
 
@@ -759,8 +762,11 @@ void LLViewerParcelMedia::filterAudioUrl(std::string media_url)
 	{
 		if (sAudioLastActionPlay)
 		{
-			gAudiop->startInternetStream(media_url);
-			LLOverlayBar::audioFilterPlay();
+			if (gAudiop != NULL)
+			{
+				gAudiop->startInternetStream(media_url);
+				LLOverlayBar::audioFilterPlay();
+			}
 		}
 		return;
 	}
@@ -781,8 +787,11 @@ void LLViewerParcelMedia::filterAudioUrl(std::string media_url)
 	}
 	if (media_action=="allow")
 	{
-		gAudiop->startInternetStream(media_url);
-		LLOverlayBar::audioFilterPlay();
+		if (gAudiop != NULL)
+		{
+			gAudiop->startInternetStream(media_url);
+			LLOverlayBar::audioFilterPlay();
+		}
 		sAudioLastActionPlay = true;
 	}
 	else if (media_action=="deny")
@@ -812,14 +821,20 @@ void callback_audio_alert(const LLSD &notification, const LLSD &response, std::s
 
 	if (option== 0) //allow
 	{
-		gAudiop->startInternetStream(media_url);
-		LLOverlayBar::audioFilterPlay();	
+		if (gAudiop != NULL)
+		{
+			gAudiop->startInternetStream(media_url);
+			LLOverlayBar::audioFilterPlay();
+		}
 		LLViewerParcelMedia::sAudioLastActionPlay = true;
 	}
 	else if (option== 1) //deny
 	{
-		gAudiop->stopInternetStream();
-		LLOverlayBar::audioFilterStop();
+		if (gAudiop != NULL)
+		{
+			gAudiop->stopInternetStream();
+			LLOverlayBar::audioFilterStop();
+		}
 		LLViewerParcelMedia::sAudioLastActionPlay = false;
 	}
 	else if (option== 2) //Blacklist
@@ -831,8 +846,11 @@ void callback_audio_alert(const LLSD &notification, const LLSD &response, std::s
 		LLViewerParcelMedia::saveDomainFilterList();
 		chat.mText = "Domain "+domain+" is now blacklisted";
 		LLFloaterChat::addChat(chat,FALSE,FALSE);
-		gAudiop->stopInternetStream();
-		LLOverlayBar::audioFilterStop();
+		if (gAudiop != NULL)
+		{
+			gAudiop->stopInternetStream();
+			LLOverlayBar::audioFilterStop();
+		}
 		LLViewerParcelMedia::sAudioLastActionPlay = false;
 	}
 	else if (option== 3) // Whitelist
@@ -844,8 +862,11 @@ void callback_audio_alert(const LLSD &notification, const LLSD &response, std::s
 		LLViewerParcelMedia::saveDomainFilterList();
 		chat.mText = "Domain "+domain+" is now whitelisted";
 		LLFloaterChat::addChat(chat,FALSE,FALSE);
-		gAudiop->startInternetStream(media_url);
-		LLOverlayBar::audioFilterPlay();
+		if (gAudiop != NULL)
+		{
+			gAudiop->startInternetStream(media_url);
+			LLOverlayBar::audioFilterPlay();
+		}
 		LLViewerParcelMedia::sAudioLastActionPlay = true;
 	}
 }
