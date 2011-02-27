@@ -467,7 +467,7 @@ void LLVOVolume::updateTextureVirtualSize()
 		{
 			vsize = face->getTextureVirtualSize();
 			//KC: dont boost attached textures unless we have a decent amout of texture mem
-			if (isAttachment()&& gImageList.getMaxTotalTextureMem() >= 256)
+			if (isAttachment()&& gImageList.getMaxResidentTexMem() >= 256)
 			{
 				// Rez attachments faster and at full details !
 				if (permYouOwner())
