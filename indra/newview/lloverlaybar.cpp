@@ -485,6 +485,7 @@ void LLOverlayBar::toggleMediaPlay(void*)
 			LLViewerParcelMedia::sManuallyAllowedScriptedMedia=TRUE;
 			if (gSavedSettings.getBOOL("MediaEnableFilter"))
 			{
+				llinfos << "Filtering media URL." << llendl;
 				LLViewerParcelMedia::filterMediaUrl(parcel);
 			}
 			else

@@ -160,6 +160,7 @@ void LLViewerParcelMedia::update(LLParcel* parcel)
 				{
 					if (gSavedSettings.getBOOL("MediaEnableFilter"))
 					{
+						llinfos << "Filtering media URL." << llendl;
 						filterMediaUrl(parcel);
 					}
 					else
@@ -378,14 +379,12 @@ void LLViewerParcelMedia::processParcelMediaCommandMessage( LLMessageSystem *msg
 		if(( command == PARCEL_MEDIA_COMMAND_PLAY ) ||
 		   ( command == PARCEL_MEDIA_COMMAND_LOOP ))
 		{
-			if(!
-				( 
-				(gSavedSettings.getBOOL("PhoenixAllowScriptedMedia")) ||
-				(sManuallyAllowedScriptedMedia)||
-				(gSavedSettings.getBOOL("ParcelMediaAutoPlayEnable"))
-				)
-				)
+			if( !(gSavedSettings.getBOOL("PhoenixAllowScriptedMedia") ||
+				sManuallyAllowedScriptedMedia||
+				gSavedSettings.getBOOL("ParcelMediaAutoPlayEnable") ))
+			{
 				return;
+			}
 			if (getStatus() == LLViewerMediaImpl::MEDIA_PAUSED)
 			{
 				start();
@@ -395,6 +394,7 @@ void LLViewerParcelMedia::processParcelMediaCommandMessage( LLMessageSystem *msg
 				LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
 				if (gSavedSettings.getBOOL("MediaEnableFilter"))
 				{
+					llinfos << "PARCEL_MEDIA_COMMAND_PLAY: Filtering media URL." << llendl;
 					filterMediaUrl(parcel);
 				}
 				else
@@ -418,6 +418,7 @@ void LLViewerParcelMedia::processParcelMediaCommandMessage( LLMessageSystem *msg
 			LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
 			if (gSavedSettings.getBOOL("MediaEnableFilter"))
 			{
+				llinfos << "PARCEL_MEDIA_COMMAND_TIME: Filtering media URL." << llendl;
 				filterMediaUrl(parcel);
 			}
 			else
@@ -480,13 +481,18 @@ void LLViewerParcelMedia::processParcelMediaUpdate( LLMessageSystem *msg, void *
 			parcel->setMediaAutoScale(media_auto_scale);
 			parcel->setMediaLoop(media_loop);
 
-			if (gSavedSettings.getBOOL("MediaEnableFilter"))
+			// Don't filter or play if not already playing.
+			if (sMediaImpl.notNull())
 			{
-				filterMediaUrl(parcel);
-			}
-			else
-			{
-				play(parcel);
+				if (gSavedSettings.getBOOL("MediaEnableFilter"))
+				{
+					llinfos << "Parcel media changed. Filtering media URL." << llendl;
+					filterMediaUrl(parcel);
+				}
+				else
+				{
+					play(parcel);
+				}
 			}
 		}
 	}
