@@ -181,11 +181,13 @@ public:
 	void 			appendColoredText(const std::string &wtext, bool allow_undo, 
 									  bool prepend_newline,
 									  const LLColor4 &color,
-									  const std::string& font_name = LLStringUtil::null);
+									  const std::string& font_name = LLStringUtil::null,
+									  bool parse_jiras = false);
 	// if styled text starts a line, you need to prepend a newline.
 	void 			appendStyledText(const std::string &new_text, bool allow_undo, 
 									 bool prepend_newline,
-									 LLStyleSP stylep = NULL);
+									 LLStyleSP stylep = NULL,
+									 bool parse_jiras = false);
 	void			appendHighlightedText(const std::string &new_text,  bool allow_undo, 
 										  bool prepend_newline,	 S32  highlight_part,
 										  LLStyleSP stylep);
@@ -373,7 +375,7 @@ public:
 	virtual void	unbindEmbeddedChars(const LLFontGL* font) const {}
 	
 	S32				findHTMLToken(const std::string &line, S32 pos, BOOL reverse) const;
-	BOOL			findHTML(const std::string &line, S32 *begin, S32 *end, std::string& url) const;
+	BOOL			findHTML(const std::string &line, S32 *begin, S32 *end, std::string& url, bool parse_jiras = false) const;
 
 	// Abstract inner base class representing an undoable editor command.
 	// Concrete sub-classes can be defined for operations such as insert, remove, etc.

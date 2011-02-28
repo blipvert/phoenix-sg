@@ -95,6 +95,7 @@ set(viewer_SOURCE_FILES
 	floateravatarlist.cpp
 	floaterao.cpp
 	floaterexploresounds.cpp
+	floatermedialists.cpp
 	floatermediaplayer.cpp
 	hippogridmanager.cpp
 	hippolimits.cpp
@@ -567,6 +568,7 @@ set(viewer_HEADER_FILES
 	floateravatarlist.h
 	floaterao.h
 	floaterexploresounds.h
+	floatermedialists.h
 	floatermediaplayer.h
 	hippogridmanager.h
 	hippolimits.h

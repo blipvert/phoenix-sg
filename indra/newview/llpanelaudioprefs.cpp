@@ -107,7 +107,8 @@ void LLPanelAudioPrefs::refreshValues()
 
 	mPreviousStreamingMusic = gSavedSettings.getBOOL("AudioStreamingMusic");
 	mPreviousStreamingVideo = gSavedSettings.getBOOL("AudioStreamingVideo");
-
+	mPreviousMediaFilter = gSavedSettings.getBOOL("MediaEnableFilter");
+	
 	mPreviousMuteAudio = gSavedSettings.getBOOL("MuteAudio");
 	mPreviousMuteWhenMinimized = gSavedSettings.getBOOL("MuteWhenMinimized");
 }
@@ -128,6 +129,7 @@ void LLPanelAudioPrefs::cancel()
 
 	gSavedSettings.setBOOL("AudioStreamingMusic", mPreviousStreamingMusic );
 	gSavedSettings.setBOOL("AudioStreamingVideo", mPreviousStreamingVideo );
+	gSavedSettings.setBOOL("MediaEnableFilter", mPreviousMediaFilter);
 
 	
 	gSavedSettings.setBOOL("MuteAudio", mPreviousMuteAudio );

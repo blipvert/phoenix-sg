@@ -1761,11 +1761,11 @@ void LLFloaterIMPanel::addHistoryLine(const std::string &utf8msg, LLColor4 incol
 		style->setColor(color);
 		style->setFontName(LLStringUtil::null);
 		style->mBold = TRUE;
-		mHistoryEditor->appendStyledText(utf8msg.substr(1), false, prepend_newline, style);
+		mHistoryEditor->appendStyledText(utf8msg.substr(1), false, prepend_newline, style, true);
 	}
 	else
 	{
-		mHistoryEditor->appendColoredText(utf8msg, false, prepend_newline, color);
+		mHistoryEditor->appendColoredText(utf8msg, false, prepend_newline, color, LLStringUtil::null, true);
 	}
 
 	if (log_to_file

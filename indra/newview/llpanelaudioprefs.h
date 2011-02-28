@@ -77,6 +77,7 @@ private:
 	BOOL			mPreviousStreamingVideo;
 	BOOL            mPreviousMuteAudio;
 	BOOL            mPreviousMuteWhenMinimized;
+	BOOL			mPreviousMediaFilter;
 };
 
 #endif

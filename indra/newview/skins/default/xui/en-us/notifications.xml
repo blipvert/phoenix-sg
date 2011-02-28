@@ -5159,6 +5159,60 @@ Object exported. Some textures could not be saved due to: [REASON]
   </notification>
 
   <notification
+   icon="alert.tga"
+   name="MediaAlert"
+   type="alert">
+The owner of this parcel has requested media at the following location to be loaded by your viewer:
+
+[MEDIAURL]
+   <form name="form">
+    <button
+	 index="0"
+	 name="Allow"
+	 text="Allow"/>
+	<button
+	 index="1"
+	 name="Deny"
+	 text="Deny"/>
+	<button
+	 index="2"
+     name="Blacklist"
+	 text="Blacklist"/>
+	<button
+	 index="3"
+	 name="Whitelist"
+	 text="Whitelist"/>
+   </form>
+  </notification>
+
+  <notification
+	icon="alert.tga"
+	name="AudioAlert"
+	type="alert">
+The owner of this parcel has requested music at the following location to be played by your viewer:
+
+[AUDIOURL]
+	<form name="form">
+	 <button
+	  index="0"
+	  name="Allow"
+	  text="Allow"/>
+	 <button
+	  index="1"
+	  name="Deny"
+	  text="Deny"/>
+	 <button
+	  index="2"
+	  name="Blacklist"
+	  text="Blacklist"/>
+	 <button
+	  index="3"
+	  name="Whitelist"
+	  text="Whitelist"/>
+	</form>
+  </notification>
+
+  <notification
    icon="notifytip.tga"
    name="ExportSuccessful"
    type="notifytip">
@@ -5356,6 +5410,13 @@ Unable to load script.  Please try again.
    name="IncompleteInventory"
    type="notifytip">
 The complete contents you are offering are not yet locally available. Please try offering those items again in a minute.
+  </notification>
+
+  <notification
+   icon="notifytip.tga"
+   name="IncompleteInventoryItem"
+   type="notifytip">
+The item you are accessing is not yet locally available. Please try again in a minute.
   </notification>
 
   <notification
