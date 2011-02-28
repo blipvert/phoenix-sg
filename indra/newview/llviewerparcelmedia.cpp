@@ -413,6 +413,14 @@ void LLViewerParcelMedia::processParcelMediaCommandMessage( LLMessageSystem *msg
 
 	if (flags & (1<<PARCEL_MEDIA_COMMAND_TIME))
 	{
+		if(!
+			( 
+			(gSavedSettings.getBOOL("PhoenixAllowScriptedMedia")) ||
+			(sManuallyAllowedScriptedMedia)||
+			(gSavedSettings.getBOOL("ParcelMediaAutoPlayEnable"))
+			)
+			)
+			return;
 		if(sMediaImpl.isNull())
 		{
 			LLParcel *parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
