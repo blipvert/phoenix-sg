@@ -364,6 +364,21 @@
         <check_box bottom_delta="-17" control_name="AuditTexture" enabled="true" follows="left|top" font="SansSerifSmall" height="16" initial_value="true" label="Texture Auditing" left_delta="0" mouse_opaque="true" name="AuditTexture" radio_style="false" width="256" />
         <check_box bottom_delta="-17" control_name="ImagePipelineUseHTTPFetch2" enabled="true" follows="left|top" font="SansSerifSmall" height="16" initial_value="true" label="HTTP Get Textures" left_delta="0" mouse_opaque="true" name="HTTPGetTextures" radio_style="false" width="256" />
         <check_box bottom_delta="-17" control_name="RenderAnisotropic" enabled="true" follows="left|top" font="SansSerifSmall" height="16" initial_value="true" label="Anisotropic Filtering" left_delta="0" mouse_opaque="true" name="Anosotropic" radio_style="false" width="256" />
+		
+		
+	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
+	     bottom_delta="-12" drop_shadow_visible="true" enabled="true"
+	     follows="left|top" font="SansSerifSmall" h_pad="0" halign="left"
+	     height="10" left_delta="0" mouse_opaque="false" name="cache_size_label_l"
+	     v_pad="0" width="200">
+		Max HTTP Texture Requests:
+	</text>
+	<slider bottom_delta="-20" can_edit_text="true"
+	     decimal_digits="0" enabled="true" follows="left|top" height="15"
+	     increment="2" initial_val="50" left_delta="0" max_val="32" min_val="4"
+	     mouse_opaque="true" name="ImagePipelineUseHTTPFetchMaxRequests" show_text="true" width="150"
+		 control_name="ImagePipelineUseHTTPFetchMaxRequests" />
+		
         <text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false" bottom="-150" drop_shadow_visible="true" enabled="true" follows="left|top" font="SansSerifSmall" h_pad="0" halign="left" height="12" left="10" mouse_opaque="true" name="PerfText" v_pad="0" width="128">Performance</text>
         <check_box bottom_delta="-25" control_name="RenderDynamicLOD" enabled="true" follows="left|top" font="SansSerifSmall" height="16" initial_value="true" label="Dynamic LOD" left_delta="0" mouse_opaque="true" name="DynamicLOD" radio_style="false" width="256" />
         <check_box bottom_delta="-17" control_name="UseOcclusion" enabled="true" follows="left|top" font="SansSerifSmall" height="16" initial_value="true" label="Use Object-Object Occlusion" left_delta="0" mouse_opaque="true" name="Occlusion" radio_style="false" width="256" />
