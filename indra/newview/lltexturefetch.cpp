@@ -864,8 +864,10 @@ bool LLTextureFetchWorker::doWork(S32 param)
 			//2, control the traffic of http so udp gets bandwidth.
 			//
 			
-			static const S32 MAX_NUM_OF_HTTP_REQUESTS_IN_QUEUE = 32 ;
-			if(mFetcher->getNumHTTPRequests() > MAX_NUM_OF_HTTP_REQUESTS_IN_QUEUE)
+			// Changed this to default of 8 and added debug setting. 32 seems to cause failures. -KC
+			//static const S32 MAX_NUM_OF_HTTP_REQUESTS_IN_QUEUE = 32 ;
+			static LLCachedControl<S32> max_requests("ImagePipelineUseHTTPFetchMaxRequests", 8);
+			if(mFetcher->getNumHTTPRequests() > max_requests)
 			{
 				return false;  //wait.
 			}

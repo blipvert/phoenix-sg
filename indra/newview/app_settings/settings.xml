@@ -15673,5 +15673,16 @@
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
+		<key>ImagePipelineUseHTTPFetchMaxRequests</key>
+		<map>
+			<key>Comment</key>
+			<string>Max number of sulmitimoius textures to request when usgin HTTP texture fetch. Chnaging this setting above 8 will most likely cause texture loading problems, setting above 32 *WILL* cause loading faliures.</string>
+			<key>Persist</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>U32</string>
+			<key>Value</key>
+			<integer>8</integer>
+		</map>
 	</map>
 </llsd>
