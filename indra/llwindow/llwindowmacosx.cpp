@@ -618,22 +618,22 @@ BOOL LLWindowMacOSX::createContext(int x, int y, int width, int height, int bits
 
 			if(aglDescribeRenderer(rendererInfo, AGL_VIDEO_MEMORY, &result))
 			{
-				//				llinfos << "createContext: aglDescribeRenderer(AGL_VIDEO_MEMORY) returned " << result << llendl;
+								llinfos << "createContext: aglDescribeRenderer(AGL_VIDEO_MEMORY) returned " << result << llendl;
 				gGLManager.mVRAM = result / (1024 * 1024);
 			}
 			else
 			{
-				//				llinfos << "createContext: aglDescribeRenderer(AGL_VIDEO_MEMORY) failed." << llendl;
+								llinfos << "createContext: aglDescribeRenderer(AGL_VIDEO_MEMORY) failed." << llendl;
 			}
 
 			// This could be useful at some point, if it takes into account the memory already used by screen buffers, etc...
 			if(aglDescribeRenderer(rendererInfo, AGL_TEXTURE_MEMORY, &result))
 			{
-				//				llinfos << "createContext: aglDescribeRenderer(AGL_TEXTURE_MEMORY) returned " << result << llendl;
+								llinfos << "createContext: aglDescribeRenderer(AGL_TEXTURE_MEMORY) returned " << result << llendl;
 			}
 			else
 			{
-				//				llinfos << "createContext: aglDescribeRenderer(AGL_TEXTURE_MEMORY) failed." << llendl;
+								llinfos << "createContext: aglDescribeRenderer(AGL_TEXTURE_MEMORY) failed." << llendl;
 			}
 
 			aglDestroyRendererInfo(rendererInfo);
