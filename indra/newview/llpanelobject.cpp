@@ -2616,9 +2616,6 @@ void LLPanelObject::onPasteParams(void* user_data)
 {
 	LLPanelObject* self = (LLPanelObject*) user_data;
 	
-	if(hasParamClipboard)
-		self->mObject->updateVolume(mClipboardVolumeParams);
-	
 	LLViewerObject* objectp = self->mObject;
 	if (!objectp)
 		return;
@@ -2657,6 +2654,13 @@ void LLPanelObject::onPasteParams(void* user_data)
 
 		objectp->setParameterEntry(LLNetworkData::PARAMS_SCULPT, sculpt_params, TRUE);
 	}
+	else
+	{
+		LLSculptParams *sculpt_params = (LLSculptParams *)objectp->getParameterEntry(LLNetworkData::PARAMS_SCULPT);
+		if (sculpt_params)
+			objectp->setParameterEntryInUse(LLNetworkData::PARAMS_SCULPT, FALSE, TRUE);
+	}
+	
 	LLVOVolume *volobjp = NULL;
 	if ( objectp && (objectp->getPCode() == LL_PCODE_VOLUME))
 		volobjp = (LLVOVolume *)objectp;
@@ -2672,6 +2676,9 @@ void LLPanelObject::onPasteParams(void* user_data)
 		F32 b = (F32)clipboard["b"].asReal();
 		volobjp->setLightColor(LLColor3(r,g,b));
 	}
+	
+	if(hasParamClipboard)
+		objectp->updateVolume(mClipboardVolumeParams);
 }
 
 void LLPanelObject::onLinkObj(void* user_data)
