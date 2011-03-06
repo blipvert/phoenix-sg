@@ -597,7 +597,7 @@ bool LLAPRFile::remove(const std::string& filename)
 
 	if (s != APR_SUCCESS)
 	{
-		if (s != APR_NOENT)
+		if (s != APR_ENOENT)
 		{
 			// We only care if the delete failed for other reasons
 			//  than because the file wasn't found.
