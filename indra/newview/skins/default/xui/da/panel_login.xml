@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel name="panel_login">
-	<string name="real_url">
-		http://secondlife.com/app/login/
-	</string>
-	<string name="forgot_password_url">
-		http://secondlife.com/account/request.php
-	</string>
 	<text name="first_name_text">
 		Fornavn:
 	</text>
@@ -36,8 +30,5 @@
 	</text>
 	<text name="forgot_password_text">
 		Glemt navn eller password?
-	</text>
-	<text name="channel_text">
-		[VERSION]
 	</text>
 </panel>

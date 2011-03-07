@@ -34,13 +34,7 @@
 	<text name="forgot_password_text">
 		忘记了姓名或密码吗？
 	</text>
-	<text
-		 name="create_new_account_text"
-		 hover_color="50 115 185">
+	<text name="create_new_account_text">
 		申请新帐户。
-	</text>
-
-	<text name="version_text">
-		1.23.4 (5)
 	</text>
 </panel>

@@ -28,10 +28,7 @@
 	<text name="create_new_account_text">
 		Registrar-se para uma conta
 	</text>
-	<text name="forgot_password_text" left="-240" width="230">
+	<text name="forgot_password_text">
 		Esqueceu seu nome de usuário ou senha?
-	</text>
-	<text name="channel_text">
-		[VERSION]
 	</text>
 </panel>

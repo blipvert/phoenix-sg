@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="panel_login">
-	<string name="forgot_password_url">
-		http://secondlife.com/account/request.php
-	</string>
 	<text name="first_name_text">
 		Prénom :
 	</text>
@@ -37,16 +34,10 @@
 	<button label="Me connecter" label_selected="Me connecter" name="connect_btn"/>
 	<button label="Préférences..." label_selected="Préférences..." name="preferences_btn"/>
 	<button label="Quitter" label_selected="Quitter" name="quit_btn"/>
-	<text name="version_text">
-		1.23.4 (5)
-	</text>
 	<text name="create_new_account_text">
 		Créer un compte
 	</text>
 	<text name="forgot_password_text">
 		Nom ou mot de passe oublié ?
-	</text>
-	<text name="channel_text">
-		[VERSION]
 	</text>
 </panel>

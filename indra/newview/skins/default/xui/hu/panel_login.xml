@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel name="panel_login">
-	<text name="real_url">
-		http://secondlife.com/app/login/
-	</text>
-	<string name="forgot_password_url">
-		http://secondlife.com/account/request.php
-	</string>
 	<text name="first_name_text">
 		Keresztnév:
 	</text>
@@ -37,8 +31,5 @@
 	</text>
 	<text name="forgot_password_text">
 		Elfelejtetted a jelszavad?
-	</text>
-	<text name="channel_text">
-		[VERSION]
 	</text>
 </panel>
