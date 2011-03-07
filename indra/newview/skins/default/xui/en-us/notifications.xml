@@ -5159,7 +5159,7 @@ Object exported. Some textures could not be saved due to: [REASON]
   </notification>
 
   <notification
-   icon="alert.tga"
+   icon="alertmodal.tga"
    name="MediaAlert"
    type="alert">
 The owner of this parcel has requested media at the following location to be loaded by your viewer:
@@ -5186,7 +5186,7 @@ The owner of this parcel has requested media at the following location to be loa
   </notification>
 
   <notification
-	icon="alert.tga"
+	icon="alertmodal.tga"
 	name="AudioAlert"
 	type="alert">
 The owner of this parcel has requested music at the following location to be played by your viewer:

@@ -845,7 +845,12 @@ void callback_media_alert(const LLSD &notification, const LLSD &response, LLParc
 			LLViewerParcelMedia::play(parcel);
 		}
 		LLViewerParcelMedia::sMediaLastActionPlay = true;
-	}	
+	}
+	else // huh?
+	{
+		llwarns << "Got unexpected reply from notification: "
+			<< option << llendl;
+	}
 
 	// We've dealt with the alert, so mark it as inactive.
 	LLViewerParcelMedia::sMediaFilterAlertActive = false;
@@ -1046,6 +1051,12 @@ void callback_audio_alert(const LLSD &notification, const LLSD &response, std::s
 		}
 		LLViewerParcelMedia::sAudioLastActionPlay = true;
 	}
+	else // huh?
+	{
+		llwarns << "Got unexpected reply from notification: "
+			<< option << llendl;
+	}
+
 	LLViewerParcelMedia::sMediaFilterAlertActive = false;
 
 	// Check for queues
