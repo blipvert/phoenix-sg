@@ -2780,7 +2780,6 @@ bool idle_startup()
 	{
 		set_startup_status(1.0, "", "");
 		
-		LLViewerParcelMedia::loadDomainFilterList();
 		LLVOAvatar::loadClientTags();
 		// Now optional! --Liny
 		// TODO: Im turning to too many things into options to just hide them in debug settings. MAKE PREF PANEL!
