@@ -3,7 +3,8 @@
 	<text name="first_name_text">
 		Nome:
 	</text>
-	<text name="last_name_text">
+  <check_box label="Ricorda nome" name="remember_name_check" />
+  <text name="last_name_text">
 		Cognome:
 	</text>
 	<text name="password_text">

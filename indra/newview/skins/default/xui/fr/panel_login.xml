@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="panel_login">
 	<text name="first_name_text">
-		Prénom :
-	</text>
-	<text name="last_name_text">
+    Prénom :
+  </text>
+  <check_box label="Mémoriser le nom" name="remember_name_check" />
+  <text name="grids_combo_text">
+    Grille :
+  </text>
+  <text name="last_name_text">
 		Nom :
 	</text>
 	<text name="password_text">
 		Mot de passe :
 	</text>
 	<text name="start_location_text">
-		Lieu de départ :
-	</text>
+    Lieu d'arrivée :
+  </text>
 	<combo_box name="start_location_combo">
 		<combo_item name="MyHome">
 			Domicile
@@ -31,7 +35,7 @@
 		Le plein écran sera activé après identification.
 	</text>
 	<button label="Nouveau Compte..." label_selected="Nouveau Compte..." name="new_account_btn"/>
-	<button label="Me connecter" label_selected="Me connecter" name="connect_btn"/>
+	<button label="Connexion" label_selected="Me connecter" name="connect_btn"/>
 	<button label="Préférences..." label_selected="Préférences..." name="preferences_btn"/>
 	<button label="Quitter" label_selected="Quitter" name="quit_btn"/>
 	<text name="create_new_account_text">

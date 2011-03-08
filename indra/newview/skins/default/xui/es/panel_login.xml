@@ -3,7 +3,8 @@
 	<text name="first_name_text">
 		Nombre:
 	</text>
-	<text name="last_name_text">
+  <check_box label="Recordar Nombre del Residente" name="remember_name_check" />
+  <text name="last_name_text">
 		Apellido:
 	</text>
 	<text name="password_text">
