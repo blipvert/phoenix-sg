@@ -362,7 +362,7 @@
         <text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false" bottom="-20" drop_shadow_visible="true" enabled="true" follows="left|top" font="SansSerifSmall" h_pad="0" halign="left" height="12" left="10" mouse_opaque="true" name="TextText" v_pad="0" width="128">Textures</text>
         <check_box bottom_delta="-25" control_name="AnimateTextures" enabled="true" follows="left|top" font="SansSerifSmall" height="16" initial_value="true" label="Animate Textures" left_delta="0" mouse_opaque="true" name="AnimateTextures" radio_style="false" width="256" />
         <check_box bottom_delta="-17" control_name="AuditTexture" enabled="true" follows="left|top" font="SansSerifSmall" height="16" initial_value="true" label="Texture Auditing" left_delta="0" mouse_opaque="true" name="AuditTexture" radio_style="false" width="256" />
-        <check_box bottom_delta="-17" control_name="ImagePipelineUseHTTPFetch2" enabled="true" follows="left|top" font="SansSerifSmall" height="16" initial_value="true" label="HTTP Get Textures" left_delta="0" mouse_opaque="true" name="HTTPGetTextures" radio_style="false" width="256" />
+        <check_box bottom_delta="-17" control_name="ImagePipelineUseHTTPFetch3" enabled="true" follows="left|top" font="SansSerifSmall" height="16" initial_value="true" label="HTTP Get Textures" left_delta="0" mouse_opaque="true" name="HTTPGetTextures" radio_style="false" width="256" />
         <check_box bottom_delta="-17" control_name="RenderAnisotropic" enabled="true" follows="left|top" font="SansSerifSmall" height="16" initial_value="true" label="Anisotropic Filtering" left_delta="0" mouse_opaque="true" name="Anosotropic" radio_style="false" width="256" />
 		
 		

@@ -1385,7 +1385,7 @@ void init_debug_rendering_menu(LLMenuGL* menu)
 	menu->append(item);
 	
 #if 1 //ndef LL_RELEASE_FOR_DOWNLOAD
-	item = new LLMenuItemCheckGL("HTTP Get Textures", menu_toggle_control, NULL, menu_check_control, (void*)"ImagePipelineUseHTTPFetch2");
+	item = new LLMenuItemCheckGL("HTTP Get Textures", menu_toggle_control, NULL, menu_check_control, (void*)"ImagePipelineUseHTTPFetch3");
 	menu->append(item);
 #endif
 	
