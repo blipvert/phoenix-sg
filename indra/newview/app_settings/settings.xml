@@ -15682,7 +15682,7 @@
 			<key>Type</key>
 			<string>U32</string>
 			<key>Value</key>
-			<integer>8</integer>
+			<integer>16</integer>
 		</map>
 	</map>
 </llsd>
