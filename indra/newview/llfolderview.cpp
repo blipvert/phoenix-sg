@@ -170,7 +170,9 @@ LLFolderViewItem::LLFolderViewItem( const std::string& name, LLUIImagePtr icon,
 	mDragAndDropTarget(FALSE),
 	mIsLoading(FALSE)
 {
-	refresh(); // possible opt: only call refreshFromListener()
+	//refresh(); // possible opt: only call refreshFromListener()
+	//KC this seems to help speed up the creation of the inv view during login
+	refreshFromListener();
 	setTabStop(FALSE);
 }
 
