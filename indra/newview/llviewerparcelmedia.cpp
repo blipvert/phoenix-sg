@@ -847,7 +847,7 @@ void callback_media_alert(const LLSD &notification, const LLSD &response, LLParc
 		}
 		LLViewerParcelMedia::sMediaLastActionPlay = true;
 	}
-	else // huh?
+	else if (option != 1) // huh?
 	{
 		llwarns << "Got unexpected reply from notification: "
 			<< option << llendl;
@@ -1052,7 +1052,7 @@ void callback_audio_alert(const LLSD &notification, const LLSD &response, std::s
 		}
 		LLViewerParcelMedia::sAudioLastActionPlay = true;
 	}
-	else // huh?
+	else if (option != 1)// huh?
 	{
 		llwarns << "Got unexpected reply from notification: "
 			<< option << llendl;
