@@ -5068,7 +5068,7 @@ BOOL LLTextEditor::findHTML(const std::string &line, S32 *begin, S32 *end, std::
 		boost::regex::perl|boost::regex::icase);
 		
 		boost::cmatch result;
-		bool found;
+		bool found = false;
 
 		// regex_search can potentially throw an exception, so check for it
 		try
