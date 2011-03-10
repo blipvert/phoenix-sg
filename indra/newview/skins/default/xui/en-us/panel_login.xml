@@ -23,7 +23,7 @@
        select_all_on_focus_received="true" width="120" allow_text_entry="true" 
        tool_tip="Enter your account's first or only name here."/>
 	<check_box bottom="10" control_name="RememberName"
-         follows="left|bottom" font="SansSerifSmall" height="16"
+         follows="left|bottom" font="SansSerifSmall" height="13"
 	     initial_value="true" label="Remember resident name"
 	     left_delta="-3" mouse_opaque="true" name="remember_name_check" width="158" />
 	<text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
@@ -48,7 +48,7 @@
 	     height="20" left_delta="-1" max_length="16" mouse_opaque="true"
 	     name="password_edit" select_all_on_focus_received="true" width="120" />
 	<check_box bottom="10" control_name="RememberPassword"
-         follows="left|bottom" font="SansSerifSmall" height="16"
+         follows="left|bottom" font="SansSerifSmall" height="13"
 	     initial_value="false" label="Remember password"
 	     left_delta="-3" mouse_opaque="true" name="remember_check" width="138" />
 	<text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
@@ -97,17 +97,17 @@
 Sign up for account
 	</text>
 	<text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-	     bottom="14" drop_shadow_visible="true" follows="left|bottom"
+	     bottom="8" drop_shadow_visible="true" follows="left|bottom"
 	     font="SansSerifSmall" font-style="UNDERLINE" h_pad="0" halign="right" height="16"
 	     left_delta="-113" mouse_opaque="true" name="forgot_password_text" v_pad="0" width="300"
 	     hover="true" hover_color="50 115 185">
 Forgot your name or password?
 	</text>
-	<text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
+<!--	<text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	     bottom="0" drop_shadow_visible="true" follows="left|bottom"
 	     font="SansSerifSmall" h_pad="0" halign="right" height="16"
 	     left_delta="100" mouse_opaque="true" name="channel_text" v_pad="0" width="200"
 	     hover="true" hover_color="50 115 185">
 [CHANNEL] [VERSION]
-	</text>
+	</text>  -->
 </panel>

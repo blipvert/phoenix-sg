@@ -4,20 +4,20 @@
      name="general_panel" width="517">
   <radio_group bottom="-45" draw_border="false" follows="left|top" height="40" left="151"
 	     name="default_start_location" width="220">
-    <radio_item bottom="-20" height="20" left="0" name="MyHome" width="50"
+    <radio_item bottom="-30" height="20" left="0" name="MyHome" width="50"
 		  tool_tip="Log into my home location by default.">
       My Home
     </radio_item>
-    <radio_item bottom="-20" height="20" left="100" name="MyLastLocation" width="50"
+    <radio_item bottom="-30" height="20" left="100" name="MyLastLocation" width="50"
 		  tool_tip="Log into my last location by default.">
       My Last Location
     </radio_item>
   </radio_group>
-  <check_box bottom="-44" enabled="true" follows="left|top"
+<!--  <check_box bottom="-44" enabled="true" follows="left|top"
        font="SansSerifSmall" height="16" initial_value="true"
        label="Show Start Location on Login Screen" left="151" mouse_opaque="true"
-       name="show_location_checkbox" radio_style="false" width="256" />
-	<combo_box bottom_delta="-25" follows="left|top" height="18" left="155"
+       name="show_location_checkbox" radio_style="false" width="256" />-->
+	<combo_box bottom_delta="-15" follows="left|top" height="18" left="155"
 	     mouse_opaque="true" name="fade_out_combobox" width="146">
     <combo_item name="Never" value="Never">
       Never
@@ -137,19 +137,19 @@
 		 Log in to change
 	</text>
 	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-	     bottom="-20" drop_shadow_visible="true" enabled="true" follows="left|top"
+	     bottom="-30" drop_shadow_visible="true" enabled="true" follows="left|top"
 	     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="10"
 	     mouse_opaque="true" name="start_location_textbox" v_pad="0" width="394">
 		Start Location:
 	</text>
 	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-	     bottom="-64" drop_shadow_visible="true" enabled="true" follows="left|top"
+	     bottom="-54" drop_shadow_visible="true" enabled="true" follows="left|top"
 	     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="10"
 	     mouse_opaque="true" name="show_names_textbox" v_pad="0" width="394">
 		Show Names:
 	</text>
 	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-	     bottom="-184" drop_shadow_visible="true" enabled="true" follows="left|top"
+	     bottom="-174" drop_shadow_visible="true" enabled="true" follows="left|top"
 	     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="10"
 	     mouse_opaque="true" name="effects_color_textbox" v_pad="0" width="394">
 		Color For My Effects:
