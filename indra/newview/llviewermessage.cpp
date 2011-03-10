@@ -2762,6 +2762,10 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
 			{
 				busy_message(msg,from_id);
 			}
+			else if ( (!gSavedSettings.getBOOL("ShowTpOffers"))  && (!fRlvSummon) )
+			{
+				return;
+			}
 			else
 			{
 // [RLVa:KB] - Checked: 2010-12-11 (RLVa-1.2.2c) | Modified: RLVa-1.2.2c

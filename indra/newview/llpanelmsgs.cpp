@@ -66,6 +66,7 @@ BOOL LLPanelMsgs::postBuild()
 	childSetValue("accept_new_objects", gSavedSettings.getBOOL("AutoAcceptNewObjects"));
 	childSetValue("show_new_inventory", gSavedSettings.getBOOL("ShowNewInventory"));
 	childSetValue("show_in_inventory", gSavedSettings.getBOOL("ShowInInventory"));
+	childSetValue("show_tp_offers",gSavedSettings.getBOOL("ShowTpOffers"));
 
 	return TRUE;
 }
@@ -157,6 +158,7 @@ void LLPanelMsgs::apply()
 	gSavedSettings.setBOOL("AutoAcceptNewObjects", childGetValue("accept_new_objects"));
 	gSavedSettings.setBOOL("ShowNewInventory", childGetValue("show_new_inventory"));
 	gSavedSettings.setBOOL("ShowInInventory", childGetValue("show_in_inventory"));
+	gSavedSettings.setBOOL("ShowTpOffers",childGetValue("show_tp_offers"));
 }
 
 void LLPanelMsgs::cancel()

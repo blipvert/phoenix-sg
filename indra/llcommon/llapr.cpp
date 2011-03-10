@@ -295,7 +295,7 @@ bool ll_apr_warn_status(apr_status_t status)
 	if(APR_SUCCESS == status) return false;
 	char buf[MAX_STRING];	/* Flawfinder: ignore */
 	apr_strerror(status, buf, MAX_STRING);
-	LL_WARNS("APR") << "APR: " << buf << LL_ENDL;
+	LL_WARNS("APR") << "APR: " << buf << " (" << status << ")" << LL_ENDL;
 	return true;
 }
 
@@ -597,7 +597,7 @@ bool LLAPRFile::remove(const std::string& filename)
 
 	if (s != APR_SUCCESS)
 	{
-		if (s != APR_ENOENT)
+		if (!APR_STATUS_IS_ENOENT(s))
 		{
 			// We only care if the delete failed for other reasons
 			//  than because the file wasn't found.
