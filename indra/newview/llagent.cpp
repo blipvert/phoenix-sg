@@ -147,6 +147,7 @@
 #include "rlvinventory.h"
 #include "llattachmentsmgr.h"
 // [/RLVa:KB]
+#include "kcwlinterface.h"
 
 using namespace LLVOAvatarDefines;
 
@@ -6356,6 +6357,9 @@ bool LLAgent::teleportCore(bool is_local)
 			gSavedSettings.setF32("SavedRenderFarClip", gSavedDrawDistance);
 			gSavedSettings.setF32("RenderFarClip", 32.0f);
 		}
+
+		// bit of a hack -KC
+		KCWindlightInterface::instance().setTPing(true);
 	}
 	
 	if(gSavedSettings.getBOOL("PhoenixPlayTpSound"))
