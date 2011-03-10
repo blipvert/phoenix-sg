@@ -114,7 +114,7 @@
 	</text>
 	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	     bottom="-325" drop_shadow_visible="true" enabled="true" follows="left|top"
-	     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="151"
+	     font="SansSerifSmall" h_pad="0" halign="left" height="10" left="155"
 	     mouse_opaque="true" name="maturity_desired_prompt" v_pad="0" width="394">
 		 I want to access content rated:
 	</text>
@@ -154,14 +154,14 @@
 	     mouse_opaque="true" name="effects_color_textbox" v_pad="0" width="394">
 		Color For My Effects:
 	</text>
-	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
+<!--	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
 	     bottom="-357" drop_shadow_visible="true" enabled="true" follows="left|top"
 	     font="SansSerifSmall" h_pad="0" halign="left" height="18" left="10"
 	     mouse_opaque="true" name="crash_report_textbox" v_pad="0" width="394">
 		Crash reports:
-	</text>
+	</text>-->
 	<text type="string" length="1" bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
-	     bottom="-379" drop_shadow_visible="true" enabled="true" follows="left|top"
+	     bottom="-364" drop_shadow_visible="true" enabled="true" follows="left|top"
 	     font="SansSerifSmall" h_pad="0" halign="left" height="18" left="10"
 	     mouse_opaque="true" name="language_textbox" v_pad="0" width="394">
 		Language:
@@ -173,7 +173,7 @@
 	     v_pad="0" width="400">
 		(Requires restart for full effect)
 	</text>
-	<combo_box allow_text_entry="true" bottom="-379" enabled="true"
+	<combo_box allow_text_entry="true" bottom="-364" enabled="true"
 	     follows="left|top" height="16" left="153" max_chars="135"
 	     mouse_opaque="true" name="language_combobox" width="146">
 		<combo_item type="string" length="1" enabled="true" name="System Default Language" value="default">
@@ -234,7 +234,7 @@
 	<string name="region_name_prompt">
 		&lt;Type region name&gt;
 	</string>
-	<combo_box allow_text_entry="false" bottom="-357" enabled="true" follows="left|top"
+<!--	<combo_box allow_text_entry="false" bottom="-357" enabled="true" follows="left|top"
 	     height="18" left="153" max_chars="20" mouse_opaque="true"
 	     name="crash_behavior_combobox" width="146">
 		<combo_item type="string" length="1" enabled="true" name="Askbeforesending" value="Ask before sending">
@@ -246,15 +246,15 @@
 		<combo_item type="string" length="1" enabled="true" name="Neversend" value="Never send">
 			Never send
 		</combo_item>
-	</combo_box>
-	<check_box bottom="-400" enabled="true"
+	</combo_box>-->
+	<check_box bottom="-385" enabled="true"
 	     follows="left|top" font="SansSerifSmall" height="16" hidden="false"
 	     initial_value="false" label="Share language with objects" left="151"
 	     mouse_opaque="true" name="language_is_public"
 	     radio_style="false"
 	     tool_tip="This lets in-world objects know your preferred language."
 	     width="256" />
-	<button bottom_delta="-28" enabled="true" follows="left|top" font="SansSerif"
-	 halign="center" height="22" label="Reset All Settings..." label_selected="Reset All Settings..." left_delta="0"
+	<button bottom_delta="-40" enabled="true" follows="left|top" font="SansSerif"
+	 halign="center" height="25" label="Reset All Settings" label_selected="Reset All Settings..." left_delta="0"
 	 mouse_opaque="true" name="clear_settings" scale_image="true" width="200" />
 </panel>

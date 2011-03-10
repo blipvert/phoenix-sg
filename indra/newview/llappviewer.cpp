@@ -359,7 +359,7 @@ void request_initial_instant_messages()
 	}
 }
 
-// A settings system callback for CrashSubmitBehavior
+// A settings system callback for CrashSubmitBehavior2
 bool handleCrashSubmitBehaviorChanged(const LLSD& newvalue)
 {
 	S32 cb = newvalue.asInteger();
@@ -2326,16 +2326,15 @@ void LLAppViewer::checkForCrash(void)
         S32 choice;
         if(gCrashSettings.getS32(CRASH_BEHAVIOR_SETTING) == CRASH_BEHAVIOR_ASK)
         {
-            std::ostringstream msg;
-            msg << gSecondLife
-            << " appears to have frozen or crashed on the previous run.\n"
-			<< "Would you like to send a crash report to http://phoenixviewer.com/?";
-            std::string alert;
-            alert = gSecondLife;
-            alert += " Alert";
-            choice = OSMessageBox(msg.str(),
-                                  alert,
-                                  OSMB_YESNO);
+            choice = OSBTN_NO;
+   //         std::ostringstream msg;
+   //         msg << gSecondLife
+   //         << " appears to have frozen or crashed on the previous run.\n"
+			//<< "Please do not send crash reports as we do not collect them.";
+   //         std::string alert;
+   //         alert = gSecondLife;
+   //         alert += " Alert";
+   //         choice = OSMessageBox(msg.str(), alert, OSMB_YESNO);
         }
         else if(gCrashSettings.getS32(CRASH_BEHAVIOR_SETTING) == CRASH_BEHAVIOR_NEVER_SEND)
         {
@@ -2343,7 +2342,8 @@ void LLAppViewer::checkForCrash(void)
         }
         else
         {
-            choice = OSBTN_YES;
+            choice = OSBTN_NO;
+            //choice = OSBTN_YES;
         }
 
         if (OSBTN_YES == choice)
