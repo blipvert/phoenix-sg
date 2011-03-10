@@ -20,9 +20,9 @@
 		You have muted this resident. Sending a message will automatically unmute them.
 	</string>
 
-	<string name="generic_request_error">
+<!--	<string name="generic_request_error">
 		Error making request, please try again later.
-	</string>
+	</string>-->
 	<string name="insufficient_perms_error">
 		You do not have sufficient permissions.
 	</string>
@@ -39,12 +39,13 @@
 		A group moderator disabled your text chat.
 	</string>
 
-	<!-- ALL of the event strings should have [RECIPIENT] in them -->
+	<!-- ALL of the event strings should have [RECIPIENT] in them which doesn't seem to work-->
 	<string name="add_session_event">
-		Unable to add users to chat session with [RECIPIENT].
+		Unable to add users to chat session.
 	</string>
 	<string name="message_session_event">
-		Unable to send your message to the chat session with [RECIPIENT], However the server might send it again anyway.
+A message you sent to a group chat is still queued for processing.  
+If the message does not appear in the next few minutes, it may have been dropped by the server. 
 	</string>
 	<string name="removed_from_group">
 		You have been removed from the group.
