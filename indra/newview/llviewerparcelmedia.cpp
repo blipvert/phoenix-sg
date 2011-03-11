@@ -159,11 +159,13 @@ void LLViewerParcelMedia::update(LLParcel* parcel)
 				|| ( sMediaImpl->getMediaTextureID() != parcel->getMediaID() )
 				|| ( sMediaImpl->getMimeType() != parcel->getMediaType() ))
 			{
-				if(gSavedSettings.getBOOL("PhoenixStopMusicOnParcelChange"))
+				if(new_parcel && gSavedSettings.getBOOL("PhoenixStopMusicOnParcelChange"))
 				{
+					llinfos << "Stopping media because parcel changed." << llendl;
 					stop();
 					sManuallyAllowedScriptedMedia=FALSE;
-				}else
+				}
+				else
 				// Only play if the media types are the same.
 				if(sMediaImpl->getMimeType() == parcel->getMediaType())
 				{
