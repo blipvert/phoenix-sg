@@ -12,7 +12,10 @@
 		Audio :
 	</text>
 	<panel label="Volume" name="Volume Panel"/>
-	<check_box label="Couper le son lorsque la fenêtre est minimisée" name="mute_when_minimized"/>
+  <check_box label="Filtre de Medias (plus de securité)" name="media_filter"
+   tooltip="Permettre ceci t'affichera l'URL à chaque source de medias et audio que vous êtes offert et donnez-vous le 
+choix pour laisser ou refuser le jouer,et sauvegarder sur option ce choix pour tout l'URLs de ce domaine."/>
+  <check_box label="Couper le son lorsque la fenêtre est minimisée" name="mute_when_minimized"/>
 	<check_box bottom="-200" height="32" label="Jouer la musique disponible &#10;
 (consommateur en bande passante)" name="streaming_music"/>
 	<check_box bottom_delta="-32" height="32" label="Jouer le média disponible &#10;

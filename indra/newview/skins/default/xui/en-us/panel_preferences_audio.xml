@@ -34,33 +34,29 @@
 	     left="142" mouse_opaque="true" name="streaming_video" radio_style="false"
 	     width="338" />
   <check_box bottom_delta="-20" control_name="ParcelMediaAutoPlayEnable" enabled="true"
-	     follows="left|top" font="SansSerifSmall" height="16"
+	     follows="left|top" font="SansSerifSmall" height="16" width="338"
 	     initial_value="true" label="Automatically play media" left="162"
 	     mouse_opaque="true" name="auto_streaming_video" radio_style="false"
-       tool_tip="If you have this enabled, regardless of whether you have media stopped or not,
-       when you enter a new parcel your media will automatically turn on after a few seconds."
-	     width="338" />
+       tool_tip="If you have this enabled, regardless of whether you have media stopped or not, 
+when you enter a new parcel your media will automatically turn on after a few seconds." />
   <check_box bottom_delta="-20" control_name="PhoenixAllowScriptedMedia" enabled="true"
-	     follows="left|top" font="SansSerifSmall" height="16"
+	     follows="left|top" font="SansSerifSmall" height="16" width="338"
 	     initial_value="true" label="Let scripts control my play button" left="162"
 	     mouse_opaque="true" name="scripted_media" radio_style="false"
        tool_tip="Having this turned on will prevent scripts from turning on your media (if it was already off) 
-       until you have pressed the play button yourself, or auto play turns it on."
-	     width="338" />
+until you have pressed the play button yourself, or auto play turns it on." />
   <check_box bottom_delta="-20" control_name="PhoenixStopMusicOnParcelChange" enabled="true"
-	     follows="left|top" font="SansSerifSmall" height="16"
+	     follows="left|top" font="SansSerifSmall" height="16" width="338"
 	     initial_value="true" label="Turn off media when you change parcels." left="142"
 	     mouse_opaque="true" name="auto_streaming_music" radio_style="false"
-       tool_tip="When you enter into a new parcel, any steaming music or playing media will be turned off.
-       This will last until it is either automatically turned on through auto play, a script, or your play button."
-	     width="338" />
+       tool_tip="When you enter into a new parcel, any steaming music or playing media will be turned off. 
+ This will last until it is either automatically turned on through auto play, a script, or your play button."/>
   <check_box bottom_delta="-20" control_name="MediaEnableFilter" enabled="true"
 	     follows="left|top" font="SansSerifSmall" height="16" initial_value="true"
-	     label="Media Filter (increased security)"
+	     label="Media Filter (increased security)" width="338"
 	     left="142" mouse_opaque="true" name="media_filter" radio_style="false"
-       tool_tip="Turning this on will show you the URL to every media and audio source you are offered and
-       give you the choice to allow or deny playing it, and optionally to save that choice for all URLs from that domain."
-	     width="338" />
+       tool_tip="Turning this on will show you the URL to every media and audio source you are offered and 
+give you the choice to allow or deny playing it, and optionally to save that choice for all URLs from that domain."/>
   <check_box bottom_delta="-25" control_name="MuteWhenMinimized" enabled="true"
 	     follows="left|top" font="SansSerifSmall" height="16" initial_value="true"
 	     label="Mute Audio When Window Minimized" left="142" mouse_opaque="true"

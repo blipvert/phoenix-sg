@@ -11,7 +11,10 @@
 		Audio-Einstellungen:
 	</text>
 	<panel label="Lautstärke" name="Volume Panel" />
-	<check_box label="Medien automatisch wiedergeben" name="auto_streaming_video" />
+  <check_box label="Medien automatisch wiedergeben" name="auto_streaming_video" />
+  <check_box label="Medienfilter (erhöhte Sicherheit)" name="media_filter" 
+   tool_tip="Diese Option schaltet die Anzeige der URL jeder angebotenen Audio- und Medienquelle ein, und gibt Ihnen die Möglichkeit, 
+das Abspielen zu erlauben oder zu verbieten. Auf Wunsch kann diese Entscheidung auch für alle anderen URLs der entsprechenden Domain gespeichert werden."/>
 	<check_box label="Audio stummschalten, wenn Fenster minimiert ist"
 	     name="mute_when_minimized" />
 	<text type="string" length="1" name="streaming_text">
