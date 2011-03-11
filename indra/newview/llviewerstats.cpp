@@ -531,7 +531,7 @@ void update_statistics(U32 frame_count)
 			LLViewerStats::getInstance()->incStat(LLViewerStats::ST_TOOLBOX_SECONDS, gFrameIntervalSeconds);
 		}
 	}
-	LLViewerStats::getInstance()->setStat(LLViewerStats::ST_ENABLE_VBO, (F64)gSavedSettings.getBOOL("RenderVBOEnable"));
+	LLViewerStats::getInstance()->setStat(LLViewerStats::ST_ENABLE_VBO, (F64)gSavedSettings.getBOOL("RenderVBOEnable2"));
 	LLViewerStats::getInstance()->setStat(LLViewerStats::ST_LIGHTING_DETAIL, (F64)gSavedSettings.getS32("RenderLightingDetail"));
 	LLViewerStats::getInstance()->setStat(LLViewerStats::ST_DRAW_DIST, (F64)gSavedSettings.getF32("RenderFarClip"));
 	static BOOL* sUseChatBubbles = rebind_llcontrol<BOOL>("UseChatBubbles", &gSavedSettings, true);

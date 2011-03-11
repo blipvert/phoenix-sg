@@ -500,7 +500,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderObjectBump")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _1));
 	gSavedSettings.getControl("RenderMaxVBOSize")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _1));
 	//See LL jira VWR-3258 comment section. Implemented by LL in 2.1 -Shyotl
-	gSavedSettings.getControl("RenderUseStreamVBO")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _1));
+	gSavedSettings.getControl("RenderUseStreamVBO2")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _1));
 	gSavedSettings.getControl("RenderUseFBO")->getSignal()->connect(boost::bind(&handleRenderUseFBOChanged, _1));
 	gSavedSettings.getControl("RenderDeferredNoise")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _1));
 	gSavedSettings.getControl("RenderUseImpostors")->getSignal()->connect(boost::bind(&handleRenderUseImpostorsChanged, _1));
@@ -530,7 +530,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("MuteVoice")->getSignal()->connect(boost::bind(&handleAudioVolumeChanged, _1));
 	gSavedSettings.getControl("MuteAmbient")->getSignal()->connect(boost::bind(&handleAudioVolumeChanged, _1));
 	gSavedSettings.getControl("MuteUI")->getSignal()->connect(boost::bind(&handleAudioVolumeChanged, _1));
-	gSavedSettings.getControl("RenderVBOEnable")->getSignal()->connect(boost::bind(&handleRenderUseVBOChanged, _1));
+	gSavedSettings.getControl("RenderVBOEnable2")->getSignal()->connect(boost::bind(&handleRenderUseVBOChanged, _1));
 	gSavedSettings.getControl("WLSkyDetail")->getSignal()->connect(boost::bind(&handleWLSkyDetailChanged, _1));
 	gSavedSettings.getControl("RenderLightingDetail")->getSignal()->connect(boost::bind(&handleRenderLightingDetailChanged, _1));
 	gSavedSettings.getControl("NumpadControl")->getSignal()->connect(boost::bind(&handleNumpadControlChanged, _1));

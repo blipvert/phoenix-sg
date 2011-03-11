@@ -76,7 +76,7 @@ void LLFloaterHardwareSettings::refresh()
 {
 	LLPanel::refresh();
 
-	mUseVBO = gSavedSettings.getBOOL("RenderVBOEnable");
+	mUseVBO = gSavedSettings.getBOOL("RenderVBOEnable2");
 	mUseAniso = gSavedSettings.getBOOL("RenderAnisotropic");
 	mFSAASamples = gSavedSettings.getU32("RenderFSAASamples");
 	mGamma = gSavedSettings.getF32("RenderGamma");
@@ -96,7 +96,7 @@ void LLFloaterHardwareSettings::refreshEnabledState()
 	childSetMinValue("GrapicsCardTextureMemory", min_tex_mem);
 	childSetMaxValue("GrapicsCardTextureMemory", max_tex_mem);
 
-	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderVBOEnable") ||
+	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderVBOEnable2") ||
 		!gGLManager.mHasVertexBufferObject)
 	{
 		childSetEnabled("vbo", FALSE);
@@ -205,7 +205,7 @@ void LLFloaterHardwareSettings::apply()
 
 void LLFloaterHardwareSettings::cancel()
 {
-	gSavedSettings.setBOOL("RenderVBOEnable", mUseVBO);
+	gSavedSettings.setBOOL("RenderVBOEnable2", mUseVBO);
 	gSavedSettings.setBOOL("RenderAnisotropic", mUseAniso);
 	gSavedSettings.setU32("RenderFSAASamples", mFSAASamples);
 	gSavedSettings.setF32("RenderGamma", mGamma);

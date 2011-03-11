@@ -215,7 +215,7 @@ BOOL LLFeatureManager::loadFeatureTables()
 	// correctly
 	mSkippedFeatures.insert("RenderAnisotropic");
 	mSkippedFeatures.insert("RenderGamma");
-	mSkippedFeatures.insert("RenderVBOEnable");
+	mSkippedFeatures.insert("RenderVBOEnable2");
 	mSkippedFeatures.insert("RenderFogRatio");
 
 	std::string data_path = gDirUtilp->getAppRODataDir();

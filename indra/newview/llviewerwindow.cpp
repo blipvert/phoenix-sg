@@ -1567,12 +1567,12 @@ LLViewerWindow::LLViewerWindow(
 	LLFeatureManager::getInstance()->init();
 
 	// Initialize OpenGL Renderer
-	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderVBOEnable") ||
+	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderVBOEnable2") ||
 		!gGLManager.mHasVertexBufferObject)
 	{
-		gSavedSettings.setBOOL("RenderVBOEnable", FALSE);
+		gSavedSettings.setBOOL("RenderVBOEnable2", FALSE);
 	}
-	LLVertexBuffer::initClass(gSavedSettings.getBOOL("RenderVBOEnable"));
+	LLVertexBuffer::initClass(gSavedSettings.getBOOL("RenderVBOEnable2"));
 
 	if (LLFeatureManager::getInstance()->isSafe()
 		|| (gSavedSettings.getS32("LastFeatureVersion") != LLFeatureManager::getInstance()->getVersion())
