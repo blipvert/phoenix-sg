@@ -560,7 +560,16 @@ void LLInvFVBridge::getClipboardEntries(bool show_asset_id, std::vector<std::str
 			}
 
 			items.push_back(std::string("Export"));
-			if ( (! ( isItemPermissive() || gAgent.isGodlike() ) ))
+			LLInventoryObject* pItem = (mInventoryPanel->getModel()) ?
+				mInventoryPanel->getModel()->getObject(mUUID) : NULL;
+			if ( ( (pItem) &&
+				( ((LLAssetType::AT_NOTECARD == pItem->getType()) &&
+				   (gRlvHandler.hasBehaviour(RLV_BHVR_VIEWNOTE))) ||
+				  ((LLAssetType::AT_LSL_TEXT == pItem->getType()) &&
+				   (gRlvHandler.hasBehaviour(RLV_BHVR_VIEWSCRIPT))) ||
+				  ((LLAssetType::AT_NOTECARD != pItem->getType()) &&
+				   (LLAssetType::AT_LSL_TEXT != pItem->getType())) ) ) ||
+			     (! (isItemPermissive() || gAgent.isGodlike()) ) )
 			{
 				disabled_items.push_back(std::string("Export"));
 			}
