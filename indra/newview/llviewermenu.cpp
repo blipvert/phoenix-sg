@@ -385,6 +385,8 @@ void toggle_cull_small(void *);
 void toggle_show_xui_names(void *);
 BOOL check_show_xui_names(void *);
 
+void toggle_HTTPGetTextures(void *);
+
 void run_vectorize_perf_test(void *)
 {
 	gSavedSettings.setBOOL("VectorizePerfTest", TRUE);
@@ -1385,7 +1387,7 @@ void init_debug_rendering_menu(LLMenuGL* menu)
 	menu->append(item);
 	
 #if 1 //ndef LL_RELEASE_FOR_DOWNLOAD
-	item = new LLMenuItemCheckGL("HTTP Get Textures", menu_toggle_control, NULL, menu_check_control, (void*)"ImagePipelineUseHTTPFetch3");
+	item = new LLMenuItemCheckGL("HTTP Get Textures", toggle_HTTPGetTextures, NULL, menu_check_control, (void*)"ImagePipelineUseHTTPFetch3");
 	menu->append(item);
 #endif
 	
@@ -7805,6 +7807,16 @@ BOOL check_show_xui_names(void *)
 	return gSavedSettings.getBOOL("ShowXUINames");
 }
 
+void toggle_HTTPGetTextures(void *)
+{
+	BOOL UseHTTPFetch = gSavedSettings.getBOOL("ImagePipelineUseHTTPFetch3");
+	UseHTTPFetch = !UseHTTPFetch;
+	gSavedSettings.setBOOL("ImagePipelineUseHTTPFetch3", UseHTTPFetch);
+	// flag client cache for clearing next time the client runs
+	gSavedSettings.setBOOL("PurgeCacheOnNextStartup", TRUE);
+	LLNotifications::instance().add("CacheWillClear");
+	
+}
 
 
 void toggle_cull_small(void *)

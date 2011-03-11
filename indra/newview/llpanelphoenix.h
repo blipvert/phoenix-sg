@@ -113,6 +113,7 @@ private:
 	static void onWearInvToggle(LLUICtrl* ctrl, void* userdata);
 	static void onPhoenixShowChatChannel(LLUICtrl* ctrl, void* userdata);
 	static void onCommitCopy(LLUICtrl* ctrl, void* data);
+	static void onHTTPGetTexturesCommit(LLUICtrl* ctrl, void* userdata);
 
 private:
 	std::string mSkin;

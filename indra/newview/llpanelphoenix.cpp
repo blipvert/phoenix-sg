@@ -394,6 +394,8 @@ BOOL LLPanelPhoenix::postBuild()
 
 	childSetCommitCallback("next_owner_copy", &onCommitCopy, this);
 	childSetEnabled("next_owner_transfer", gSavedSettings.getBOOL("NextOwnerCopy"));
+	
+	getChild<LLCheckBoxCtrl>("HTTPGetTextures")->setCommitCallback(onHTTPGetTexturesCommit);
 
 	refresh();
 	return TRUE;
@@ -897,4 +899,16 @@ void LLPanelPhoenix::onCommitCopy(LLUICtrl* ctrl, void* data)
 	}
 	LLCheckBoxCtrl* xfer = self->getChild<LLCheckBoxCtrl>("next_owner_transfer");
 	xfer->setEnabled(copyable);
+}
+
+void LLPanelPhoenix::onHTTPGetTexturesCommit(LLUICtrl* ctrl, void* userdata)
+{
+	LLComboBox* box = (LLComboBox*)ctrl;
+	if(box)
+	{
+		gSavedSettings.setBOOL("ImagePipelineUseHTTPFetch3", box->getValue().asBoolean());
+		// flag client cache for clearing next time the client runs
+		gSavedSettings.setBOOL("PurgeCacheOnNextStartup", TRUE);
+		LLNotifications::instance().add("CacheWillClear");
+	}	
 }
