@@ -61,6 +61,8 @@
 #include "lluictrlfactory.h"
 #include "llviewerwindow.h"
 #include "llviewercontrol.h"
+#include "llstartup.h"
+#include "floatermedialists.h"
 
 //
 // Static functions
@@ -87,6 +89,10 @@ LLPanelAudioPrefs::~LLPanelAudioPrefs()
 
 BOOL LLPanelAudioPrefs::postBuild()
 {
+	
+	getChild<LLButton>("open_media_lists")->setClickedCallback(FloaterMediaLists::show, NULL);
+	if(LLStartUp::getStartupState() >= STATE_INVENTORY_SEND)childSetEnabled("open_media_lists",true);
+	
 	refreshValues(); // initialize member data from saved settings
 	return TRUE;
 }

@@ -6166,7 +6166,7 @@ class LLShowFloater : public view_listener_t
 		}
 		else if (floater_name == "media_lists")
         {
-			FloaterMediaLists::show();
+			FloaterMediaLists::show(NULL);
         }
 		else if (floater_name == "media_player")
         {

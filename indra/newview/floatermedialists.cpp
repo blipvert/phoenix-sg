@@ -14,7 +14,7 @@ FloaterMediaLists::FloaterMediaLists() :  LLFloater(std::string("floater_media_l
     LLUICtrlFactory::getInstance()->buildFloater(this, "floater_media_lists.xml");
 }
 
-void FloaterMediaLists::show()
+void FloaterMediaLists::show(void*)
 {
     if (!sInstance)
 		sInstance = new FloaterMediaLists();

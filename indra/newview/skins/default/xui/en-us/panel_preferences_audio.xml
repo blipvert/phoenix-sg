@@ -57,6 +57,11 @@ until you have pressed the play button yourself, or auto play turns it on." />
 	     left="142" mouse_opaque="true" name="media_filter" radio_style="false"
        tool_tip="Turning this on will show you the URL to every media and audio source you are offered and 
 give you the choice to allow or deny playing it, and optionally to save that choice for all URLs from that domain."/>
+  <button bottom_delta="-2" enabled="false" follows="left|top|right"
+	     font="SansSerif" halign="center" height="22" label="Settings"
+	     left_delta="195" mouse_opaque="true"
+	     name="open_media_lists" scale_image="true" width="95"
+		 tool_tip="Open Media Filter Settings."/>
   <check_box bottom_delta="-25" control_name="MuteWhenMinimized" enabled="true"
 	     follows="left|top" font="SansSerifSmall" height="16" initial_value="true"
 	     label="Mute Audio When Window Minimized" left="142" mouse_opaque="true"

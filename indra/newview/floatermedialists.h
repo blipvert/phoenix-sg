@@ -15,7 +15,7 @@ public:
 	BOOL postBuild();
     virtual ~FloaterMediaLists();
 
-    static void show();
+    static void show(void*);
 	virtual void draw();
 	void refresh();
 
