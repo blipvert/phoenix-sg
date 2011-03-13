@@ -900,6 +900,13 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 			}
 			else if(command == *sPhoenixCmdLineAutocorrect)
 			{
+				if (revised_text.length() < sPhoenixCmdLineAutocorrect->length()+2)
+				{
+					cmdline_printchat("Wrong usage, correct usage is"+
+				*sPhoenixCmdLineAutocorrect+" list Name|wrong word|right word.");
+					return false;
+				}
+
 				std::string info = revised_text.substr((*sPhoenixCmdLineAutocorrect).length()+1);
 				//addac list name|wrong word|right word
 				int bar = info.find("|");
@@ -909,7 +916,6 @@ bool cmd_line_chat(std::string revised_text, EChatType type, bool from_gesture)
 				*sPhoenixCmdLineAutocorrect+" list Name|wrong word|right word.");
 					return false;
 				}
-				
 
 				std::string listName = info.substr(0,bar);
 				info = info.substr(bar+1);
