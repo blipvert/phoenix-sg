@@ -92,8 +92,10 @@ void DesktopNotifierLinux::showNotification(const std::string& notification_titl
     static NotifyNotification* notification = notify_notification_new(
         "Phoenix Viewer",//(gchar*)notification_title.c_str(),
         NULL,//(gchar*)notification_message.c_str(),
-        icon_wholename,
-        NULL
+        icon_wholename
+#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR < 7)
+        , NULL
+#endif
     );
     
     notify_notification_update(
