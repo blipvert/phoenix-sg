@@ -74,6 +74,7 @@ static inline void checkedRead(LLFILE *fp, void *data, size_t nbytes)
 }
 
 LLVOCacheEntry::LLVOCacheEntry(LLFILE *fp)
+	: mBuffer(NULL)
 {
 	S32 size;
 	checkedRead(fp, &mLocalID, sizeof(U32));
@@ -104,7 +105,10 @@ LLVOCacheEntry::LLVOCacheEntry(LLFILE *fp)
 
 LLVOCacheEntry::~LLVOCacheEntry()
 {
-	delete [] mBuffer;
+	if(mBuffer)
+	{
+		delete [] mBuffer;
+	}
 }
 
 
