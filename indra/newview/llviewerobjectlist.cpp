@@ -848,8 +848,7 @@ void LLViewerObjectList::cleanupReferences(LLViewerObject *objectp)
 	LLMemType mt(LLMemType::MTYPE_OBJECT);
 	if (mDeadObjects.find(objectp->mID) != mDeadObjects.end())
 	{
-		llinfos << "Object " << objectp->mID << " already on dead list, ignoring cleanup!" << llendl;	
-		return;
+		llinfos << "Object " << objectp->mID << " already on dead list!" << llendl;
 	}
 	else
 	{
