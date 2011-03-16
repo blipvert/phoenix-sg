@@ -39,17 +39,3 @@
 	<check_box label="Port de connexion personnalisé" name="connection_port_enabled"/>
 	<spinner label="Numéro de port :" label_width="95" name="connection_port" width="170"/>
 </panel>
-
-<text name="sound_cache_location_label">
-  <!--needs translation-->
-</text>
-<text name="chat_location_label">
-  <!--needs translation-->
-</text>
-<text name="crash_location_label">
-  <!--needs translation-->
-</text>
-<text name="user_location_label">
-  <!--needs translation-->
-</text>
-<!--network section needs translation-->

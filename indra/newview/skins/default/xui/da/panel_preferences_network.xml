@@ -1,23 +1,38 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel label="Netværk" name="network">
-	<text type="string" length="1" name="text_box">
+	<text name="text_box">
 		Maksimal båndbredde:
 	</text>
-	<text type="string" length="1" name="text_box2">
+	<text name="text_box2">
 		kbps (kilobits pr sekund)
 	</text>
-	<text type="string" length="1" name="cache_size_label_l">
+	<text name="cache_size_label_l">
 		Disk cache størrelse:
 	</text>
-	<text type="string" length="1" name="text_box5">
+	<text name="text_box5">
 		MB
 	</text>
-	<button label="Tøm cache" name="clear_cache" />
-	<text type="string" length="1" name="cache_location_label">
+	<text name="cache_location_label">
 		Disk cache placering:
 	</text>
-	<button label="Vælg" label_selected="Vælg" name="set_cache" />
-	<button label="Nulstil" label_selected="Vælg" name="reset_cache" />
-	<check_box label="Manuel port opsætning" name="connection_port_enabled" />
-	<spinner label="Port nummer:" name="connection_port" />
+  <button name="open_cache_loc" label="openen" width="80"/>
+  <button name="set_cache" label="Vælg" label_selected="Vælg" width="80" left_delta="60"/>
+  <button name="reset_cache" label="Nulstil" label_selected="Vælg" width="80" left_delta="60"/>
+  <button name="open_soundcache_loc" label="openen" width="80"/>
+  <button name="set_sound_cache" label="Vælg" label_selected="Vælg" width="80" left_delta="60"/>
+  <button name="reset_sound_cache" label="Nulstil" label_selected="Vælg" width="80" left_delta="60"/>
+  <button name="open_chat_logs_loc" label="openen" width="80"/>
+  <button name="set_chat_logs" label="Vælg" label_selected="Vælg" width="80" left_delta="60"/>
+  <button name="reset_chat_logs" label="Nulstil" label_selected="Vælg" width="80" left_delta="60"/>
+  <button name="open_crash_logs_loc" label="openen" width="80"/>
+  <text name="cannot_change_crash_label" left_delta="70">
+    (Kan niet veranderen)
+  </text>
+  <button name="open_user_loc" label="openen" width="80"/>
+  <text name="cannot_change_user_label" left_delta="70">
+    (Kan niet veranderen)
+  </text>
+  <button name="clear_cache" label="Tøm cache"/>
+  <check_box name="connection_port_enabled" label="Manuel port opsætning"/>
+	<spinner name="connection_port" label="Port nummer:"/>
 </panel>
