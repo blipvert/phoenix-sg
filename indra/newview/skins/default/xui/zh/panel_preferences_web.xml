@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<panel border="true" bottom="-409" enabled="true" follows="left|top|right|bottom"
-     height="408" hidden="false" label="Web" left="102" mouse_opaque="true"
-     name="web" width="517">
+<panel label="网页" name="web">
 	<text name="cache_size_label_l">
 		浏览器缓存:
 	</text>
