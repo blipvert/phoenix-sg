@@ -115,6 +115,7 @@ void LLViewerJointMesh::updateGeometrySSE2(LLFace *face, LLPolyMesh *mesh)
 	}
 	
 	//setBuffer(0) called in LLVOAvatar::renderSkinned
+	buffer->setBuffer(0);
 }
 
 #else
