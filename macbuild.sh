@@ -18,7 +18,7 @@ configure()
 
 set_channel()
 {
-	cp -f llcommon/llversionviewer.h.in llcommon/llversionviewer.h.in.build
+	cp -f llcommon/llversionviewer.h.in.build llcommon/llversionviewer.h.in
         if [ -n "$BUILD_RELEASE" ]; then
                 sed -e s/Internal/Release/ -i '' llcommon/llversionviewer.h.in
                 echo "Setting release channel..."
@@ -120,30 +120,30 @@ case "$1" in
 		;;
 esac
 
-if [ -z "$2" ]; then
-	REVISION=0
-	hg update
-else
-	REVISION=$2
-	hg update -r $REVISION
-fi
-
-if [ $? -ne 0 ]; then
-        echo "Couldn't update from Mercurial."
-        exit 2
-fi
-if [ $REVISION -eq 0 ]; then
-	while read line; do
-        	if [[ ${line:0:8} == "parent: " ]]; then
-                	REVISION=$(echo ${line:8}|sed -e s'/:.*//')
-	        fi
-	done < <(hg summary)
-	if [ $REVISION -eq 0 ]; then
-	        echo "Could not determine Mercurial revision."
-	        exit 3
-	fi
-fi
-echo "Retrieved Mercurial revision $REVISION."
+#if [ -z "$2" ]; then
+#	REVISION=0
+#	hg update
+#else
+#	REVISION=$2
+#	hg update -r $REVISION
+#fi
+#
+#if [ $? -ne 0 ]; then
+#        echo "Couldn't update from Mercurial."
+#        exit 2
+#fi
+#if [ $REVISION -eq 0 ]; then
+#	while read line; do
+#        	if [[ ${line:0:8} == "parent: " ]]; then
+#                	REVISION=$(echo ${line:8}|sed -e s'/:.*//')
+#	        fi
+#	done < <(hg summary)
+#	if [ $REVISION -eq 0 ]; then
+#	        echo "Could not determine Mercurial revision."
+#	        exit 3
+#	fi
+#fi
+#echo "Retrieved Mercurial revision $REVISION."
 
 echo "Preparing..."
 rm installed.xml 2>/dev/null
