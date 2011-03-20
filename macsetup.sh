@@ -18,7 +18,7 @@ configure()
 
 set_channel()
 {
-	cp -f llcommon/llversionviewer.h.in llcommon/llversionviewer.h.in.build
+	cp -f llcommon/llversionviewer.h.in.build llcommon/llversionviewer.h.in
         if [ -n "$BUILD_RELEASE" ]; then
                 sed -e s/Internal/Release/ -i '' llcommon/llversionviewer.h.in
                 echo "Setting release channel..."
