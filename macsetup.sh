@@ -120,14 +120,14 @@ case "$1" in
 		;;
 esac
 
-#if [ -z "$2" ]; then
-#	REVISION=0
+if [ -z "$2" ]; then
+	REVISION=`date -u +'%y%m%d'`
 #	hg update
-#else
-#	REVISION=$2
+else
+	REVISION=$2
 #	hg update -r $REVISION
-#fi
-#
+fi
+
 #if [ $? -ne 0 ]; then
 #        echo "Couldn't update from Mercurial."
 #        exit 2
